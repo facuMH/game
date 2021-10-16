@@ -32,4 +32,6 @@
 *.app
 
 #build dir
-/build
+/build*
+/out
+.vs
