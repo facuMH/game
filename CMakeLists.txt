@@ -12,7 +12,9 @@ set(CMAKE_VERBOSE_MAKEFILE ON CACHE BOOL "ON")
 
 #------------- CONFIGURATIONS
 
-set(SOURCES src/main.cpp)
+set(SOURCES src/main.cpp
+        src/Game.cpp
+        src/Game.h)
 
 #------------- DEPENDENCIES
 
