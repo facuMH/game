@@ -34,17 +34,33 @@ void Game::initWindow()
     this->window->setVerticalSyncEnabled(vertical_sync_enabled);
 }
 
+void Game::initStates()
+{
+    this->states.push(new GameState(this->window));
+}
+
 // Constructor
 Game::Game()
 {
     this->initVariables();
     this->initWindow();
+    this->initStates();
 }
 
 // Destructor
 Game::~Game()
 {
+    // Delete window
     delete this->window;
+
+    // Clear states stack
+    while (!this->states.empty())
+    {
+        // remove data
+        delete this->states.top();
+        // remove pointer
+        this->states.pop();
+    }
 }
 
 // Accessors
@@ -80,6 +96,12 @@ void Game::pollEvents()
 void Game::update()
 {
     this->pollEvents();
+
+    if (!this->states.empty())
+    {
+        // update current game state
+        this->states.top()->update(this->dt);
+    }
 }
 
 void Game::render()
@@ -88,13 +110,20 @@ void Game::render()
     window->clear();
 
     // Draw game
+    if (!this->states.empty())
+    {
+        // render current game state
+        this->states.top()->render(this->window);
+    }
 
+    // Window is done drawing --> display result
     window->display();
-    // Window is done drawing
+
 }
 
 void Game::updateDT()
 {
     this->dt = this->dtClock.restart().asSeconds();
-    std::cout << this->dt << "\n";
+    std::cout << "Time delta: " << this->dt << std::endl;
 }
+

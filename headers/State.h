@@ -10,20 +10,25 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
+#include <stack>
+
 class State
 {
 private:
     std::vector<sf::Texture> textures;
+    sf::RenderWindow* window;
 
 public:
     // Constructor
-    State();
+    explicit State(sf::RenderWindow* window);
     // Destructor
     virtual ~State();
 
     // virtual ==> these MUST be defined in child class
-    virtual void update() = 0;
-    virtual void render() = 0;
+    virtual void update(const float& dt) = 0;
+    virtual void render(sf::RenderTarget* target = nullptr) = 0;
+
+    virtual void endState() = 0;
 };
 
 

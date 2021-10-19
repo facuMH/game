@@ -16,7 +16,9 @@ set(SOURCES src/main.cpp
         src/Game.cpp
         headers/Game.h
         src/State.cpp
-        headers/State.h)
+        headers/State.h
+        src/GameState.cpp
+        headers/GameState.h)
 
 #------------- DEPENDENCIES
 

@@ -1,7 +1,8 @@
 #ifndef RPG_GAME_H
 #define RPG_GAME_H
 
-#include "State.h"
+
+#include "GameState.h"
 
 /*
  * Wrapper class acting as game engine.
@@ -11,6 +12,7 @@ class Game
 private:
     void initVariables();
     void initWindow();
+    void initStates();
 
     sf::RenderWindow *window; // dynamically allocated so that it can be deleted
     sf::VideoMode videoMode;
@@ -19,6 +21,11 @@ private:
     // Time variables
     sf::Clock dtClock;
     float dt; // time delta
+
+    // Stack of states - the top entry is the active state, i.e. [main menu, map-layer, fight-layer]:
+    // If the fight layer is left, the next active state is the map-layer.
+    // If the map-layer is left, we're at the main menu.
+    std::stack<State*> states;
 public:
     // Constructor
     Game();
