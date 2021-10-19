@@ -1,4 +1,4 @@
-#include "Game.h"
+#include "../headers/Game.h"
 #undef main
 
 
@@ -10,6 +10,7 @@ int main()
     // Game loop
     while(game.isRunning())
     {
+        game.updateDT();
         // Update
         game.update();
         // Render
