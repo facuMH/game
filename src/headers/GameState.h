@@ -1,7 +1,7 @@
 #ifndef RPG_GAMESTATUS_H
 #define RPG_GAMESTATUS_H
 
-#include "../headers/State.h"
+#include "State.h"
 class GameState: public State
 {
 public:
