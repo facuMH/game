@@ -1,4 +1,5 @@
-#include "Game.h"
+#include <iostream>
+#include "../headers/Game.h"
 
 // Private functions
 void Game::initVariables()
@@ -8,10 +9,29 @@ void Game::initVariables()
 
 void Game::initWindow()
 {
+    // load window configs from file
+    std::ifstream ifs("../config/window.ini");
+
+    // set default values
+    std::string title = "none";
     this->videoMode.height = 480;
     this->videoMode.width = 640;
+    unsigned int framerate_limit = 120;
+    bool vertical_sync_enabled = false;
 
-    this->window = new sf::RenderWindow(this->videoMode, "game", sf::Style::Titlebar | sf::Style::Close);
+    // replace default configs with file contents
+    if (ifs.is_open()) {
+        std::getline(ifs, title);
+        ifs >> this->videoMode.width >> this->videoMode.height;
+        ifs >> framerate_limit;
+        ifs >> vertical_sync_enabled;
+    }
+    ifs.close();
+
+    // create window
+    this->window = new sf::RenderWindow(this->videoMode, title, sf::Style::Titlebar | sf::Style::Close);
+    this->window->setFramerateLimit(framerate_limit);
+    this->window->setVerticalSyncEnabled(vertical_sync_enabled);
 }
 
 // Constructor
@@ -71,4 +91,10 @@ void Game::render()
 
     window->display();
     // Window is done drawing
+}
+
+void Game::updateDT()
+{
+    this->dt = this->dtClock.restart().asSeconds();
+    std::cout << this->dt << "\n";
 }
