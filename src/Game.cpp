@@ -1,5 +1,8 @@
+#include <iostream>
+
 #include "Game.h"
 #include <iostream>
+
 
 // Private functions
 void Game::initVariables() { this->window = nullptr; }

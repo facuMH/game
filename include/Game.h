@@ -1,60 +1,56 @@
 #ifndef RPG_GAME_H
 #define RPG_GAME_H
 
-#include "GameState.h"
+#include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
+#include <SFML/Window.hpp>
+#include <SFML/Audio.hpp>
+#include <SFML/Network.hpp>
+
+struct Position{
+    int x=0;
+    int y=0;
+    int x_offset=0;
+    int y_offset=0;
+    Position() : x(0), y(0), x_offset(0), y_offset(0){}
+    Position(int x, int y, int x_offset, int y_offset) : x(x), y(y), x_offset(x_offset), y_offset(y_offset) {}
+};
 
 /*
  * Wrapper class acting as game engine.
  */
-class Game {
+class Game
+{
 private:
-  void initVariables();
-  void initWindow();
-  void initStates();
+    void initVariables();
 
-  // windo is a poineter pointer, since the new-operator returns a pointer to
-  // the beginning of the new block of memory allocated
-  sf::RenderWindow *window;
-  sf::VideoMode videoMode;
-  sf::Event event;
+    void initWindow();
 
-  // Time variables
-  sf::Clock dtClock;
-  float dt; // time delta
-
-  // Stack of states - the top entry is the active state, i.e. [main menu,
-  // map-layer, fight-layer]: If the fight layer is left, the next active state
-  // is the map-layer. If the map-layer is left, we're at the main menu. Must be
-  // a pointer, since State is an abstract class and cannot be instantiated.
-  // Only instances of its child classes could be put on the stack directly.
-  std::stack<State *> states;
-
+    sf::RenderWindow *window; // dynamically allocated so that it can be deleted
+    sf::VideoMode videoMode;
+    sf::Event event;
+    sf::Sprite character_sprite;
+    Position character_position;
+    sf::Texture character_texture;
 public:
-  // Constructor
-  Game();
+    // Constructor
+    Game();
 
-  // Destructor
-  virtual ~Game();
+    // Destructor
+    virtual ~Game();
 
-  // Update functions
-  // Everything defining behind-the-scenes logic
-  void update();
-  // Update time variable dt (new time is the time it takes to update and render
-  // 1 frame)
-  void updateDT();
+    // Functions
+    // Everything defining behind-the-scenes logic
+    void update();
 
-  // Render functions
-  // Visual representation of the game
-  void render();
+    // Visual representation of the game
+    void render();
 
-  // Register any events
-  void pollEvents();
+    void pollEvents();
 
-  // End the application
-  void endApplication();
-
-  // Accessors
-  bool isRunning() const;
+    // Accessors
+    bool isRunning() const;
 };
 
-#endif // RPG_GAME_H
+
+#endif //RPG_GAME_H
