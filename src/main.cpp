@@ -10,6 +10,8 @@ int main()
     // Game loop
     while(game.isRunning())
     {
+        // Update time
+        game.updateDT();
         // Update
         game.update();
         // Render

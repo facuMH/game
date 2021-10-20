@@ -13,6 +13,13 @@ void Game::initWindow()
 {
     this->videoMode.height = 720;
     this->videoMode.width = 1280;
+    // load window configs from file
+    std::ifstream ifs("../config/window.ini");
+
+    // set default values
+    std::string title = "none";
+    unsigned int framerate_limit = 120;
+    bool vertical_sync_enabled = false;
 
     this->window = new sf::RenderWindow(this->videoMode, "game", sf::Style::Titlebar | sf::Style::Close);
 
@@ -24,6 +31,17 @@ void Game::initWindow()
     character_sprite.setTexture(character_texture);
     character_sprite.setTextureRect(character_position);
     character_sprite.scale(sf::Vector2f(3.f, 3.f)); 
+    std::cout << "First sprite set\n";
+
+    // create window
+    this->window = new sf::RenderWindow(this->videoMode, title, sf::Style::Titlebar | sf::Style::Close);
+    this->window->setFramerateLimit(framerate_limit);
+    this->window->setVerticalSyncEnabled(vertical_sync_enabled);
+}
+
+void Game::initStates()
+{
+    this->states.push(new GameState(this->window));
 }
 
 // Constructor
@@ -31,12 +49,23 @@ Game::Game()
 {
     this->initVariables();
     this->initWindow();
+    this->initStates();
 }
 
 // Destructor
 Game::~Game()
 {
+    // Delete window
     delete this->window;
+
+    // Clear states stack
+    while (!this->states.empty())
+    {
+        // remove data
+        delete this->states.top();
+        // remove pointer
+        this->states.pop();
+    }
 }
 
 // Accessors
@@ -65,6 +94,9 @@ void Game::pollEvents()
                 }
                 break;
             default:
+                character_position.left = (character_position.left + 162) % 1620;
+                character_sprite.setTextureRect(character_position);
+                clock.restart();
                 break;
         }
     }
@@ -79,6 +111,12 @@ void Game::pollEvents()
 void Game::update()
 {
     this->pollEvents();
+
+    if (!this->states.empty())
+    {
+        // update current game state
+        this->states.top()->update(this->dt);
+    }
 }
 
 void Game::render()
@@ -87,8 +125,20 @@ void Game::render()
     window->clear();
 
     // Draw game
-    window->draw(character_sprite);
+    if (!this->states.empty())
+    {
+        // render current game state
+        this->states.top()->render(this->window);
+    }
 
+    // Window is done drawing --> display result
     window->display();
-    // Window is done drawing
+
 }
+
+void Game::updateDT()
+{
+    this->dt = this->dtClock.restart().asSeconds();
+    //std::cout << "Time delta: " << this->dt << std::endl;
+}
+

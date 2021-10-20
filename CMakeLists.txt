@@ -14,7 +14,12 @@ set(CMAKE_VERBOSE_MAKEFILE ON CACHE BOOL "ON")
 
 set(SOURCES src/main.cpp
         src/Game.cpp
-        include/Game.h)
+        src/State.cpp
+        src/GameState.cpp
+
+        include/Game.h
+        include/State.h
+        include/GameState.h)
 
 #------------- DEPENDENCIES
 
