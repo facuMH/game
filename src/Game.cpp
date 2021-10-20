@@ -17,11 +17,14 @@ void Game::initWindow()
     std::ifstream ifs("../config/window.ini");
 
     // set default values
-    std::string title = "none";
+    std::string title = "RPG";
     unsigned int framerate_limit = 120;
     bool vertical_sync_enabled = false;
 
-    this->window = new sf::RenderWindow(this->videoMode, "game", sf::Style::Titlebar | sf::Style::Close);
+    // create window
+    this->window = new sf::RenderWindow(this->videoMode, title, sf::Style::Titlebar | sf::Style::Close);
+    this->window->setFramerateLimit(framerate_limit);
+    this->window->setVerticalSyncEnabled(vertical_sync_enabled);
 
     if (!character_texture.loadFromFile("../assets/character/Idle.png")){
         std::cout << "character not found in: " <<  "assets/character/Idle.png" << "\n";
@@ -33,10 +36,6 @@ void Game::initWindow()
     character_sprite.scale(sf::Vector2f(3.f, 3.f)); 
     std::cout << "First sprite set\n";
 
-    // create window
-    this->window = new sf::RenderWindow(this->videoMode, title, sf::Style::Titlebar | sf::Style::Close);
-    this->window->setFramerateLimit(framerate_limit);
-    this->window->setVerticalSyncEnabled(vertical_sync_enabled);
 }
 
 void Game::initStates()
@@ -94,9 +93,6 @@ void Game::pollEvents()
                 }
                 break;
             default:
-                character_position.left = (character_position.left + 162) % 1620;
-                character_sprite.setTextureRect(character_position);
-                clock.restart();
                 break;
         }
     }
@@ -130,7 +126,7 @@ void Game::render()
         // render current game state
         this->states.top()->render(this->window);
     }
-
+    window->draw(character_sprite);
     // Window is done drawing --> display result
     window->display();
 
