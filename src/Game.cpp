@@ -7,9 +7,6 @@
 void Game::initVariables()
 {
     this->window = nullptr;
-    // this->character_sprite= nullptr;
-    // this->character_position= nullptr;
-    // this->character_texture= nullptr;
 }
 
 void Game::initWindow()
@@ -19,27 +16,14 @@ void Game::initWindow()
 
     this->window = new sf::RenderWindow(this->videoMode, "game", sf::Style::Titlebar | sf::Style::Close);
 
-    // character_sprite = new sf::Sprite();
-    // character_position = new Position(60,40,40,60);
-    // character_texture= new sf::Texture;
-
     if (!character_texture.loadFromFile("../assets/character/Idle.png")){
         std::cout << "character not found in: " <<  "assets/character/Idle.png" << "\n";
     }
+    character_position= sf::IntRect(65,55,45,40);
     character_texture.setSmooth(true);
     character_sprite.setTexture(character_texture);
-    // character_position->x=60;
-    // character_position->y=40;
-    // character_position->x_offset=40;
-    // character_position->y_offset=60;
-    character_position.x=65;
-    character_position.y=55;
-    character_position.x_offset=40;
-    character_position.y_offset=45;
-    // character_sprite.setTextureRect(sf::IntRect(character_position->x, character_position->y,
-    //                             character_position->x_offset, character_position->y_offset));
-        character_sprite.setTextureRect(sf::IntRect(character_position.x, character_position.y,
-                                character_position.x_offset, character_position.y_offset));
+    character_sprite.setTextureRect(character_position);
+    character_sprite.scale(sf::Vector2f(3.f, 3.f)); 
 }
 
 // Constructor
@@ -81,15 +65,14 @@ void Game::pollEvents()
                 }
                 break;
             default:
-                //character_position->x= (character_position->x+160)%1620;
-                character_position.x= (character_position.x+165)%1620;
-                // character_sprite.setTextureRect(sf::IntRect(character_position->x, character_position->y,
-                //                             character_position->x_offset, character_position->y_offset));
-                character_sprite.setTextureRect(sf::IntRect(character_position.x, character_position.y,
-                                character_position.x_offset, character_position.y_offset));
-                //character_sprite.setPosition()
                 break;
         }
+    }
+    //idle animation
+    if (clock.getElapsedTime().asSeconds() > .05f){
+        character_position.left=(character_position.left+162)%1620;
+        character_sprite.setTextureRect(character_position);
+        clock.restart();
     }
 }
 
