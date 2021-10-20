@@ -11,12 +11,10 @@ void Game::initWindow() {
   // load window configs from file
   std::ifstream ifs("../config/window.ini");
 
-  // set default values
-  std::string title = "none";
-  this->videoMode.height = 480;
-  this->videoMode.width = 640;
-  unsigned int framerate_limit = 120;
-  bool vertical_sync_enabled = false;
+    // set default values
+    std::string title = "RPG";
+    unsigned int framerate_limit = 120;
+    bool vertical_sync_enabled = false;
 
   // replace default configs with file contents
   if (ifs.is_open()) {
