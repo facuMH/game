@@ -20,7 +20,8 @@ private:
 
     sf::Sprite character_sprite;
     sf::IntRect character_position;
-    sf::Texture character_texture;
+    sf::Texture character_texture_idle;
+    sf::Texture character_texture_run;
     sf::Clock clock;
 
     // Time variables

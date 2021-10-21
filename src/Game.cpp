@@ -26,14 +26,19 @@ void Game::initWindow()
     this->window->setFramerateLimit(framerate_limit);
     this->window->setVerticalSyncEnabled(vertical_sync_enabled);
 
-    if (!character_texture.loadFromFile("../assets/character/Idle.png")){
+    if (!character_texture_idle.loadFromFile("../assets/character/Idle.png")){
         std::cout << "character not found in: " <<  "assets/character/Idle.png" << "\n";
     }
-    character_position= sf::IntRect(65,55,45,40);
-    character_texture.setSmooth(true);
-    character_sprite.setTexture(character_texture);
+    if (!character_texture_run.loadFromFile("../assets/character/Run.png")){
+        std::cout << "character not found in: " <<  "assets/character/Run.png" << "\n";
+    }
+
+    character_position= sf::IntRect(65,55,45,50);
+    character_texture_idle.setSmooth(true);
+    character_sprite.setTexture(character_texture_idle);
     character_sprite.setTextureRect(character_position);
     character_sprite.scale(sf::Vector2f(3.f, 3.f)); 
+    character_sprite.setPosition({50,50});
     std::cout << "First sprite set\n";
 
 }
@@ -90,9 +95,31 @@ void Game::pollEvents()
                 if (this->event.key.code == sf::Keyboard::Escape)
                 {
                     window->close();
+                } else if (this->event.key.code == sf::Keyboard::Right){
+                    character_sprite.setTexture(character_texture_run);
+                    character_position.left=(character_position.left+162)%1296;
+                    character_sprite.setTextureRect(character_position);
+                    if(character_sprite.getScale().x < 0 ) {
+                        character_sprite.setOrigin({ 0, 0 });
+                        character_sprite.scale({-1.f, 1.f});
+                    }
+                } else if (this->event.key.code == sf::Keyboard::Left){
+                    character_sprite.setTexture(character_texture_run);
+                    character_position.left=(character_position.left+162)%1296;
+                    character_sprite.setTextureRect(character_position);
+                    if(character_sprite.getScale().x > 0 ) {
+                        character_sprite.setOrigin({ character_sprite.getLocalBounds().width, 0 });
+                        character_sprite.scale({-1.f,1.f});
+                    }
                 }
                 break;
+            case sf::Event::MouseMoved:
+                break;
             default:
+                character_sprite.setTexture(character_texture_idle);
+                character_position.left=(character_position.left+162)%1620;
+                character_sprite.setTextureRect(character_position);
+                clock.restart();
                 break;
         }
     }
