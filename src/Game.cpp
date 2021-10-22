@@ -101,6 +101,21 @@ void Game::update()
     {
         // update current game state
         this->states.top()->update(this->dt);
+        // check if the state is about to be quit
+        if (this->states.top()->isQuit()) {
+            // quit actions
+            this->states.top()->quitStateActions();
+            delete this->states.top();
+            this->states.pop();
+        }
+    }
+
+    // End of application
+    else{
+        // Since the game depends on the window being open (see function isRunning()),
+        // closing the window ends the game
+        this->endApplication();
+        this->window->close();
     }
 }
 
@@ -124,6 +139,11 @@ void Game::render()
 void Game::updateDT()
 {
     this->dt = this->dtClock.restart().asSeconds();
-    std::cout << "Time delta: " << this->dt << std::endl;
+    // std::cout << "Time delta: " << this->dt << std::endl;
+}
+
+void Game::endApplication()
+{
+    std::cout << "Ending application" << std::endl;
 }
 

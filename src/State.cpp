@@ -11,4 +11,16 @@ State::~State()
 
 }
 
+void State::checkIfQuitting()
+{
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
+        this->isQuitting = true;
+    }
+}
+
+const bool &State::isQuit() const
+{
+    return this->isQuitting;
+}
+
 
