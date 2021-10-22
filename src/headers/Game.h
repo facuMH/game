@@ -33,18 +33,21 @@ public:
     // Destructor
     virtual ~Game();
 
-    // Functions
+    // Update functions
     // Everything defining behind-the-scenes logic
     void update();
-
     // Update time variable dt (new time is the time it takes to update and render 1 frame)
     void updateDT();
 
+    // Render functions
     // Visual representation of the game
     void render();
 
-    // register any events
+    // Register any events
     void pollEvents();
+
+    // End the application
+    void endApplication();
 
     // Accessors
     bool isRunning() const;
