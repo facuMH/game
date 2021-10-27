@@ -3,6 +3,8 @@
 
 
 #include "GameState.h"
+#include "Entity.h"
+
 
 /*
  * Wrapper class acting as game engine.
