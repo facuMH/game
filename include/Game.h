@@ -6,10 +6,11 @@
 #include <SFML/Window.hpp>
 #include <SFML/Audio.hpp>
 #include <SFML/Network.hpp>
+#include <unordered_map>
 
+#include "Characters.h"
 #include "GameState.h"
-#include "Entity.h"
-
+#include "MapTiles.h"
 
 /*
  * Wrapper class acting as game engine.
@@ -23,10 +24,14 @@ private:
     sf::RenderWindow *window; // dynamically allocated so that it can be deleted
     sf::VideoMode videoMode;
     sf::Event event;
-    sf::Sprite character_sprite;
-    sf::IntRect character_position;
+
+    Character player;
+
+    // this should be moved a "LoadAssets" function where textures are loaded.
     sf::Texture character_texture_idle;
     sf::Texture character_texture_run;
+    std::vector<sf::Texture> player_textures;
+
     sf::Clock clock;
 
     // Time variables
@@ -37,6 +42,8 @@ private:
     // If the fight layer is left, the next active state is the map-layer.
     // If the map-layer is left, we're at the main menu.
     std::stack<State*> states;
+
+    //std::unordered_map<Position, MapTile> MapTiles;
 
 public:
     // Constructor
