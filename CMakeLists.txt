@@ -17,17 +17,19 @@ ENDIF()
 #------------- CONFIGURATIONS
 
 set(SOURCES src/main.cpp
+        src/Characters.cpp
         src/Game.cpp
-        src/State.cpp
         src/GameState.cpp
+        src/State.cpp
 
-
-        include/Game.h
-        include/State.h
-        include/GameState.h
-        include/Entity.h
-        include/Inanimated.h
         include/Animation.h
+        include/Characters.h
+        include/Entity.h
+        include/Game.h
+        include/GameState.h
+        include/Inanimated.h
+        include/MapTiles.h
+        include/State.h
         )
 
 #------------- DEPENDENCIES

@@ -7,7 +7,18 @@
 void Game::initVariables()
 {
     this->window = nullptr;
-}
+
+    if (!character_texture_idle.loadFromFile("../assets/character/Idle.png")) {
+        std::cout << "character not found in: " <<  "assets/character/Idle.png" << "\n";
+    }
+    if (!character_texture_run.loadFromFile("../assets/character/Run.png")){
+        std::cout << "character not found in: " <<  "assets/character/Run.png" << "\n";
+    }
+
+    player = Character("Adventurer", Stats(15, 20, 50, 30),
+                        Animation("../assets/character/Idle.png", sf::IntRect(65, 55, 45, 50), Interval(162,0), Position(50,50))
+                        );
+    }
 
 void Game::initWindow()
 {
@@ -25,21 +36,6 @@ void Game::initWindow()
     this->window = new sf::RenderWindow(this->videoMode, title, sf::Style::Titlebar | sf::Style::Close);
     this->window->setFramerateLimit(framerate_limit);
     this->window->setVerticalSyncEnabled(vertical_sync_enabled);
-
-    if (!character_texture_idle.loadFromFile("../assets/character/Idle.png")){
-        std::cout << "character not found in: " <<  "assets/character/Idle.png" << "\n";
-    }
-    if (!character_texture_run.loadFromFile("../assets/character/Run.png")){
-        std::cout << "character not found in: " <<  "assets/character/Run.png" << "\n";
-    }
-
-    character_position= sf::IntRect(65,55,45,50);
-    character_texture_idle.setSmooth(true);
-    character_sprite.setTexture(character_texture_idle);
-    character_sprite.setTextureRect(character_position);
-    character_sprite.scale(sf::Vector2f(3.f, 3.f)); 
-    character_sprite.setPosition({50,50});
-    std::cout << "First sprite set\n";
 
 }
 
@@ -95,38 +91,34 @@ void Game::pollEvents()
                 if (this->event.key.code == sf::Keyboard::Escape)
                 {
                     window->close();
-                } else if (this->event.key.code == sf::Keyboard::Right){
-                    character_sprite.setTexture(character_texture_run);
-                    character_position.left=(character_position.left+162)%1296;
-                    character_sprite.setTextureRect(character_position);
-                    if(character_sprite.getScale().x < 0 ) {
-                        character_sprite.setOrigin({ 0, 0 });
-                        character_sprite.scale({-1.f, 1.f});
+
+                    // this should become much simpler with new Class Player
+                }
+                else if (this->event.key.code == sf::Keyboard::Right){
+                    player.animation.set_texture(character_texture_run);
+                    player.animation.next();
+                    if(player.animation.get_orientation().x < 0 ) {
+                        player.animation.mirror();
                     }
                 } else if (this->event.key.code == sf::Keyboard::Left){
-                    character_sprite.setTexture(character_texture_run);
-                    character_position.left=(character_position.left+162)%1296;
-                    character_sprite.setTextureRect(character_position);
-                    if(character_sprite.getScale().x > 0 ) {
-                        character_sprite.setOrigin({ character_sprite.getLocalBounds().width, 0 });
-                        character_sprite.scale({-1.f,1.f});
+                    player.animation.next();
+                    if(player.animation.get_orientation().x > 0 ) {
+                        player.animation.mirror(player.animation.sprite.getLocalBounds().width);
                     }
                 }
                 break;
             case sf::Event::MouseMoved:
                 break;
             default:
-                character_sprite.setTexture(character_texture_idle);
-                character_position.left=(character_position.left+162)%1620;
-                character_sprite.setTextureRect(character_position);
+                player.animation.set_texture(character_texture_idle);
+                player.animation.next();
                 clock.restart();
                 break;
         }
     }
     //idle animation
     if (clock.getElapsedTime().asSeconds() > .05f){
-        character_position.left=(character_position.left+162)%1620;
-        character_sprite.setTextureRect(character_position);
+        player.animation.next();
         clock.restart();
     }
 }
@@ -153,7 +145,7 @@ void Game::render()
         // render current game state
         this->states.top()->render(this->window);
     }
-    window->draw(character_sprite);
+    window->draw(player.animation.sprite);
     // Window is done drawing --> display result
     window->display();
 

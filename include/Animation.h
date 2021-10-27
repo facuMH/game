@@ -2,16 +2,18 @@
 
 #include <SFML/Graphics.hpp>
 
-using Position = sf::Vector2f;
-using Interval = sf::Vector2f;
+#include "definitions.h"
 
 class Animation {
+public:
 	sf::Sprite sprite;
 	sf::Texture texture;
 	sf::IntRect texture_rectangle;
 	Interval sprite_interval;
 
-public:
+
+	Animation() {};
+
 	Animation(const std::string& texture_path, const sf::IntRect& first_animation, const Interval& sprite_interval, const Position& initial) {
 		texture.loadFromFile(texture_path);
 		texture_rectangle = first_animation;
@@ -22,22 +24,12 @@ public:
 		sprite.setPosition(initial);
 	};
 
-	Animation(const Animation& from) {
-		sprite = std::move(from.sprite);
-		texture = std::move(from.texture);
-		texture_rectangle = std::move(from.texture_rectangle);
-		sprite_interval = std::move(from.sprite_interval);
+	bool set_texture(const std::string& texture_path) {
+		return texture.loadFromFile(texture_path);
 	}
 
-	Animation(Animation&& from) {
-		sprite = std::move(from.sprite);
-		texture = std::move(from.texture);
-		texture_rectangle = std::move(from.texture_rectangle);
-		sprite_interval = std::move(from.sprite_interval);
-	};
-
-	bool set_sexture(const std::string& texture_path) {
-		return texture.loadFromFile(texture_path);
+	void set_texture(const sf::Texture new_texture) {
+		texture = new_texture;
 	}
 
 	void next() {
@@ -51,5 +43,24 @@ public:
 
 	Position get_position() {
 		return sprite.getPosition();
+	}
+
+	void set_position(Position pos) {
+		sprite.setPosition(pos);
+	}
+
+	sf::Vector2f get_orientation() {
+		return sprite.getScale();
+	}
+
+	// TODO: consider taking paramerters to set origin depending on orientation
+	void mirror() {
+		sprite.setOrigin({ 0, 0 });
+		sprite.scale({ -1.f, 1.f });
+	}
+
+	void mirror(float origin_x) {
+		sprite.setOrigin({ origin_x, 0 });
+		sprite.scale({ -1.f, 1.f });
 	}
 };

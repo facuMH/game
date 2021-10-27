@@ -2,13 +2,18 @@
 
 #include "Entity.h"
 
-class Object : Entity {
+class Object : public Entity {
 	bool can_pick_up;
 	int quantity;
 public:
-	Object() : can_pick_up(true), quantity(0) {};
+	Object() : can_pick_up(true), quantity(1) {};
+
+	void drop(Position pos) {
+		animation.set_position(pos);
+	}
 };
 
-class Map_section : Entity {
-	
+class Weapon : public Object {
+	Name name;
+	Stats stats;
 };
