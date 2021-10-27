@@ -10,6 +10,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
 set(CMAKE_VERBOSE_MAKEFILE ON CACHE BOOL "ON")
 
+IF(WIN32)
+    set(CMAKE_PREFIX_PATH "C:\\dev\\SFML\\lib\\cmake\\SFML")
+ENDIF()
+
 #------------- CONFIGURATIONS
 
 set(SOURCES src/main.cpp
@@ -17,15 +21,17 @@ set(SOURCES src/main.cpp
         src/State.cpp
         src/GameState.cpp
 
+
         include/Game.h
         include/State.h
-        include/GameState.h)
+        include/GameState.h
+        include/Entity.h
+        include/Inanimated.h
+        include/Animation.h
+        )
 
 #------------- DEPENDENCIES
 
-IF(WIN32)
-    set(CMAKE_PREFIX_PATH "C:\\dev\\SFML\\lib\\cmake\\SFML")
-ENDIF()
 
 # SFML
 find_package(SFML 2.5 COMPONENTS system window graphics audio REQUIRED)
