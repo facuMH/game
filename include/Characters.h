@@ -30,6 +30,7 @@ public:
 	void recover_mana(const int recover) { stats.mana += recover; }
 	
 	void equip(Weapon* arms);
-
 	void move(const Position pos);
+
+	//TODO: multiple animations (idle, run, atack) perhaps on Entity.
 };

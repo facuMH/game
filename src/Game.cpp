@@ -105,6 +105,7 @@ void Game::pollEvents()
                         player.animation.mirror();
                     }
                 } else if (this->event.key.code == sf::Keyboard::Left){
+                    player.animation.set_texture(character_texture_run);
                     player.animation.next();
                     if(player.animation.get_orientation().x > 0 ) {
                         player.animation.mirror(player.animation.sprite.getLocalBounds().width);
