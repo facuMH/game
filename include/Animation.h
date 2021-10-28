@@ -22,6 +22,7 @@ public:
 		sprite.setTexture(texture);
 		sprite.setTextureRect(texture_rectangle);
 		sprite.setPosition(initial);
+		sprite.setScale({3,3});
 	};
 
 	bool set_texture(const std::string& texture_path) {
@@ -30,6 +31,7 @@ public:
 
 	void set_texture(const sf::Texture new_texture) {
 		texture = new_texture;
+		sprite.setTexture(texture);
 	}
 
 	void next() {
