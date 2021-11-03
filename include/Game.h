@@ -15,59 +15,59 @@
 /*
  * Wrapper class acting as game engine.
  */
-class Game
-{
+class Game {
 private:
-    void initVariables();
-    void initWindow();
+  void initVariables();
+  void initWindow();
+  void initStates();
 
-    sf::RenderWindow *window; // dynamically allocated so that it can be deleted
-    sf::VideoMode videoMode;
-    sf::Event event;
+  sf::RenderWindow *window; // dynamically allocated so that it can be deleted
+  sf::VideoMode videoMode;
+  sf::Event event;
 
-    Character player;
+  Character player;
 
-    // this should be moved a "LoadAssets" function where textures are loaded.
-    sf::Texture character_texture_idle;
-    sf::Texture character_texture_run;
-    std::vector<sf::Texture> player_textures;
+  // this should be moved a "LoadAssets" function where textures are loaded.
+  sf::Texture character_texture_idle;
+  sf::Texture character_texture_run;
+  std::vector<sf::Texture> player_textures;
 
-    sf::Clock clock;
+  sf::Clock clock;
 
-    // Time variables
-    sf::Clock dtClock;
-    float dt; // time delta
+  // Time variables
+  sf::Clock dtClock;
+  float dt; // time delta
 
-    // Stack of states - the top entry is the active state, i.e. [main menu, map-layer, fight-layer]:
-    // If the fight layer is left, the next active state is the map-layer.
-    // If the map-layer is left, we're at the main menu.
-    std::stack<State*> states;
+  // Stack of states - the top entry is the active state, i.e. [main menu,
+  // map-layer, fight-layer]: If the fight layer is left, the next active state
+  // is the map-layer. If the map-layer is left, we're at the main menu.
+  std::stack<State *> states;
 
-    //std::unordered_map<Position, MapTile> MapTiles;
+  // std::unordered_map<Position, MapTile> MapTiles;
 
 public:
-    // Constructor
-    Game();
+  // Constructor
+  Game();
 
-    // Destructor
-    virtual ~Game();
+  // Destructor
+  virtual ~Game();
 
-    // Functions
-    // Everything defining behind-the-scenes logic
-    void update();
+  // Functions
+  // Everything defining behind-the-scenes logic
+  void update();
 
-    // Update time variable dt (new time is the time it takes to update and render 1 frame)
-    void updateDT();
+  // Update time variable dt (new time is the time it takes to update and render
+  // 1 frame)
+  void updateDT();
 
-    // Visual representation of the game
-    void render();
+  // Visual representation of the game
+  void render();
 
-    // register any events
-    void pollEvents();
+  // register any events
+  void pollEvents();
 
-    // Accessors
-    bool isRunning() const;
+  // Accessors
+  bool isRunning() const;
 };
 
-
-#endif //RPG_GAME_H
+#endif // RPG_GAME_H

@@ -3,35 +3,37 @@
 #include "Game.h"
 #include <fstream>
 
-
 // Private functions
-void Game::initVariables()
-{
-    this->window = nullptr;
+void Game::initVariables() {
+  this->window = nullptr;
 
-    if (!character_texture_idle.loadFromFile("../assets/character/Idle.png")) {
-        std::cout << "character not found in: " <<  "assets/character/Idle.png" << "\n";
-    }
-    if (!character_texture_run.loadFromFile("../assets/character/Run.png")){
-        std::cout << "character not found in: " <<  "assets/character/Run.png" << "\n";
-    }
+  if (!character_texture_idle.loadFromFile("../assets/character/Idle.png")) {
+    std::cout << "character not found in: "
+              << "assets/character/Idle.png"
+              << "\n";
+  }
+  if (!character_texture_run.loadFromFile("../assets/character/Run.png")) {
+    std::cout << "character not found in: "
+              << "assets/character/Run.png"
+              << "\n";
+  }
 
-    player = Character("Adventurer", Stats(15, 20, 50, 30),
-                        Animation("../assets/character/Idle.png", sf::IntRect(65, 55, 45, 50), Interval(162,0), Position(50,50))
-                        );
-    }
+  player = Character("Adventurer", Stats(15, 20, 50, 30),
+                     Animation("../assets/character/Idle.png",
+                               sf::IntRect(65, 55, 45, 50), Interval(162, 0),
+                               Position(50, 50)));
+}
 
-void Game::initWindow()
-{
-    this->videoMode.height = 720;
-    this->videoMode.width = 1280;
-    // load window configs from file
-    std::ifstream ifs("../config/window.ini");
+void Game::initWindow() {
+  this->videoMode.height = 720;
+  this->videoMode.width = 1280;
+  // load window configs from file
+  std::ifstream ifs("../config/window.ini");
 
-    // set default values
-    std::string title = "RPG";
-    unsigned int framerate_limit = 120;
-    bool vertical_sync_enabled = false;
+  // set default values
+  std::string title = "RPG";
+  unsigned int framerate_limit = 120;
+  bool vertical_sync_enabled = false;
 
   // replace default configs with file contents
   if (ifs.is_open()) {
@@ -49,10 +51,7 @@ void Game::initWindow()
   this->window->setVerticalSyncEnabled(vertical_sync_enabled);
 }
 
-void Game::initStates()
-{
-    this->states.push(new GameState(this->window));
-}
+void Game::initStates() { this->states.push(new GameState(this->window)); }
 
 // Constructor
 Game::Game() {
@@ -79,53 +78,49 @@ Game::~Game() {
 bool Game::isRunning() const { return this->window->isOpen(); }
 
 // Functions
-void Game::pollEvents()
-{
-// Event polling
-    while (this->window->pollEvent(this->event))
-    {
-        switch (this->event.type)
-        {
-            // Event that is called when the close button is clicked
-            case sf::Event::Closed:
-                this->window->close();
-                break;
-            case sf::Event::KeyPressed:
-                // Event that is called when the Escape button is pressed
-                if (this->event.key.code == sf::Keyboard::Escape)
-                {
-                    window->close();
+void Game::pollEvents() {
+  // Event polling
+  while (this->window->pollEvent(this->event)) {
+    switch (this->event.type) {
+    // Event that is called when the close button is clicked
+    case sf::Event::Closed:
+      this->window->close();
+      break;
+    case sf::Event::KeyPressed:
+      // Event that is called when the Escape button is pressed
+      if (this->event.key.code == sf::Keyboard::Escape) {
+        window->close();
 
-                    // this should become much simpler with new Class Player
-                }
-                else if (this->event.key.code == sf::Keyboard::Right){
-                    player.animation.set_texture(character_texture_run);
-                    player.animation.next();
-                    if(player.animation.get_orientation().x < 0 ) {
-                        player.animation.mirror();
-                    }
-                } else if (this->event.key.code == sf::Keyboard::Left){
-                    player.animation.set_texture(character_texture_run);
-                    player.animation.next();
-                    if(player.animation.get_orientation().x > 0 ) {
-                        player.animation.mirror(player.animation.sprite.getLocalBounds().width);
-                    }
-                }
-                break;
-            case sf::Event::MouseMoved:
-                break;
-            default:
-                player.animation.set_texture(character_texture_idle);
-                player.animation.next();
-                clock.restart();
-                break;
-        }
-    }
-    //idle animation
-    if (clock.getElapsedTime().asSeconds() > .05f){
+        // this should become much simpler with new Class Player
+      } else if (this->event.key.code == sf::Keyboard::Right) {
+        player.animation.set_texture(character_texture_run);
         player.animation.next();
-        clock.restart();
+        if (player.animation.get_orientation().x < 0) {
+          player.animation.mirror();
+        }
+      } else if (this->event.key.code == sf::Keyboard::Left) {
+        player.animation.set_texture(character_texture_run);
+        player.animation.next();
+        if (player.animation.get_orientation().x > 0) {
+          player.animation.mirror(
+              player.animation.sprite.getLocalBounds().width);
+        }
+      }
+      break;
+    case sf::Event::MouseMoved:
+      break;
+    default:
+      player.animation.set_texture(character_texture_idle);
+      player.animation.next();
+      clock.restart();
+      break;
     }
+  }
+  // idle animation
+  if (clock.getElapsedTime().asSeconds() > .05f) {
+    player.animation.next();
+    clock.restart();
+  }
 }
 
 void Game::update() {
@@ -156,16 +151,14 @@ void Game::render() {
   // Clear old frame
   window->clear();
 
-    // Draw game
-    if (!this->states.empty())
-    {
-        // render current game state
-        this->states.top()->render(this->window);
-    }
-    window->draw(player.animation.sprite);
-    // Window is done drawing --> display result
-    window->display();
-
+  // Draw game
+  if (!this->states.empty()) {
+    // render current game state
+    this->states.top()->render(this->window);
+  }
+  window->draw(player.animation.sprite);
+  // Window is done drawing --> display result
+  window->display();
 }
 
 void Game::updateDT() {
