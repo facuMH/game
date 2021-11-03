@@ -12,9 +12,9 @@ private:
   void initWindow();
   void initStates();
 
-  sf::RenderWindow
-      *window; // pointer, since the new-operator returns a pointer to the
-               // beginning of the new block of memory allocated
+  // windo is a poineter pointer, since the new-operator returns a pointer to
+  // the beginning of the new block of memory allocated
+  sf::RenderWindow *window;
   sf::VideoMode videoMode;
   sf::Event event;
 
