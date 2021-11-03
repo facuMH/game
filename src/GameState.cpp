@@ -1,5 +1,5 @@
 #include <iostream>
-#include "headers/GameState.h"
+#include "GameState.h"
 
 GameState::GameState(sf::RenderWindow *window): State(window)
 {

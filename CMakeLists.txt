@@ -14,11 +14,12 @@ set(CMAKE_VERBOSE_MAKEFILE ON CACHE BOOL "ON")
 
 set(SOURCES src/main.cpp
         src/Game.cpp
-        src/headers/Game.h
         src/State.cpp
-        src/headers/State.h
         src/GameState.cpp
-        src/headers/GameState.h)
+
+        include/Game.h
+        include/State.h
+        include/GameState.h)
 
 #------------- DEPENDENCIES
 
@@ -35,7 +36,7 @@ find_package(SFML 2.5 COMPONENTS system window graphics audio REQUIRED)
 add_executable(rpg ${SOURCES})
 
 #------------- LINK
-target_include_directories(rpg PUBLIC ${SDL2_INCLUDE_DIRS})
+target_include_directories(rpg PUBLIC include ${SDL2_INCLUDE_DIRS})
 target_link_libraries(rpg ${SDL2_LIBRARIES} sfml-graphics sfml-audio)
 
 #------------- POST LINK
