@@ -1,40 +1,23 @@
+#include "GameState.h"
 #include <iostream>
-#include "headers/GameState.h"
 
-GameState::GameState(sf::RenderWindow *window): State(window)
-{
+GameState::GameState(sf::RenderWindow *window) : State(window) {}
 
+GameState::~GameState() {}
+
+void GameState::update(const float &dt) {
+  this->updateKeybinds(dt);
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+    std::cout << "A pressed" << std::endl;
+  }
 }
 
-GameState::~GameState()
-{
+void GameState::render(sf::RenderTarget *target) {}
 
-}
+void GameState::checkIfQuitting() { State::checkIfQuitting(); }
 
-void GameState::update(const float& dt)
-{
-    this->updateKeybinds(dt);
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-        std::cout << "A pressed" << std::endl;
-    }
-}
+void GameState::updateKeybinds(const float &dt) { this->checkIfQuitting(); }
 
-void GameState::render(sf::RenderTarget* target)
-{
-
-}
-
-void GameState::checkIfQuitting()
-{
-    State::checkIfQuitting();
-}
-
-void GameState::updateKeybinds(const float &dt)
-{
-    this->checkIfQuitting();
-}
-
-void GameState::quitStateActions()
-{
-    std::cout << "Ending current game state" << std::endl;
+void GameState::quitStateActions() {
+  std::cout << "Ending current game state" << std::endl;
 }
