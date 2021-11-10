@@ -1,13 +1,17 @@
 #include "State.h"
 
-State::State(sf::RenderWindow *window) { this->window = window; }
+State::State(sf::RenderWindow *window) {
+  this->window = window;
+  isQuitting = true;
+}
 
 State::~State() {}
 
-void State::checkIfQuitting() {
+bool State::shouldQuit() {
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
-    this->isQuitting = true;
+    isQuitting = true;
   }
+  return isQuitting;
 }
 
 const bool &State::isQuit() const { return this->isQuitting; }

@@ -9,7 +9,7 @@ public:
   bool can_interact;
   sf::Vector2f size; // size in pixels (X offset, Y offset)
 
-  Entity(){};
+  Entity() : is_solid(true), can_interact(true){};
   Entity(bool isSolid, bool canInteract)
       : is_solid(isSolid), can_interact(canInteract) {}
   Entity(Animation anim, bool isSolid, bool canInteract)

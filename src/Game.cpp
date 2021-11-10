@@ -105,7 +105,13 @@ void Game::pollEvents() {
           player.animation.mirror(
               player.animation.sprite.getLocalBounds().width);
         }
-      }
+      } else if (event.key.code == sf::Keyboard::C) {
+        CombatState newCombat(window, {}, {});
+        //TODO:
+        //newCombat.setMap(getMapFromTextureManager);
+        states.push(&newCombat);
+     }
+
       break;
     case sf::Event::MouseMoved:
       break;

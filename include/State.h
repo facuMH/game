@@ -32,7 +32,7 @@ public:
   virtual void update(const float &dt) = 0;
   virtual void render(sf::RenderTarget *target) = 0;
   virtual void updateKeybinds(const float &dt) = 0;
-  virtual void checkIfQuitting();
+  virtual bool shouldQuit();
   const bool &isQuit() const;
   virtual void quitStateActions() = 0;
 };

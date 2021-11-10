@@ -1,7 +1,9 @@
-#ifndef RPG_GAMESTATE_H
-#define RPG_GAMESTATE_H
+#pragma once
 
 #include "State.h"
+#include "Characters.h"
+#include "definitions.h"
+
 class GameState : public State {
 public:
   // Constructor
@@ -13,8 +15,25 @@ public:
   void update(const float &dt) override;
   void render(sf::RenderTarget *target) override;
   void updateKeybinds(const float &dt) override;
-  void checkIfQuitting() override;
+  bool shouldQuit() override;
   void quitStateActions() override;
 };
 
-#endif // RPG_GAMESTATE_H
+class CombatState : public State {
+private:
+  Party party;
+  Enemies enemies;
+
+public:
+  // Constructor
+  explicit CombatState(sf::RenderWindow *window, Party p, Enemies e);
+  // Destructor
+  ~CombatState() override;
+
+  // Functions
+  void update(const float &dt) override;
+  void render(sf::RenderTarget *target) override;
+  void updateKeybinds(const float &dt) override;
+  bool shouldQuit() override;
+  void quitStateActions() override;
+};
