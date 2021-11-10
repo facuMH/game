@@ -68,6 +68,8 @@ public:
 
   // Accessors
   bool isRunning() const;
+
+  void Game::endApplication();
 };
 
 #endif // RPG_GAME_H

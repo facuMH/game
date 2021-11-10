@@ -21,9 +21,11 @@ set(SOURCES src/main.cpp
         src/Game.cpp
         src/GameState.cpp
         src/State.cpp
+        src/main.cpp
 
         include/Animation.h
         include/Characters.h
+        include/definitions.h
         include/Entity.h
         include/Game.h
         include/GameState.h
