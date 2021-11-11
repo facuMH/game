@@ -1,8 +1,11 @@
-#ifndef RPG_GAMESTATE_H
-#define RPG_GAMESTATE_H
+#pragma once
 
 #include "State.h"
+#include "TileMap.h"
+
 class GameState : public State {
+private:
+    TileMap map;
 public:
   // Constructor
   explicit GameState(sf::RenderWindow *window);
@@ -17,4 +20,4 @@ public:
   void quitStateActions() override;
 };
 
-#endif // RPG_GAMESTATE_H
+

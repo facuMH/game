@@ -20,8 +20,9 @@ set(SOURCES src/main.cpp
         src/Characters.cpp
         src/Game.cpp
         src/GameState.cpp
+        src/Tile.cpp
+        src/TileMap.cpp
         src/State.cpp
-        src/main.cpp
 
         include/Animation.h
         include/Characters.h
@@ -32,7 +33,10 @@ set(SOURCES src/main.cpp
         include/Inanimated.h
         include/MapTiles.h
         include/State.h
-        )
+        include/GameState.h
+        include/Tile.h
+        include/TileMap.h)
+
 
 #------------- DEPENDENCIES
 

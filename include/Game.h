@@ -1,5 +1,4 @@
-#ifndef RPG_GAME_H
-#define RPG_GAME_H
+#pragma once
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
@@ -21,9 +20,11 @@ private:
   void initWindow();
   void initStates();
 
-  sf::RenderWindow *window; // dynamically allocated so that it can be deleted
+  // window is a pointer, since the new-operator returns a pointer to
+  // the beginning of the new block of memory allocated
+  sf::RenderWindow *window;
   sf::VideoMode videoMode;
-  sf::Event event;
+  sf::Event event{};
 
   Character player;
 
@@ -36,7 +37,7 @@ private:
 
   // Time variables
   sf::Clock dtClock;
-  float dt; // time delta
+  float dt{}; // time delta
 
   // Stack of states - the top entry is the active state, i.e. [main menu,
   // map-layer, fight-layer]: If the fight layer is left, the next active state
@@ -63,13 +64,13 @@ public:
   // Visual representation of the game
   void render();
 
-  // register any events
+  // Register any events
   void pollEvents();
+
+  // End the application
+  static void endApplication();
 
   // Accessors
   bool isRunning() const;
 
-  void endApplication();
 };
-
-#endif // RPG_GAME_H
