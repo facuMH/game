@@ -41,7 +41,9 @@ private:
 
   // Stack of states - the top entry is the active state, i.e. [main menu,
   // map-layer, fight-layer]: If the fight layer is left, the next active state
-  // is the map-layer. If the map-layer is left, we're at the main menu.
+  // is the map-layer. If the map-layer is left, we're at the main menu. Must be
+  // a pointer, since State is an abstract class and cannot be instantiated.
+  // Only instances of its child classes could be put on the stack directly.
   std::stack<State *> states;
 
   // std::unordered_map<Position, MapTile> MapTiles;
@@ -72,5 +74,4 @@ public:
 
   // Accessors
   bool isRunning() const;
-
 };

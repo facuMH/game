@@ -1,5 +1,5 @@
-#include <iostream>
 #include "TileMap.h"
+#include <iostream>
 
 TileMap::TileMap()
 {

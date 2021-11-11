@@ -29,7 +29,6 @@ set(SOURCES src/main.cpp
         include/definitions.h
         include/Entity.h
         include/Game.h
-        include/GameState.h
         include/Inanimated.h
         include/MapTiles.h
         include/State.h
