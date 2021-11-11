@@ -1,9 +1,10 @@
 #include "GameState.h"
+
 #include <iostream>
 
 GameState::GameState(sf::RenderWindow *window) : State(window) {}
 
-GameState::~GameState() {}
+GameState::~GameState() = default;
 
 void GameState::update(const float &dt) {
   this->updateKeybinds(dt);
@@ -12,7 +13,9 @@ void GameState::update(const float &dt) {
   }
 }
 
-void GameState::render(sf::RenderTarget *target) {}
+void GameState::render(sf::RenderTarget *target) {
+    this->map.render(*target);
+}
 
 void GameState::checkIfQuitting() { State::checkIfQuitting(); }
 

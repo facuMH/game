@@ -16,10 +16,14 @@ set(SOURCES src/main.cpp
         src/Game.cpp
         src/State.cpp
         src/GameState.cpp
+        src/Tile.cpp
+        src/TileMap.cpp
 
         include/Game.h
         include/State.h
-        include/GameState.h)
+        include/GameState.h
+        include/Tile.h
+        include/TileMap.h)
 
 #------------- DEPENDENCIES
 

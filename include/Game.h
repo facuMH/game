@@ -1,5 +1,4 @@
-#ifndef RPG_GAME_H
-#define RPG_GAME_H
+#pragma once
 
 #include "GameState.h"
 
@@ -12,15 +11,15 @@ private:
   void initWindow();
   void initStates();
 
-  // windo is a poineter pointer, since the new-operator returns a pointer to
+  // window is a pointer, since the new-operator returns a pointer to
   // the beginning of the new block of memory allocated
   sf::RenderWindow *window;
   sf::VideoMode videoMode;
-  sf::Event event;
+  sf::Event event{};
 
   // Time variables
   sf::Clock dtClock;
-  float dt; // time delta
+  float dt{}; // time delta
 
   // Stack of states - the top entry is the active state, i.e. [main menu,
   // map-layer, fight-layer]: If the fight layer is left, the next active state
@@ -51,10 +50,8 @@ public:
   void pollEvents();
 
   // End the application
-  void endApplication();
+  static void endApplication();
 
   // Accessors
   bool isRunning() const;
 };
-
-#endif // RPG_GAME_H
