@@ -4,6 +4,8 @@ using Position = sf::Vector2f;
 using Interval = sf::Vector2f;
 using Name = std::string;
 
+using MapBackground = sf::Texture;
+
 struct Stats {
 	int str = 0;   // Strength
 	int dex = 0;   // Dexteriry
