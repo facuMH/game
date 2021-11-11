@@ -21,9 +21,10 @@ set(SOURCES src/main.cpp
         src/Game.cpp
         src/GameState.cpp
         src/State.cpp
-        src/main.cpp
+        src/main.cpp)
 
-        include/Animation.h
+set(HEADERS include/Animation.h
+        include/AssetsManager.h
         include/Characters.h
         include/definitions.h
         include/Entity.h
@@ -31,8 +32,7 @@ set(SOURCES src/main.cpp
         include/GameState.h
         include/Inanimated.h
         include/MapTiles.h
-        include/State.h
-        )
+        include/State.h)
 
 #------------- DEPENDENCIES
 
@@ -41,7 +41,7 @@ set(SOURCES src/main.cpp
 find_package(SFML 2.5 COMPONENTS system window graphics audio REQUIRED)
 
 #------------- COMPILE
-add_executable(rpg ${SOURCES})
+add_executable(rpg ${SOURCES} ${HEADERS})
 
 #------------- LINK
 target_include_directories(rpg PUBLIC include/ ${SFML_INCLUDE_DIR})
