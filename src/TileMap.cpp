@@ -31,7 +31,6 @@ TileMap::TileMap()
                 {
                     this->tiles[x][y][z].push_back(new Tile(float(x), float(y), 100.0, this->tileTextureSheet));
                 }
-
             }
         }
     }
@@ -50,7 +49,6 @@ TileMap::~TileMap()
         }
     }
 }
-
 
 void TileMap::update()
 {

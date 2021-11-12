@@ -46,8 +46,6 @@ private:
   // Only instances of its child classes could be put on the stack directly.
   std::stack<State *> states;
 
-  // std::unordered_map<Position, MapTile> MapTiles;
-
 public:
   // Constructor
   Game();
