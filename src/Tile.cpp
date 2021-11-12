@@ -6,6 +6,10 @@ Tile::Tile(float xPos, float yPos, float gridSize, sf::Texture &texture)
     this->shape.setFillColor(sf::Color::Cyan);
     this->shape.setPosition(xPos, yPos);
     this->shape.setTexture(&texture);
+
+    // Just so that we can see the single tiles for now
+    this->shape.setOutlineColor(sf::Color::White);
+    this->shape.setOutlineThickness(2.0f);
 }
 
 Tile::~Tile()
