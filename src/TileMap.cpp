@@ -6,8 +6,8 @@ TileMap::TileMap()
     this->gridSizeF = 50.0f;
     this->gridSizeU = static_cast<unsigned>(this->gridSizeF);
 
-    this->maxSize.x = 100;
-    this->maxSize.y = 100;
+    this->maxSize.x = 150;
+    this->maxSize.y = 150;
     this->nLayers = 2;
 
     if (!this->tileTextureSheet.loadFromFile("../assets/tiles/stars.jpeg"))
@@ -29,7 +29,7 @@ TileMap::TileMap()
                     y < this->maxSize.y && y >= 0 &&
                     z < this->nLayers && z >= 0)
                 {
-                    this->tiles[x][y][z].push_back(new Tile(float(x), float(y), 100.0, this->tileTextureSheet));
+                    this->tiles[x][y][z].push_back(new Tile(float(x), float(y), gridSizeF, this->tileTextureSheet));
                 }
             }
         }
