@@ -1,3 +1,4 @@
+#include <iostream>
 #include "TileMap.h"
 
 TileMap::TileMap()
@@ -12,9 +13,6 @@ TileMap::TileMap()
     this->tiles.resize(this->maxSize.x, std::vector< std::vector< std::vector<Tile*> > >());
     for (size_t x = 0; x < this->maxSize.x; x++)
     {
-        // add empty vector
-        this->tiles.emplace_back();
-
         for (size_t y = 0; y < this->maxSize.y; y++)
         {
             this->tiles[x].resize(this->maxSize.y, std::vector< std::vector<Tile*> >());
@@ -22,15 +20,19 @@ TileMap::TileMap()
             for (size_t z = 0; z < this->nLayers; z++)
             {
                 this->tiles[x][y].resize(this->nLayers, std::vector<Tile*>());
+                if (x < this->maxSize.x && x >= 0 &&
+                    y < this->maxSize.y && y >= 0 &&
+                    z < this->nLayers && z >= 0) {
+                    this->tiles[x][y][z].push_back(new Tile(1.0, 1.0, 50.0));
+                }
+
             }
         }
     }
 }
 
 TileMap::~TileMap()
-{
-
-}
+= default;
 
 void TileMap::update()
 {
@@ -43,10 +45,9 @@ void TileMap::render(sf::RenderTarget &target)
     {
         for (int y = 0; y < x; y++)
         {
-            for (int z = 0; y < z; z++)
+            for (int z = 0; z < nLayers; z++)
             {
-                Tile tile = reinterpret_cast<const Tile &>(this->tiles[x][y][z]);
-                tile.render(target);
+                this->tiles[x][y][z][0]->render(target);
             }
         }
     }

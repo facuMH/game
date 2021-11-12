@@ -2,6 +2,7 @@
 
 Tile::Tile(float x, float y, float gridSize)
 {
+    // x and y are positions
     this->shape.setSize(sf::Vector2(gridSize, gridSize));
     this->shape.setFillColor(sf::Color::Cyan);
 }
