@@ -9,9 +9,10 @@ private:
     float gridSizeF;
     unsigned nLayers;
     sf::Vector2u maxSize;
+    sf::Texture tileTextureSheet;
     // Concept:
     // We create a matrix of tiles, but each tile itself is a vector
-    std::vector< std::vector< std::vector< std::vector<Tile*> > > > tiles;
+    std::vector<std::vector<std::vector<std::vector<Tile *> > > > tiles;
 public:
     TileMap();
 

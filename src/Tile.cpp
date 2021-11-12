@@ -1,10 +1,11 @@
 #include "Tile.h"
 
-Tile::Tile(float x, float y, float gridSize)
+Tile::Tile(float xPos, float yPos, float gridSize, sf::Texture &texture)
 {
-    // x and y are positions
     this->shape.setSize(sf::Vector2(gridSize, gridSize));
     this->shape.setFillColor(sf::Color::Cyan);
+    this->shape.setPosition(xPos, yPos);
+    this->shape.setTexture(&texture);
 }
 
 Tile::~Tile()

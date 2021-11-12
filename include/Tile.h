@@ -16,7 +16,8 @@ protected:
     sf::RectangleShape shape;
 public:
     Tile();
-    Tile(float x, float y, float gridSize);
+
+    Tile(float x, float y, float gridSize, sf::Texture &texture);
 
     virtual ~Tile();
 
