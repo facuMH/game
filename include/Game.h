@@ -1,7 +1,16 @@
 #ifndef RPG_GAME_H
 #define RPG_GAME_H
 
+#include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
+#include <SFML/Window.hpp>
+#include <SFML/Audio.hpp>
+#include <SFML/Network.hpp>
+#include <unordered_map>
+
+#include "Characters.h"
 #include "GameState.h"
+#include "MapTiles.h"
 
 /*
  * Wrapper class acting as game engine.
@@ -12,11 +21,18 @@ private:
   void initWindow();
   void initStates();
 
-  // windo is a poineter pointer, since the new-operator returns a pointer to
-  // the beginning of the new block of memory allocated
-  sf::RenderWindow *window;
+  sf::RenderWindow *window; // dynamically allocated so that it can be deleted
   sf::VideoMode videoMode;
   sf::Event event;
+
+  Character player;
+
+  // this should be moved a "LoadAssets" function where textures are loaded.
+  sf::Texture character_texture_idle;
+  sf::Texture character_texture_run;
+  std::vector<sf::Texture> player_textures;
+
+  sf::Clock clock;
 
   // Time variables
   sf::Clock dtClock;
@@ -24,10 +40,10 @@ private:
 
   // Stack of states - the top entry is the active state, i.e. [main menu,
   // map-layer, fight-layer]: If the fight layer is left, the next active state
-  // is the map-layer. If the map-layer is left, we're at the main menu. Must be
-  // a pointer, since State is an abstract class and cannot be instantiated.
-  // Only instances of its child classes could be put on the stack directly.
+  // is the map-layer. If the map-layer is left, we're at the main menu.
   std::stack<State *> states;
+
+  // std::unordered_map<Position, MapTile> MapTiles;
 
 public:
   // Constructor
@@ -36,25 +52,24 @@ public:
   // Destructor
   virtual ~Game();
 
-  // Update functions
+  // Functions
   // Everything defining behind-the-scenes logic
   void update();
+
   // Update time variable dt (new time is the time it takes to update and render
   // 1 frame)
   void updateDT();
 
-  // Render functions
   // Visual representation of the game
   void render();
 
-  // Register any events
+  // register any events
   void pollEvents();
-
-  // End the application
-  void endApplication();
 
   // Accessors
   bool isRunning() const;
+
+  void endApplication();
 };
 
 #endif // RPG_GAME_H
