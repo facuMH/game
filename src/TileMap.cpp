@@ -1,25 +1,32 @@
 #include "TileMap.h"
 #include <iostream>
 
-sf::Vector2i map1Dto2D(int counter) {
+// Helper function for mapping an iteration counter to a tile from the tile sheet
+sf::Vector2i map1Dto2D(int counter)
+{
     int row = counter / 16;
     int col = counter % 16;
     return {row, col};
 }
 
-std::vector<int> readLevelDataFromFile(const std::string& inputFile) {
+// Helper function for reading  a level definition into a vector
+std::vector<int> readLevelDataFromFile(const std::string &inputFile)
+{
     std::vector<int> level = {};
     std::ifstream is(inputFile);
     int x;
-    while (is >> x) {
+    while (is >> x)
+    {
         level.push_back(x);
     }
-    for (auto &p : level) {
+    for (auto &p: level)
+    {
         std::cout << p << std::endl;
     }
     return level;
 }
 
+// Constructor
 TileMap::TileMap()
 {
     this->gridSizeF = 20.0f;
@@ -39,7 +46,7 @@ TileMap::TileMap()
 
     int counter = 0;
 
-    // set up 3D
+    // set up 3D vector
     this->tiles.resize(this->maxSize.x, std::vector<std::vector<std::vector<Tile *> > >());
     for (size_t x = 0; x < this->maxSize.x; x++)
     {
@@ -55,18 +62,21 @@ TileMap::TileMap()
                     y < this->maxSize.y && y >= 0 &&
                     z < this->nLayers && z >= 0)
                 {
+                    // store tiles in respective vector position
                     sf::Vector2i pos = map1Dto2D(levelMap[counter]);
+
+                    // move rect to specified position in tile sheet to get the correct texture
                     this->rect.left = (pos.y * gridSizeI);
                     this->rect.top = (pos.x * gridSizeI);
-                    this->tiles[x][y][z].push_back(
-                            new Tile(x * gridSizeF, y * gridSizeF, gridSizeF, this->tileTextureSheet, this->rect));
+
+                    // create new tile and save at correct position in the 3D array
+                    this->tiles[x][y][z].push_back(new Tile(x * gridSizeF, y * gridSizeF, gridSizeF, this->tileTextureSheet, this->rect));
                     counter++;
                 }
             }
         }
     }
 }
-
 
 
 TileMap::~TileMap()
