@@ -19,10 +19,6 @@ std::vector<int> readLevelDataFromFile(const std::string &inputFile)
     {
         level.push_back(x);
     }
-    for (auto &p: level)
-    {
-        std::cout << p << std::endl;
-    }
     return level;
 }
 
@@ -70,7 +66,8 @@ TileMap::TileMap()
                     this->rect.top = (pos.x * gridSizeI);
 
                     // create new tile and save at correct position in the 3D array
-                    this->tiles[x][y][z].push_back(new Tile(x * gridSizeF, y * gridSizeF, gridSizeF, this->tileTextureSheet, this->rect));
+                    this->tiles[x][y][z].push_back(
+                            new Tile(x * gridSizeF, y * gridSizeF, gridSizeF, this->tileTextureSheet, this->rect));
                     counter++;
                 }
             }
@@ -87,7 +84,7 @@ TileMap::~TileMap()
         {
             for (size_t z = 0; z < this->nLayers; z++)
             {
-                // TODO delete
+                delete this->tiles[x][y][z][0];
             }
         }
     }
