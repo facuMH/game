@@ -1,4 +1,4 @@
-
+#pragma once
 
 using Position = sf::Vector2f;
 using Interval = sf::Vector2f;
