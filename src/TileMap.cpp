@@ -1,20 +1,45 @@
 #include "TileMap.h"
 #include <iostream>
 
+sf::Vector2i map1Dto2D(int counter) {
+    int row = counter / 16;
+    int col = counter % 16;
+    return {row, col};
+}
+
+std::vector<int> readLevelDataFromFile(const std::string& inputFile) {
+    std::vector<int> level = {};
+    std::ifstream is(inputFile);
+    int x;
+    while (is >> x) {
+        level.push_back(x);
+    }
+    for (auto &p : level) {
+        std::cout << p << std::endl;
+    }
+    return level;
+}
+
 TileMap::TileMap()
 {
-    this->gridSizeF = 100.0f;
-    this->gridSizeU = static_cast<unsigned>(this->gridSizeF);
+    this->gridSizeF = 20.0f;
+    this->gridSizeI = static_cast<unsigned>(this->gridSizeF);
 
-    this->maxSize.x = 150;
-    this->maxSize.y = 150;
+    this->maxSize.x = 32;
+    this->maxSize.y = 24;
     this->nLayers = 1; // TODO: later we could have more than 1 layer
 
-    if (!this->tileTextureSheet.loadFromFile("../assets/tiles/stars.jpeg"))
-    {
-        std::cout << "Texture file not found" << std::endl;
-    }
+    this->rect = sf::IntRect(0, 0, this->gridSizeI, this->gridSizeI);
 
+    // load texture file
+    this->tileTextureSheet.loadFromFile("../assets/tiles/tilesheet.png");
+
+    // load level design
+    std::vector<int> levelMap = readLevelDataFromFile("../config/level1.txt");
+
+    int counter = 0;
+
+    // set up 3D
     this->tiles.resize(this->maxSize.x, std::vector<std::vector<std::vector<Tile *> > >());
     for (size_t x = 0; x < this->maxSize.x; x++)
     {
@@ -30,12 +55,19 @@ TileMap::TileMap()
                     y < this->maxSize.y && y >= 0 &&
                     z < this->nLayers && z >= 0)
                 {
-                    this->tiles[x][y][z].push_back(new Tile(x * gridSizeF, y * gridSizeF, gridSizeF, this->tileTextureSheet));
+                    sf::Vector2i pos = map1Dto2D(levelMap[counter]);
+                    this->rect.left = (pos.y * gridSizeI);
+                    this->rect.top = (pos.x * gridSizeI);
+                    this->tiles[x][y][z].push_back(
+                            new Tile(x * gridSizeF, y * gridSizeF, gridSizeF, this->tileTextureSheet, this->rect));
+                    counter++;
                 }
             }
         }
     }
 }
+
+
 
 TileMap::~TileMap()
 {

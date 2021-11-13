@@ -5,14 +5,16 @@
 class TileMap
 {
 private:
-    unsigned gridSizeU;
+    unsigned gridSizeI;
     float gridSizeF;
-    unsigned nLayers;
+    int nLayers;
     sf::Vector2u maxSize;
     sf::Texture tileTextureSheet;
+    sf::IntRect rect;
     // Concept:
     // We create a matrix of tiles, but each tile itself is a vector
     std::vector<std::vector<std::vector<std::vector<Tile *> > > > tiles;
+
 public:
     TileMap();
 

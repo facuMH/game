@@ -17,7 +17,7 @@ protected:
 public:
     Tile();
 
-    Tile(float x, float y, float gridSize, sf::Texture &texture);
+    Tile(float x, float y, float gridSize, const sf::Texture &texture, sf::IntRect rect);
 
     virtual ~Tile();
 
