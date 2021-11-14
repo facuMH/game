@@ -44,9 +44,10 @@ TileMap::TileMap()
 
     // set up 3D vector
     this->tiles.resize(this->maxSize.x, std::vector<std::vector<std::vector<Tile *> > >());
-    for (size_t x = 0; x < this->maxSize.x; x++)
+    for (size_t y = 0; y < this->maxSize.y; y++)
     {
-        for (size_t y = 0; y < this->maxSize.y; y++)
+
+            for (size_t x = 0; x < this->maxSize.x; x++)
         {
             this->tiles[x].resize(this->maxSize.y, std::vector<std::vector<Tile *> >());
 
