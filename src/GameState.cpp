@@ -14,7 +14,7 @@ void GameState::update(const float &dt) {
 }
 
 void GameState::render(sf::RenderTarget *target) {
-    this->map.render(*target);
+    map.render(*target);
 }
 
 void GameState::checkIfQuitting() { State::checkIfQuitting(); }
