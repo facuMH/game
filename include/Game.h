@@ -1,13 +1,14 @@
 #ifndef RPG_GAME_H
 #define RPG_GAME_H
 
+#include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
+#include <SFML/Network.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
-#include <SFML/Audio.hpp>
-#include <SFML/Network.hpp>
 #include <unordered_map>
 
+#include "AssetsManager.h"
 #include "Characters.h"
 #include "GameState.h"
 #include "MapTiles.h"
@@ -16,60 +17,62 @@
  * Wrapper class acting as game engine.
  */
 class Game {
-private:
-  void initVariables();
-  void initWindow();
-  void initStates();
+  private:
+	void initVariables();
+	void initWindow();
+	void initStates();
 
-  sf::RenderWindow *window; // dynamically allocated so that it can be deleted
-  sf::VideoMode videoMode;
-  sf::Event event;
+	sf::RenderWindow* window; // dynamically allocated so that it can be deleted
+	sf::VideoMode videoMode;
+	sf::Event event;
 
-  Character player;
+	AssetsManager assetsManager;
 
-  // this should be moved a "LoadAssets" function where textures are loaded.
-  sf::Texture character_texture_idle;
-  sf::Texture character_texture_run;
-  std::vector<sf::Texture> player_textures;
+	Character player;
 
-  sf::Clock clock;
+	// this should be moved a "LoadAssets" function where textures are loaded.
+	sf::Texture character_texture_idle;
+	sf::Texture character_texture_run;
+	std::vector<sf::Texture> player_textures;
 
-  // Time variables
-  sf::Clock dtClock;
-  float dt; // time delta
+	sf::Clock clock;
 
-  // Stack of states - the top entry is the active state, i.e. [main menu,
-  // map-layer, fight-layer]: If the fight layer is left, the next active state
-  // is the map-layer. If the map-layer is left, we're at the main menu.
-  std::stack<State *> states;
+	// Time variables
+	sf::Clock dtClock;
+	float dt; // time delta
 
-  // std::unordered_map<Position, MapTile> MapTiles;
+	// Stack of states - the top entry is the active state, i.e. [main menu,
+	// map-layer, fight-layer]: If the fight layer is left, the next active state
+	// is the map-layer. If the map-layer is left, we're at the main menu.
+	std::stack<State*> states;
 
-public:
-  // Constructor
-  Game();
+	// std::unordered_map<Position, MapTile> MapTiles;
 
-  // Destructor
-  virtual ~Game();
+  public:
+	// Constructor
+	Game();
 
-  // Functions
-  // Everything defining behind-the-scenes logic
-  void update();
+	// Destructor
+	virtual ~Game();
 
-  // Update time variable dt (new time is the time it takes to update and render
-  // 1 frame)
-  void updateDT();
+	// Functions
+	// Everything defining behind-the-scenes logic
+	void update();
 
-  // Visual representation of the game
-  void render();
+	// Update time variable dt (new time is the time it takes to update and render
+	// 1 frame)
+	void updateDT();
 
-  // register any events
-  void pollEvents();
+	// Visual representation of the game
+	void render();
 
-  // Accessors
-  bool isRunning() const;
+	// register any events
+	void pollEvents();
 
-  void Game::endApplication();
+	// Accessors
+	bool isRunning() const;
+
+	void Game::endApplication();
 };
 
 #endif // RPG_GAME_H

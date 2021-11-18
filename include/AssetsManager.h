@@ -9,11 +9,11 @@
 
 class AssetsManager {
   private:
-	std::unordered_map<std::string, sf::Texture> textures;
+	std::unordered_map<std::string, Texture> textures;
 	std::unordered_map<std::string, sf::Font> fonts;
 	std::unordered_map<std::string, MapBackground> maps;
 
-	template <typename Asset, std::enable_if_t<std::is_same_v<Asset, sf::Texture>, bool> = true>
+	template <typename Asset, std::enable_if_t<std::is_same_v<Asset, Texture>, bool> = true>
 	void emplace(Asset& newAsset) {
 		textures.emplace(newAsset);
 	}
@@ -29,9 +29,9 @@ class AssetsManager {
 	}
 
   public:
-	sf::Texture getTexture(const std::string& name) { return maps.at(name); }
-	sf::Font getFont(const std::string& name) { return fonts.at(name); }
-	MapBackground getMap(const std::string& name) { return textures.at(name); }
+	Texture* getTexture(const std::string& name) { return &(maps.at(name)); }
+	sf::Font* getFont(const std::string& name) { return &(fonts.at(name)); }
+	MapBackground* getMap(const std::string& name) { return &(textures.at(name)); }
 
 	template <typename Asset>
 	void loadAsset(const std::string& path, const std::string& name) {
