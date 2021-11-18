@@ -22,7 +22,7 @@ set(SOURCES src/main.cpp
         src/GameState.cpp
         src/State.cpp
         src/main.cpp
-        src/AssetsManager.cpp)
+        )
 
 set(HEADERS include/Animation.h
         include/AssetsManager.h
