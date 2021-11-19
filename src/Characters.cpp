@@ -16,4 +16,35 @@ void Character::equip(Weapon *arms) {
   }
 }
 
-void Character::move(const Position pos) { animation.move(pos); }
+// Move character up, down, left or right
+void Character::move(const sf::Keyboard::Key key) {
+    constexpr float stepsize = 10.0f;
+    animation.next();
+    switch (key) {
+        case sf::Keyboard::Left:
+            animation.sprite.move({-stepsize, 0.0f});
+            if (animation.get_orientation().x > 0) {
+                animation.mirror(animation.sprite.getLocalBounds().width);
+            }
+            break;
+        case sf::Keyboard::Right:
+            animation.sprite.move({stepsize, 0.0f});
+            if (animation.get_orientation().x < 0) {
+                animation.mirror();
+            }
+            break;
+        case sf::Keyboard::Up:
+            animation.sprite.move({0.0f, -stepsize});
+            if (animation.get_orientation().x < 0) {
+                animation.mirror(animation.sprite.getLocalBounds().width);
+            }
+            break;
+        case sf::Keyboard::Down:
+            animation.sprite.move({0.0f, stepsize});
+            if (animation.get_orientation().x < 0) {
+                animation.mirror(animation.sprite.getLocalBounds().width);
+            }
+            break;
+        default:
+            break;
+    } }

@@ -79,9 +79,6 @@ bool Game::isRunning() const { return this->window->isOpen(); }
 
 // Functions
 void Game::pollEvents() {
-    
-  const float stepsize = 6.0f;
-  
   // Event polling
   while (this->window->pollEvent(this->event)) {
     switch (this->event.type) {
@@ -91,49 +88,19 @@ void Game::pollEvents() {
       break;
     case sf::Event::KeyPressed:
       // Event that is called when the Escape button is pressed
-      if (this->event.key.code == sf::Keyboard::Escape) {
-        window->close();
-
-        // this should become much simpler with new Class Player
-      } else if (this->event.key.code == sf::Keyboard::Right) {
-        player.animation.set_texture(character_texture_run);
-        player.animation.next();
-        
-        player.animation.move({stepsize, 0.0f});
-
-        if (player.animation.get_orientation().x < 0) {
-          player.animation.mirror();
-        }
-      } else if (this->event.key.code == sf::Keyboard::Left) {
-        player.animation.set_texture(character_texture_run);
-        player.animation.next();
-
-        player.animation.move({-stepsize, 0.0f});
-
-        if (player.animation.get_orientation().x > 0) {
-          player.animation.mirror(
-              player.animation.sprite.getLocalBounds().width);
-        }
-      } else if (this->event.key.code == sf::Keyboard::Up) {
-          player.animation.set_texture(character_texture_run);
-          player.animation.next();
-
-          player.animation.move({0.0f, -stepsize});
-
-          if (player.animation.get_orientation().x > 0) {
-              player.animation.mirror(
-                      player.animation.sprite.getLocalBounds().width);
-          }
-      } else if (this->event.key.code == sf::Keyboard::Down) {
-          player.animation.set_texture(character_texture_run);
-          player.animation.next();
-
-          player.animation.move({0.0f, stepsize});
-
-          if (player.animation.get_orientation().x > 0) {
-              player.animation.mirror(
-                      player.animation.sprite.getLocalBounds().width);
-          }
+      switch (this->event.key.code) {
+          case (sf::Keyboard::Escape):
+            window->close();
+            break;
+          case sf::Keyboard::Right:     // Right arrow
+          case sf::Keyboard::Left:      // Left arrow
+          case sf::Keyboard::Up:        // Up arrow
+          case sf::Keyboard::Down:      // Down arrow
+            player.animation.set_texture(character_texture_run);
+            player.move(this->event.key.code);
+            break;
+          default:
+            break;
       }
       break;
     case sf::Event::MouseMoved:
