@@ -34,5 +34,5 @@ public:
   void equip(Weapon *arms);
   void move(Position pos);
 
-  // TODO: multiple animations (idle, run, atack) perhaps on Entity.
+  // TODO: multiple animations (idle, run, attack) perhaps on Entity.
 };

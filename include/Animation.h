@@ -11,7 +11,7 @@ public:
   sf::IntRect texture_rectangle;
   Interval sprite_interval;
 
-  Animation()= default;;
+  Animation()= default;
 
   Animation(const std::string &texture_path, const sf::IntRect &first_animation,
             const Interval &sprite_interval, const Position &initial) {
@@ -22,7 +22,7 @@ public:
     sprite.setTexture(texture);
     sprite.setTextureRect(texture_rectangle);
     sprite.setPosition(initial);
-    sprite.setScale({3, 3});
+    sprite.setScale({2, 2});
   };
 
   bool set_texture(const std::string &texture_path) {
