@@ -6,8 +6,6 @@ using Position = sf::Vector2f;
 using Interval = sf::Vector2f;
 using Name = std::string;
 
-enum Direction{ left, right, up, down };
-
 using TileLayers = std::vector<Tile *>;
 using TileMapColumns = std::vector<TileLayers>;
 using TileMapRows = std::vector<TileMapColumns>;
