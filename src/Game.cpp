@@ -7,12 +7,11 @@
 void Game::initVariables() {
 	this->window = nullptr;
 
-	assetsManager.loadAsset<sf::Texture>("../assets/character/Idle.png", "CharacterIdel");
-	assetsManager.loadAsset<sf::Texture>("../assets/character/Run.png", "CharacterRun");
-
-
-	player = Character("Adventurer", Stats(15, 20, 50, 30),
-	    Animation(assetsManager.getTexture("CharacterIdl"), sf::IntRect(65, 55, 45, 50), Interval(162, 0), Position(50, 50)));
+	assetsManager.loadAsset<Texture>("../assets/character/Idle.png", "CharacterIdel");
+	assetsManager.loadAsset<Texture>("../assets/character/Run.png", "CharacterRun");
+	Texture* play_text = assetsManager.getTexture("CharacterIdel");
+	Animation player_animation(play_text, sf::IntRect(65, 55, 45, 50), Interval(162, 0), Position(50, 50));
+	player = Character("Adventurer", Stats(15, 20, 50, 30), player_animation);
 }
 
 void Game::initWindow() {

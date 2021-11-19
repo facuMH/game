@@ -7,17 +7,17 @@
 class Animation {
   public:
 	sf::Sprite sprite;
-	sf::Texture* texture = nullptr;
+	Texture* texture = nullptr;
 	sf::IntRect texture_rectangle;
 	Interval sprite_interval;
 
 	Animation(){};
 
-	Animation(const sf::Texture* texture, const sf::IntRect& first_animation, const Interval& sprite_interval, const Position& initial) {
-		texture = texture;
+	Animation(Texture* newTexture, const sf::IntRect& first_animation, const Interval& new_sprite_interval, const Position& initial) {
+		texture = newTexture;
 		texture_rectangle = first_animation;
 
-		this->sprite_interval = sprite_interval;
+		sprite_interval = new_sprite_interval;
 		sprite.setTexture(*texture);
 		sprite.setTextureRect(texture_rectangle);
 		sprite.setPosition(initial);
@@ -27,8 +27,10 @@ class Animation {
 	void set_texture(const sf::Texture* texture) { sprite.setTexture(*texture); }
 
 	void next() {
-		texture_rectangle.left = int(texture_rectangle.left + sprite_interval.x) % texture->getSize().x;
-		sprite.setTextureRect(texture_rectangle);
+		if(texture != nullptr) {
+			texture_rectangle.left = int(texture_rectangle.left + sprite_interval.x) % texture->getSize().x;
+			sprite.setTextureRect(texture_rectangle);
+		}
 	}
 
 	void move(const Position& new_position) { sprite.move(new_position); }

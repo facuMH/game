@@ -31,9 +31,9 @@ class Game {
 	Character player;
 
 	// this should be moved a "LoadAssets" function where textures are loaded.
-	sf::Texture character_texture_idle;
-	sf::Texture character_texture_run;
-	std::vector<sf::Texture> player_textures;
+	Texture character_texture_idle;
+	Texture character_texture_run;
+	std::vector<Texture> player_textures;
 
 	sf::Clock clock;
 

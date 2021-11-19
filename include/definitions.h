@@ -4,9 +4,9 @@ using Position = sf::Vector2f;
 using Interval = sf::Vector2f;
 using Name = std::string;
 
-using MapBackground = sf::Texture;
+class MapBackground : public sf::Texture {};
 
-using Texture = sf::Texture;
+class Texture : public sf::Texture {};
 
 struct Stats {
 	int str = 0;  // Strength
