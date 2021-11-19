@@ -21,7 +21,7 @@ void Game::initVariables() {
   player = Character("Adventurer", Stats(15, 20, 50, 30),
                      Animation("../assets/character/Idle.png",
                                sf::IntRect(65, 55, 45, 50), Interval(162, 0),
-                               Position(50, 50)));
+                               Position(0, 0)));
 }
 
 void Game::initWindow() {
@@ -95,12 +95,19 @@ void Game::pollEvents() {
       } else if (this->event.key.code == sf::Keyboard::Right) {
         player.animation.set_texture(character_texture_run);
         player.animation.next();
+
+        Position newPos = {player.animation.get_position().x + 0.1f, player.animation.get_position().y };
+        player.animation.move(newPos);
+
         if (player.animation.get_orientation().x < 0) {
           player.animation.mirror();
         }
       } else if (this->event.key.code == sf::Keyboard::Left) {
         player.animation.set_texture(character_texture_run);
         player.animation.next();
+
+        player.move({-0.1f, 0.0f});
+
         if (player.animation.get_orientation().x > 0) {
           player.animation.mirror(
               player.animation.sprite.getLocalBounds().width);

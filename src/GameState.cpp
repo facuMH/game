@@ -10,10 +10,6 @@ GameState::~GameState() = default;
 void GameState::update(const float &dt)
 {
     this->updateKeybinds(dt);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-    {
-        std::cout << "A pressed" << std::endl;
-    }
 }
 
 void GameState::render(sf::RenderTarget *target)
