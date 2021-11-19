@@ -142,7 +142,7 @@ void Game::update() {
   else {
     // Since the game depends on the window being open (see function
     // isRunning()), closing the window ends the game
-    this->endApplication();
+    Game::endApplication();
     this->window->close();
   }
 }
