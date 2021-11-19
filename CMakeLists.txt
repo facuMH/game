@@ -19,20 +19,23 @@ ENDIF()
 set(SOURCES src/main.cpp
         src/Characters.cpp
         src/Game.cpp
-        src/GameState.cpp
         src/State.cpp
-        src/main.cpp
+        src/GameState.cpp
+        src/Tile.cpp
+        src/TileMap.cpp
+
 
         include/Animation.h
         include/Characters.h
         include/definitions.h
         include/Entity.h
         include/Game.h
-        include/GameState.h
         include/Inanimated.h
         include/MapTiles.h
         include/State.h
-        )
+        include/GameState.h
+        include/Tile.h
+        include/TileMap.h)
 
 #------------- DEPENDENCIES
 
