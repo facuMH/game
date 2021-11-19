@@ -40,7 +40,9 @@ public:
     sprite.setTextureRect(texture_rectangle);
   }
 
-  void move(const Position &new_position) { sprite.move(new_position); }
+  void move(const Position &offset) {
+      sprite.move(offset);
+  }
 
   Position get_position() { return sprite.getPosition(); }
 

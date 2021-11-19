@@ -79,6 +79,9 @@ bool Game::isRunning() const { return this->window->isOpen(); }
 
 // Functions
 void Game::pollEvents() {
+    
+  const float stepsize = 6.0f;
+  
   // Event polling
   while (this->window->pollEvent(this->event)) {
     switch (this->event.type) {
@@ -95,9 +98,8 @@ void Game::pollEvents() {
       } else if (this->event.key.code == sf::Keyboard::Right) {
         player.animation.set_texture(character_texture_run);
         player.animation.next();
-
-        Position newPos = {player.animation.get_position().x + 0.1f, player.animation.get_position().y };
-        player.animation.move(newPos);
+        
+        player.animation.move({stepsize, 0.0f});
 
         if (player.animation.get_orientation().x < 0) {
           player.animation.mirror();
@@ -106,12 +108,32 @@ void Game::pollEvents() {
         player.animation.set_texture(character_texture_run);
         player.animation.next();
 
-        player.move({-0.1f, 0.0f});
+        player.animation.move({-stepsize, 0.0f});
 
         if (player.animation.get_orientation().x > 0) {
           player.animation.mirror(
               player.animation.sprite.getLocalBounds().width);
         }
+      } else if (this->event.key.code == sf::Keyboard::Up) {
+          player.animation.set_texture(character_texture_run);
+          player.animation.next();
+
+          player.animation.move({0.0f, -stepsize});
+
+          if (player.animation.get_orientation().x > 0) {
+              player.animation.mirror(
+                      player.animation.sprite.getLocalBounds().width);
+          }
+      } else if (this->event.key.code == sf::Keyboard::Down) {
+          player.animation.set_texture(character_texture_run);
+          player.animation.next();
+
+          player.animation.move({0.0f, stepsize});
+
+          if (player.animation.get_orientation().x > 0) {
+              player.animation.mirror(
+                      player.animation.sprite.getLocalBounds().width);
+          }
       }
       break;
     case sf::Event::MouseMoved:
