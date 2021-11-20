@@ -151,6 +151,4 @@ void Game::updateDT() {
 	// std::cout << "Time delta: " << this->dt << std::endl;
 }
 
-void Game::endApplication() {
-	std::cout << "Ending application" << std::endl;
-}
+void Game::endApplication() { std::cout << "Ending application" << std::endl; }

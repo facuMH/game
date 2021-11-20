@@ -1,5 +1,4 @@
-#ifndef RPG_GAME_H
-#define RPG_GAME_H
+#pragma once
 
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
@@ -22,9 +21,11 @@ class Game {
 	void initWindow();
 	void initStates();
 
-	sf::RenderWindow* window; // dynamically allocated so that it can be deleted
-	sf::VideoMode videoMode;
-	sf::Event event;
+  // window is a pointer, since the new-operator returns a pointer to
+  // the beginning of the new block of memory allocated
+  sf::RenderWindow *window;
+  sf::VideoMode videoMode;
+  sf::Event event{};
 
 	AssetsManager assetsManager;
 
@@ -37,20 +38,20 @@ class Game {
 
 	sf::Clock clock;
 
-	// Time variables
-	sf::Clock dtClock;
-	float dt; // time delta
+  // Time variables
+  sf::Clock dtClock;
+  float dt{}; // time delta
 
-	// Stack of states - the top entry is the active state, i.e. [main menu,
-	// map-layer, fight-layer]: If the fight layer is left, the next active state
-	// is the map-layer. If the map-layer is left, we're at the main menu.
-	std::stack<State*> states;
+  // Stack of states - the top entry is the active state, i.e. [main menu,
+  // map-layer, fight-layer]: If the fight layer is left, the next active state
+  // is the map-layer. If the map-layer is left, we're at the main menu. Must be
+  // a pointer, since State is an abstract class and cannot be instantiated.
+  // Only instances of its child classes could be put on the stack directly.
+  std::stack<State *> states;
 
-	// std::unordered_map<Position, MapTile> MapTiles;
-
-  public:
-	// Constructor
-	Game();
+public:
+  // Constructor
+  Game();
 
 	// Destructor
 	virtual ~Game();
@@ -66,13 +67,12 @@ class Game {
 	// Visual representation of the game
 	void render();
 
-	// register any events
-	void pollEvents();
+  // Register any events
+  void pollEvents();
 
-	// Accessors
-	bool isRunning() const;
+  // End the application
+  static void endApplication();
 
-	void Game::endApplication();
+  // Accessors
+  bool isRunning() const;
 };
-
-#endif // RPG_GAME_H

@@ -1,11 +1,18 @@
 #pragma once
 
+#include "Tile.h"
+
 using Position = sf::Vector2f;
 using Interval = sf::Vector2f;
 using Name = std::string;
 
-class MapBackground : public sf::Texture {};
+using TileLayers = std::vector<Tile *>;
+using TileMapColumns = std::vector<TileLayers>;
+using TileMapRows = std::vector<TileMapColumns>;
+using TileMapVector = std::vector<TileMapRows>;
+using LevelDesign = std::vector<int>;
 
+class MapBackground : public sf::Texture {};
 class Texture : public sf::Texture {};
 
 struct Stats {

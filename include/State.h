@@ -1,5 +1,4 @@
-#ifndef RPG_STATE_H
-#define RPG_STATE_H
+#pragma once
 
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
@@ -19,7 +18,7 @@ class State {
 private:
   std::vector<sf::Texture> textures;
   sf::RenderWindow *window;
-  bool isQuitting;
+  bool isQuitting{};
 
 public:
   // Constructor
@@ -36,5 +35,3 @@ public:
   const bool &isQuit() const;
   virtual void quitStateActions() = 0;
 };
-
-#endif // RPG_STATE_H
