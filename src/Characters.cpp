@@ -41,4 +41,5 @@ void Character::move(const sf::Keyboard::Key key) {
             break;
         default:
             break;
-    } }
+    }
+}
