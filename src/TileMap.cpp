@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include "AssetsPaths.h"
 #include "TileMap.h"
 
 // Helper function for mapping an iteration counter to a tile from the tile sheet
@@ -9,19 +10,8 @@ sf::Vector2i map1Dto2D(int counter) {
 	return {row, col};
 }
 
-// Helper function for reading  a level definition into a vector
-LevelDesign readLevelDataFromFile(const std::string& inputFile) {
-	LevelDesign level = {};
-	std::ifstream is(inputFile);
-	int x;
-	while(is >> x) {
-		level.push_back(x);
-	}
-	return level;
-}
-
 // Constructor
-TileMap::TileMap() {
+TileMap::TileMap(AssetsManager& am) {
 	gridSize = 20;
 	// The window size fits exactly 32 x 24 tiles of grid size 20
 	maxSize.x = 32;
@@ -31,11 +21,24 @@ TileMap::TileMap() {
 	// initialize first rectangle (or tile) position in the upper left corner of the window
 	textureRectangle = sf::IntRect(0, 0, gridSize, gridSize);
 
+	MapBackground* tilesheet = am.getMap("tilesheet");
+
+	if(tilesheet == nullptr) {
+		am.loadAsset<MapBackground>(TILESHEET.c, "tilesheet");
+		tilesheet = am.getMap("tilesheet");
+	}
+
 	// load texture file
-	tileTextureSheet.loadFromFile("../assets/tiles/tilesheet.png");
+	tileTextureSheet = *tilesheet;
 
 	// load level design
-	std::vector<int> levelMap = readLevelDataFromFile("../config/level1.txt");
+
+	LevelDesign* newLevel = am.getLevel("level1");
+	if(newLevel == nullptr) {
+		am.loadAsset<LevelDesign>(LEVEL1.c, "level1");
+		newLevel = am.getLevel("level1");
+	}
+	LevelDesign levelMap = *newLevel;
 
 	int counter = 0;
 

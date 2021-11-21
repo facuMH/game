@@ -1,5 +1,6 @@
 #pragma once
 
+#include "AssetsManager.h"
 #include "Tile.h"
 #include "definitions.h"
 
@@ -20,7 +21,7 @@ class TileMap {
 	TileMapVector tiles;
 
   public:
-	TileMap();
+	TileMap(AssetsManager& am);
 
 	virtual ~TileMap();
 

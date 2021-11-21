@@ -13,7 +13,7 @@ public:
   Character() : name(""), stats(0, 0, 0, 0) {}
   Character(Name new_name, Stats new_stats, Animation new_anim)
       : name(new_name), stats(new_stats) {
-    animation = new_anim;
+    animation = std::move(new_anim);
     is_solid = true;
     can_interact = true;
   }

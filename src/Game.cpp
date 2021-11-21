@@ -1,14 +1,15 @@
 #include <iostream>
-
-#include "Game.h"
 #include <fstream>
+
+#include "AssetsPaths.h"
+#include "Game.h"
 
 // Private functions
 void Game::initVariables() {
 	this->window = nullptr;
 
-	assetsManager.loadAsset<Texture>("../assets/character/Idle.png", "CharacterIdel");
-	assetsManager.loadAsset<Texture>("../assets/character/Run.png", "CharacterRun");
+	assetsManager.loadAsset<Texture>(IDLE.c, "CharacterIdel");
+	assetsManager.loadAsset<Texture>(RUN.c, "CharacterRun");
 	Texture* play_text = assetsManager.getTexture("CharacterIdel");
 	Animation player_animation(play_text, sf::IntRect(65, 55, 45, 50), Interval(162, 0), Position(50, 50));
 	player = Character("Adventurer", Stats(15, 20, 50, 30), player_animation);
@@ -41,7 +42,7 @@ void Game::initWindow() {
 }
 
 void Game::initStates() {
-	this->states.push(new GameState(this->window));
+	states.push(new GameState(window, assetsManager));
 }
 
 // Constructor
@@ -151,4 +152,6 @@ void Game::updateDT() {
 	// std::cout << "Time delta: " << this->dt << std::endl;
 }
 
-void Game::endApplication() { std::cout << "Ending application" << std::endl; }
+void Game::endApplication() {
+	std::cout << "Ending application" << std::endl;
+}

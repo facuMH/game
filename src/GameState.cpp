@@ -2,7 +2,7 @@
 
 #include "GameState.h"
 
-GameState::GameState(sf::RenderWindow* window) : State(window) {}
+GameState::GameState(sf::RenderWindow* window, AssetsManager& am) : State(window), map(am) {}
 
 GameState::~GameState() = default;
 

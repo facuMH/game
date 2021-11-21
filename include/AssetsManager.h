@@ -2,9 +2,8 @@
 
 #include <iostream>
 #include <string>
-#include <unordered_map>
-
 #include <typeinfo>
+#include <unordered_map>
 
 #include <SFML/Graphics.hpp>
 
@@ -15,10 +14,12 @@ class AssetsManager {
 	std::unordered_map<std::string, Texture> textures;
 	std::unordered_map<std::string, sf::Font> fonts;
 	std::unordered_map<std::string, MapBackground> maps;
+	std::unordered_map<std::string, LevelDesign> levels;
 
 	void emplace(const std::string& name, const Texture& newAsset) { textures.emplace(name, newAsset); }
 	void emplace(const std::string& name, const sf::Font& newAsset) { fonts.emplace(name, newAsset); }
 	void emplace(const std::string& name, const MapBackground& newAsset) { maps.emplace(name, newAsset); }
+	void emplace(const std::string& name, const LevelDesign& newAsset) { levels.emplace(name, newAsset); }
 
   public:
 	Texture* getTexture(const std::string& name) {
@@ -44,6 +45,16 @@ class AssetsManager {
 	MapBackground* getMap(const std::string& name) {
 		auto found = maps.find(name);
 		if(found != maps.end())
+			return &found->second;
+		else {
+			std::cout << "RPG ERROR: " << name << " is not a a texture\n";
+			return nullptr;
+		}
+	}
+
+	LevelDesign* getLevel(const std::string& name) {
+		auto found = levels.find(name);
+		if(found != levels.end())
 			return &found->second;
 		else {
 			std::cout << "RPG ERROR: " << name << " is not a a texture\n";

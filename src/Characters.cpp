@@ -8,7 +8,7 @@ void Character::equip(Weapon *arms) {
     std::swap(weapon, arms);
     Position pos = animation.get_position();
 
-    // TODO: check for a free MapTile where you can actually drop the itme.
+    // TODO: check for a free Tile where you can actually drop the itme.
     arms->drop(pos);
   } else {
     weapon = arms;

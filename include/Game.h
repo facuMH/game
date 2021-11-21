@@ -10,7 +10,6 @@
 #include "AssetsManager.h"
 #include "Characters.h"
 #include "GameState.h"
-#include "MapTiles.h"
 
 /*
  * Wrapper class acting as game engine.

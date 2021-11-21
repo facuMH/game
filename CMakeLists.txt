@@ -26,12 +26,12 @@ set(SOURCES src/main.cpp
 
 set(HEADERS include/Animation.h
         include/AssetsManager.h
+        include/AssetsPaths.h
         include/Characters.h
         include/definitions.h
         include/Entity.h
         include/Game.h
         include/Inanimated.h
-        include/MapTiles.h
         include/State.h
         include/GameState.h
         include/Tile.h
@@ -66,4 +66,10 @@ IF(WIN32)
       COMMAND ${CMAKE_COMMAND} -E copy_directory
            ${ASSETS_ORIGIN}
            $<TARGET_FILE_DIR:rpg>/../assets)
+
+    set(CONFIG_ORIGIN "${PROJECT_SOURCE_DIR}/config")
+    add_custom_command(TARGET rpg POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy_directory
+           ${CONFIG_ORIGIN}
+           $<TARGET_FILE_DIR:rpg>/../config)
 ENDIF()
