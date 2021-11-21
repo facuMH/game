@@ -1,10 +1,11 @@
 #pragma once
-
-#include "State.h"
 #include "Characters.h"
 #include "definitions.h"
-
+#include "State.h"
+#include "TileMap.h"
 class GameState : public State {
+private:
+    TileMap map;
 public:
   // Constructor
   explicit GameState(sf::RenderWindow *window);
