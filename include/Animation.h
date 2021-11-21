@@ -11,7 +11,7 @@ public:
   sf::IntRect texture_rectangle;
   Interval sprite_interval;
 
-  Animation(){};
+  Animation()= default;
 
   Animation(const std::string &texture_path, const sf::IntRect &first_animation,
             const Interval &sprite_interval, const Position &initial) {
@@ -22,14 +22,14 @@ public:
     sprite.setTexture(texture);
     sprite.setTextureRect(texture_rectangle);
     sprite.setPosition(initial);
-    sprite.setScale({3, 3});
+    sprite.setScale({2, 2});
   };
 
   bool set_texture(const std::string &texture_path) {
     return texture.loadFromFile(texture_path);
   }
 
-  void set_texture(const sf::Texture new_texture) {
+  void set_texture(const sf::Texture& new_texture) {
     texture = new_texture;
     sprite.setTexture(texture);
   }
@@ -40,7 +40,9 @@ public:
     sprite.setTextureRect(texture_rectangle);
   }
 
-  void move(const Position &new_position) { sprite.move(new_position); }
+  void move(const Position &offset) {
+      sprite.move(offset);
+  }
 
   Position get_position() { return sprite.getPosition(); }
 
@@ -48,7 +50,7 @@ public:
 
   sf::Vector2f get_orientation() { return sprite.getScale(); }
 
-  // TODO: consider taking paramerters to set origin depending on orientation
+  // TODO: consider taking parameters to set origin depending on orientation
   void mirror() {
     sprite.setOrigin({0, 0});
     sprite.scale({-1.f, 1.f});

@@ -21,7 +21,7 @@ void Game::initVariables() {
   player = Character("Adventurer", Stats(15, 20, 50, 30),
                      Animation("../assets/character/Idle.png",
                                sf::IntRect(65, 55, 45, 50), Interval(162, 0),
-                               Position(50, 50)));
+                               Position(0, 0)));
 }
 
 void Game::initWindow() {
@@ -88,23 +88,19 @@ void Game::pollEvents() {
       break;
     case sf::Event::KeyPressed:
       // Event that is called when the Escape button is pressed
-      if (this->event.key.code == sf::Keyboard::Escape) {
-        window->close();
-
-        // this should become much simpler with new Class Player
-      } else if (this->event.key.code == sf::Keyboard::Right) {
-        player.animation.set_texture(character_texture_run);
-        player.animation.next();
-        if (player.animation.get_orientation().x < 0) {
-          player.animation.mirror();
-        }
-      } else if (this->event.key.code == sf::Keyboard::Left) {
-        player.animation.set_texture(character_texture_run);
-        player.animation.next();
-        if (player.animation.get_orientation().x > 0) {
-          player.animation.mirror(
-              player.animation.sprite.getLocalBounds().width);
-        }
+      switch (this->event.key.code) {
+          case (sf::Keyboard::Escape):
+            window->close();
+            break;
+          case sf::Keyboard::Right:     // Right arrow
+          case sf::Keyboard::Left:      // Left arrow
+          case sf::Keyboard::Up:        // Up arrow
+          case sf::Keyboard::Down:      // Down arrow
+            player.animation.set_texture(character_texture_run);
+            player.move(this->event.key.code);
+            break;
+          default:
+            break;
       }
       break;
     case sf::Event::MouseMoved:
@@ -142,7 +138,7 @@ void Game::update() {
   else {
     // Since the game depends on the window being open (see function
     // isRunning()), closing the window ends the game
-    this->endApplication();
+    Game::endApplication();
     this->window->close();
   }
 }
