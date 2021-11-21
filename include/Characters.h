@@ -13,8 +13,8 @@ class Character : public Entity {
 public:
   Character() : name(""), stats(0, 0, 0, 0) {}
   Character(Name new_name, Stats new_stats, Animation new_anim)
-      : name(std::move(new_name)), stats(new_stats) {
-    animation = std::move(new_anim);
+      : name(new_name), stats(new_stats) {
+    animation = new_anim;
     is_solid = true;
     can_interact = true;
   }
@@ -32,7 +32,7 @@ public:
   void recover_mana(const int recover) { stats.mana += recover; }
 
   void equip(Weapon *arms);
-  void move(sf::Keyboard::Key key);
+  void move(const sf::Keyboard::Key key);
 
   // TODO: multiple animations (idle, run, attack) perhaps on Entity.
 };
