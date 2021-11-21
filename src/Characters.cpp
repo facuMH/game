@@ -35,15 +35,9 @@ void Character::move(const sf::Keyboard::Key key) {
             break;
         case sf::Keyboard::Up:
             animation.sprite.move({0.0f, -stepsize});
-            if (animation.get_orientation().x < 0) {
-                animation.mirror(animation.sprite.getLocalBounds().width);
-            }
             break;
         case sf::Keyboard::Down:
             animation.sprite.move({0.0f, stepsize});
-            if (animation.get_orientation().x < 0) {
-                animation.mirror(animation.sprite.getLocalBounds().width);
-            }
             break;
         default:
             break;
