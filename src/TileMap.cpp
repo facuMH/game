@@ -21,24 +21,11 @@ TileMap::TileMap(AssetsManager& am) {
 	// initialize first rectangle (or tile) position in the upper left corner of the window
 	textureRectangle = sf::IntRect(0, 0, gridSize, gridSize);
 
-	MapBackground* tilesheet = am.getMap("tilesheet");
-
-	if(tilesheet == nullptr) {
-		am.loadAsset<MapBackground>(TILESHEET.c, "tilesheet");
-		tilesheet = am.getMap("tilesheet");
-	}
-
 	// load texture file
-	tileTextureSheet = *tilesheet;
+	tileTextureSheet = am.getMap(TILESHEET.c);
 
 	// load level design
-
-	LevelDesign* newLevel = am.getLevel("level1");
-	if(newLevel == nullptr) {
-		am.loadAsset<LevelDesign>(LEVEL1.c, "level1");
-		newLevel = am.getLevel("level1");
-	}
-	LevelDesign levelMap = *newLevel;
+	LevelDesign levelMap = *am.getLevel(LEVEL1.c);
 
 	int counter = 0;
 

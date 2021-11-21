@@ -9,6 +9,8 @@
 #include <stack>
 #include <vector>
 
+
+
 class Tile {
   private:
   protected:
@@ -17,7 +19,7 @@ class Tile {
   public:
 	Tile();
 
-	Tile(float x, float y, float gridSize, const sf::Texture& texture, sf::IntRect rect);
+	Tile(float x, float y, float gridSize, const sf::Texture* texture, sf::IntRect rect);
 
 	virtual ~Tile();
 

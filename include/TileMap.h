@@ -13,7 +13,7 @@ class TileMap {
 	// max. number of tiles in x and y direction
 	sf::Vector2u maxSize;
 	// holds the texture sheet loaded from file
-	sf::Texture tileTextureSheet;
+	MapBackground* tileTextureSheet;
 	// for manipulation rectangle-shaped tiles
 	sf::IntRect textureRectangle;
 	// Concept:

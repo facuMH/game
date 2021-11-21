@@ -27,6 +27,7 @@ class AssetsManager {
 		if(found != textures.end())
 			return &found->second;
 		else {
+			if(loadAsset<Texture>(name)) { return &textures.at(name); }
 			std::cout << "RPG ERROR: " << name << " is not a a texture\n";
 			return nullptr;
 		}
@@ -37,6 +38,7 @@ class AssetsManager {
 		if(found != fonts.end())
 			return &found->second;
 		else {
+			if(loadAsset<sf::Font>(name)) { return &fonts.at(name); }
 			std::cout << "RPG ERROR: " << name << " is not a a texture\n";
 			return nullptr;
 		}
@@ -47,6 +49,7 @@ class AssetsManager {
 		if(found != maps.end())
 			return &found->second;
 		else {
+			if(loadAsset<MapBackground>(name)) { return &maps.at(name); }
 			std::cout << "RPG ERROR: " << name << " is not a a texture\n";
 			return nullptr;
 		}
@@ -57,18 +60,21 @@ class AssetsManager {
 		if(found != levels.end())
 			return &found->second;
 		else {
+			if(loadAsset<LevelDesign>(name)) { return &levels.at(name); }
 			std::cout << "RPG ERROR: " << name << " is not a a texture\n";
 			return nullptr;
 		}
 	}
 
 	template <typename Asset>
-	void loadAsset(const std::string& path, const std::string& name) {
+	bool loadAsset(const std::string& path) {
 		Asset newAsset;
 		if(newAsset.loadFromFile(path)) {
-			emplace(name, newAsset);
+			emplace(path, newAsset);
 		} else {
 			std::cout << "RPG ERROR: no " << typeid(decltype(newAsset)).name() << " found at " << path << "\n";
+			return false;
 		}
+		return true;
 	}
 };

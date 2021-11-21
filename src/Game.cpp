@@ -7,10 +7,7 @@
 // Private functions
 void Game::initVariables() {
 	this->window = nullptr;
-
-	assetsManager.loadAsset<Texture>(IDLE.c, "CharacterIdel");
-	assetsManager.loadAsset<Texture>(RUN.c, "CharacterRun");
-	Texture* play_text = assetsManager.getTexture("CharacterIdel");
+	Texture* play_text = assetsManager.getTexture(IDLE.c);
 	Animation player_animation(play_text, sf::IntRect(65, 55, 45, 50), Interval(162, 0), Position(50, 50));
 	player = Character("Adventurer", Stats(15, 20, 50, 30), player_animation);
 }
@@ -85,18 +82,18 @@ void Game::pollEvents() {
 
 				// this should become much simpler with new Class Player
 			} else if(this->event.key.code == sf::Keyboard::Right) {
-				player.animation.set_texture(assetsManager.getTexture("CharacterRun"));
+				player.animation.set_texture(assetsManager.getTexture(RUN.c));
 				player.animation.next();
 				if(player.animation.get_orientation().x < 0) { player.animation.mirror(); }
 			} else if(this->event.key.code == sf::Keyboard::Left) {
-				player.animation.set_texture(assetsManager.getTexture("CharacterRun"));
+				player.animation.set_texture(assetsManager.getTexture(RUN.c));
 				player.animation.next();
 				if(player.animation.get_orientation().x > 0) { player.animation.mirror(player.animation.sprite.getLocalBounds().width); }
 			}
 			break;
 		case sf::Event::MouseMoved: break;
 		default:
-			player.animation.set_texture(assetsManager.getTexture("CharacterIdel"));
+			player.animation.set_texture(assetsManager.getTexture(IDLE.c));
 			player.animation.next();
 			clock.restart();
 			break;

@@ -1,9 +1,9 @@
 #include "Tile.h"
 
-Tile::Tile(float xPos, float yPos, float gridSize, const sf::Texture& texture, sf::IntRect rect) {
+Tile::Tile(float xPos, float yPos, float gridSize, const sf::Texture* texture, sf::IntRect rect) {
 	shape.setSize(sf::Vector2(gridSize, gridSize));
 	shape.setPosition(xPos, yPos);
-	shape.setTexture(&texture);
+	shape.setTexture(texture);
 
 	shape.setTextureRect(rect);
 }
