@@ -10,7 +10,22 @@ using TileLayers = std::vector<Tile *>;
 using TileMapColumns = std::vector<TileLayers>;
 using TileMapRows = std::vector<TileMapColumns>;
 using TileMapVector = std::vector<TileMapRows>;
-using LevelDesign = std::vector<int>;
+class LevelDesign : public std::vector<int> {
+  public:
+	// Helper function for reading  a level definition into a vector
+	bool loadFromFile(const std::string& inputFile) {
+		std::ifstream is(inputFile);
+		if(!is.is_open()) { return false; }
+		int x;
+		while(is >> x) {
+			push_back(x);
+		}
+		return true;
+	}
+};
+
+class MapBackground : public sf::Texture {};
+class Texture : public sf::Texture {};
 
 struct Stats
 {

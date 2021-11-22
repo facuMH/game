@@ -1,15 +1,14 @@
 #include <iostream>
-#include <vector>
 
 #include "GameState.h"
 
-// --- GAME STATE
-GameState::GameState(sf::RenderWindow* window) : State(window) {}
+GameState::GameState(sf::RenderWindow* window, AssetsManager& am) : State(window), map(am) {}
 
 GameState::~GameState() = default;
 
-void GameState::update(const float &dt) {
-  this->updateKeybinds(dt);
+void GameState::update(const float& dt) {
+	this->updateKeybinds(dt);
+}
 
 void GameState::render(sf::RenderTarget* target) {
 	map.render(*target);
@@ -27,13 +26,7 @@ void GameState::quitStateActions() {
 	std::cout << "Ending current game state" << std::endl;
 }
 
-CombatState::CombatState(sf::RenderWindow* window, Party p, Enemies e) : State(window) {
-	party = p;
-	enemies = e;
-}
-
 // --- COMBAT STATE
-
 CombatState::CombatState(sf::RenderWindow* window, Party p, Enemies e) : State(window) {
 	party = p;
 	enemies = e;

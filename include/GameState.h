@@ -1,4 +1,6 @@
 #pragma once
+
+#include "AssetsManager.h"
 #include "Characters.h"
 #include "definitions.h"
 #include "State.h"
@@ -8,7 +10,7 @@ private:
     TileMap map;
 public:
   // Constructor
-  explicit GameState(sf::RenderWindow *window);
+  explicit GameState(sf::RenderWindow* window, AssetsManager& am);
   // Destructor
   ~GameState() override;
 

@@ -1,12 +1,13 @@
 #pragma once
 
+#include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
+#include <SFML/Network.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
-#include <SFML/Audio.hpp>
-#include <SFML/Network.hpp>
 #include <unordered_map>
 
+#include "AssetsManager.h"
 #include "Characters.h"
 #include "GameState.h"
 #include "MapTiles.h"
@@ -16,10 +17,10 @@
  * Wrapper class acting as game engine.
  */
 class Game {
-private:
-  void initVariables();
-  void initWindow();
-  void initStates();
+  private:
+	void initVariables();
+	void initWindow();
+	void initStates();
 
   // window is a pointer, since the new-operator returns a pointer to
   // the beginning of the new block of memory allocated
@@ -27,14 +28,16 @@ private:
   sf::VideoMode videoMode;
   sf::Event event{};
 
-  Character player;
+	AssetsManager assetsManager;
 
-  // this should be moved a "LoadAssets" function where textures are loaded.
-  sf::Texture character_texture_idle;
-  sf::Texture character_texture_run;
-  std::vector<sf::Texture> player_textures;
+	Character player;
 
-  sf::Clock clock;
+	// this should be moved a "LoadAssets" function where textures are loaded.
+	Texture character_texture_idle;
+	Texture character_texture_run;
+	std::vector<Texture> player_textures;
+
+	sf::Clock clock;
 
   // Time variables
   sf::Clock dtClock;
@@ -51,19 +54,19 @@ public:
   // Constructor
   Game();
 
-  // Destructor
-  virtual ~Game();
+	// Destructor
+	virtual ~Game();
 
-  // Functions
-  // Everything defining behind-the-scenes logic
-  void update();
+	// Functions
+	// Everything defining behind-the-scenes logic
+	void update();
 
-  // Update time variable dt (new time is the time it takes to update and render
-  // 1 frame)
-  void updateDT();
+	// Update time variable dt (new time is the time it takes to update and render
+	// 1 frame)
+	void updateDT();
 
-  // Visual representation of the game
-  void render();
+	// Visual representation of the game
+	void render();
 
   // Register any events
   void pollEvents();
