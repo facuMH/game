@@ -1,5 +1,5 @@
-#include <iostream>
 #include <fstream>
+#include <iostream>
 
 #include "AssetsPaths.h"
 #include "Game.h"
@@ -7,14 +7,10 @@
 
 // Private functions
 void Game::initVariables() {
-	this->window = nullptr;
+	window = nullptr;
 	Texture* play_text = assetsManager.getTexture(IDLE.c);
 	Animation player_animation(play_text, sf::IntRect(65, 55, 45, 50), Interval(162, 0), Position(50, 50));
 	player = Character("Adventurer", Stats(15, 20, 50, 30), player_animation);
-
-  sf::Texture alien_texture;
-  //alien_texture.loadFromFile();
-  Character alien();
 }
 
 void Game::initWindow() {
@@ -73,46 +69,49 @@ bool Game::isRunning() const {
 	return this->window->isOpen();
 }
 
+void Game::makeNewCombat(const int numberOfEnemis) {
+	Texture* alien_texture = assetsManager.getTexture(ALIEN.c);
+	Animation alien_animation(alien_texture, sf::IntRect(50, 25, 105, 145), Interval(210, 0), Position(100, 100));
+	Character alien("Alien", Stats(15, 25, 50, 30), alien_animation);
+	Enemies enemies{alien};
+	states.push(new CombatState(window, assetsManager, {player}, enemies));
+}
+
 // Functions
 void Game::pollEvents() {
-  // Event polling
-  while (this->window->pollEvent(this->event)) {
-    switch (this->event.type) {
-    // Event that is called when the close button is clicked
-    case sf::Event::Closed:
-      this->window->close();
-      break;
-    case sf::Event::KeyPressed:
-      // Event that is called when the Escape button is pressed
-      switch (this->event.key.code) {
-          case (sf::Keyboard::Escape):
-            window->close();
-            break;
-          case sf::Keyboard::Right:     // Right arrow
-          case sf::Keyboard::Left:      // Left arrow
-          case sf::Keyboard::Up:        // Up arrow
-          case sf::Keyboard::Down:      // Down arrow
-            player.animation.set_texture(assetsManager.getTexture(RUN.c));
-            player.move(this->event.key.code);
-            break;
-          default:
-            break;
-      }
-      break;
-    case sf::Event::MouseMoved:
-      break;
-    default:
-		player.animation.set_texture(assetsManager.getTexture(IDLE.c));
-      player.animation.next();
-      clock.restart();
-      break;
-    }
-  }
-  // idle animation
-  if (clock.getElapsedTime().asSeconds() > .05f) {
-    player.animation.next();
-    clock.restart();
-  }
+	// Event polling
+	while(this->window->pollEvent(this->event)) {
+		switch(this->event.type) {
+		// Event that is called when the close button is clicked
+		case sf::Event::Closed: this->window->close(); break;
+		case sf::Event::KeyPressed:
+			// Event that is called when the Escape button is pressed
+			switch(this->event.key.code) {
+			case(sf::Keyboard::Escape): window->close(); break;
+			case sf::Keyboard::Right: // Right arrow
+			case sf::Keyboard::Left:  // Left arrow
+			case sf::Keyboard::Up:    // Up arrow
+			case sf::Keyboard::Down:  // Down arrow
+				player.animation.set_texture(assetsManager.getTexture(RUN.c));
+				player.move(this->event.key.code);
+				break;
+			case sf::Keyboard::C: makeNewCombat(1);
+			default: break;
+			}
+			break;
+		case sf::Event::MouseMoved: break;
+		default:
+			player.animation.set_texture(assetsManager.getTexture(IDLE.c));
+			player.animation.next();
+			clock.restart();
+			break;
+		}
+	}
+	// idle animation
+	if(clock.getElapsedTime().asSeconds() > .05f) {
+		player.animation.next();
+		clock.restart();
+	}
 }
 
 void Game::update() {
@@ -130,13 +129,13 @@ void Game::update() {
 		}
 	}
 
-  // End of application
-  else {
-    // Since the game depends on the window being open (see function
-    // isRunning()), closing the window ends the game
-    Game::endApplication();
-    this->window->close();
-  }
+	// End of application
+	else {
+		// Since the game depends on the window being open (see function
+		// isRunning()), closing the window ends the game
+		Game::endApplication();
+		this->window->close();
+	}
 }
 
 void Game::render() {

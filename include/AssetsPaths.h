@@ -44,3 +44,4 @@ constexpr auto TILESHEET = cat(TILES.c, "tilesheet.png");
 // ---- CONFIG
 constexpr char CONFIG[] = "../config/";
 constexpr auto LEVEL1 = cat(CONFIG, "level1.txt");
+constexpr auto COMBATLEVEL = cat(CONFIG, "combat1.txt");

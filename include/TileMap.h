@@ -19,13 +19,15 @@ class TileMap {
 	// Concept:
 	// We create a matrix of tiles, but each tile itself is a vector
 	TileMapVector tiles;
+	// set up 3D vector
+	void setUpGrid(const LevelDesign& levelMap);
 
   public:
 	TileMap(AssetsManager& am);
 
 	virtual ~TileMap();
 
-	void update();
+	void updateLevel(AssetsManager& am, const std::string& name);
 
 	void render(sf::RenderTarget& target);
 };

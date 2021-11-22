@@ -10,26 +10,9 @@ sf::Vector2i map1Dto2D(int counter) {
 	return {row, col};
 }
 
-// Constructor
-TileMap::TileMap(AssetsManager& am) {
-	gridSize = 20;
-	// The window size fits exactly 32 x 24 tiles of grid size 20
-	maxSize.x = 32;
-	maxSize.y = 24;
-	nLayers = 1; // TODO: later we could have more than 1 layer
-
-	// initialize first rectangle (or tile) position in the upper left corner of the window
-	textureRectangle = sf::IntRect(0, 0, gridSize, gridSize);
-
-	// load texture file
-	tileTextureSheet = am.getMap(TILESHEET.c);
-
-	// load level design
-	LevelDesign levelMap = *am.getLevel(LEVEL1.c);
-
-	int counter = 0;
-
+void TileMap::setUpGrid(const LevelDesign& levelMap) {
 	// set up 3D vector
+	int counter = 0;
 	tiles.resize(maxSize.x, TileMapRows());
 	for(size_t y = 0; y < maxSize.y; y++) {
 		for(size_t x = 0; x < maxSize.x; x++) {
@@ -56,6 +39,25 @@ TileMap::TileMap(AssetsManager& am) {
 	}
 }
 
+// Constructor
+TileMap::TileMap(AssetsManager& am) {
+	gridSize = 20;
+	// The window size fits exactly 32 x 24 tiles of grid size 20
+	maxSize.x = 32;
+	maxSize.y = 24;
+	nLayers = 1; // TODO: later we could have more than 1 layer
+
+	// initialize first rectangle (or tile) position in the upper left corner of the window
+	textureRectangle = sf::IntRect(0, 0, gridSize, gridSize);
+
+	// load texture file
+	tileTextureSheet = am.getMap(TILESHEET.c);
+
+	// load level design
+	LevelDesign levelMap = *am.getLevel(LEVEL1.c);
+	setUpGrid(levelMap);
+}
+
 
 TileMap::~TileMap() {
 	for(size_t x = 0; x < maxSize.x; x++) {
@@ -67,7 +69,9 @@ TileMap::~TileMap() {
 	}
 }
 
-void TileMap::update() {}
+void TileMap::updateLevel(AssetsManager& am, const std::string& newLevel) {
+	setUpGrid(*am.getLevel(newLevel));
+}
 
 void TileMap::render(sf::RenderTarget& target) {
 	for(int x = 0; x < maxSize.x; x++) {
