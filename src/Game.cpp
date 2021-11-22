@@ -70,40 +70,44 @@ bool Game::isRunning() const {
 
 // Functions
 void Game::pollEvents() {
-	// Event polling
-	while(this->window->pollEvent(this->event)) {
-		switch(this->event.type) {
-		// Event that is called when the close button is clicked
-		case sf::Event::Closed: this->window->close(); break;
-		case sf::Event::KeyPressed:
-			// Event that is called when the Escape button is pressed
-			if(this->event.key.code == sf::Keyboard::Escape) {
-				window->close();
-
-				// this should become much simpler with new Class Player
-			} else if(this->event.key.code == sf::Keyboard::Right) {
-				player.animation.set_texture(assetsManager.getTexture(RUN.c));
-				player.animation.next();
-				if(player.animation.get_orientation().x < 0) { player.animation.mirror(); }
-			} else if(this->event.key.code == sf::Keyboard::Left) {
-				player.animation.set_texture(assetsManager.getTexture(RUN.c));
-				player.animation.next();
-				if(player.animation.get_orientation().x > 0) { player.animation.mirror(player.animation.sprite.getLocalBounds().width); }
-			}
-			break;
-		case sf::Event::MouseMoved: break;
-		default:
-			player.animation.set_texture(assetsManager.getTexture(IDLE.c));
-			player.animation.next();
-			clock.restart();
-			break;
-		}
-	}
-	// idle animation
-	if(clock.getElapsedTime().asSeconds() > .05f) {
-		player.animation.next();
-		clock.restart();
-	}
+  // Event polling
+  while (this->window->pollEvent(this->event)) {
+    switch (this->event.type) {
+    // Event that is called when the close button is clicked
+    case sf::Event::Closed:
+      this->window->close();
+      break;
+    case sf::Event::KeyPressed:
+      // Event that is called when the Escape button is pressed
+      switch (this->event.key.code) {
+          case (sf::Keyboard::Escape):
+            window->close();
+            break;
+          case sf::Keyboard::Right:     // Right arrow
+          case sf::Keyboard::Left:      // Left arrow
+          case sf::Keyboard::Up:        // Up arrow
+          case sf::Keyboard::Down:      // Down arrow
+            player.animation.set_texture(character_texture_run);
+            player.move(this->event.key.code);
+            break;
+          default:
+            break;
+      }
+      break;
+    case sf::Event::MouseMoved:
+      break;
+    default:
+      player.animation.set_texture(character_texture_idle);
+      player.animation.next();
+      clock.restart();
+      break;
+    }
+  }
+  // idle animation
+  if (clock.getElapsedTime().asSeconds() > .05f) {
+    player.animation.next();
+    clock.restart();
+  }
 }
 
 void Game::update() {
@@ -121,13 +125,13 @@ void Game::update() {
 		}
 	}
 
-	// End of application
-	else {
-		// Since the game depends on the window being open (see function
-		// isRunning()), closing the window ends the game
-		this->endApplication();
-		this->window->close();
-	}
+  // End of application
+  else {
+    // Since the game depends on the window being open (see function
+    // isRunning()), closing the window ends the game
+    Game::endApplication();
+    this->window->close();
+  }
 }
 
 void Game::render() {

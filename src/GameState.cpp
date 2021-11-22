@@ -6,9 +6,9 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& am) : State(window
 
 GameState::~GameState() = default;
 
-void GameState::update(const float& dt) {
-	this->updateKeybinds(dt);
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)) { std::cout << "A pressed" << std::endl; }
+void GameState::update(const float &dt)
+{
+    this->updateKeybinds(dt);
 }
 
 void GameState::render(sf::RenderTarget* target) {

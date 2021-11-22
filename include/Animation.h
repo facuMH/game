@@ -11,20 +11,20 @@ class Animation {
 	sf::IntRect texture_rectangle;
 	Interval sprite_interval;
 
-	Animation(){};
+	Animation() = default;
 
 	Animation(Texture* newTexture, const sf::IntRect& first_animation, const Interval& new_sprite_interval, const Position& initial) {
 		texture = newTexture;
 		texture_rectangle = first_animation;
 
-		sprite_interval = new_sprite_interval;
+		sprite_interval = sprite_interval;
 		sprite.setTexture(*texture);
 		sprite.setTextureRect(texture_rectangle);
 		sprite.setPosition(initial);
-		sprite.setScale({3, 3});
+		sprite.setScale({2, 2});
 	};
 
-	void set_texture(const sf::Texture* texture) { sprite.setTexture(*texture); }
+	void set_texture(const sf::Texture& new_texture) { sprite.setTexture(*texture); }
 
 	void next() {
 		if(texture != nullptr) {
@@ -33,7 +33,7 @@ class Animation {
 		}
 	}
 
-	void move(const Position& new_position) { sprite.move(new_position); }
+	void move(const Position& offset) { sprite.move(offset); }
 
 	Position get_position() { return sprite.getPosition(); }
 
@@ -41,7 +41,7 @@ class Animation {
 
 	sf::Vector2f get_orientation() { return sprite.getScale(); }
 
-	// TODO: consider taking paramerters to set origin depending on orientation
+	// TODO: consider taking parameters to set origin depending on orientation
 	void mirror() {
 		sprite.setOrigin({0, 0});
 		sprite.scale({-1.f, 1.f});
