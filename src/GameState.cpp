@@ -6,14 +6,13 @@
 // --- GAME STATE
 GameState::GameState(sf::RenderWindow* window) : State(window) {}
 
-GameState::~GameState() {}
+GameState::~GameState() = default;
+
+void GameState::update(const float &dt) {
+  this->updateKeybinds(dt);
 
 void GameState::render(sf::RenderTarget* target) {
 	map.render(*target);
-}
-void GameState::update(const float& dt) {
-	this->updateKeybinds(dt);
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)) { std::cout << "A pressed" << std::endl; }
 }
 
 bool GameState::shouldQuit() {
