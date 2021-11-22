@@ -22,7 +22,13 @@ void Game::initVariables() {
                      Animation("../assets/character/Idle.png",
                                sf::IntRect(65, 55, 45, 50), Interval(162, 0),
                                Position(50, 50)));
+
+  sf::Texture alien_texture;
+  alien_texture.loadFromFile
+  Character alien();
 }
+
+
 
 void Game::initWindow() {
   this->videoMode.height = 720;
