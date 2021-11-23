@@ -14,9 +14,10 @@ public:
   ~GameState() override;
 
   // Functions
-  void update(const float &dt) override;
+  void update(const float &dt);
   void render(sf::RenderTarget *target) override;
   void updateKeybinds(const float &dt) override;
+  void updateMap(const float &dt, sf::Vector2f playerPos) override;
   void checkIfQuitting() override;
   void quitStateActions() override;
 };

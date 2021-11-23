@@ -23,6 +23,11 @@ void GameState::updateKeybinds(const float& dt) {
 	this->checkIfQuitting();
 }
 
+void GameState::updateMap(const float &dt, sf::Vector2f playerPos)
+{
+    this->map.update(playerPos);
+}
+
 void GameState::quitStateActions() {
 	std::cout << "Ending current game state" << std::endl;
 }

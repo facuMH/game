@@ -89,6 +89,7 @@ void Game::pollEvents() {
           case sf::Keyboard::Down:      // Down arrow
             player.animation.set_texture(character_texture_run);
             player.move(this->event.key.code);
+            this->states.top()->updateMap(dt, player.animation.get_position());
             break;
           default:
             break;
