@@ -23,7 +23,7 @@ class TileMap {
 	void setUpGrid(const LevelDesign& levelMap);
 
   public:
-	TileMap(AssetsManager& am);
+	TileMap(AssetsManager& am, const std::string& level);
 
 	virtual ~TileMap();
 

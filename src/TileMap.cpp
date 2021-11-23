@@ -40,7 +40,7 @@ void TileMap::setUpGrid(const LevelDesign& levelMap) {
 }
 
 // Constructor
-TileMap::TileMap(AssetsManager& am) {
+TileMap::TileMap(AssetsManager& am, const std::string& level) {
 	gridSize = 20;
 	// The window size fits exactly 32 x 24 tiles of grid size 20
 	maxSize.x = 32;
@@ -54,7 +54,7 @@ TileMap::TileMap(AssetsManager& am) {
 	tileTextureSheet = am.getMap(TILESHEET.c);
 
 	// load level design
-	LevelDesign levelMap = *am.getLevel(LEVEL1.c);
+	LevelDesign levelMap = *am.getLevel(level);
 	setUpGrid(levelMap);
 }
 

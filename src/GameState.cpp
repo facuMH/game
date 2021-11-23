@@ -3,7 +3,7 @@
 #include "AssetsPaths.h"
 #include "GameState.h"
 
-GameState::GameState(sf::RenderWindow* window, AssetsManager& am) : State(window), map(am) {}
+GameState::GameState(sf::RenderWindow* window, AssetsManager& am, const std::string& level) : State(window), map(am, level) {}
 
 GameState::~GameState() = default;
 
@@ -28,17 +28,17 @@ void GameState::quitStateActions() {
 }
 
 // --- COMBAT STATE
-CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, Party p, Enemies e) : State(window), map(am) {
+CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, Party p, Enemies e, const std::string& level) : State(window), map(am, level) {
 	party = p;
 	enemies = e;
-	map.updateLevel(am, COMBATLEVEL.c);
+	std::cout << "New Combat\n";
 }
 
 CombatState::~CombatState() {}
 
 void CombatState::update(const float& dt) {
-	this->updateKeybinds(dt);
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)) { std::cout << "A pressed" << std::endl; }
+	updateKeybinds(dt);
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)) enemies = {};
 }
 
 void CombatState::render(sf::RenderTarget* target) {

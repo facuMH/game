@@ -10,6 +10,7 @@ void Game::initVariables() {
 	window = nullptr;
 	Texture* play_text = assetsManager.getTexture(IDLE.c);
 	Animation player_animation(play_text, sf::IntRect(65, 55, 45, 50), Interval(162, 0), Position(50, 50));
+	player_animation.sprite.setScale({0.7, 0.7});
 	player = Character("Adventurer", Stats(15, 20, 50, 30), player_animation);
 }
 
@@ -40,7 +41,7 @@ void Game::initWindow() {
 }
 
 void Game::initStates() {
-	states.push(new GameState(window, assetsManager));
+	states.push(new GameState(window, assetsManager, LEVEL1.c));
 }
 
 // Constructor
@@ -74,7 +75,7 @@ void Game::makeNewCombat(const int numberOfEnemis) {
 	Animation alien_animation(alien_texture, sf::IntRect(50, 25, 105, 145), Interval(210, 0), Position(100, 100));
 	Character alien("Alien", Stats(15, 25, 50, 30), alien_animation);
 	Enemies enemies{alien};
-	states.push(new CombatState(window, assetsManager, {player}, enemies));
+	states.push(new CombatState(window, assetsManager, {player}, enemies, COMBATLEVEL.c));
 }
 
 // Functions
@@ -121,7 +122,7 @@ void Game::update() {
 		// update current game state
 		this->states.top()->update(this->dt);
 		// check if the state is about to be quit
-		if(this->states.top()->isQuit()) {
+		if(this->states.top()->shouldQuit()) {
 			// quit actions
 			this->states.top()->quitStateActions();
 			delete this->states.top();

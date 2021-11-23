@@ -17,11 +17,10 @@ class Animation {
 		texture = newTexture;
 		texture_rectangle = first_animation;
 
-		sprite_interval = sprite_interval;
+		sprite_interval = new_sprite_interval;
 		sprite.setTexture(*texture);
 		sprite.setTextureRect(texture_rectangle);
 		sprite.setPosition(initial);
-		sprite.setScale({2, 2});
 	};
 
 	void set_texture(const sf::Texture* new_texture) { sprite.setTexture(*texture); }
