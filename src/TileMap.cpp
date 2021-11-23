@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "AssetsPaths.h"
 #include "TileMap.h"
 
@@ -14,8 +12,13 @@ sf::Vector2i map1Dto2D(int counter) {
 TileMap::TileMap(AssetsManager& am) {
 	gridSize = 20;
 	// The window size fits exactly 32 x 24 tiles of grid size 20
-	maxSize.x = 32;
-	maxSize.y = 24;
+	maxSize.x = 150;
+	maxSize.y = 150;
+
+    visibleFrom.x = 0;
+    visibleTo.y = 0;
+    visibleTo.x = 32;
+    visibleTo.y = 24;
 	nLayers = 1; // TODO: later we could have more than 1 layer
 
 	// initialize first rectangle (or tile) position in the upper left corner of the window
@@ -41,7 +44,7 @@ TileMap::TileMap(AssetsManager& am) {
 				// enter tiles only if within bounds, else, do nothing
 				if(x < maxSize.x && x >= 0 && y < maxSize.y && y >= 0 && z < nLayers && z >= 0) {
 					// store tiles in respective vector position
-					sf::Vector2i pos = map1Dto2D(levelMap[counter]);
+					sf::Vector2i pos = map1Dto2D(levelMap[y][x]);
 
 					// move textureRectangle to specified position in tile sheet to get the correct texture
 					textureRectangle.left = (pos.y * gridSize);
@@ -67,11 +70,31 @@ TileMap::~TileMap() {
 	}
 }
 
-void TileMap::update() {}
+void TileMap::update(sf::Vector2f playerPos) {
+    // update depending on character position
+    if (playerPos.x/gridSize >= float(visibleTo.x))
+    {
+        visibleFrom.x++;
+        visibleTo.x++;
+        std::cout << "Player pos: " << playerPos.x/gridSize << "and visibleTo " << visibleTo.x << std::endl;
+    }
+    if (playerPos.y/gridSize  >= float(visibleTo.y)) {
+        visibleFrom.y++;
+        visibleTo.y++;
+    }
+    if (playerPos.x/gridSize  <= float(visibleFrom.x)) {
+        visibleFrom.x--;
+        visibleTo.x--;
+    }
+    if (playerPos.y/gridSize  <= float(visibleFrom.y)) {
+        visibleFrom.y--;
+        visibleTo.y--;
+    }
+}
 
 void TileMap::render(sf::RenderTarget& target) {
-	for(int x = 0; x < maxSize.x; x++) {
-		for(int y = 0; y < maxSize.y; y++) {
+	for(int x = visibleFrom.x; x < visibleTo.x; x++) {
+		for(int y = visibleFrom.y = 0; y < visibleTo.y; y++) {
 			for(int z = 0; z < nLayers; z++) {
 				tiles[x][y][z][0]->render(target);
 			}

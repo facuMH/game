@@ -12,6 +12,10 @@ class TileMap {
 	int nLayers;
 	// max. number of tiles in x and y direction
 	sf::Vector2u maxSize;
+    // number of visible tiles in x and y direction
+    sf::Vector2u visibleFrom;
+    // number of visible tiles in x and y direction
+    sf::Vector2u visibleTo;
 	// holds the texture sheet loaded from file
 	MapBackground* tileTextureSheet;
 	// for manipulation rectangle-shaped tiles
@@ -25,7 +29,7 @@ class TileMap {
 
 	virtual ~TileMap();
 
-	void update();
+	void update(sf::Vector2f playerPos);
 
 	void render(sf::RenderTarget& target);
 };
