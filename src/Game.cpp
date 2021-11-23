@@ -74,8 +74,13 @@ void Game::makeNewCombat(const int numberOfEnemis) {
 	Texture* alien_texture = assetsManager.getTexture(ALIEN.c);
 	Animation alien_animation(alien_texture, sf::IntRect(50, 25, 105, 145), Interval(210, 0), Position(100, 100));
 	Character alien("Alien", Stats(15, 25, 50, 30), alien_animation);
-	Enemies enemies{alien};
+	Enemies enemies{};
+	for(int _; _ < numberOfEnemis; _++) {
+		alien.animation.move({50, 0});
+		enemies.push_back(alien);
+	}
 	states.push(new CombatState(window, assetsManager, {player}, enemies, COMBATLEVEL.c));
+	in_combat = true;
 }
 
 // Functions
@@ -86,18 +91,35 @@ void Game::pollEvents() {
 		// Event that is called when the close button is clicked
 		case sf::Event::Closed: this->window->close(); break;
 		case sf::Event::KeyPressed:
-			// Event that is called when the Escape button is pressed
-			switch(this->event.key.code) {
-			case(sf::Keyboard::Escape): window->close(); break;
-			case sf::Keyboard::Right: // Right arrow
-			case sf::Keyboard::Left:  // Left arrow
-			case sf::Keyboard::Up:    // Up arrow
-			case sf::Keyboard::Down:  // Down arrow
-				player.animation.set_texture(assetsManager.getTexture(RUN.c));
-				player.move(this->event.key.code);
-				break;
-			case sf::Keyboard::C: makeNewCombat(1);
-			default: break;
+			if(!in_combat) {
+				// Event that is called when the Escape button is pressed
+				switch(this->event.key.code) {
+				case(sf::Keyboard::Escape): window->close(); break;
+				case sf::Keyboard::Right: // Right arrow
+				case sf::Keyboard::Left:  // Left arrow
+				case sf::Keyboard::Up:    // Up arrow
+				case sf::Keyboard::Down:  // Down arrow
+					player.animation.set_texture(assetsManager.getTexture(RUN.c));
+					player.move(this->event.key.code);
+					break;
+				case sf::Keyboard::C: makeNewCombat(1);
+				default: break;
+				}
+			} else {
+				switch(this->event.key.code) {
+				case(sf::Keyboard::Escape):
+					// open pause menu
+					break;
+				case sf::Keyboard::Up: // Up arrow
+				                       // swich action up
+					break;
+				case sf::Keyboard::Down: // Down arrow
+				                         // swich action down
+					break;
+				case sf::Keyboard::Space:
+					// select combat action
+					break;
+				}
 			}
 			break;
 		case sf::Event::MouseMoved: break;

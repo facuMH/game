@@ -29,6 +29,8 @@ class CombatState : public State {
 	Party party;
 	Enemies enemies;
 	TileMap map;
+	CombatText lifeCounters;
+	void addCombatString(const Character& c, AssetsManager& am);
 
   public:
 	// Constructor

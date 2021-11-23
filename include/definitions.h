@@ -1,5 +1,7 @@
 #pragma once
 
+#include <unordered_map>
+
 #include "Tile.h"
 
 using Position = sf::Vector2f;
@@ -41,3 +43,4 @@ class Character;
 
 using Enemies = std::vector<Character>;
 using Party = std::vector<Character>;
+using CombatText = std::unordered_map<Name, sf::Text>;
