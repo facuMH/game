@@ -21,7 +21,7 @@ class TileMap {
 	TileMapVector tiles;
 
   public:
-	TileMap(AssetsManager& am);
+	explicit TileMap(AssetsManager& am);
 
 	virtual ~TileMap();
 

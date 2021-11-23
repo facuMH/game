@@ -1,5 +1,5 @@
-#include <iostream>
 #include <fstream>
+#include <iostream>
 
 #include "AssetsPaths.h"
 #include "Game.h"
@@ -70,44 +70,38 @@ bool Game::isRunning() const {
 
 // Functions
 void Game::pollEvents() {
-  // Event polling
-  while (this->window->pollEvent(this->event)) {
-    switch (this->event.type) {
-    // Event that is called when the close button is clicked
-    case sf::Event::Closed:
-      this->window->close();
-      break;
-    case sf::Event::KeyPressed:
-      // Event that is called when the Escape button is pressed
-      switch (this->event.key.code) {
-          case (sf::Keyboard::Escape):
-            window->close();
-            break;
-          case sf::Keyboard::Right:     // Right arrow
-          case sf::Keyboard::Left:      // Left arrow
-          case sf::Keyboard::Up:        // Up arrow
-          case sf::Keyboard::Down:      // Down arrow
-            player.animation.set_texture(character_texture_run);
-            player.move(this->event.key.code);
-            break;
-          default:
-            break;
-      }
-      break;
-    case sf::Event::MouseMoved:
-      break;
-    default:
-      player.animation.set_texture(character_texture_idle);
-      player.animation.next();
-      clock.restart();
-      break;
-    }
-  }
-  // idle animation
-  if (clock.getElapsedTime().asSeconds() > .05f) {
-    player.animation.next();
-    clock.restart();
-  }
+	// Event polling
+	while(this->window->pollEvent(this->event)) {
+		switch(this->event.type) {
+		// Event that is called when the close button is clicked
+		case sf::Event::Closed: this->window->close(); break;
+		case sf::Event::KeyPressed:
+			// Event that is called when the Escape button is pressed
+			switch(this->event.key.code) {
+			case(sf::Keyboard::Escape): window->close(); break;
+			case sf::Keyboard::Right: // Right arrow
+			case sf::Keyboard::Left:  // Left arrow
+			case sf::Keyboard::Up:    // Up arrow
+			case sf::Keyboard::Down:  // Down arrow
+				player.animation.set_texture(character_texture_run);
+				player.move(this->event.key.code);
+				break;
+			default: break;
+			}
+			break;
+		case sf::Event::MouseMoved: break;
+		default:
+			player.animation.set_texture(character_texture_idle);
+			player.animation.next();
+			clock.restart();
+			break;
+		}
+	}
+	// idle animation
+	if(clock.getElapsedTime().asSeconds() > .05f) {
+		player.animation.next();
+		clock.restart();
+	}
 }
 
 void Game::update() {
@@ -123,15 +117,12 @@ void Game::update() {
 			delete this->states.top();
 			this->states.pop();
 		}
+	} else { // End of application
+		// Since the game depends on the window being open (see function
+		// isRunning()), closing the window ends the game
+		Game::endApplication();
+		this->window->close();
 	}
-
-  // End of application
-  else {
-    // Since the game depends on the window being open (see function
-    // isRunning()), closing the window ends the game
-    Game::endApplication();
-    this->window->close();
-  }
 }
 
 void Game::render() {
