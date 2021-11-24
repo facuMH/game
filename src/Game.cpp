@@ -86,7 +86,7 @@ void Game::pollEvents() {
 			case sf::Keyboard::Up:    // Up arrow
 			case sf::Keyboard::Down:  // Down arrow
 				player.animation.set_texture(character_texture_run);
-				player.move(this->event.key.code);
+				player.move(this->event.key.code, &view);
 				break;
 			default: break;
 			}
