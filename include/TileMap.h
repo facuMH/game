@@ -17,11 +17,12 @@ class TileMap {
     // number of visible tiles in x and y direction
     sf::Vector2u visibleTo;
 	// holds the texture sheet loaded from file
-	MapBackground* tileTextureSheet;
+	MapBackground* tileTextureSheetLayer1;
+    MapBackground* tileTextureSheetLayer2;
 	// for manipulation rectangle-shaped tiles
 	sf::IntRect textureRectangle;
 	// Concept:
-	// We create a matrix of tiles, but each tile itself is a vector
+	// We create a matrix of tiles, but each tile itself is a vector of layers
 	TileMapVector tiles;
 
   public:

@@ -30,6 +30,7 @@ class Game {
 
 	AssetsManager assetsManager;
 
+    sf::View view;
 	Character player;
 
 	// this should be moved a "LoadAssets" function where textures are loaded.

@@ -36,6 +36,8 @@ void Game::initWindow() {
 	this->window = new sf::RenderWindow(this->videoMode, title, sf::Style::Titlebar | sf::Style::Close);
 	this->window->setFramerateLimit(framerate_limit);
 	this->window->setVerticalSyncEnabled(vertical_sync_enabled);
+    view = sf::View(sf::Vector2f(320.f, 240.f), sf::Vector2f(640.f, 480.f));
+
 }
 
 void Game::initStates() {
@@ -88,7 +90,7 @@ void Game::pollEvents() {
           case sf::Keyboard::Up:        // Up arrow
           case sf::Keyboard::Down:      // Down arrow
             player.animation.set_texture(character_texture_run);
-            player.move(this->event.key.code);
+            player.move(this->event.key.code, &view);
             this->states.top()->updateMap(dt, player.animation.get_position());
             break;
           default:
@@ -144,6 +146,7 @@ void Game::render() {
 		// render current game state
 		this->states.top()->render(this->window);
 	}
+    window->setView(view);
 	window->draw(player.animation.sprite);
 	// Window is done drawing --> display result
 	window->display();
