@@ -16,13 +16,26 @@
  */
 class State {
 private:
+
+
+protected:
   std::vector<sf::Texture> textures;
   sf::RenderWindow *window;
+
+  std::map<std::string, int>* supportedKeys;
+  std::map<std::string, int> keybinds;
+  std::stack<State*>* states;
+  bool quit;
+
+  sf::Vector2i mousePosScreen;
+  sf::Vector2i mousePoseWindow;
+  sf::Vector2f mousePosView;
+
   bool isQuitting{};
 
 public:
   // Constructor
-  explicit State(sf::RenderWindow *window);
+   State(sf::RenderWindow *window, std::map<std::string, int>* supportesKeys, std::stack<State*>* states);
   // Destructor
   virtual ~State();
 
@@ -34,4 +47,8 @@ public:
   virtual void checkIfQuitting();
   const bool &isQuit() const;
   virtual void quitStateActions() = 0;
+
+
+  virtual void initKeybinds() = 0;	//Each state is gona have to define keybind
+  virtual void updateMousePositions();
 };

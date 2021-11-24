@@ -8,16 +8,18 @@ private:
     TileMap map;
 public:
   // Constructor
-  explicit GameState(sf::RenderWindow *window);
+   GameState(sf::RenderWindow *window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states);
   // Destructor
   ~GameState() override;
 
   // Functions
   void update(const float &dt) override;
-  void render(sf::RenderTarget *target) override;
+  void render(sf::RenderTarget *target = nullptr) override;
   void updateKeybinds(const float &dt) override;
   void checkIfQuitting() override;
   void quitStateActions() override;
+
+  void initKeybinds();
 };
 
 

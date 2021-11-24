@@ -6,6 +6,7 @@
 // Private functions
 void Game::initVariables() {
   this->window = nullptr;
+  this->dt = 0.f;
 
   if (!character_texture_idle.loadFromFile("../assets/character/Idle.png")) {
     std::cout << "character not found in: "
@@ -51,7 +52,16 @@ void Game::initWindow() {
   this->window->setVerticalSyncEnabled(vertical_sync_enabled);
 }
 
-void Game::initStates() { this->states.push(new GameState(this->window)); }
+void Game::initStates()
+{
+	// this->states.push(new GameState(this->window));
+
+
+	this->states.push(new MainMenuState(this->window, &this->supportedkeys, &this->states));
+
+
+	//this->states.push(new GameState(this->window, &this->supportedkeys, &this->states));
+}
 
 // Constructor
 Game::Game() {
@@ -167,3 +177,33 @@ void Game::updateDT() {
 }
 
 void Game::endApplication() { std::cout << "Ending application" << std::endl; }
+
+void updateKeybinds(const float &dt) { }
+void quitStateActions() { }
+
+void Game::initKeys()
+{
+	std::ifstream ifs("Config/Keys.ini");
+
+	if (ifs.is_open())
+	{
+		std::string key = "";
+		int key_value = 0;
+
+		while (ifs >> key >> key_value)
+		{
+			this->supportedkeys[key] = key_value;
+		}
+	}
+
+	ifs.close();
+
+
+
+	// DEBUG REMOVE LATER!
+	for (auto i: this->supportedkeys)
+	{
+		std::cout << i.first << " " << i.second << "\n";
+	}
+}
+

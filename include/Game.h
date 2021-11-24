@@ -10,6 +10,7 @@
 #include "Characters.h"
 #include "GameState.h"
 #include "MapTiles.h"
+#include "MainMenuState.h"
 
 /*
  * Wrapper class acting as game engine.
@@ -20,11 +21,14 @@ private:
   void initWindow();
   void initStates();
 
+  void initKeys();
+
   // window is a pointer, since the new-operator returns a pointer to
   // the beginning of the new block of memory allocated
   sf::RenderWindow *window;
   sf::VideoMode videoMode;
   sf::Event event{};
+  std::map<std::string, int> supportedkeys;
 
   Character player;
 
