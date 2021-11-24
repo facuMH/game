@@ -1,7 +1,7 @@
 #include <string>
 
 
-// consteexpr string concat from https://stackoverflow.com/a/65440575
+// constexpr string concat from https://stackoverflow.com/a/65440575
 template <unsigned L>
 struct String {
 	char c[L];
