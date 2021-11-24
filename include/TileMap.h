@@ -17,8 +17,8 @@ class TileMap {
     // number of visible tiles in x and y direction
     sf::Vector2u visibleTo;
 	// holds the texture sheet loaded from file
-	MapBackground* tileTextureSheetLayer1;
-    MapBackground* tileTextureSheetLayer2;
+    std::vector<MapBackground*> textureSheets;
+    std::vector<LevelDesign> designs;
 	// for manipulation rectangle-shaped tiles
 	sf::IntRect textureRectangle;
 	// Concept:
@@ -27,10 +27,8 @@ class TileMap {
 
   public:
 	explicit TileMap(AssetsManager& am);
-
 	virtual ~TileMap();
-
+    void initializeVariables(AssetsManager& am);
 	void update(sf::Vector2f playerPos);
-
 	void render(sf::RenderTarget& target);
 };

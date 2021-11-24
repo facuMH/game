@@ -55,7 +55,7 @@ class AssetsManager {
 		}
 	}
 
-	LevelDesign* getLevel(const std::string& name) {
+	LevelDesign* getLayer(const std::string& name) {
 		auto found = levels.find(name);
 		if(found != levels.end())
 			return &found->second;
