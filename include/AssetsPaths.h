@@ -34,10 +34,12 @@ constexpr auto IDLE = cat(CHARACTER.c, "Idle.png");
 constexpr auto RUN = cat(CHARACTER.c, "Run.png");
 
 // ---- TILES
-constexpr auto TILES = cat(ASSETS, "tiles/");
-constexpr auto TILESHEET = cat(TILES.c, "tilesheet.png");
+constexpr auto TILES = cat(ASSETS, "NinjaAdventure/Backgrounds/Tilesets/");
+constexpr auto TILESHEET_FLOOR = cat(TILES.c, "TilesetFloor.png");
+constexpr auto TILESHEET_NATURE = cat(TILES.c, "TilesetNature.png");
 
 // ---- CONFIG
 constexpr char CONFIG[] = "../config/";
-constexpr auto LEVEL1 = cat(CONFIG, "map.csv");
+constexpr auto LAYER1 = cat(CONFIG, "layer1.csv");
+constexpr auto LAYER2 = cat(CONFIG, "layer2.csv");
 

@@ -36,6 +36,8 @@ void Game::initWindow() {
 	this->window = new sf::RenderWindow(this->videoMode, title, sf::Style::Titlebar | sf::Style::Close);
 	this->window->setFramerateLimit(framerate_limit);
 	this->window->setVerticalSyncEnabled(vertical_sync_enabled);
+    view = sf::View(sf::Vector2f(320.f, 240.f), sf::Vector2f(640.f, 480.f));
+
 }
 
 void Game::initStates() {
@@ -102,6 +104,45 @@ void Game::pollEvents() {
 		player.animation.next();
 		clock.restart();
 	}
+  // Event polling
+  while (this->window->pollEvent(this->event)) {
+    switch (this->event.type) {
+    // Event that is called when the close button is clicked
+    case sf::Event::Closed:
+      this->window->close();
+      break;
+    case sf::Event::KeyPressed:
+      // Event that is called when the Escape button is pressed
+      switch (this->event.key.code) {
+          case (sf::Keyboard::Escape):
+            window->close();
+            break;
+          case sf::Keyboard::Right:     // Right arrow
+          case sf::Keyboard::Left:      // Left arrow
+          case sf::Keyboard::Up:        // Up arrow
+          case sf::Keyboard::Down:      // Down arrow
+            player.animation.set_texture(character_texture_run);
+            player.move(this->event.key.code, &view);
+            this->states.top()->updateMap(dt, player.animation.get_position());
+            break;
+          default:
+            break;
+      }
+      break;
+    case sf::Event::MouseMoved:
+      break;
+    default:
+      player.animation.set_texture(character_texture_idle);
+      player.animation.next();
+      clock.restart();
+      break;
+    }
+  }
+  // idle animation
+  if (clock.getElapsedTime().asSeconds() > .05f) {
+    player.animation.next();
+    clock.restart();
+  }
 }
 
 void Game::update() {
@@ -134,6 +175,7 @@ void Game::render() {
 		// render current game state
 		this->states.top()->render(this->window);
 	}
+    window->setView(view);
 	window->draw(player.animation.sprite);
 	// Window is done drawing --> display result
 	window->display();
