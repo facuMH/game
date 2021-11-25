@@ -38,19 +38,15 @@ void Game::initWindow() {
 	this->window->setVerticalSyncEnabled(vertical_sync_enabled);
 }
 
-void Game::initStates()
-{
+void Game::initStates() {
 	// this->states.push(new GameState(this->window));
-
-
-	this->states.push(new MainMenuState(this->window, &this->supportedkeys, &this->states));
-
-
-	//this->states.push(new GameState(this->window, &this->supportedkeys, &this->states));
+	this->states.push(new MainMenuState(window, assetsManager, &supportedkeys));
+	// this->states.push(new GameState(this->window, &this->supportedkeys, &this->states));
 }
 
 // Constructor
 Game::Game() {
+	initKeys();
 	this->initVariables();
 	this->initWindow();
 	this->initStates();
@@ -151,34 +147,23 @@ void Game::updateDT() {
 	// std::cout << "Time delta: " << this->dt << std::endl;
 }
 
-void Game::endApplication() { std::cout << "Ending application" << std::endl; }
+void Game::endApplication() {
+	std::cout << "Ending application" << std::endl;
+}
 
-void updateKeybinds(const float &dt) { }
-void quitStateActions() { }
+void updateKeybinds(const float& dt) {}
+void quitStateActions() {}
 
-void Game::initKeys()
-{
-	std::ifstream ifs("Config/Keys.ini");
+void Game::initKeys() {
+	std::ifstream ifs(KEYS.c);
 
-	if (ifs.is_open())
-	{
+	if(ifs.is_open()) {
 		std::string key = "";
 		int key_value = 0;
 
-		while (ifs >> key >> key_value)
-		{
-			this->supportedkeys[key] = key_value;
+		while(ifs >> key >> key_value) {
+			supportedkeys.emplace(key, key_value);
 		}
 	}
-
 	ifs.close();
-
-
-
-	// DEBUG REMOVE LATER!
-	for (auto i: this->supportedkeys)
-	{
-		std::cout << i.first << " " << i.second << "\n";
-	}
 }
-

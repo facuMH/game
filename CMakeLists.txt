@@ -24,7 +24,7 @@ set(SOURCES src/main.cpp
         src/Tile.cpp
         src/TileMap.cpp
         src/MainMenuState.cpp
-        src/Button.cpp
+        src/Button.cpp)
 
 set(HEADERS include/Animation.h
         include/AssetsManager.h

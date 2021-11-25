@@ -1,44 +1,51 @@
 
 #pragma once
 
-
-#include "GameState.h"
 #include "Button.h"
+#include "GameState.h"
+#include "definitions.h"
 
-class MainMenuState :
-    public State
-{
-private:
+class MainMenuState : public State {
+  private:
+	// Variable
+	sf::Texture backgroundTexture;
+	sf::RectangleShape background;
+	sf::Font font;
 
-    // Variable
-    sf::Texture backgroundTexture;
-    sf::RectangleShape background;
-    sf::Font font;
+	Buttons buttons;
 
-    std::map<std::string, Button*> buttons;
+	sf::Vector2i mousePosScreen;
+	sf::Vector2i mousePoseWindow;
+	sf::Vector2f mousePosView;
 
-    // Functions
-    void initVariables();
-    void initBackground();
-    void initFonts();
-    void initKeybinds();
-    void initButtons();
+	KeyList* supportedKeys;
+	KeyList keybinds;
 
-public:
-    MainMenuState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states);
+	bool quit{};
 
-    virtual ~MainMenuState();
+	// Functions
+	void initBackground(sf::RenderWindow* windoww, AssetsManager& am);
+	void initFonts(AssetsManager& am);
+	void initKeybinds();
+	void initButtons();
 
-    // Functions
-    void endState();
+	void updateMousePositions();
 
-    void updateInput(const float& dt);
-    void updateButtons();
-    void renderButtons(sf::RenderTarget* target = nullptr);
-    void update(const float& dt);
-    void render(sf::RenderTarget* target = nullptr);
+  public:
+	MainMenuState(sf::RenderWindow* window, AssetsManager& am, KeyList* supportedKeys);
 
-	void updateKeybinds(const float &dt) override;
+	virtual ~MainMenuState();
+
+	// Functions
+	void endState();
+
+	void updateInput(const float& dt);
+	void updateButtons();
+	void renderButtons(sf::RenderTarget* target = nullptr);
+	void update(const float& dt);
+	void render(sf::RenderTarget* target = nullptr);
+
+	void updateKeybinds(const float& dt) override;
 	void quitStateActions() override;
 	void checkIfQuitting() override;
 };

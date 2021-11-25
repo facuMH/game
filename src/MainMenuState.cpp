@@ -1,177 +1,120 @@
 #include "MainMenuState.h"
+#include "AssetsPaths.h"
 
-
-
-MainMenuState::MainMenuState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states)
-    : State(window, supportedKeys, states)
-{
-	this->initVariables();
-	this->initBackground();
-	this->initFonts();
-	this->initKeybinds();
-
-	this->initButtons();
+MainMenuState::MainMenuState(sf::RenderWindow* window, AssetsManager& am, KeyList* gameSupportedKeys) : State(window) {
+	supportedKeys = gameSupportedKeys;
+	initBackground(window, am);
+	initFonts(am);
+	initKeybinds();
+	initButtons();
 }
 
-void MainMenuState::initVariables()
-{
-
+void MainMenuState::initBackground(sf::RenderWindow* window, AssetsManager& am) {
+	background.setSize(sf::Vector2f(static_cast<float>(window->getSize().x), static_cast<float>(window->getSize().y)));
+	backgroundTexture = *am.getTexture(BACKGROUND.c);
+	background.setTexture(&backgroundTexture);
 }
 
-void MainMenuState::initBackground()
-{
-	this->background.setSize(sf::Vector2f(static_cast<float>(this->window->getSize().x), static_cast<float>(this->window->getSize().y)));
-
-	if(!this->backgroundTexture.loadFromFile("../assets/MainMenu/Background.jpeg"))
-	{
-		throw"Error::MainMENUSTATE::FAILED TO LOAD BACKGROUND TEXTURE";
-	}
-
-
-	this->background.setTexture(&this->backgroundTexture);
+void MainMenuState::initFonts(AssetsManager& am) {
+	font = *am.getFont(DOSIS.c);
 }
 
-void MainMenuState::initFonts()
-{
-	if (!this->font.loadFromFile("../Fonts/Dosis-Light.ttf"))
-	{
-		throw("Could not load font");
-	}
+void MainMenuState::initKeybinds() {
+	std::ifstream ifs(MENUKEYBIND.c);
 
-}
-
-void MainMenuState::initKeybinds()
-{
-
-	std::ifstream ifs("../config/mainmenustate_keysbind.ini");
-
-	if (ifs.is_open())
-	{
+	if(ifs.is_open()) {
 		std::string key = "";
 		std::string key2 = "";
 
-		while (ifs >> key >> key2)
-		{
-			this->keybinds[key] = this->supportedKeys->at(key2);
+		while(ifs >> key >> key2) {
+			keybinds[key] = supportedKeys->at(key2);
 		}
 	}
-	/*
-
 	ifs.close();
-
-	this->keybinds["CLOSE"] = this->supportedKeys->at("Escape");
-	this->keybinds["MOVE_LEFT"] = this->supportedKeys->at("A");
-	this->keybinds["MOVE_RIGHT"] = this->supportedKeys->at("D");
-	this->keybinds["MOVE_UP"] = this->supportedKeys->at("W");
-	this->keybinds["MOVE_DOWN"] = this->supportedKeys->at("S");*/
-
+	/*
+	keybinds["CLOSE"] = supportedKeys->at("Escape");
+	keybinds["MOVE_LEFT"] = supportedKeys->at("A");
+	keybinds["MOVE_RIGHT"] = supportedKeys->at("D");
+	keybinds["MOVE_UP"] = supportedKeys->at("W");
+	keybinds["MOVE_DOWN"] = supportedKeys->at("S");*/
 }
 
-void MainMenuState::initButtons()
-{
-	this->buttons["GAME_STATE"] = new Button(300, 480, 150, 50, &this->font, "New Game", sf::Color(70, 70, 70, 200), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 200));
-
-	this->buttons["SETTINGS"] = new Button(300, 580, 150, 50, &this->font, "Settings", sf::Color(70, 70, 70, 200), sf::Color(100, 100, 100, 255), sf::Color(20, 20, 20, 200));
-
-	this->buttons["EXIT"] = new Button(300, 680, 150, 50, &this->font, "QUIT", sf::Color(70, 70, 70, 200), sf::Color(100, 100, 100, 255), sf::Color(20, 20, 20, 200));
+void MainMenuState::initButtons() {
+	buttons["GAME_STATE"] = new Button(300, 480, 150, 50, &font, "New Game", GREY, LIGHTGREY, BLACK);
+	buttons["SETTINGS"] = new Button(300, 580, 150, 50, &font, "Settings", GREY, LIGHTGREY, BLACK);
+	buttons["EXIT"] = new Button(300, 680, 150, 50, &font, "QUIT", GREY, LIGHTGREY, BLACK);
 }
 
-MainMenuState::~MainMenuState()
-{
-	auto it = this->buttons.begin();
-
-	for (it = this->buttons.begin(); it != this->buttons.end(); ++it)
-	{
+MainMenuState::~MainMenuState() {
+	for(auto it = buttons.begin(); it != buttons.end(); ++it) {
 		delete it->second;
 	}
 }
 
-
-
-void MainMenuState::endState()
-{
-	std::cout << "Ending Maun Menu!" << "\n";
+void MainMenuState::endState() {
+	std::cout << "Ending Maun Menu!"
+	          << "\n";
 }
 
-void MainMenuState::updateInput(const float& dt)
-{
-	this->checkIfQuitting();
-
-
-
+void MainMenuState::updateInput(const float& dt) {
+	checkIfQuitting();
 }
 
-void MainMenuState::updateButtons()
-{
+void MainMenuState::updateButtons() {
 	/*Updates all the buttons in the state and handels their functionality*/
-
-	for (auto &it : this->buttons)
-	{
-		it.second->update(this->mousePosView);
+	for(auto& it : buttons) {
+		it.second->update(mousePosView);
 	}
 
 	// New Game
-	if (this->buttons["GAME_STATE"]->isPressed())
-	{
-		this->states->push(new GameState(this->window, this->supportedKeys, this->states));
-	}
+	// if(buttons["GAME_STATE"]->isPressed()) { states->push(new GameState(window, supportedKeys, states)); }
 
 	// Quit the game
-	if (this->buttons["EXIT"]->isPressed())
-	{
-		this->quit = true;
-	}
+	if(buttons["EXIT"]->isPressed()) { quit = true; }
 }
 
-
-void MainMenuState::update(const float& dt)
-{
-	this->updateMousePositions();
-	this->updateInput(dt);
-
-	this->updateButtons();
-
-
-	//this->gamestate_btn->update(this->mousePosView);
-
+void MainMenuState::updateMousePositions() {
+	mousePosScreen = sf::Mouse::getPosition();
+	mousePoseWindow = State::getMouse();
+	mousePosView = getPos(mousePoseWindow);
 }
 
-void MainMenuState::renderButtons(sf::RenderTarget* target)
-{
-	for (auto& it : this->buttons)
-	{
+void MainMenuState::update(const float& dt) {
+	updateMousePositions();
+	updateInput(dt);
+	updateButtons();
+}
+
+void MainMenuState::renderButtons(sf::RenderTarget* target) {
+	for(auto& it : buttons) {
 		it.second->render(target);
 	}
 }
 
-
-void MainMenuState::render(sf::RenderTarget* target)
-{
-	if (!target)
-		target = this->window;
-
-	target->draw(this->background);
-	this->renderButtons(target);
+void MainMenuState::render(sf::RenderTarget* target) {
+	target->draw(background);
+	renderButtons(target);
 
 	// Remove Later!!!!!
 	/*sf::Text mouseText;
-	mouseText.setPosition(this->mousePosView.x, this->mousePosView.y -50);
-	mouseText.setFont(this->font);
+	mouseText.setPosition(mousePosView.x, mousePosView.y -50);
+	mouseText.setFont(font);
 	mouseText.setCharacterSize(19);
 	std::stringstream ss;
-	ss << this->mousePosView.x << " " << this->mousePosView.y;
+	ss << mousePosView.x << " " << mousePosView.y;
 	mouseText.setString(ss.str());
 
 	target->draw(mouseText);*/
 }
 
-void MainMenuState::checkIfQuitting()
-{ State::checkIfQuitting(); }
+void MainMenuState::checkIfQuitting() {
+	State::checkIfQuitting();
+}
 
-void MainMenuState::updateKeybinds(const float &dt)
-{ this->checkIfQuitting(); }
+void MainMenuState::updateKeybinds(const float& dt) {
+	checkIfQuitting();
+}
 
-void MainMenuState::quitStateActions()
-{
+void MainMenuState::quitStateActions() {
 	std::cout << "Ending current game state" << std::endl;
 }

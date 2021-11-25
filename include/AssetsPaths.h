@@ -27,6 +27,9 @@ constexpr auto cat(const char (&s1)[L1], const char (&s2)[L2]) {
 // ---- ASSETS
 constexpr char ASSETS[] = "../assets/";
 
+// ---- MAIN MENU
+constexpr auto MAINMENU = cat(ASSETS, "MainMenu/");
+constexpr auto BACKGROUND = cat(MAINMENU.c, "Background.jpeg ");
 
 // ---- CHARACTER
 constexpr auto CHARACTER = cat(ASSETS, "character/");
@@ -40,3 +43,10 @@ constexpr auto TILESHEET = cat(TILES.c, "tilesheet.png");
 // ---- CONFIG
 constexpr char CONFIG[] = "../config/";
 constexpr auto LEVEL1 = cat(CONFIG, "level1.txt");
+constexpr auto KEYBIND = cat(CONFIG, "gamestate_Keysbind.ini");
+constexpr auto MENUKEYBIND = cat(CONFIG, "mainmenustate_keysbind.ini");
+constexpr auto KEYS = cat(CONFIG, "Keys.ini");
+
+// --- FONTS
+constexpr auto FONTS = cat(ASSETS, "fonts/");
+constexpr auto DOSIS = cat(FONTS.c, "Dosis-Light.ttf");
