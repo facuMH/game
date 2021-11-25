@@ -1,6 +1,0 @@
-"C:\Program Files\JetBrains\CLion 2021.2.3\bin\cmake\win\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_DEPENDS_USE_COMPILER=FALSE -G "CodeBlocks - MinGW Makefiles" "D:\uni innsbruck\AdvanceC++WS22\game"
--- Found SFML 2.5.1 in C:/dev/SFML/lib/cmake/SFML
-D:/uni innsbruck/AdvanceC++WS22/game
--- Configuring done
--- Generating done
--- Build files have been written to: D:/uni innsbruck/AdvanceC++WS22/game/cmake-build-debug
