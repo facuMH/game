@@ -1,5 +1,6 @@
 #pragma once
 
+#include "AssetsManager.h"
 #include "State.h"
 #include "TileMap.h"
 
@@ -8,7 +9,8 @@ private:
     TileMap map;
 public:
   // Constructor
-   GameState(sf::RenderWindow *window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states);
+  GameState(sf::RenderWindow *window, std::map<std::string, int> *supportedKeys,
+            window, AssetsManager &am, std::stack<State *> *states);
   // Destructor
   ~GameState() override;
 

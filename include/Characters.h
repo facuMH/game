@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <utility>
 
 #include "Inanimated.h"
 
@@ -13,15 +14,15 @@ public:
   Character() : name(""), stats(0, 0, 0, 0) {}
   Character(Name new_name, Stats new_stats, Animation new_anim)
       : name(new_name), stats(new_stats) {
-    animation = new_anim;
+    animation = std::move(new_anim);
     is_solid = true;
     can_interact = true;
   }
 
-  int get_str() { return stats.str; }
-  int get_dex() { return stats.dex; }
-  int get_hp() { return stats.hp; }
-  int get_mana() { return stats.mana; }
+  int get_str() const { return stats.str; }
+  int get_dex() const { return stats.dex; }
+  int get_hp() const { return stats.hp; }
+  int get_mana() const { return stats.mana; }
 
   void set_stats(Stats new_stats) { stats = new_stats; }
 
@@ -31,7 +32,7 @@ public:
   void recover_mana(const int recover) { stats.mana += recover; }
 
   void equip(Weapon *arms);
-  void move(const Position pos);
+  void move(const sf::Keyboard::Key key);
 
-  // TODO: multiple animations (idle, run, atack) perhaps on Entity.
+  // TODO: multiple animations (idle, run, attack) perhaps on Entity.
 };

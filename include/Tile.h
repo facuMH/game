@@ -9,19 +9,21 @@
 #include <stack>
 #include <vector>
 
-class Tile
-{
-private:
-protected:
-    sf::RectangleShape shape;
-public:
-    Tile();
 
-    Tile(float x, float y, float gridSize, const sf::Texture &texture, sf::IntRect rect);
 
-    virtual ~Tile();
+class Tile {
+  private:
+  protected:
+	sf::RectangleShape shape;
 
-    void update();
+  public:
+	Tile();
 
-    void render(sf::RenderTarget &target);
+	Tile(float x, float y, float gridSize, const sf::Texture* texture, sf::IntRect rect);
+
+	virtual ~Tile();
+
+	void update();
+
+	void render(sf::RenderTarget& target);
 };
