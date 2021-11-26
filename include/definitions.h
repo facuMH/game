@@ -12,7 +12,7 @@ using Position_i = sf::Vector2i;
 using Interval = sf::Vector2f;
 using Name = std::string;
 
-using TileLayers = std::vector<Tile *>;
+using TileLayers = std::vector<Tile*>;
 using TileMapColumns = std::vector<TileLayers>;
 using TileMapRows = std::vector<TileMapColumns>;
 using TileMapVector = std::vector<TileMapRows>;
@@ -33,7 +33,7 @@ class LevelDesign : public std::vector<int> {
 class MapBackground : public sf::Texture {};
 class Texture : public sf::Texture {};
 
-using Buttons = std::map<std::string, Button*>;
+using Buttons = std::vector<Button>;
 using KeyList = std::unordered_map<std::string, int>;
 
 struct Stats {

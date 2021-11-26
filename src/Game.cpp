@@ -1,5 +1,6 @@
 #include <fstream>
 #include <iostream>
+#include <typeinfo>
 
 #include "AssetsPaths.h"
 #include "Game.h"
@@ -7,9 +8,6 @@
 // Private functions
 void Game::initVariables() {
 	this->window = nullptr;
-	Texture* play_text = assetsManager.getTexture(IDLE.c);
-	Animation player_animation(play_text, sf::IntRect(65, 55, 45, 50), Interval(162, 0), Position(50, 50));
-	player = Character("Adventurer", Stats(15, 20, 50, 30), player_animation);
 }
 
 void Game::initWindow() {
@@ -39,9 +37,7 @@ void Game::initWindow() {
 }
 
 void Game::initStates() {
-	// this->states.push(new GameState(this->window));
 	this->states.push(new MainMenuState(window, assetsManager, &supportedkeys));
-	// this->states.push(new GameState(this->window, &this->supportedkeys, &this->states));
 }
 
 // Constructor
@@ -86,24 +82,16 @@ void Game::pollEvents() {
 			case sf::Keyboard::Left:  // Left arrow
 			case sf::Keyboard::Up:    // Up arrow
 			case sf::Keyboard::Down:  // Down arrow
-				player.animation.set_texture(character_texture_run);
-				player.move(this->event.key.code);
+				states.top()->handleKeys(event.key.code);
 				break;
 			default: break;
 			}
 			break;
 		case sf::Event::MouseMoved: break;
 		default:
-			player.animation.set_texture(character_texture_idle);
-			player.animation.next();
 			clock.restart();
 			break;
 		}
-	}
-	// idle animation
-	if(clock.getElapsedTime().asSeconds() > .05f) {
-		player.animation.next();
-		clock.restart();
 	}
 }
 
@@ -137,7 +125,6 @@ void Game::render() {
 		// render current game state
 		this->states.top()->render(this->window);
 	}
-	window->draw(player.animation.sprite);
 	// Window is done drawing --> display result
 	window->display();
 }

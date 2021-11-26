@@ -1,12 +1,16 @@
 #pragma once
 
 #include "AssetsManager.h"
+#include "Characters.h"
 #include "State.h"
 #include "TileMap.h"
 
 class GameState : public State {
   private:
 	TileMap map;
+	Character player;
+	AssetsManager* am;
+	sf::Clock clock;
 
   public:
 	// Constructor
@@ -20,6 +24,7 @@ class GameState : public State {
 	void updateKeybinds(const float& dt) override;
 	void checkIfQuitting() override;
 	void quitStateActions() override;
-
+	void handleKeys(sf::Keyboard::Key key) override;
+	void player_idle();
 	//void initKeybinds();
 };

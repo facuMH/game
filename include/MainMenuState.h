@@ -5,6 +5,8 @@
 #include "GameState.h"
 #include "definitions.h"
 
+constexpr int MAX_BUTTONS = 3;
+
 class MainMenuState : public State {
   private:
 	// Variable
@@ -13,6 +15,7 @@ class MainMenuState : public State {
 	sf::Font font;
 
 	Buttons buttons;
+	int activeButton;
 
 	sf::Vector2i mousePosScreen;
 	sf::Vector2i mousePoseWindow;
@@ -44,6 +47,7 @@ class MainMenuState : public State {
 	void renderButtons(sf::RenderTarget* target = nullptr);
 	void update(const float& dt);
 	void render(sf::RenderTarget* target = nullptr);
+	void handleKeys(sf::Keyboard::Key key) override;
 
 	void updateKeybinds(const float& dt) override;
 	void quitStateActions() override;

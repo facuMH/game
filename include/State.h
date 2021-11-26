@@ -21,10 +21,6 @@ class State {
 	std::vector<sf::Texture> textures;
 	sf::RenderWindow* window;
 
-	// std::map<std::string, int>* supportedKeys;
-	// std::map<std::string, int> keybinds;
-	// bool quit;
-
 	bool isQuitting{};
 
   public:
@@ -41,6 +37,7 @@ class State {
 	virtual void checkIfQuitting();
 	const bool& isQuit() const;
 	virtual void quitStateActions() = 0;
+	virtual void handleKeys(sf::Keyboard::Key key) = 0;
 	Position_i getMouse() const { return sf::Mouse::getPosition(*window); }
 	Position getPos(Position_i objectPosition) const { return window->mapPixelToCoords(objectPosition); }
 };

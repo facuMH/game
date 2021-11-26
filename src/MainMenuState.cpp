@@ -1,3 +1,6 @@
+
+#include <SFML/Window.hpp>
+
 #include "MainMenuState.h"
 #include "AssetsPaths.h"
 
@@ -31,25 +34,17 @@ void MainMenuState::initKeybinds() {
 		}
 	}
 	ifs.close();
-	/*
-	keybinds["CLOSE"] = supportedKeys->at("Escape");
-	keybinds["MOVE_LEFT"] = supportedKeys->at("A");
-	keybinds["MOVE_RIGHT"] = supportedKeys->at("D");
-	keybinds["MOVE_UP"] = supportedKeys->at("W");
-	keybinds["MOVE_DOWN"] = supportedKeys->at("S");*/
 }
 
 void MainMenuState::initButtons() {
-	buttons["GAME_STATE"] = new Button(300, 150, 150, 50, &font, "New Game", GREY, LIGHTGREY, BLACK);
-	buttons["SETTINGS"] = new Button(300, 200, 150, 50, &font, "Settings", GREY, LIGHTGREY, BLACK);
-	buttons["EXIT"] = new Button(300, 250, 150, 50, &font, "QUIT", GREY, LIGHTGREY, BLACK);
+	buttons.push_back(Button(300, 150, 150, 50, &font, "New Game", GREY, LIGHTGREY, BLACK));
+	activeButton = 0;
+	buttons[activeButton].setActive();
+	buttons.push_back(Button(300, 200, 150, 50, &font, "Settings", GREY, LIGHTGREY, BLACK));
+	buttons.push_back(Button(300, 250, 150, 50, &font, "QUIT", GREY, LIGHTGREY, BLACK));
 }
 
-MainMenuState::~MainMenuState() {
-	for(auto it = buttons.begin(); it != buttons.end(); ++it) {
-		delete it->second;
-	}
-}
+MainMenuState::~MainMenuState() {}
 
 void MainMenuState::endState() {
 	std::cout << "Ending Maun Menu!"
@@ -62,15 +57,9 @@ void MainMenuState::updateInput(const float& dt) {
 
 void MainMenuState::updateButtons() {
 	/*Updates all the buttons in the state and handels their functionality*/
-	for(auto& it : buttons) {
-		it.second->update(mousePosView);
+	for(auto it : buttons) {
+		it.update(mousePosView);
 	}
-
-	// New Game
-	// if(buttons["GAME_STATE"]->isPressed()) { states->push(new GameState(window, supportedKeys, states)); }
-
-	// Quit the game
-	if(buttons["EXIT"]->isPressed()) { quit = true; }
 }
 
 void MainMenuState::updateMousePositions() {
@@ -87,24 +76,13 @@ void MainMenuState::update(const float& dt) {
 
 void MainMenuState::renderButtons(sf::RenderTarget* target) {
 	for(auto& it : buttons) {
-		it.second->render(target);
+		it.render(target);
 	}
 }
 
 void MainMenuState::render(sf::RenderTarget* target) {
 	target->draw(background);
 	renderButtons(target);
-
-	// Remove Later!!!!!
-	/*sf::Text mouseText;
-	mouseText.setPosition(mousePosView.x, mousePosView.y -50);
-	mouseText.setFont(font);
-	mouseText.setCharacterSize(19);
-	std::stringstream ss;
-	ss << mousePosView.x << " " << mousePosView.y;
-	mouseText.setString(ss.str());
-
-	target->draw(mouseText);*/
 }
 
 void MainMenuState::checkIfQuitting() {
@@ -117,4 +95,28 @@ void MainMenuState::updateKeybinds(const float& dt) {
 
 void MainMenuState::quitStateActions() {
 	std::cout << "Ending current game state" << std::endl;
+}
+
+void MainMenuState::handleKeys(sf::Keyboard::Key key) {
+	switch(key) {
+	case sf::Keyboard::Up: // Up arrow
+		buttons[activeButton].setInctive();
+		if(activeButton == 0) {
+			activeButton = MAX_BUTTONS - 1;
+		} else {
+			activeButton--;
+		}
+		buttons[activeButton].setActive();
+		break;
+	case sf::Keyboard::Down : // Down arrow
+		buttons[activeButton].setInctive();
+		if(activeButton == MAX_BUTTONS-1) {
+			activeButton = 0;
+		} else {
+			activeButton++;
+		}
+		buttons[activeButton].setActive();
+		break;
+	default: break;
+	}
 }
