@@ -26,5 +26,5 @@ class GameState : public State {
 	void quitStateActions() override;
 	void handleKeys(sf::Keyboard::Key key) override;
 	void player_idle();
-	//void initKeybinds();
+	StateAction shouldAct() override;
 };

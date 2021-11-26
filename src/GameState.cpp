@@ -56,3 +56,7 @@ void GameState::player_idle() {
 	player.animation.set_texture(*am->getTexture(IDLE.c));
 	player.animation.next();
 }
+
+StateAction GameState::shouldAct() {
+	return StateAction::NONE;
+}

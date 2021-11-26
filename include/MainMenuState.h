@@ -52,4 +52,5 @@ class MainMenuState : public State {
 	void updateKeybinds(const float& dt) override;
 	void quitStateActions() override;
 	void checkIfQuitting() override;
+	StateAction shouldAct() override;
 };

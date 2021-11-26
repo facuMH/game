@@ -70,6 +70,7 @@ bool Game::isRunning() const {
 // Functions
 void Game::pollEvents() {
 	// Event polling
+	StateAction action;
 	while(this->window->pollEvent(this->event)) {
 		switch(this->event.type) {
 		// Event that is called when the close button is clicked
@@ -84,13 +85,16 @@ void Game::pollEvents() {
 			case sf::Keyboard::Down:  // Down arrow
 				states.top()->handleKeys(event.key.code);
 				break;
+			case sf::Keyboard::Enter:
+				action = states.top()->shouldAct();
+				if(action == StateAction::EXIT_GAME) { this->window->close(); }
+				if(action == StateAction::START_GAME) { states.push(new GameState(window, assetsManager)); }
+				break;
 			default: break;
 			}
 			break;
 		case sf::Event::MouseMoved: break;
-		default:
-			clock.restart();
-			break;
+		default: clock.restart(); break;
 		}
 	}
 }
