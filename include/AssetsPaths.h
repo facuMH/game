@@ -1,6 +1,5 @@
 #include <string>
 
-
 // constexpr string concat from https://stackoverflow.com/a/65440575
 template <unsigned L>
 struct String {
@@ -34,7 +33,7 @@ constexpr auto IDLE = cat(CHARACTER.c, "Idle.png");
 constexpr auto RUN = cat(CHARACTER.c, "Run.png");
 
 // ---- TILES
-constexpr auto TILES = cat(ASSETS, "NinjaAdventure/Backgrounds/Tilesets/");
+constexpr auto TILES = cat(ASSETS, "tiles/");
 constexpr auto TILESHEET_FLOOR = cat(TILES.c, "TilesetFloor.png");
 constexpr auto TILESHEET_NATURE = cat(TILES.c, "TilesetNature.png");
 

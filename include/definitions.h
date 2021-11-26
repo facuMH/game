@@ -11,7 +11,7 @@ using TileLayers = std::vector<Tile *>;
 using TileMapColumns = std::vector<TileLayers>;
 using TileMapRows = std::vector<TileMapColumns>;
 using TileMapVector = std::vector<TileMapRows>;
-class LevelDesign : public std::vector<std::vector<int>> {
+class Design : public std::vector<std::vector<int>> {
   public:
 	// Helper function for reading a level definition from a CSV file into a vector
 	bool loadFromFile(const std::string& inputFile) {

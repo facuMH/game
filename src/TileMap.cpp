@@ -1,6 +1,7 @@
 #include "AssetsPaths.h"
 #include "TileMap.h"
 
+
 // Helper function for mapping an iteration counter to a tile from the tile sheet
 sf::Vector2i map1Dto2D(int counter) {
 	int row = counter / 16;
@@ -23,20 +24,14 @@ void TileMap::initializeVariables(AssetsManager& am)
 
     // initialize first rectangle (or tile) position in the upper left corner of the window
     textureRectangle = sf::IntRect(0, 0, gridSize, gridSize);
-
-    // load texture files
-    textureSheets.push_back(am.getMap(TILESHEET_FLOOR.c));
-    textureSheets.push_back(am.getMap(TILESHEET_NATURE.c));
-
-    // load layer designs
-    designs.push_back(*am.getLayer(LAYER1.c));
-    designs.push_back(*am.getLayer(LAYER2.c));
 }
 
 // Constructor
-TileMap::TileMap(AssetsManager& am) {
+TileMap::TileMap(AssetsManager& am, std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns) {
 
     initializeVariables(am);
+
+    nLayers = levelDesigns.size();
 
 	// set up 3D vector
 	tiles.resize(maxSize.x, TileMapRows());
@@ -50,20 +45,20 @@ TileMap::TileMap(AssetsManager& am) {
 				// enter tiles only if within bounds, else, do nothing
 				if(x < maxSize.x && x >= 0 && y < maxSize.y && y >= 0 && z < nLayers && z >= 0) {
 					// store tiles in respective vector position
-					sf::Vector2i pos = map1Dto2D(designs[z][y][x]);
+					sf::Vector2i pos = map1Dto2D(levelDesigns[z]->at(y).at(x));
 
 					// move textureRectangle to specified position in tile sheet to get the correct texture
 					textureRectangle.left = (pos.y * gridSize);
 					textureRectangle.top = (pos.x * gridSize);
 
 					// create new tile and save at correct position in the 3D array
-					tiles[x][y][z].push_back(new Tile(float(x * gridSize), float(y * gridSize), float(gridSize), textureSheets[z], textureRectangle));
+					tiles[x][y][z].push_back(new Tile(float(x * gridSize), float(y * gridSize), float(gridSize),
+                                                      textureSheets[z], textureRectangle));
 				}
 			}
 		}
 	}
 }
-
 
 TileMap::~TileMap() {
 	for(size_t x = 0; x < maxSize.x; x++) {
@@ -75,26 +70,6 @@ TileMap::~TileMap() {
 	}
 }
 
-void TileMap::update(sf::Vector2f playerPos) {
-    // update depending on character position
-    if (playerPos.x/gridSize >= float(visibleTo.x))
-    {
-        visibleFrom.x++;
-        visibleTo.x++;
-    }
-    if (playerPos.y/gridSize  >= float(visibleTo.y)) {
-        visibleFrom.y++;
-        visibleTo.y++;
-    }
-    if (playerPos.x/gridSize  <= float(visibleFrom.x)) {
-        visibleFrom.x--;
-        visibleTo.x--;
-    }
-    if (playerPos.y/gridSize  <= float(visibleFrom.y)) {
-        visibleFrom.y--;
-        visibleTo.y--;
-    }
-}
 
 void TileMap::render(sf::RenderTarget& target) {
 	for(int x = 0; x < maxSize.x; x++) {

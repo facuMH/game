@@ -7,7 +7,7 @@
 class TileMap {
   private:
 	// size of one tile
-	int gridSize = 20;
+	int gridSize;
 	// number of layers per tile position
 	int nLayers;
 	// max. number of tiles in x and y direction
@@ -16,9 +16,6 @@ class TileMap {
     sf::Vector2u visibleFrom;
     // number of visible tiles in x and y direction
     sf::Vector2u visibleTo;
-	// holds the texture sheet loaded from file
-    std::vector<MapBackground*> textureSheets;
-    std::vector<LevelDesign> designs;
 	// for manipulation rectangle-shaped tiles
 	sf::IntRect textureRectangle;
 	// Concept:
@@ -26,9 +23,8 @@ class TileMap {
 	TileMapVector tiles;
 
   public:
-	explicit TileMap(AssetsManager& am);
+	TileMap(AssetsManager& am, std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns);
 	virtual ~TileMap();
     void initializeVariables(AssetsManager& am);
-	void update(sf::Vector2f playerPos);
 	void render(sf::RenderTarget& target);
 };

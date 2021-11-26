@@ -1,4 +1,3 @@
-#include <fstream>
 #include <iostream>
 
 #include "AssetsPaths.h"
@@ -37,11 +36,17 @@ void Game::initWindow() {
 	this->window->setFramerateLimit(framerate_limit);
 	this->window->setVerticalSyncEnabled(vertical_sync_enabled);
     view = sf::View(sf::Vector2f(320.f, 240.f), sf::Vector2f(640.f, 480.f));
-
 }
 
 void Game::initStates() {
-	states.push(new GameState(window, assetsManager));
+	states.push(
+            new GameState(
+                    window,
+                    assetsManager,
+                    {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c)},
+                    {assetsManager.getDesign(LAYER1.c), assetsManager.getDesign(LAYER2.c)}
+            )
+    );
 }
 
 // Constructor
@@ -123,7 +128,6 @@ void Game::pollEvents() {
           case sf::Keyboard::Down:      // Down arrow
             player.animation.set_texture(character_texture_run);
             player.move(this->event.key.code, &view);
-            this->states.top()->updateMap(dt, player.animation.get_position());
             break;
           default:
             break;

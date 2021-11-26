@@ -9,15 +9,14 @@ private:
     TileMap map;
 public:
   // Constructor
-  explicit GameState(sf::RenderWindow* window, AssetsManager& am);
+  GameState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns);
   // Destructor
   ~GameState() override;
 
   // Functions
-  void update(const float &dt);
+  void update(const float &dt) override;
   void render(sf::RenderTarget *target) override;
   void updateKeybinds(const float &dt) override;
-  void updateMap(const float &dt, sf::Vector2f playerPos) override;
   void checkIfQuitting() override;
   void quitStateActions() override;
 };

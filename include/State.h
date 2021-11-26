@@ -31,7 +31,6 @@ public:
   virtual void update(const float &dt) = 0;
   virtual void render(sf::RenderTarget *target) = 0;
   virtual void updateKeybinds(const float &dt) = 0;
-  virtual void updateMap(const float &dt, sf::Vector2f playerPos) = 0;
   virtual void checkIfQuitting();
   const bool &isQuit() const;
   virtual void quitStateActions() = 0;

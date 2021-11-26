@@ -14,12 +14,12 @@ class AssetsManager {
 	std::unordered_map<std::string, Texture> textures;
 	std::unordered_map<std::string, sf::Font> fonts;
 	std::unordered_map<std::string, MapBackground> maps;
-	std::unordered_map<std::string, LevelDesign> levels;
+	std::unordered_map<std::string, Design> design;
 
 	void emplace(const std::string& name, const Texture& newAsset) { textures.emplace(name, newAsset); }
 	void emplace(const std::string& name, const sf::Font& newAsset) { fonts.emplace(name, newAsset); }
 	void emplace(const std::string& name, const MapBackground& newAsset) { maps.emplace(name, newAsset); }
-	void emplace(const std::string& name, const LevelDesign& newAsset) { levels.emplace(name, newAsset); }
+	void emplace(const std::string& name, const Design& newAsset) { design.emplace(name, newAsset); }
 
   public:
 	Texture* getTexture(const std::string& name) {
@@ -55,12 +55,12 @@ class AssetsManager {
 		}
 	}
 
-	LevelDesign* getLayer(const std::string& name) {
-		auto found = levels.find(name);
-		if(found != levels.end())
+	Design* getDesign(const std::string& name) {
+		auto found = design.find(name);
+		if(found != design.end())
 			return &found->second;
 		else {
-			if(loadAsset<LevelDesign>(name)) { return &levels.at(name); }
+			if(loadAsset<Design>(name)) { return &design.at(name); }
 			std::cout << "RPG ERROR: " << name << " is not a a texture\n";
 			return nullptr;
 		}
