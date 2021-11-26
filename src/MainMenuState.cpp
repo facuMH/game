@@ -40,9 +40,9 @@ void MainMenuState::initKeybinds() {
 }
 
 void MainMenuState::initButtons() {
-	buttons["GAME_STATE"] = new Button(300, 480, 150, 50, &font, "New Game", GREY, LIGHTGREY, BLACK);
-	buttons["SETTINGS"] = new Button(300, 580, 150, 50, &font, "Settings", GREY, LIGHTGREY, BLACK);
-	buttons["EXIT"] = new Button(300, 680, 150, 50, &font, "QUIT", GREY, LIGHTGREY, BLACK);
+	buttons["GAME_STATE"] = new Button(300, 150, 150, 50, &font, "New Game", GREY, LIGHTGREY, BLACK);
+	buttons["SETTINGS"] = new Button(300, 200, 150, 50, &font, "Settings", GREY, LIGHTGREY, BLACK);
+	buttons["EXIT"] = new Button(300, 250, 150, 50, &font, "QUIT", GREY, LIGHTGREY, BLACK);
 }
 
 MainMenuState::~MainMenuState() {
