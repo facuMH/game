@@ -9,7 +9,7 @@ private:
     TileMap map;
 public:
   // Constructor
-  explicit GameState(sf::RenderWindow* window, AssetsManager& am);
+  GameState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns);
   // Destructor
   ~GameState() override;
 
