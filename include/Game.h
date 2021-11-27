@@ -43,6 +43,8 @@ private:
     sf::Clock clock;
     sf::SoundBuffer soundBuffer;
     sf::Sound sound;
+    // just for sound demonstration purposes
+    sf::Keyboard::Key previousKey;
 
     // Time variables
     sf::Clock dtClock;

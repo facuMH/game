@@ -10,6 +10,7 @@ void Game::initVariables() {
 	Animation player_animation(play_text, sf::IntRect(65, 55, 45, 50), Interval(162, 0), Position(50, 50));
 	player = Character("Adventurer", Stats(15, 20, 50, 30), player_animation);
     soundBuffer = assetsManager.getSoundBuffer(GASP.c);
+    sound.setBuffer(soundBuffer);
 }
 
 void Game::initWindow() {
@@ -79,6 +80,7 @@ bool Game::isRunning() const {
 // Functions
 void Game::pollEvents()
 {
+
     // Event polling
     while (this->window->pollEvent(this->event))
     {
@@ -101,8 +103,11 @@ void Game::pollEvents()
                     case sf::Keyboard::Down:  // Down arrow
                         player.animation.set_texture(character_texture_run);
                         player.move(this->event.key.code, &view);
-                        sound.setBuffer(soundBuffer);
-                        sound.play();
+                        if (previousKey != this->event.key.code) {
+                            // play gasping sound each time the player changes direction
+                            sound.play();
+                        }
+                        previousKey = this->event.key.code;
                         break;
                     default:
                         break;
