@@ -9,6 +9,7 @@ void Game::initVariables() {
 	Texture* play_text = assetsManager.getTexture(IDLE.c);
 	Animation player_animation(play_text, sf::IntRect(65, 55, 45, 50), Interval(162, 0), Position(50, 50));
 	player = Character("Adventurer", Stats(15, 20, 50, 30), player_animation);
+    soundBuffer = assetsManager.getSoundBuffer(BLING.c);
 }
 
 void Game::initWindow() {
@@ -76,77 +77,49 @@ bool Game::isRunning() const {
 }
 
 // Functions
-void Game::pollEvents() {
-	// Event polling
-	while(this->window->pollEvent(this->event)) {
-		switch(this->event.type) {
-		// Event that is called when the close button is clicked
-		case sf::Event::Closed: this->window->close(); break;
-		case sf::Event::KeyPressed:
-			// Event that is called when the Escape button is pressed
-			switch(this->event.key.code) {
-			case(sf::Keyboard::Escape): window->close(); break;
-			case sf::Keyboard::Right: // Right arrow
-			case sf::Keyboard::Left:  // Left arrow
-			case sf::Keyboard::Up:    // Up arrow
-			case sf::Keyboard::Down:  // Down arrow
-				player.animation.set_texture(character_texture_run);
-				player.move(this->event.key.code, &view);
-				break;
-			default: break;
-			}
-			break;
-		case sf::Event::MouseMoved: break;
-		default:
-			player.animation.set_texture(character_texture_idle);
-			player.animation.next();
-			clock.restart();
-			break;
-		}
-	}
-	// idle animation
-	if(clock.getElapsedTime().asSeconds() > .05f) {
-		player.animation.next();
-		clock.restart();
-	}
-  // Event polling
-  while (this->window->pollEvent(this->event)) {
-    switch (this->event.type) {
-    // Event that is called when the close button is clicked
-    case sf::Event::Closed:
-      this->window->close();
-      break;
-    case sf::Event::KeyPressed:
-      // Event that is called when the Escape button is pressed
-      switch (this->event.key.code) {
-          case (sf::Keyboard::Escape):
-            window->close();
-            break;
-          case sf::Keyboard::Right:     // Right arrow
-          case sf::Keyboard::Left:      // Left arrow
-          case sf::Keyboard::Up:        // Up arrow
-          case sf::Keyboard::Down:      // Down arrow
-            player.animation.set_texture(character_texture_run);
-            player.move(this->event.key.code, &view);
-            break;
-          default:
-            break;
-      }
-      break;
-    case sf::Event::MouseMoved:
-      break;
-    default:
-      player.animation.set_texture(character_texture_idle);
-      player.animation.next();
-      clock.restart();
-      break;
+void Game::pollEvents()
+{
+    // Event polling
+    while (this->window->pollEvent(this->event))
+    {
+        switch (this->event.type)
+        {
+            // Event that is called when the close button is clicked
+            case sf::Event::Closed:
+                this->window->close();
+                break;
+            case sf::Event::KeyPressed:
+                // Event that is called when the Escape button is pressed
+                switch (this->event.key.code)
+                {
+                    case (sf::Keyboard::Escape):
+                        window->close();
+                        break;
+                    case sf::Keyboard::Right: // Right arrow
+                    case sf::Keyboard::Left:  // Left arrow
+                    case sf::Keyboard::Up:    // Up arrow
+                    case sf::Keyboard::Down:  // Down arrow
+                        player.animation.set_texture(character_texture_run);
+                        player.move(this->event.key.code, &view, soundBuffer);
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case sf::Event::MouseMoved:
+                break;
+            default:
+                player.animation.set_texture(character_texture_idle);
+                player.animation.next();
+                clock.restart();
+                break;
+        }
     }
-  }
-  // idle animation
-  if (clock.getElapsedTime().asSeconds() > .05f) {
-    player.animation.next();
-    clock.restart();
-  }
+    // idle animation
+    if (clock.getElapsedTime().asSeconds() > .05f) {
+        player.animation.next();
+        clock.restart();
+    }
 }
 
 void Game::update() {

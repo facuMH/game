@@ -2,6 +2,7 @@
 
 #include <string>
 #include <utility>
+#include <SFML/Audio/Sound.hpp>
 
 #include "Inanimated.h"
 
@@ -32,7 +33,7 @@ public:
   void recover_mana(const int recover) { stats.mana += recover; }
 
   void equip(Weapon *arms);
-  void move(sf::Keyboard::Key key, sf::View *view);
+  void move(sf::Keyboard::Key key, sf::View *view, const sf::SoundBuffer& soundBuffer);
 
   // TODO: multiple animations (idle, run, attack) perhaps on Entity.
 };
