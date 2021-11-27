@@ -9,7 +9,7 @@ void Game::initVariables() {
 	Texture* play_text = assetsManager.getTexture(IDLE.c);
 	Animation player_animation(play_text, sf::IntRect(65, 55, 45, 50), Interval(162, 0), Position(50, 50));
 	player = Character("Adventurer", Stats(15, 20, 50, 30), player_animation);
-    soundBuffer = assetsManager.getSoundBuffer(BLING.c);
+    soundBuffer = assetsManager.getSoundBuffer(GASP.c);
 }
 
 void Game::initWindow() {
@@ -100,7 +100,9 @@ void Game::pollEvents()
                     case sf::Keyboard::Up:    // Up arrow
                     case sf::Keyboard::Down:  // Down arrow
                         player.animation.set_texture(character_texture_run);
-                        player.move(this->event.key.code, &view, soundBuffer);
+                        player.move(this->event.key.code, &view);
+                        sound.setBuffer(soundBuffer);
+                        sound.play();
                         break;
                     default:
                         break;

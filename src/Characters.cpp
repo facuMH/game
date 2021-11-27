@@ -18,10 +18,9 @@ void Character::equip(Weapon *arms) {
 }
 
 // Move character up, down, left or right
-void Character::move(const sf::Keyboard::Key key, sf::View *view, const sf::SoundBuffer& soundBuffer) {
+void Character::move(const sf::Keyboard::Key key, sf::View *view) {
     constexpr float stepsize = 10.0f;
     animation.next();
-    sf::Sound sound;
     switch (key) {
         case sf::Keyboard::Left:
             animation.sprite.move({-stepsize, 0.0f});
@@ -29,8 +28,6 @@ void Character::move(const sf::Keyboard::Key key, sf::View *view, const sf::Soun
                 animation.mirror(animation.sprite.getLocalBounds().width);
             }
             view->move(-stepsize, 0.f);
-            sound.setBuffer(soundBuffer);
-            sound.play();
             break;
         case sf::Keyboard::Right:
             animation.sprite.move({stepsize, 0.0f});

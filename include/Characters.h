@@ -33,7 +33,7 @@ public:
   void recover_mana(const int recover) { stats.mana += recover; }
 
   void equip(Weapon *arms);
-  void move(sf::Keyboard::Key key, sf::View *view, const sf::SoundBuffer& soundBuffer);
+  void move(sf::Keyboard::Key key, sf::View *view);
 
   // TODO: multiple animations (idle, run, attack) perhaps on Entity.
 };

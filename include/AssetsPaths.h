@@ -49,4 +49,4 @@ constexpr auto SPARKLEMUSIC = cat(MUSIC.c, "sparkle-stars.ogg");
 
 // ---- SOUNDS FX
 constexpr auto SOUNDS = cat(ASSETS, "sounds/");
-constexpr auto BLING = cat(SOUNDS.c, "bling.ogg");
+constexpr auto GASP = cat(SOUNDS.c, "gasp.wav");

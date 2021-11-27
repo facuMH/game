@@ -42,6 +42,7 @@ private:
 
     sf::Clock clock;
     sf::SoundBuffer soundBuffer;
+    sf::Sound sound;
 
     // Time variables
     sf::Clock dtClock;
