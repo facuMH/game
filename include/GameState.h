@@ -20,7 +20,7 @@ class GameState : public State {
 
 	// Functions
 	void update(const float& dt) override;
-	void render(sf::RenderTarget* target = nullptr) override;
+	void render(sf::RenderTarget* target) override;
 	void updateKeybinds(const float& dt) override;
 	void checkIfQuitting() override;
 	void quitStateActions() override;

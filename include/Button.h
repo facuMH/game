@@ -9,11 +9,11 @@
 #include <stack>
 #include <vector>
 
-#include "SFML\Audio.hpp"
-#include "SFML\Graphics.hpp"
-#include "SFML\Network.hpp"
-#include "SFML\System.hpp"
-#include "SFML\Window.hpp"
+#include <SFML/Audio.hpp>
+#include <SFML/Graphics.hpp>
+#include <SFML/Network.hpp>
+#include <SFML/System.hpp>
+#include <SFML/Window.hpp>
 
 
 enum button_states { BTN_IDLE = 0, BTN_HOVER, BTN_ACTIVE };
@@ -40,6 +40,6 @@ class Button {
 	// Functions
 	void update(const sf::Vector2f mousePos);
 	void render(sf::RenderTarget* target);
-	void Button::setActive();
-	void Button::setInctive();
+	void setActive();
+	void setInactive();
 };

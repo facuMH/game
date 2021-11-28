@@ -28,8 +28,8 @@ constexpr auto cat(const char (&s1)[L1], const char (&s2)[L2]) {
 constexpr char ASSETS[] = "../assets/";
 
 // ---- MAIN MENU
-constexpr auto MAINMENU = cat(ASSETS, "MainMenu/");
-constexpr auto BACKGROUND = cat(MAINMENU.c, "Background.jpeg ");
+constexpr auto MAINMENU = cat(ASSETS, "menuBackgrounds/");
+constexpr auto BACKGROUND = cat(MAINMENU.c, "Background.jpeg");
 
 // ---- CHARACTER
 constexpr auto CHARACTER = cat(ASSETS, "character/");

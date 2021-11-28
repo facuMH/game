@@ -64,7 +64,7 @@ void Button::setActive() {
 	buttonState = BTN_ACTIVE;
 
 }
-void Button::setInctive() {
+void Button::setInactive() {
 	shape.setFillColor(idleColor);
 	buttonState = BTN_IDLE;
 }

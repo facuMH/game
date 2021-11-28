@@ -27,7 +27,7 @@ class MainMenuState : public State {
 	bool quit{};
 
 	// Functions
-	void initBackground(sf::RenderWindow* windoww, AssetsManager& am);
+	void initBackground(sf::RenderWindow* window, AssetsManager& am);
 	void initFonts(AssetsManager& am);
 	void initKeybinds();
 	void initButtons();
@@ -44,11 +44,11 @@ class MainMenuState : public State {
 
 	void updateInput(const float& dt);
 	void updateButtons();
-	void renderButtons(sf::RenderTarget* target = nullptr);
-	void update(const float& dt);
-	void render(sf::RenderTarget* target = nullptr);
-	void handleKeys(sf::Keyboard::Key key) override;
+	void renderButtons(sf::RenderTarget* target);
 
+	void update(const float& dt) override;
+	void render(sf::RenderTarget* target) override;
+	void handleKeys(sf::Keyboard::Key key) override;
 	void updateKeybinds(const float& dt) override;
 	void quitStateActions() override;
 	void checkIfQuitting() override;

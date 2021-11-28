@@ -149,7 +149,7 @@ void Game::initKeys() {
 	std::ifstream ifs(KEYS.c);
 
 	if(ifs.is_open()) {
-		std::string key = "";
+		std::string key;
 		int key_value = 0;
 
 		while(ifs >> key >> key_value) {

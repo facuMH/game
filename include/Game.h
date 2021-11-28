@@ -1,11 +1,12 @@
 #pragma once
 
+#include <unordered_map>
+
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
-#include <unordered_map>
 
 #include "AssetsManager.h"
 #include "Characters.h"

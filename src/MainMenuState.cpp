@@ -26,8 +26,8 @@ void MainMenuState::initKeybinds() {
 	std::ifstream ifs(MENUKEYBIND.c);
 
 	if(ifs.is_open()) {
-		std::string key = "";
-		std::string key2 = "";
+		std::string key;
+		std::string key2;
 
 		while(ifs >> key >> key2) {
 			keybinds[key] = supportedKeys->at(key2);
@@ -100,7 +100,7 @@ void MainMenuState::quitStateActions() {
 void MainMenuState::handleKeys(sf::Keyboard::Key key) {
 	switch(key) {
 	case sf::Keyboard::Up: // Up arrow
-		buttons[activeButton].setInctive();
+		buttons[activeButton].setInactive();
 		if(activeButton == 0) {
 			activeButton = MAX_BUTTONS - 1;
 		} else {
@@ -109,7 +109,7 @@ void MainMenuState::handleKeys(sf::Keyboard::Key key) {
 		buttons[activeButton].setActive();
 		break;
 	case sf::Keyboard::Down : // Down arrow
-		buttons[activeButton].setInctive();
+		buttons[activeButton].setInactive();
 		if(activeButton == MAX_BUTTONS-1) {
 			activeButton = 0;
 		} else {

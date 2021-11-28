@@ -2,7 +2,7 @@
 
 #include <unordered_map>
 
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
 
 #include "Button.h"
 #include "Tile.h"
