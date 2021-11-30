@@ -94,7 +94,7 @@ void Game::pollEvents() {
 			if(!in_combat) {
 				// Event that is called when the Escape button is pressed
 				switch(this->event.key.code) {
-				case(sf::Keyboard::Escape): window->close(); break;
+				case sf::Keyboard::Escape: window->close(); break;
 				case sf::Keyboard::Right: // Right arrow
 				case sf::Keyboard::Left:  // Left arrow
 				case sf::Keyboard::Up:    // Up arrow
@@ -107,7 +107,7 @@ void Game::pollEvents() {
 				}
 			} else {
 				switch(this->event.key.code) {
-				case(sf::Keyboard::Escape):
+				case sf::Keyboard::Escape:
 					// open pause menu
 					break;
 				case sf::Keyboard::Up: // Up arrow
@@ -119,6 +119,11 @@ void Game::pollEvents() {
 				case sf::Keyboard::Space:
 					// select combat action
 					break;
+				case sf::Keyboard::A:
+					// calling quitStateActions here is only for debug reasons
+					states.top()->quitStateActions();
+					in_combat = false;
+				default: break;
 				}
 			}
 			break;

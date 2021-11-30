@@ -53,7 +53,6 @@ CombatState::~CombatState() {}
 
 void CombatState::update(const float& dt) {
 	updateKeybinds(dt);
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)) enemies = {};
 }
 
 void CombatState::render(sf::RenderTarget* target) {
@@ -69,5 +68,7 @@ void CombatState::updateKeybinds(const float& dt) {
 }
 
 void CombatState::quitStateActions() {
+	// emptying enemies list here is purely for debug
+	enemies = {};
 	std::cout << "Ending current game state" << std::endl;
 }
