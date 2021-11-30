@@ -4,7 +4,8 @@
 #include "AssetsPaths.h"
 #include "GameState.h"
 
-GameState::GameState(sf::RenderWindow* window, AssetsManager& am, const std::string& level) : State(window), map(am, level) {}
+GameState::GameState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns)
+    : State(window), map(am, textureSheets, levelDesigns) {}
 
 GameState::~GameState() = default;
 
@@ -37,14 +38,16 @@ void CombatState::addCombatString(const Character& c, AssetsManager& am) {
 	lifeCounters.emplace(c.name, characterInfo);
 }
 
-CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, Party p, Enemies e, const std::string& level) : State(window), map(am, level) {
+CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am,               //
+	std::vector<MapBackground *> textureSheets, std::vector<Design *> levelDesigns, //
+	Party p, Enemies e) : State(window), map(am, textureSheets, levelDesigns) {
 	party = p;
 	enemies = e;
 	std::cout << "New Combat\n";
 	for(const auto& c : p) {
 		addCombatString(c, am);
 	}
-	for (const auto& c : e) {
+	for(const auto& c : e) {
 		addCombatString(c, am);
 	}
 }

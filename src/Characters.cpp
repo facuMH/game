@@ -1,4 +1,6 @@
 
+#include <SFML/Window.hpp>
+
 #include "Characters.h"
 
 // if a weapon is already equipped it is swapped with the new one
@@ -8,7 +10,7 @@ void Character::equip(Weapon *arms) {
     std::swap(weapon, arms);
     Position pos = animation.get_position();
 
-    // TODO: check for a free MapTile where you can actually drop the item.
+    // TODO: check for a free Tile where you can actually drop the item.
     arms->drop(pos);
   } else {
     weapon = arms;
@@ -17,7 +19,7 @@ void Character::equip(Weapon *arms) {
 }
 
 // Move character up, down, left or right
-void Character::move(const sf::Keyboard::Key key) {
+void Character::move(const sf::Keyboard::Key key, sf::View *view) {
     constexpr float stepsize = 10.0f;
     animation.next();
     switch (key) {
@@ -26,18 +28,22 @@ void Character::move(const sf::Keyboard::Key key) {
             if (animation.get_orientation().x > 0) {
                 animation.mirror(animation.sprite.getLocalBounds().width);
             }
+            view->move(-stepsize, 0.f);
             break;
         case sf::Keyboard::Right:
             animation.sprite.move({stepsize, 0.0f});
             if (animation.get_orientation().x < 0) {
                 animation.mirror();
             }
+            view->move(stepsize, 0.f);
             break;
         case sf::Keyboard::Up:
             animation.sprite.move({0.0f, -stepsize});
+            view->move(0.f, -stepsize);
             break;
         case sf::Keyboard::Down:
             animation.sprite.move({0.0f, stepsize});
+            view->move(0.f, stepsize);
             break;
         default:
             break;

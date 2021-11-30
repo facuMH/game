@@ -10,7 +10,6 @@
 #include "AssetsManager.h"
 #include "Characters.h"
 #include "GameState.h"
-#include "MapTiles.h"
 #include "definitions.h"
 
 /*
@@ -30,6 +29,7 @@ class Game {
 
 	AssetsManager assetsManager;
 
+    sf::View view;
 	Character player;
 	bool in_combat = false;
 

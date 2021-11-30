@@ -1,6 +1,6 @@
 #include <string>
 
-// consteexpr string concat from https://stackoverflow.com/a/65440575
+// constexpr string concat from https://stackoverflow.com/a/65440575
 template <unsigned L>
 struct String {
 	char c[L];
@@ -8,9 +8,9 @@ struct String {
 template <unsigned L1, unsigned L2>
 constexpr auto cat(const char (&s1)[L1], const char (&s2)[L2]) {
 	constexpr unsigned L3 = L1 + L2;
-	String<L3 + 1> restul = {};
-	restul.c[L3] = '\0';
-	char* dst = restul.c;
+	String<L3 + 1> result = {};
+	result.c[L3] = '\0';
+	char* dst = result.c;
 	const char* src = s1;
 	for(; *src != '\0'; src++, dst++) {
 		*dst = *src;
@@ -19,7 +19,7 @@ constexpr auto cat(const char (&s1)[L1], const char (&s2)[L2]) {
 	for(; *src != '\0'; src++, dst++) {
 		*dst = *src;
 	}
-	return restul;
+	return result;
 }
 // -------------------------
 
@@ -37,12 +37,14 @@ constexpr auto ALIEN = cat(ENEMIES.c, "alien.png");
 
 // ---- TILES
 constexpr auto TILES = cat(ASSETS, "tiles/");
-constexpr auto TILESHEET = cat(TILES.c, "tilesheet.png");
+constexpr auto TILESHEET_FLOOR = cat(TILES.c, "TilesetFloor.png");
+constexpr auto TILESHEET_NATURE = cat(TILES.c, "TilesetNature.png");
 
 // ---- CONFIG
 constexpr char CONFIG[] = "../config/";
-constexpr auto LEVEL1 = cat(CONFIG, "level1.txt");
-constexpr auto COMBATLEVEL = cat(CONFIG, "combat1.txt");
+constexpr auto LAYER1 = cat(CONFIG, "layer1.csv");
+constexpr auto LAYER2 = cat(CONFIG, "layer2.csv");
+constexpr auto COMBATLEVEL = cat(CONFIG, "combat1.csv");
 
 // ---- FONTS
 constexpr auto FONTS = cat(ASSETS, "fonts/");

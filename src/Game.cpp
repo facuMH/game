@@ -3,7 +3,6 @@
 
 #include "AssetsPaths.h"
 #include "Game.h"
-#include <fstream>
 
 // Private functions
 void Game::initVariables() {
@@ -38,10 +37,18 @@ void Game::initWindow() {
 	this->window = new sf::RenderWindow(this->videoMode, title, sf::Style::Titlebar | sf::Style::Close);
 	this->window->setFramerateLimit(framerate_limit);
 	this->window->setVerticalSyncEnabled(vertical_sync_enabled);
+    view = sf::View(sf::Vector2f(320.f, 240.f), sf::Vector2f(640.f, 480.f));
 }
 
 void Game::initStates() {
-	states.push(new GameState(window, assetsManager, LEVEL1.c));
+	states.push(
+            new GameState(
+                    window,
+                    assetsManager,
+                    {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c)},
+                    {assetsManager.getDesign(LAYER1.c), assetsManager.getDesign(LAYER2.c)}
+            )
+    );
 }
 
 // Constructor
@@ -75,11 +82,13 @@ void Game::makeNewCombat(const int numberOfEnemis) {
 	Animation alien_animation(alien_texture, sf::IntRect(50, 25, 105, 145), Interval(210, 0), Position(100, 100));
 	Character alien("Alien", Stats(15, 25, 50, 30), alien_animation);
 	Enemies enemies{};
-	for(int _; _ < numberOfEnemis; _++) {
+	for(int i=0; i < numberOfEnemis; i++) {
 		alien.animation.move({50, 0});
 		enemies.push_back(alien);
 	}
-	states.push(new CombatState(window, assetsManager, {player}, enemies, COMBATLEVEL.c));
+	auto mapTexture = {assetsManager.getMap(TILESHEET_FLOOR.c)};
+	auto designs = {assetsManager.getDesign(COMBATLEVEL.c)};
+	states.push(new CombatState(window, assetsManager, mapTexture, designs, {player}, enemies));
 	in_combat = true;
 }
 
@@ -100,7 +109,7 @@ void Game::pollEvents() {
 				case sf::Keyboard::Up:    // Up arrow
 				case sf::Keyboard::Down:  // Down arrow
 					player.animation.set_texture(assetsManager.getTexture(RUN.c));
-					player.move(this->event.key.code);
+					player.move(this->event.key.code, &view);
 					break;
 				case sf::Keyboard::C: makeNewCombat(1);
 				default: break;
@@ -155,10 +164,7 @@ void Game::update() {
 			delete this->states.top();
 			this->states.pop();
 		}
-	}
-
-	// End of application
-	else {
+	} else { // End of application
 		// Since the game depends on the window being open (see function
 		// isRunning()), closing the window ends the game
 		Game::endApplication();
@@ -175,6 +181,7 @@ void Game::render() {
 		// render current game state
 		this->states.top()->render(this->window);
 	}
+    window->setView(view);
 	window->draw(player.animation.sprite);
 	// Window is done drawing --> display result
 	window->display();

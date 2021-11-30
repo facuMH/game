@@ -12,7 +12,7 @@ class GameState : public State {
 
   public:
 	// Constructor
-	explicit GameState(sf::RenderWindow* window, AssetsManager& am, const std::string& level);
+	GameState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns);
 	// Destructor
 	~GameState() override;
 
@@ -34,7 +34,7 @@ class CombatState : public State {
 
   public:
 	// Constructor
-	explicit CombatState(sf::RenderWindow* window, AssetsManager& am, Party p, Enemies e, const std::string& level);
+	CombatState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns, Party p, Enemies e);
 	// Destructor
 	~CombatState() override;
 
