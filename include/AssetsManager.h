@@ -21,8 +21,8 @@ class AssetsManager {
 	void emplace(const std::string& name, const Texture& newAsset) { textures.emplace(name, newAsset); }
 	void emplace(const std::string& name, const sf::Font& newAsset) { fonts.emplace(name, newAsset); }
 	void emplace(const std::string& name, const MapBackground& newAsset) { maps.emplace(name, newAsset); }
-	void emplace(const std::string& name, const Design& newAsset) {design.emplace(name, newAsset);}
-    void emplace(const std::string& name, const sf::SoundBuffer& newAsset) {sounds.emplace(name, newAsset);}
+	void emplace(const std::string& name, const Design& newAsset) { design.emplace(name, newAsset); }
+    void emplace(const std::string& name, const sf::SoundBuffer& newAsset) { sounds.emplace(name, newAsset); }
 
 
   public:
@@ -32,7 +32,7 @@ class AssetsManager {
 			return &found->second;
 		else {
 			if(loadAsset<Texture>(name)) { return &textures.at(name); }
-			std::cout << "RPG ERROR: " << name << " is not a a texture\n";
+			std::cout << "RPG ERROR: " << name << " is not a texture\n";
 			return nullptr;
 		}
 	}
@@ -43,7 +43,7 @@ class AssetsManager {
 			return &found->second;
 		else {
 			if(loadAsset<sf::Font>(name)) { return &fonts.at(name); }
-			std::cout << "RPG ERROR: " << name << " is not a a texture\n";
+			std::cout << "RPG ERROR: " << name << " is not a font\n";
 			return nullptr;
 		}
 	}
@@ -54,7 +54,7 @@ class AssetsManager {
 			return &found->second;
 		else {
 			if(loadAsset<MapBackground>(name)) { return &maps.at(name); }
-			std::cout << "RPG ERROR: " << name << " is not a a texture\n";
+			std::cout << "RPG ERROR: " << name << " is not a map\n";
 			return nullptr;
 		}
 	}
@@ -65,7 +65,7 @@ class AssetsManager {
 			return &found->second;
 		else {
 			if(loadAsset<Design>(name)) { return &design.at(name); }
-			std::cout << "RPG ERROR: " << name << " is not a a texture\n";
+			std::cout << "RPG ERROR: " << name << " is not a design\n";
 			return nullptr;
 		}
 	}
@@ -73,10 +73,7 @@ class AssetsManager {
     sf::SoundBuffer getSoundBuffer(const std::string& name) {
         auto found = sounds.find(name);
         if (found != sounds.end())
-        {
-            std::cout << "Sound " << name << " loaded\n";
             return found->second;
-        }
         else
         {
             if (loadAsset<sf::SoundBuffer>(name))

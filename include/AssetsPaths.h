@@ -42,11 +42,6 @@ constexpr char CONFIG[] = "../config/";
 constexpr auto LAYER1 = cat(CONFIG, "layer1.csv");
 constexpr auto LAYER2 = cat(CONFIG, "layer2.csv");
 
-
-// ---- MUSIC
-constexpr auto MUSIC = cat(ASSETS, "music/");
-constexpr auto SPARKLEMUSIC = cat(MUSIC.c, "sparkle-stars.ogg");
-
-// ---- SOUNDS FX
+// ---- SOUND FX
 constexpr auto SOUNDS = cat(ASSETS, "sounds/");
 constexpr auto GASP = cat(SOUNDS.c, "gasp.wav");
