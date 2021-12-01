@@ -6,8 +6,10 @@
 #include "AssetsPaths.h"
 #include "GameState.h"
 
-GameState::GameState(sf::RenderWindow* window, AssetsManager& am) : State(window), map(am), am(&am) {
-	Texture* play_text = am.getTexture(IDLE.c);
+GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns)
+    : State(window), map(gameAM, textureSheets, levelDesigns) {
+	am = &gameAM;
+	Texture* play_text = am->getTexture(IDLE.c);
 	Animation player_animation(play_text, sf::IntRect(65, 55, 45, 50), Interval(162, 0), Position(50, 50));
 	player = Character("Adventurer", Stats(15, 20, 50, 30), player_animation);
 }
@@ -27,26 +29,29 @@ void GameState::render(sf::RenderTarget* target) {
 	target->draw(player.animation.sprite);
 }
 
-void GameState::checkIfQuitting() {
-	State::checkIfQuitting();
+void GameState::checkIfQuitting()
+{
+    State::checkIfQuitting();
 }
 
-void GameState::updateKeybinds(const float& dt) {
-	this->checkIfQuitting();
+void GameState::updateKeybinds(const float &dt)
+{
+    this->checkIfQuitting();
 }
 
-void GameState::quitStateActions() {
-	std::cout << "Ending current game state" << std::endl;
+void GameState::quitStateActions()
+{
+    std::cout << "Ending current game state" << std::endl;
 }
 
-void GameState::handleKeys(sf::Keyboard::Key key) {
+void GameState::handleKeys(sf::Keyboard::Key key, sf::View * view) {
 	switch(key) {
 	case sf::Keyboard::Right: // Right arrow
 	case sf::Keyboard::Left:  // Left arrow
 	case sf::Keyboard::Up:    // Up arrow
 	case sf::Keyboard::Down:  // Down arrow
 		player.animation.set_texture(*am->getTexture(RUN.c));
-		player.move(key);
+		player.move(key, view);
 		break;
 	default: player_idle(); break;
 	}

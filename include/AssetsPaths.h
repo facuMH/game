@@ -1,7 +1,6 @@
 #include <string>
 
-
-// consteexpr string concat from https://stackoverflow.com/a/65440575
+// constexpr string concat from https://stackoverflow.com/a/65440575
 template <unsigned L>
 struct String {
 	char c[L];
@@ -38,11 +37,13 @@ constexpr auto RUN = cat(CHARACTER.c, "Run.png");
 
 // ---- TILES
 constexpr auto TILES = cat(ASSETS, "tiles/");
-constexpr auto TILESHEET = cat(TILES.c, "tilesheet.png");
+constexpr auto TILESHEET_FLOOR = cat(TILES.c, "TilesetFloor.png");
+constexpr auto TILESHEET_NATURE = cat(TILES.c, "TilesetNature.png");
 
 // ---- CONFIG
 constexpr char CONFIG[] = "../config/";
-constexpr auto LEVEL1 = cat(CONFIG, "level1.txt");
+constexpr auto LAYER1 = cat(CONFIG, "layer1.csv");
+constexpr auto LAYER2 = cat(CONFIG, "layer2.csv");
 constexpr auto KEYBIND = cat(CONFIG, "gamestate_Keysbind.ini");
 constexpr auto MENUKEYBIND = cat(CONFIG, "mainmenustate_keysbind.ini");
 constexpr auto KEYS = cat(CONFIG, "Keys.ini");
@@ -50,3 +51,4 @@ constexpr auto KEYS = cat(CONFIG, "Keys.ini");
 // --- FONTS
 constexpr auto FONTS = cat(ASSETS, "fonts/");
 constexpr auto DOSIS = cat(FONTS.c, "Dosis-Light.ttf");
+

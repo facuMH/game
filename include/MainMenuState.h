@@ -27,7 +27,7 @@ class MainMenuState : public State {
 	bool quit{};
 
 	// Functions
-	void initBackground(sf::RenderWindow* window, AssetsManager& am);
+	void initBackground(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns);
 	void initFonts(AssetsManager& am);
 	void initKeybinds();
 	void initButtons();
@@ -35,7 +35,8 @@ class MainMenuState : public State {
 	void updateMousePositions();
 
   public:
-	MainMenuState(sf::RenderWindow* window, AssetsManager& am, KeyList* supportedKeys);
+	MainMenuState(
+	    sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns, KeyList* supportedKeys);
 
 	virtual ~MainMenuState();
 
@@ -48,7 +49,7 @@ class MainMenuState : public State {
 
 	void update(const float& dt) override;
 	void render(sf::RenderTarget* target) override;
-	void handleKeys(sf::Keyboard::Key key) override;
+	void handleKeys(sf::Keyboard::Key key, sf::View* view) override;
 	void updateKeybinds(const float& dt) override;
 	void quitStateActions() override;
 	void checkIfQuitting() override;

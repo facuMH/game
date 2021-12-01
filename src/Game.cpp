@@ -1,4 +1,3 @@
-#include <fstream>
 #include <iostream>
 #include <typeinfo>
 
@@ -34,10 +33,18 @@ void Game::initWindow() {
 	this->window = new sf::RenderWindow(this->videoMode, title, sf::Style::Titlebar | sf::Style::Close);
 	this->window->setFramerateLimit(framerate_limit);
 	this->window->setVerticalSyncEnabled(vertical_sync_enabled);
+    view = sf::View(sf::Vector2f(320.f, 240.f), sf::Vector2f(640.f, 480.f));
 }
 
 void Game::initStates() {
-	this->states.push(new MainMenuState(window, assetsManager, &supportedkeys));
+	states.push(new MainMenuState(
+                    window,
+                    assetsManager,
+                    {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c)},
+                        {assetsManager.getDesign(LAYER1.c), assetsManager.getDesign(LAYER2.c)},
+                                &supportedkeys
+            )
+    );
 }
 
 // Constructor
@@ -83,12 +90,15 @@ void Game::pollEvents() {
 			case sf::Keyboard::Left:  // Left arrow
 			case sf::Keyboard::Up:    // Up arrow
 			case sf::Keyboard::Down:  // Down arrow
-				states.top()->handleKeys(event.key.code);
+				states.top()->handleKeys(event.key.code, &view);
 				break;
 			case sf::Keyboard::Enter:
 				action = states.top()->shouldAct();
 				if(action == StateAction::EXIT_GAME) { this->window->close(); }
-				if(action == StateAction::START_GAME) { states.push(new GameState(window, assetsManager)); }
+				if(action == StateAction::START_GAME) {
+					states.push(new GameState(window, assetsManager, {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c)},
+					    {assetsManager.getDesign(LAYER1.c), assetsManager.getDesign(LAYER2.c)}));
+				}
 				break;
 			default: break;
 			}
@@ -129,6 +139,8 @@ void Game::render() {
 		// render current game state
 		this->states.top()->render(this->window);
 	}
+    window->setView(view);
+	window->draw(player.animation.sprite);
 	// Window is done drawing --> display result
 	window->display();
 }

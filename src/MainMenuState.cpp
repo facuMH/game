@@ -4,18 +4,21 @@
 #include "MainMenuState.h"
 #include "AssetsPaths.h"
 
-MainMenuState::MainMenuState(sf::RenderWindow* window, AssetsManager& am, KeyList* gameSupportedKeys) : State(window) {
+MainMenuState::MainMenuState(
+    sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns, KeyList* gameSupportedKeys)
+    : State(window) {
 	supportedKeys = gameSupportedKeys;
-	initBackground(window, am);
+	initBackground(window, am, textureSheets, levelDesigns);
 	initFonts(am);
 	initKeybinds();
 	initButtons();
 }
 
-void MainMenuState::initBackground(sf::RenderWindow* window, AssetsManager& am) {
+void MainMenuState::initBackground(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns) {
 	background.setSize(sf::Vector2f(static_cast<float>(window->getSize().x), static_cast<float>(window->getSize().y)));
 	backgroundTexture = *am.getTexture(BACKGROUND.c);
 	background.setTexture(&backgroundTexture);
+	// TODO: load background from textureSheets and Designs
 }
 
 void MainMenuState::initFonts(AssetsManager& am) {
@@ -97,7 +100,7 @@ void MainMenuState::quitStateActions() {
 	std::cout << "Ending current game state" << std::endl;
 }
 
-void MainMenuState::handleKeys(sf::Keyboard::Key key) {
+void MainMenuState::handleKeys(sf::Keyboard::Key key, sf::View* view) {
 	switch(key) {
 	case sf::Keyboard::Up: // Up arrow
 		buttons[activeButton].setInactive();

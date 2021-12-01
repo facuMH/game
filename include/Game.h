@@ -34,6 +34,14 @@ class Game {
 
 	AssetsManager assetsManager;
 
+    sf::View view;
+	Character player;
+
+	// this should be moved a "LoadAssets" function where textures are loaded.
+	Texture character_texture_idle;
+	Texture character_texture_run;
+	std::vector<Texture> player_textures;
+
 	sf::Clock clock;
 
 	// Time variables
