@@ -2,6 +2,7 @@
 
 #include <string>
 #include <utility>
+#include <SFML/Audio/Sound.hpp>
 
 #include "Inanimated.h"
 

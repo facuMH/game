@@ -7,6 +7,9 @@
 // Private functions
 void Game::initVariables() {
 	this->window = nullptr;
+  soundBuffer = assetsManager.getSoundBuffer(GASP.c);
+  sound.setBuffer(soundBuffer);
+
 }
 
 void Game::initWindow() {
@@ -75,6 +78,7 @@ bool Game::isRunning() const {
 }
 
 // Functions
+
 void Game::pollEvents() {
 	// Event polling
 	StateAction action;
@@ -91,6 +95,11 @@ void Game::pollEvents() {
 			case sf::Keyboard::Up:    // Up arrow
 			case sf::Keyboard::Down:  // Down arrow
 				states.top()->handleKeys(event.key.code, &view);
+        if (previousKey != this->event.key.code) {
+             // play gasping sound each time the player changes direction
+            sound.play();
+        }
+        previousKey = this->event.key.code;
 				break;
 			case sf::Keyboard::Enter:
 				action = states.top()->shouldAct();

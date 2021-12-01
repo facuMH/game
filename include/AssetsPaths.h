@@ -52,3 +52,6 @@ constexpr auto KEYS = cat(CONFIG, "Keys.ini");
 constexpr auto FONTS = cat(ASSETS, "fonts/");
 constexpr auto DOSIS = cat(FONTS.c, "Dosis-Light.ttf");
 
+// ---- SOUND FX
+constexpr auto SOUNDS = cat(ASSETS, "sounds/");
+constexpr auto GASP = cat(SOUNDS.c, "gasp.wav");

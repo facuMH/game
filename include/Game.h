@@ -30,12 +30,18 @@ class Game {
 	sf::RenderWindow* window;
 	sf::VideoMode videoMode;
 	sf::Event event{};
-	KeyList supportedkeys;
+
+  KeyList supportedkeys;
 
 	AssetsManager assetsManager;
 
-    sf::View view;
+	sf::View view;
 	Character player;
+
+	sf::SoundBuffer soundBuffer;
+	sf::Sound sound;
+	// just for demonstration purposes
+	sf::Keyboard::Key previousKey;
 
 	// this should be moved a "LoadAssets" function where textures are loaded.
 	Texture character_texture_idle;
