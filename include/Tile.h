@@ -9,8 +9,6 @@
 #include <stack>
 #include <vector>
 
-
-
 class Tile {
   private:
   protected:

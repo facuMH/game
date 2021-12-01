@@ -26,7 +26,11 @@ constexpr auto cat(const char (&s1)[L1], const char (&s2)[L2]) {
 // ---- ASSETS
 constexpr char ASSETS[] = "../assets/";
 
-// ---- CHARACTERS
+// ---- MAIN MENU
+constexpr auto MAINMENU = cat(ASSETS, "menuBackgrounds/");
+constexpr auto BACKGROUND = cat(MAINMENU.c, "Background.jpeg");
+
+// ---- CHARACTER
 constexpr auto CHARACTER = cat(ASSETS, "character/");
 constexpr auto IDLE = cat(CHARACTER.c, "Idle.png");
 constexpr auto RUN = cat(CHARACTER.c, "Run.png");
@@ -44,8 +48,16 @@ constexpr auto TILESHEET_NATURE = cat(TILES.c, "TilesetNature.png");
 constexpr char CONFIG[] = "../config/";
 constexpr auto LAYER1 = cat(CONFIG, "layer1.csv");
 constexpr auto LAYER2 = cat(CONFIG, "layer2.csv");
+constexpr auto KEYBIND = cat(CONFIG, "gamestate_Keysbind.ini");
+constexpr auto MENUKEYBIND = cat(CONFIG, "mainmenustate_keysbind.ini");
+constexpr auto KEYS = cat(CONFIG, "Keys.ini");
 constexpr auto COMBATLEVEL = cat(CONFIG, "combat1.csv");
 
-// ---- FONTS
+// --- FONTS
 constexpr auto FONTS = cat(ASSETS, "fonts/");
+constexpr auto DOSIS = cat(FONTS.c, "Dosis-Light.ttf");
 constexpr auto ALEX = cat(FONTS.c, "AlexandriaFLF.ttf");
+
+// ---- SOUND FX
+constexpr auto SOUNDS = cat(ASSETS, "sounds/");
+constexpr auto GASP = cat(SOUNDS.c, "gasp.wav");

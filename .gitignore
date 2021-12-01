@@ -35,6 +35,8 @@
 /build*
 /out
 .vs
+.idea
+cmake-*
 
 # misc
 ltmain.sh

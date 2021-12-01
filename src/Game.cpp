@@ -1,7 +1,9 @@
 #include <fstream>
 #include <iostream>
+#include <typeinfo>
 
 #include "AssetsPaths.h"
+#include "CombatState.h"
 #include "Game.h"
 
 // Private functions
@@ -37,22 +39,17 @@ void Game::initWindow() {
 	this->window = new sf::RenderWindow(this->videoMode, title, sf::Style::Titlebar | sf::Style::Close);
 	this->window->setFramerateLimit(framerate_limit);
 	this->window->setVerticalSyncEnabled(vertical_sync_enabled);
-    view = sf::View(sf::Vector2f(320.f, 240.f), sf::Vector2f(640.f, 480.f));
+	view = sf::View(sf::Vector2f(320.f, 240.f), sf::Vector2f(640.f, 480.f));
 }
 
 void Game::initStates() {
-	states.push(
-            new GameState(
-                    window,
-                    assetsManager,
-                    {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c)},
-                    {assetsManager.getDesign(LAYER1.c), assetsManager.getDesign(LAYER2.c)}
-            )
-    );
+	states.push(new MainMenuState(window, assetsManager, {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c)},
+	    {assetsManager.getDesign(LAYER1.c), assetsManager.getDesign(LAYER2.c)}, &supportedkeys));
 }
 
 // Constructor
 Game::Game() {
+	initKeys();
 	this->initVariables();
 	this->initWindow();
 	this->initStates();
@@ -82,7 +79,7 @@ void Game::makeNewCombat(const int numberOfEnemis) {
 	Animation alien_animation(alien_texture, sf::IntRect(50, 25, 105, 145), Interval(210, 0), Position(100, 100));
 	Character alien("Alien", Stats(15, 25, 50, 30), alien_animation);
 	Enemies enemies{};
-	for(int i=0; i < numberOfEnemis; i++) {
+	for(int i = 0; i < numberOfEnemis; i++) {
 		alien.animation.move({50, 0});
 		enemies.push_back(alien);
 	}
@@ -93,8 +90,10 @@ void Game::makeNewCombat(const int numberOfEnemis) {
 }
 
 // Functions
+
 void Game::pollEvents() {
 	// Event polling
+	StateAction action;
 	while(this->window->pollEvent(this->event)) {
 		switch(this->event.type) {
 		// Event that is called when the close button is clicked
@@ -108,10 +107,22 @@ void Game::pollEvents() {
 				case sf::Keyboard::Left:  // Left arrow
 				case sf::Keyboard::Up:    // Up arrow
 				case sf::Keyboard::Down:  // Down arrow
-					player.animation.set_texture(assetsManager.getTexture(RUN.c));
-					player.move(this->event.key.code, &view);
+					states.top()->handleKeys(event.key.code, &view);
+					if(previousKey != this->event.key.code) {
+						// play gasping sound each time the player changes direction
+						sound.play();
+					}
+					previousKey = this->event.key.code;
 					break;
-				case sf::Keyboard::C: makeNewCombat(1);
+				case sf::Keyboard::C: makeNewCombat(1); break;
+				case sf::Keyboard::Enter:
+					action = states.top()->shouldAct();
+					if(action == StateAction::EXIT_GAME) { this->window->close(); }
+					if(action == StateAction::START_GAME) {
+						states.push(new GameState(window, assetsManager, {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c)},
+						    {assetsManager.getDesign(LAYER1.c), assetsManager.getDesign(LAYER2.c)}));
+					}
+					break;
 				default: break;
 				}
 			} else {
@@ -143,11 +154,6 @@ void Game::pollEvents() {
 			clock.restart();
 			break;
 		}
-	}
-	// idle animation
-	if(clock.getElapsedTime().asSeconds() > .05f) {
-		player.animation.next();
-		clock.restart();
 	}
 }
 
@@ -181,7 +187,7 @@ void Game::render() {
 		// render current game state
 		this->states.top()->render(this->window);
 	}
-    window->setView(view);
+	window->setView(view);
 	window->draw(player.animation.sprite);
 	// Window is done drawing --> display result
 	window->display();
@@ -194,4 +200,21 @@ void Game::updateDT() {
 
 void Game::endApplication() {
 	std::cout << "Ending application" << std::endl;
+}
+
+void updateKeybinds(const float& dt) {}
+void quitStateActions() {}
+
+void Game::initKeys() {
+	std::ifstream ifs(KEYS.c);
+
+	if(ifs.is_open()) {
+		std::string key;
+		int key_value = 0;
+
+		while(ifs >> key >> key_value) {
+			supportedkeys.emplace(key, key_value);
+		}
+	}
+	ifs.close();
 }

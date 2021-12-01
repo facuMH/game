@@ -1,37 +1,45 @@
 #pragma once
 
+#include <fstream>
+#include <sstream>
+#include <stack>
+#include <vector>
+
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 
-#include <fstream>
-#include <sstream>
-#include <stack>
-#include <vector>
+#include "definitions.h"
 
 /**
  * Parent class for States: GameState, ...
  */
 class State {
-private:
-  std::vector<sf::Texture> textures;
-  sf::RenderWindow *window;
-  bool isQuitting{};
+  private:
+	std::vector<sf::Texture> textures;
+	sf::RenderWindow* window;
 
-public:
-  // Constructor
-  explicit State(sf::RenderWindow *window);
-  // Destructor
-  virtual ~State();
+	bool isQuitting{};
 
-  // virtual ==> application on run-time object of child class (i.e. GameState)
-  // these MUST be defined in child class
-  virtual void update(const float &dt) = 0;
-  virtual void render(sf::RenderTarget *target) = 0;
-  virtual void updateKeybinds(const float &dt) = 0;
-  virtual bool shouldQuit();
-  const bool &isQuit() const;
-  virtual void quitStateActions() = 0;
+  public:
+	// Constructor
+	State(sf::RenderWindow* window);
+	// Destructor
+	virtual ~State();
+
+	// virtual ==> application on run-time object of child class (i.e. GameState)
+	// these MUST be defined in child class
+	virtual void update(const float& dt) = 0;
+	virtual void render(sf::RenderTarget* target) = 0;
+	virtual void updateKeybinds(const float& dt) = 0;
+    bool shouldQuit();
+	void checkIfQuitting();
+	const bool& isQuit() const;
+	virtual void quitStateActions() = 0;
+	virtual void handleKeys(const sf::Keyboard::Key key, sf::View* view) = 0;
+	virtual StateAction shouldAct() = 0;
+	Position_i getMouse() const { return sf::Mouse::getPosition(*window); }
+	Position getPos(Position_i objectPosition) const { return window->mapPixelToCoords(objectPosition); }
 };
