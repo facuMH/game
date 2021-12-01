@@ -1,4 +1,5 @@
 #include <iostream>
+#include <typeinfo>
 
 #include "AssetsPaths.h"
 #include "Game.h"
@@ -6,11 +7,9 @@
 // Private functions
 void Game::initVariables() {
 	this->window = nullptr;
-	Texture* play_text = assetsManager.getTexture(IDLE.c);
-	Animation player_animation(play_text, sf::IntRect(65, 55, 45, 50), Interval(162, 0), Position(50, 50));
-	player = Character("Adventurer", Stats(15, 20, 50, 30), player_animation);
-    soundBuffer = assetsManager.getSoundBuffer(GASP.c);
-    sound.setBuffer(soundBuffer);
+  soundBuffer = assetsManager.getSoundBuffer(GASP.c);
+  sound.setBuffer(soundBuffer);
+
 }
 
 void Game::initWindow() {
@@ -41,18 +40,19 @@ void Game::initWindow() {
 }
 
 void Game::initStates() {
-	states.push(
-            new GameState(
+	states.push(new MainMenuState(
                     window,
                     assetsManager,
                     {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c)},
-                    {assetsManager.getDesign(LAYER1.c), assetsManager.getDesign(LAYER2.c)}
+                        {assetsManager.getDesign(LAYER1.c), assetsManager.getDesign(LAYER2.c)},
+                                &supportedkeys
             )
     );
 }
 
 // Constructor
 Game::Game() {
+	initKeys();
 	this->initVariables();
 	this->initWindow();
 	this->initStates();
@@ -78,55 +78,44 @@ bool Game::isRunning() const {
 }
 
 // Functions
-void Game::pollEvents()
-{
 
-    // Event polling
-    while (this->window->pollEvent(this->event))
-    {
-        switch (this->event.type)
-        {
-            // Event that is called when the close button is clicked
-            case sf::Event::Closed:
-                this->window->close();
-                break;
-            case sf::Event::KeyPressed:
-                // Event that is called when the Escape button is pressed
-                switch (this->event.key.code)
-                {
-                    case (sf::Keyboard::Escape):
-                        window->close();
-                        break;
-                    case sf::Keyboard::Right: // Right arrow
-                    case sf::Keyboard::Left:  // Left arrow
-                    case sf::Keyboard::Up:    // Up arrow
-                    case sf::Keyboard::Down:  // Down arrow
-                        player.animation.set_texture(character_texture_run);
-                        player.move(this->event.key.code, &view);
-                        if (previousKey != this->event.key.code) {
-                            // play gasping sound each time the player changes direction
-                            sound.play();
-                        }
-                        previousKey = this->event.key.code;
-                        break;
-                    default:
-                        break;
-                }
-                break;
-            case sf::Event::MouseMoved:
-                break;
-            default:
-                player.animation.set_texture(character_texture_idle);
-                player.animation.next();
-                clock.restart();
-                break;
+void Game::pollEvents() {
+	// Event polling
+	StateAction action;
+	while(this->window->pollEvent(this->event)) {
+		switch(this->event.type) {
+		// Event that is called when the close button is clicked
+		case sf::Event::Closed: this->window->close(); break;
+		case sf::Event::KeyPressed:
+			// Event that is called when the Escape button is pressed
+			switch(this->event.key.code) {
+			case(sf::Keyboard::Escape): window->close(); break;
+			case sf::Keyboard::Right: // Right arrow
+			case sf::Keyboard::Left:  // Left arrow
+			case sf::Keyboard::Up:    // Up arrow
+			case sf::Keyboard::Down:  // Down arrow
+				states.top()->handleKeys(event.key.code, &view);
+        if (previousKey != this->event.key.code) {
+             // play gasping sound each time the player changes direction
+            sound.play();
         }
-    }
-    // idle animation
-    if (clock.getElapsedTime().asSeconds() > .05f) {
-        player.animation.next();
-        clock.restart();
-    }
+        previousKey = this->event.key.code;
+				break;
+			case sf::Keyboard::Enter:
+				action = states.top()->shouldAct();
+				if(action == StateAction::EXIT_GAME) { this->window->close(); }
+				if(action == StateAction::START_GAME) {
+					states.push(new GameState(window, assetsManager, {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c)},
+					    {assetsManager.getDesign(LAYER1.c), assetsManager.getDesign(LAYER2.c)}));
+				}
+				break;
+			default: break;
+			}
+			break;
+		case sf::Event::MouseMoved: break;
+		default: clock.restart(); break;
+		}
+	}
 }
 
 void Game::update() {
@@ -172,4 +161,21 @@ void Game::updateDT() {
 
 void Game::endApplication() {
 	std::cout << "Ending application" << std::endl;
+}
+
+void updateKeybinds(const float& dt) {}
+void quitStateActions() {}
+
+void Game::initKeys() {
+	std::ifstream ifs(KEYS.c);
+
+	if(ifs.is_open()) {
+		std::string key;
+		int key_value = 0;
+
+		while(ifs >> key >> key_value) {
+			supportedkeys.emplace(key, key_value);
+		}
+	}
+	ifs.close();
 }

@@ -1,15 +1,17 @@
 #pragma once
 
+#include <unordered_map>
+
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
-#include <unordered_map>
 
 #include "AssetsManager.h"
 #include "Characters.h"
 #include "GameState.h"
+#include "MainMenuState.h"
 #include "definitions.h"
 
 /*
@@ -21,11 +23,15 @@ class Game {
 	void initWindow();
 	void initStates();
 
+	void initKeys();
+
 	// window is a pointer, since the new-operator returns a pointer to
 	// the beginning of the new block of memory allocated
 	sf::RenderWindow* window;
 	sf::VideoMode videoMode;
 	sf::Event event{};
+
+  KeyList supportedkeys;
 
 	AssetsManager assetsManager;
 
