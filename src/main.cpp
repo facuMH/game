@@ -1,5 +1,4 @@
 #include "Game.h"
-#undef main
 
 int main() {
   // Init game engine

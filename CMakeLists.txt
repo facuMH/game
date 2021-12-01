@@ -22,7 +22,9 @@ set(SOURCES src/main.cpp
         src/State.cpp
         src/GameState.cpp
         src/Tile.cpp
-        src/TileMap.cpp)
+        src/TileMap.cpp
+        src/MainMenuState.cpp
+        src/Button.cpp)
 
 set(HEADERS include/Animation.h
         include/AssetsManager.h
@@ -35,7 +37,9 @@ set(HEADERS include/Animation.h
         include/State.h
         include/GameState.h
         include/Tile.h
-        include/TileMap.h)
+        include/TileMap.h
+        include/MainMenuState.h
+        include/Button.h)
 
 #------------- DEPENDENCIES
 
