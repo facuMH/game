@@ -55,7 +55,6 @@ void MainMenuState::endState() {
 }
 
 void MainMenuState::updateInput(const float& dt) {
-	checkIfQuitting();
 }
 
 void MainMenuState::updateButtons() {
@@ -89,14 +88,17 @@ void MainMenuState::render(sf::RenderTarget* target) {
 }
 
 void MainMenuState::updateKeybinds(const float& dt) {
-	checkIfQuitting();
+}
+
+bool MainMenuState::shouldQuit() {
+	return isQuit();
 }
 
 void MainMenuState::quitStateActions() {
 	std::cout << "Ending current game state" << std::endl;
 }
 
-void MainMenuState::handleKeys(sf::Keyboard::Key key, sf::View* view) {
+StateAction MainMenuState::handleKeys(sf::Keyboard::Key key, sf::View* view) {
 	switch(key) {
 	case sf::Keyboard::Up: // Up arrow
 		buttons[activeButton].setInactive();
@@ -118,6 +120,7 @@ void MainMenuState::handleKeys(sf::Keyboard::Key key, sf::View* view) {
 		break;
 	default: break;
 	}
+	return StateAction::NONE;
 }
 
 StateAction MainMenuState::shouldAct() {

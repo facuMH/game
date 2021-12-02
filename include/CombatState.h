@@ -24,8 +24,9 @@ class CombatState : public State {
 	void update(const float& dt) override;
 	void render(sf::RenderTarget* target) override;
 	void updateKeybinds(const float& dt) override;
-	// bool shouldQuit() override;
+	bool shouldQuit() override;
 	void quitStateActions() override;
-	void handleKeys(const sf::Keyboard::Key key, sf::View* view) override;
+	StateAction handleKeys(const sf::Keyboard::Key key, sf::View* view) override;
+	void drawPlayer(sf::RenderWindow* window) override;
 	StateAction shouldAct() override;
 };

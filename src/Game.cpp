@@ -1,6 +1,5 @@
 #include <fstream>
 #include <iostream>
-#include <typeinfo>
 
 #include "AssetsPaths.h"
 #include "CombatState.h"
@@ -9,10 +8,6 @@
 // Private functions
 void Game::initVariables() {
 	window = nullptr;
-	Texture* play_text = assetsManager.getTexture(IDLE.c);
-	Animation player_animation(play_text, sf::IntRect(65, 55, 45, 50), Interval(162, 0), Position(50, 50));
-	player_animation.sprite.setScale({0.7, 0.7});
-	player = Character("Adventurer", Stats(15, 20, 50, 30), player_animation);
 }
 
 void Game::initWindow() {
@@ -85,7 +80,8 @@ void Game::makeNewCombat(const int numberOfEnemis) {
 	}
 	auto mapTexture = {assetsManager.getMap(TILESHEET_FLOOR.c)};
 	auto designs = {assetsManager.getDesign(COMBATLEVEL.c)};
-	states.push(new CombatState(window, assetsManager, mapTexture, designs, {player}, enemies));
+	Party party{*dynamic_cast<GameState*>(states.top())->getPlayer()};
+	states.push(new CombatState(window, assetsManager, mapTexture, designs, party, enemies));
 	in_combat = true;
 }
 
@@ -103,18 +99,6 @@ void Game::pollEvents() {
 				// Event that is called when the Escape button is pressed
 				switch(this->event.key.code) {
 				case sf::Keyboard::Escape: window->close(); break;
-				case sf::Keyboard::Right: // Right arrow
-				case sf::Keyboard::Left:  // Left arrow
-				case sf::Keyboard::Up:    // Up arrow
-				case sf::Keyboard::Down:  // Down arrow
-					states.top()->handleKeys(event.key.code, &view);
-					if(previousKey != this->event.key.code) {
-						// play gasping sound each time the player changes direction
-						sound.play();
-					}
-					previousKey = this->event.key.code;
-					break;
-				case sf::Keyboard::C: makeNewCombat(1); break;
 				case sf::Keyboard::Enter:
 					action = states.top()->shouldAct();
 					if(action == StateAction::EXIT_GAME) { this->window->close(); }
@@ -123,7 +107,16 @@ void Game::pollEvents() {
 						    {assetsManager.getDesign(LAYER1.c), assetsManager.getDesign(LAYER2.c)}));
 					}
 					break;
-				default: break;
+				default:
+					action = states.top()->handleKeys(event.key.code, &view);
+					if(previousKey != this->event.key.code) {
+						// play gasping sound each time the player changes direction
+						sound.play();
+					}
+					previousKey = this->event.key.code;
+					if(action == StateAction::START_COMBAT) { makeNewCombat(1);}
+					if(action == StateAction::EXIT_GAME) { this->window->close(); }
+					break;
 				}
 			} else {
 				switch(this->event.key.code) {
@@ -148,11 +141,7 @@ void Game::pollEvents() {
 			}
 			break;
 		case sf::Event::MouseMoved: break;
-		default:
-			player.animation.set_texture(assetsManager.getTexture(IDLE.c));
-			player.animation.next();
-			clock.restart();
-			break;
+		default: break;
 		}
 	}
 }
@@ -188,7 +177,7 @@ void Game::render() {
 		this->states.top()->render(this->window);
 	}
 	window->setView(view);
-	window->draw(player.animation.sprite);
+	if(states.size() > 0) states.top()->drawPlayer(window);
 	// Window is done drawing --> display result
 	window->display();
 }

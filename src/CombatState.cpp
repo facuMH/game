@@ -34,12 +34,14 @@ void CombatState::render(sf::RenderTarget* target) {
 	map.render(*target);
 }
 
-// bool CombatState::shouldQuit() {
-//	return enemies.empty() || party.empty();
-//}
-
 void CombatState::updateKeybinds(const float& dt) {
 	shouldQuit();
+}
+
+bool CombatState::shouldQuit() {
+	bool quit = isQuit();
+	if(enemies.size() == 0 || party.size() == 0) { quit = true; }
+	return quit;
 }
 
 void CombatState::quitStateActions() {
@@ -48,35 +50,45 @@ void CombatState::quitStateActions() {
 	std::cout << "Ending current game state" << std::endl;
 }
 
-void CombatState::handleKeys(const sf::Keyboard::Key key, [[maybe_unused]] sf::View* view) {
+StateAction CombatState::handleKeys(const sf::Keyboard::Key key, [[maybe_unused]] sf::View* view) {
 	switch(key) {
 		// up, down, right, left should be used to move around the actions menu
 	case sf::Keyboard::Up: // Up arrow
 		/* buttons[activeButton].setInactive();
 		if(activeButton == 0) {
-			activeButton = MAX_BUTTONS - 1;
+		    activeButton = MAX_BUTTONS - 1;
 		} else {
-			activeButton--;
+		    activeButton--;
 		}
 		buttons[activeButton].setActive();*/
 		break;
 	case sf::Keyboard::Down: // Down arrow
-		/* buttons[activeButton].setInactive();
-		if(activeButton == MAX_BUTTONS - 1) {
-			activeButton = 0;
-		} else {
-			activeButton++;
-		}
-		buttons[activeButton].setActive();
-		break;*/
+		                     /* buttons[activeButton].setInactive();
+		                     if(activeButton == MAX_BUTTONS - 1) {
+		                         activeButton = 0;
+		                     } else {
+		                         activeButton++;
+		                     }
+		                     buttons[activeButton].setActive();
+		                     break;*/
 	case sf::Keyboard::Enter:
 		// select action - if possible
 		break;
 	default: break;
 	}
+	return StateAction::NONE;
 }
 
 StateAction CombatState::shouldAct() {
 	// depending on selected action this should triger attack animation, use item animation, etc.
 	return StateAction::NONE;
+}
+
+void CombatState::drawPlayer(sf::RenderWindow* window) {
+	for(auto p : party) {
+		window->draw(p.animation.sprite);
+	}
+	for(auto e : enemies) {
+		window->draw(e.animation.sprite);
+	}
 }

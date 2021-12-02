@@ -22,7 +22,6 @@ class Game {
 	void initVariables();
 	void initWindow();
 	void initStates();
-
 	void initKeys();
 
 	// window is a pointer, since the new-operator returns a pointer to
@@ -31,23 +30,15 @@ class Game {
 	sf::VideoMode videoMode;
 	sf::Event event{};
 
-  KeyList supportedkeys;
-
+    KeyList supportedkeys;
 	AssetsManager assetsManager;
-
-	sf::View view;
-	Character player;
 	bool in_combat = false;
 
+	sf::View view;
 	sf::SoundBuffer soundBuffer;
 	sf::Sound sound;
 	// just for demonstration purposes
 	sf::Keyboard::Key previousKey;
-
-	// this should be moved a "LoadAssets" function where textures are loaded.
-	Texture character_texture_idle;
-	Texture character_texture_run;
-	std::vector<Texture> player_textures;
 
 	sf::Clock clock;
 	sf::Clock dtClock;

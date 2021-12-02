@@ -23,10 +23,11 @@ class GameState : public State {
 	void update(const float& dt) override;
 	void render(sf::RenderTarget* target) override;
 	void updateKeybinds(const float& dt) override;
-	//void checkIfQuitting() override;
-	// bool shouldQuit() override;
+	bool shouldQuit() override;
 	void quitStateActions() override;
-	void handleKeys(const sf::Keyboard::Key key, sf::View* view) override;
-	void player_idle();
+	StateAction handleKeys(const sf::Keyboard::Key key, sf::View* view) override;
+	void playerIdle();
+	void drawPlayer(sf::RenderWindow *window) override;
+	Character* getPlayer() { return &player; };
 	StateAction shouldAct() override;
 };

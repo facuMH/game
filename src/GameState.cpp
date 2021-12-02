@@ -20,22 +20,24 @@ GameState::~GameState() = default;
 void GameState::update(const float& dt) {
 	this->updateKeybinds(dt);
 	if(clock.getElapsedTime().asSeconds() > .05f) {
-		player_idle();
+		playerIdle();
 		clock.restart();
 	}
 }
 
 void GameState::render(sf::RenderTarget* target) {
 	map.render(*target);
-    target->draw(player.animation.sprite);
+	target->draw(player.animation.sprite);
 }
 
 void GameState::updateKeybinds(const float& dt) {
 	shouldQuit();
 }
 
-void GameState::handleKeys(sf::Keyboard::Key key, sf::View* view) {
+StateAction GameState::handleKeys(sf::Keyboard::Key key, sf::View* view) {
+	StateAction result = StateAction::NONE;
 	switch(key) {
+	case sf::Keyboard::Q: result = StateAction::EXIT_GAME; break;
 	case sf::Keyboard::Right: // Right arrow
 	case sf::Keyboard::Left:  // Left arrow
 	case sf::Keyboard::Up:    // Up arrow
@@ -43,11 +45,15 @@ void GameState::handleKeys(sf::Keyboard::Key key, sf::View* view) {
 		player.animation.set_texture(am->getTexture(RUN.c));
 		player.move(key, view);
 		break;
-	default: player_idle(); break;
+	case sf::Keyboard::C:
+		result = StateAction::START_COMBAT;
+		break;
+	default: playerIdle(); break;
 	}
+	return result;
 }
 
-void GameState::player_idle() {
+void GameState::playerIdle() {
 	player.animation.set_texture(am->getTexture(IDLE.c));
 	player.animation.next();
 }
@@ -58,4 +64,12 @@ StateAction GameState::shouldAct() {
 
 void GameState::quitStateActions() {
 	std::cout << "Ending current game state" << std::endl;
+}
+
+void GameState::drawPlayer(sf::RenderWindow* window) {
+	window->draw(player.animation.sprite);
+}
+
+bool GameState::shouldQuit() {
+	return isQuit();
 }
