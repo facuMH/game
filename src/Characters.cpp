@@ -1,3 +1,5 @@
+#include <SFML/Window.hpp>
+
 #include "Characters.h"
 
 // if a weapon is already equipped it is swapped with the new one

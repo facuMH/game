@@ -35,6 +35,10 @@ constexpr auto CHARACTER = cat(ASSETS, "character/");
 constexpr auto IDLE = cat(CHARACTER.c, "Idle.png");
 constexpr auto RUN = cat(CHARACTER.c, "Run.png");
 
+// ---- ENEMIES
+constexpr auto ENEMIES = cat(ASSETS, "enemies/");
+constexpr auto ALIEN = cat(ENEMIES.c, "alien.png");
+
 // ---- TILES
 constexpr auto TILES = cat(ASSETS, "tiles/");
 constexpr auto TILESHEET_FLOOR = cat(TILES.c, "TilesetFloor.png");
@@ -47,10 +51,12 @@ constexpr auto LAYER2 = cat(CONFIG, "layer2.csv");
 constexpr auto KEYBIND = cat(CONFIG, "gamestate_Keysbind.ini");
 constexpr auto MENUKEYBIND = cat(CONFIG, "mainmenustate_keysbind.ini");
 constexpr auto KEYS = cat(CONFIG, "Keys.ini");
+constexpr auto COMBATLEVEL = cat(CONFIG, "combat1.csv");
 
 // --- FONTS
 constexpr auto FONTS = cat(ASSETS, "fonts/");
 constexpr auto DOSIS = cat(FONTS.c, "Dosis-Light.ttf");
+constexpr auto ALEX = cat(FONTS.c, "AlexandriaFLF.ttf");
 
 // ---- SOUND FX
 constexpr auto SOUNDS = cat(ASSETS, "sounds/");

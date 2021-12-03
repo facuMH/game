@@ -6,19 +6,20 @@
 #include "TileMap.h"
 #include "definitions.h"
 
-class GameState : public State {
+class CombatState : public State {
   private:
+	Party party;
+	Enemies enemies;
 	TileMap map;
-	Character player;
-	AssetsManager* am;
-	sf::Clock clock;
+	CombatText lifeCounters;
+	void addCombatString(const Character& c, AssetsManager& am);
 
   public:
 	// Constructor
-    GameState(sf::RenderWindow *window, AssetsManager &am, std::vector<MapBackground *> textureSheets, std::vector<Design *> levelDesigns);
+	CombatState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns, Party p, Enemies e);
 	// Destructor
-	~GameState() override;
-  
+	~CombatState() override;
+
 	// Functions
 	void update(const float& dt) override;
 	void render(sf::RenderTarget* target) override;
@@ -26,8 +27,6 @@ class GameState : public State {
 	bool shouldQuit() override;
 	void quitStateActions() override;
 	StateAction handleKeys(const sf::Keyboard::Key key, sf::View* view) override;
-	void playerIdle();
-	void drawPlayer(sf::RenderWindow *window) override;
-	Character* getPlayer() { return &player; };
+	void drawPlayer(sf::RenderWindow* window) override;
 	StateAction shouldAct() override;
 };

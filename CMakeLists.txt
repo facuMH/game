@@ -18,6 +18,7 @@ ENDIF()
 
 set(SOURCES src/main.cpp
         src/Characters.cpp
+        src/CombatState.cpp
         src/Game.cpp
         src/State.cpp
         src/GameState.cpp
@@ -30,6 +31,7 @@ set(HEADERS include/Animation.h
         include/AssetsManager.h
         include/AssetsPaths.h
         include/Characters.h
+        include/CombatState.h
         include/definitions.h
         include/Entity.h
         include/Game.h
