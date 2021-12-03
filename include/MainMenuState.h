@@ -49,10 +49,9 @@ class MainMenuState : public State {
 
 	void update(const float& dt) override;
 	void render(sf::RenderTarget* target) override;
-	StateAction handleKeys(const sf::Keyboard::Key key, sf::View* view) override;
+	void handleKeys(sf::Keyboard::Key key, sf::View* view) override;
 	void updateKeybinds(const float& dt) override;
 	void quitStateActions() override;
-	bool shouldQuit() override;
-	void drawPlayer(sf::RenderWindow *window) override{};
+	void checkIfQuitting() override;
 	StateAction shouldAct() override;
 };

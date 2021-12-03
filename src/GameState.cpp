@@ -1,5 +1,4 @@
 #include <iostream>
-#include <string>
 
 #include <SFML/Window.hpp>
 
@@ -20,7 +19,7 @@ GameState::~GameState() = default;
 void GameState::update(const float& dt) {
 	this->updateKeybinds(dt);
 	if(clock.getElapsedTime().asSeconds() > .05f) {
-		playerIdle();
+		player_idle();
 		clock.restart();
 	}
 }
@@ -30,46 +29,39 @@ void GameState::render(sf::RenderTarget* target) {
 	target->draw(player.animation.sprite);
 }
 
-void GameState::updateKeybinds(const float& dt) {
-	shouldQuit();
+void GameState::checkIfQuitting()
+{
+    State::checkIfQuitting();
 }
 
-StateAction GameState::handleKeys(sf::Keyboard::Key key, sf::View* view) {
-	StateAction result = StateAction::NONE;
+void GameState::updateKeybinds(const float &dt)
+{
+    this->checkIfQuitting();
+}
+
+void GameState::quitStateActions()
+{
+    std::cout << "Ending current game state" << std::endl;
+}
+
+void GameState::handleKeys(sf::Keyboard::Key key, sf::View * view) {
 	switch(key) {
-	case sf::Keyboard::Q: result = StateAction::EXIT_GAME; break;
 	case sf::Keyboard::Right: // Right arrow
 	case sf::Keyboard::Left:  // Left arrow
 	case sf::Keyboard::Up:    // Up arrow
 	case sf::Keyboard::Down:  // Down arrow
-		player.animation.set_texture(am->getTexture(RUN.c));
+		player.animation.set_texture(*am->getTexture(RUN.c));
 		player.move(key, view);
 		break;
-	case sf::Keyboard::C:
-		result = StateAction::START_COMBAT;
-		break;
-	default: playerIdle(); break;
+	default: player_idle(); break;
 	}
-	return result;
 }
 
-void GameState::playerIdle() {
-	player.animation.set_texture(am->getTexture(IDLE.c));
+void GameState::player_idle() {
+	player.animation.set_texture(*am->getTexture(IDLE.c));
 	player.animation.next();
 }
 
 StateAction GameState::shouldAct() {
 	return StateAction::NONE;
-}
-
-void GameState::quitStateActions() {
-	std::cout << "Ending current game state" << std::endl;
-}
-
-void GameState::drawPlayer(sf::RenderWindow* window) {
-	window->draw(player.animation.sprite);
-}
-
-bool GameState::shouldQuit() {
-	return isQuit();
 }

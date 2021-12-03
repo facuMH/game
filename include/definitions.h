@@ -58,8 +58,3 @@ const sf::Color LIGHTGREY = sf::Color(150, 150, 150, 255);
 const sf::Color BLACK = sf::Color(20, 20, 20, 200);
 
 enum class StateAction { NONE, START_GAME, START_COMBAT, EXIT_COMBAT, EXIT_GAME };
-
-class Character;
-using Enemies = std::vector<Character>;
-using Party = std::vector<Character>;
-using CombatText = std::unordered_map<Name, sf::Text>;

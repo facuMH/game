@@ -21,9 +21,10 @@ class Animation {
 		sprite.setTexture(*texture);
 		sprite.setTextureRect(texture_rectangle);
 		sprite.setPosition(initial);
+		sprite.setScale({2, 2});
 	};
 
-	void set_texture(const sf::Texture* new_texture) { sprite.setTexture(*texture); }
+	void set_texture(const sf::Texture& new_texture) { sprite.setTexture(*texture); }
 
 	void next() {
 		if(texture != nullptr) {

@@ -4,7 +4,6 @@
 #include "Characters.h"
 #include "State.h"
 #include "TileMap.h"
-#include "definitions.h"
 
 class GameState : public State {
   private:
@@ -23,11 +22,9 @@ class GameState : public State {
 	void update(const float& dt) override;
 	void render(sf::RenderTarget* target) override;
 	void updateKeybinds(const float& dt) override;
-	bool shouldQuit() override;
+	void checkIfQuitting() override;
 	void quitStateActions() override;
-	StateAction handleKeys(const sf::Keyboard::Key key, sf::View* view) override;
-	void playerIdle();
-	void drawPlayer(sf::RenderWindow *window) override;
-	Character* getPlayer() { return &player; };
+	void handleKeys(sf::Keyboard::Key key, sf::View* view) override;
+	void player_idle();
 	StateAction shouldAct() override;
 };

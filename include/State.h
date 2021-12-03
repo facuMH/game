@@ -20,7 +20,8 @@ class State {
   private:
 	std::vector<sf::Texture> textures;
 	sf::RenderWindow* window;
-	bool isQuitting = false;
+
+	bool isQuitting{};
 
   public:
 	// Constructor
@@ -33,13 +34,11 @@ class State {
 	virtual void update(const float& dt) = 0;
 	virtual void render(sf::RenderTarget* target) = 0;
 	virtual void updateKeybinds(const float& dt) = 0;
-	virtual bool shouldQuit() = 0;
-	const bool& State::isQuit() const { return isQuitting; }
-	void endState() { isQuitting = true; }
+	virtual void checkIfQuitting();
+	const bool& isQuit() const;
 	virtual void quitStateActions() = 0;
-	virtual StateAction handleKeys(const sf::Keyboard::Key key, sf::View* view) = 0;
+	virtual void handleKeys(sf::Keyboard::Key key, sf::View* view) = 0;
 	virtual StateAction shouldAct() = 0;
-	virtual void drawPlayer(sf::RenderWindow* window) = 0;
 	Position_i getMouse() const { return sf::Mouse::getPosition(*window); }
 	Position getPos(Position_i objectPosition) const { return window->mapPixelToCoords(objectPosition); }
 };

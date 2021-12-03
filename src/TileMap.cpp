@@ -1,5 +1,5 @@
-#include "TileMap.h"
 #include "AssetsPaths.h"
+#include "TileMap.h"
 
 
 // Helper function for mapping an iteration counter to a tile from the tile sheet
@@ -9,25 +9,31 @@ sf::Vector2i map1Dto2D(int counter) {
 	return {row, col};
 }
 
-void TileMap::initializeVariables(AssetsManager& am) {
-	gridSize = 16;
-	maxSize.x = 100;
-	maxSize.y = 100;
+void TileMap::initializeVariables(AssetsManager& am)
+{
+    gridSize = 16;
+    maxSize.x = 100;
+    maxSize.y = 100;
 
-	// bounds for rendering only those tiles that are in visible range
-	visibleFrom.x = 0;
-	visibleTo.y = 0;
-	visibleTo.x = 32;
-	visibleTo.y = 24;
-	nLayers = 2;
+    // bounds for rendering only those tiles that are in visible range
+    visibleFrom.x = 0;
+    visibleTo.y = 0;
+    visibleTo.x = 32;
+    visibleTo.y = 24;
+    nLayers = 2;
 
-	// initialize first rectangle (or tile) position in the upper left corner of the window
-	textureRectangle = sf::IntRect(0, 0, gridSize, gridSize);
+    // initialize first rectangle (or tile) position in the upper left corner of the window
+    textureRectangle = sf::IntRect(0, 0, gridSize, gridSize);
 }
 
-void TileMap::setUpGrid(std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns) {
+// Constructor
+TileMap::TileMap(AssetsManager& am, std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns) {
+
+    initializeVariables(am);
+
+    nLayers = levelDesigns.size();
+
 	// set up 3D vector
-	int counter = 0;
 	tiles.resize(maxSize.x, TileMapRows());
 	for(size_t y = 0; y < maxSize.y; y++) {
 		for(size_t x = 0; x < maxSize.x; x++) {
@@ -46,20 +52,12 @@ void TileMap::setUpGrid(std::vector<MapBackground*> textureSheets, std::vector<D
 					textureRectangle.top = (pos.x * gridSize);
 
 					// create new tile and save at correct position in the 3D array
-					tiles[x][y][z].push_back(new Tile(float(x * gridSize), float(y * gridSize), float(gridSize), textureSheets[z], textureRectangle));
+					tiles[x][y][z].push_back(new Tile(float(x * gridSize), float(y * gridSize), float(gridSize),
+                                                      textureSheets[z], textureRectangle));
 				}
 			}
 		}
 	}
-}
-
-// Constructor
-TileMap::TileMap(AssetsManager& am, std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns) {
-
-	initializeVariables(am);
-	nLayers = levelDesigns.size();
-	// load level design
-	setUpGrid(textureSheets, levelDesigns);
 }
 
 TileMap::~TileMap() {
@@ -72,9 +70,6 @@ TileMap::~TileMap() {
 	}
 }
 
-void TileMap::updateLevel(std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns) {
-	setUpGrid(textureSheets, levelDesigns);
-}
 
 void TileMap::render(sf::RenderTarget& target) {
 	for(int x = 0; x < maxSize.x; x++) {
