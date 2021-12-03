@@ -12,8 +12,8 @@ void Game::initVariables() {
 }
 
 void Game::initWindow() {
-	this->videoMode.height = 720;
-	this->videoMode.width = 1280;
+	videoMode.height = 720;
+	videoMode.width = 1280;
 	// load window configs from file
 	std::ifstream ifs("../config/window.ini");
 
@@ -25,16 +25,16 @@ void Game::initWindow() {
 	// replace default configs with file contents
 	if(ifs.is_open()) {
 		std::getline(ifs, title);
-		ifs >> this->videoMode.width >> this->videoMode.height;
+		ifs >> videoMode.width >> videoMode.height;
 		ifs >> framerate_limit;
 		ifs >> vertical_sync_enabled;
 	}
 	ifs.close();
 
 	// create window
-	this->window = new sf::RenderWindow(this->videoMode, title, sf::Style::Titlebar | sf::Style::Close);
-	this->window->setFramerateLimit(framerate_limit);
-	this->window->setVerticalSyncEnabled(vertical_sync_enabled);
+	window = new sf::RenderWindow(videoMode, title, sf::Style::Titlebar | sf::Style::Close);
+	window->setFramerateLimit(framerate_limit);
+	window->setVerticalSyncEnabled(vertical_sync_enabled);
 	view = sf::View(sf::Vector2f(320.f, 240.f), sf::Vector2f(640.f, 480.f));
 }
 
@@ -46,28 +46,28 @@ void Game::initStates() {
 // Constructor
 Game::Game() {
 	initKeys();
-	this->initVariables();
-	this->initWindow();
-	this->initStates();
+	initVariables();
+	initWindow();
+	initStates();
 }
 
 // Destructor
 Game::~Game() {
 	// Delete window
-	delete this->window;
+	delete window;
 
 	// Clear states stack
-	while(!this->states.empty()) {
+	while(!states.empty()) {
 		// remove data
-		delete this->states.top();
+		delete states.top();
 		// remove pointer
-		this->states.pop();
+		states.pop();
 	}
 }
 
 // Accessors
 bool Game::isRunning() const {
-	return this->window->isOpen();
+	return window->isOpen();
 }
 
 void Game::makeNewCombat(const int numberOfEnemies) {
@@ -91,19 +91,19 @@ void Game::makeNewCombat(const int numberOfEnemies) {
 void Game::pollEvents() {
 	// Event polling
 	StateAction action;
-	while(this->window->pollEvent(this->event)) {
-		switch(this->event.type) {
+	while(window->pollEvent(event)) {
+		switch(event.type) {
 		// Event that is called when the close button is clicked
-		case sf::Event::Closed: this->window->close(); break;
+		case sf::Event::Closed: window->close(); break;
 		case sf::Event::KeyPressed:
 			if(!in_combat) {
 				// Event that is called when the Escape button is pressed
-				switch(this->event.key.code) {
+				switch(event.key.code) {
 				case sf::Keyboard::Escape: window->close(); break;
 				case sf::Keyboard::Enter:
 					action = states.top()->shouldAct();
 					if(action == StateAction::EXIT_GAME) {
-						this->window->close();
+						window->close();
 					}
 					if(action == StateAction::START_GAME) {
 						states.push(new GameState(window, assetsManager, {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c)},
@@ -112,21 +112,21 @@ void Game::pollEvents() {
 					break;
 				default:
 					action = states.top()->handleKeys(event.key.code, &view);
-					if(previousKey != this->event.key.code) {
+					if(previousKey != event.key.code) {
 						// play gasping sound each time the player changes direction
 						sound.play();
 					}
-					previousKey = this->event.key.code;
+					previousKey = event.key.code;
 					if(action == StateAction::START_COMBAT) {
 						makeNewCombat(1);
 					}
 					if(action == StateAction::EXIT_GAME) {
-						this->window->close();
+						window->close();
 					}
 					break;
 				}
 			} else {
-				switch(this->event.key.code) {
+				switch(event.key.code) {
 				case sf::Keyboard::Escape:
 					// open pause menu
 					break;
@@ -154,11 +154,11 @@ void Game::pollEvents() {
 }
 
 void Game::update() {
-	this->pollEvents();
+	pollEvents();
 
 	if(!states.empty()) {
 		// update current game state
-		states.top()->update(this->dt);
+		states.top()->update(dt);
 		// check if the state is about to be quit
 		if(states.top()->shouldQuit()) {
 			// quit actions
@@ -170,7 +170,7 @@ void Game::update() {
 		// Since the game depends on the window being open (see function
 		// isRunning()), closing the window ends the game
 		Game::endApplication();
-		this->window->close();
+		window->close();
 	}
 }
 
@@ -179,9 +179,9 @@ void Game::render() {
 	window->clear();
 
 	// Draw game
-	if(!this->states.empty()) {
+	if(!states.empty()) {
 		// render current game state
-		this->states.top()->render(this->window);
+		states.top()->render(window);
 	}
 	window->setView(view);
 	if(!states.empty()) states.top()->drawPlayer(window);
@@ -190,7 +190,7 @@ void Game::render() {
 }
 
 void Game::updateDT() {
-	this->dt = this->dtClock.restart().asSeconds();
+	dt = dtClock.restart().asSeconds();
 }
 
 void Game::endApplication() {

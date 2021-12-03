@@ -28,6 +28,5 @@ class TileMap {
 	TileMap(AssetsManager& am, std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns);
 	virtual ~TileMap();
 	void initializeVariables(AssetsManager& am);
-	void updateLevel(std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns);
 	void render(sf::RenderTarget& target);
 };

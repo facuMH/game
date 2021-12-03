@@ -71,10 +71,6 @@ TileMap::~TileMap() {
 	}
 }
 
-void TileMap::updateLevel(std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns) {
-	setUpGrid(textureSheets, levelDesigns);
-}
-
 void TileMap::render(sf::RenderTarget& target) {
 	for(int x = 0; x < maxSize.x; x++) {
 		for(int y = 0; y < maxSize.y; y++) {

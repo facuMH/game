@@ -18,7 +18,7 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 GameState::~GameState() = default;
 
 void GameState::update(const float& dt) {
-	this->updateKeybinds(dt);
+	updateKeybinds(dt);
 	if(clock.getElapsedTime().asSeconds() > .05f) {
 		playerIdle();
 		clock.restart();

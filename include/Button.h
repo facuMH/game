@@ -39,7 +39,7 @@ class Button {
 	bool isPressed() const;
 
 	// Functions
-	void update(const sf::Vector2f mousePos);
+	void update(sf::Vector2f mousePos);
 	void render(sf::RenderTarget* target);
 	void setActive();
 	void setInactive();
