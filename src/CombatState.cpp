@@ -12,7 +12,7 @@ void CombatState::addCombatString(const Character& c, AssetsManager& am) {
 
 CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am,             //
     std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns, //
-    Party p, Enemies e)
+    const Party& p, const Enemies& e)
     : State(window), map(am, textureSheets, levelDesigns) {
 	party = p;
 	enemies = e;
