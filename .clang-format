@@ -3,7 +3,7 @@ BasedOnStyle: llvm
 AlignAfterOpenBracket: DontAlign
 AlignOperands: true
 AlignTrailingComments: true
-AllowShortBlocksOnASingleLine: Always
+AllowShortBlocksOnASingleLine: Never
 AllowShortCaseLabelsOnASingleLine: true
 AllowShortFunctionsOnASingleLine: Inline
 AllowShortIfStatementsOnASingleLine: true

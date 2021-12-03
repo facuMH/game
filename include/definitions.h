@@ -23,7 +23,9 @@ class Design : public std::vector<std::vector<int>> {
 		std::ifstream in;
 		in.open(inputFile);
 
-		if(!in.is_open()) { return false; }
+		if(!in.is_open()) {
+			return false;
+		}
 		std::string line;
 		while(getline(in, line)) {
 			std::stringstream sep(line);

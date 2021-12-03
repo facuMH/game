@@ -41,7 +41,9 @@ void CombatState::updateKeybinds(const float& dt) {
 
 bool CombatState::shouldQuit() {
 	bool quit = isQuit();
-	if(enemies.empty() || party.empty()) { quit = true; }
+	if(enemies.empty() || party.empty()) {
+		quit = true;
+	}
 	return quit;
 }
 

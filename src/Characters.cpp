@@ -24,12 +24,16 @@ void Character::move(const sf::Keyboard::Key key, sf::View* view) {
 	switch(key) {
 	case sf::Keyboard::Left:
 		animation.sprite.move({-stepsize, 0.0f});
-		if(animation.get_orientation().x > 0) { animation.mirror(animation.sprite.getLocalBounds().width); }
+		if(animation.get_orientation().x > 0) {
+			animation.mirror(animation.sprite.getLocalBounds().width);
+		}
 		view->move(-stepsize, 0.f);
 		break;
 	case sf::Keyboard::Right:
 		animation.sprite.move({stepsize, 0.0f});
-		if(animation.get_orientation().x < 0) { animation.mirror(); }
+		if(animation.get_orientation().x < 0) {
+			animation.mirror();
+		}
 		view->move(stepsize, 0.f);
 		break;
 	case sf::Keyboard::Up:

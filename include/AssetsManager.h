@@ -29,7 +29,9 @@ class AssetsManager {
 		if(found != map.end())
 			return &found->second;
 		else {
-			if(loadAsset<T>(name)) { return &map.at(name); }
+			if(loadAsset<T>(name)) {
+				return &map.at(name);
+			}
 			std::cout << "RPG ERROR: " << name << " is not a texture\n";
 			return nullptr;
 		}

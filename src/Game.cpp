@@ -102,7 +102,9 @@ void Game::pollEvents() {
 				case sf::Keyboard::Escape: window->close(); break;
 				case sf::Keyboard::Enter:
 					action = states.top()->shouldAct();
-					if(action == StateAction::EXIT_GAME) { this->window->close(); }
+					if(action == StateAction::EXIT_GAME) {
+						this->window->close();
+					}
 					if(action == StateAction::START_GAME) {
 						states.push(new GameState(window, assetsManager, {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c)},
 						    {assetsManager.getDesign(LAYER1.c), assetsManager.getDesign(LAYER2.c)}));
@@ -115,8 +117,12 @@ void Game::pollEvents() {
 						sound.play();
 					}
 					previousKey = this->event.key.code;
-					if(action == StateAction::START_COMBAT) { makeNewCombat(1); }
-					if(action == StateAction::EXIT_GAME) { this->window->close(); }
+					if(action == StateAction::START_COMBAT) {
+						makeNewCombat(1);
+					}
+					if(action == StateAction::EXIT_GAME) {
+						this->window->close();
+					}
 					break;
 				}
 			} else {
