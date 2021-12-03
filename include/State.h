@@ -34,8 +34,8 @@ class State {
 	virtual void render(sf::RenderTarget* target) = 0;
 	virtual void updateKeybinds(const float& dt) = 0;
 	virtual bool shouldQuit() = 0;
-	const bool& State::isQuit() const { return isQuitting; }
-	void endState() { isQuitting = true; }
+	const bool& isQuit() const { return isQuitting; }
+	virtual void endState() { isQuitting = true; }
 	virtual void quitStateActions() = 0;
 	virtual StateAction handleKeys(const sf::Keyboard::Key key, sf::View* view) = 0;
 	virtual StateAction shouldAct() = 0;

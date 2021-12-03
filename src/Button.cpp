@@ -1,7 +1,7 @@
 #include "Button.h"
 
 Button::Button(
-    float x, float y, float width, float height, sf::Font* font, std::string text, sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor) {
+    float x, float y, float width, float height, sf::Font* font, const std::string& text, sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor) {
 	this->buttonState = BTN_IDLE;
 
 	this->shape.setPosition(sf::Vector2f(x, y));
@@ -25,9 +25,8 @@ Button::Button(
 Button::~Button() = default;
 
 // Accessors
-const bool Button::isPressed() const {
+bool Button::isPressed() const {
 	if(this->buttonState == BTN_ACTIVE) return true;
-
 	return false;
 }
 

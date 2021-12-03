@@ -38,7 +38,7 @@ class MainMenuState : public State {
 	MainMenuState(
 	    sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns, KeyList* supportedKeys);
 
-	virtual ~MainMenuState();
+	~MainMenuState() override;
 
 	// Functions
 	void endState();
@@ -49,7 +49,7 @@ class MainMenuState : public State {
 
 	void update(const float& dt) override;
 	void render(sf::RenderTarget* target) override;
-	StateAction handleKeys(const sf::Keyboard::Key key, sf::View* view) override;
+	StateAction handleKeys(sf::Keyboard::Key key, sf::View* view) override;
 	void updateKeybinds(const float& dt) override;
 	void quitStateActions() override;
 	bool shouldQuit() override;

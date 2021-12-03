@@ -30,7 +30,7 @@ class Game {
 	sf::VideoMode videoMode;
 	sf::Event event{};
 
-    KeyList supportedkeys;
+    KeyList supportedKeys;
 	AssetsManager assetsManager;
 	bool in_combat = false;
 
@@ -40,7 +40,6 @@ class Game {
 	// just for demonstration purposes
 	sf::Keyboard::Key previousKey;
 
-	sf::Clock clock;
 	sf::Clock dtClock;
 	float dt{}; // time delta
 
@@ -51,7 +50,7 @@ class Game {
 	// Only instances of its child classes could be put on the stack directly.
 	std::stack<State*> states;
 
-	void makeNewCombat(const int numberOfEnemis);
+	void makeNewCombat(int numberOfEnemies);
 
   public:
 	// Constructor

@@ -8,6 +8,8 @@
 // Private functions
 void Game::initVariables() {
 	window = nullptr;
+	soundBuffer = assetsManager.getSoundBuffer(GASP.c);
+	sound.setBuffer(soundBuffer);
 }
 
 void Game::initWindow() {
@@ -39,7 +41,7 @@ void Game::initWindow() {
 
 void Game::initStates() {
 	states.push(new MainMenuState(window, assetsManager, {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c)},
-	    {assetsManager.getDesign(LAYER1.c), assetsManager.getDesign(LAYER2.c)}, &supportedkeys));
+	    {assetsManager.getDesign(LAYER1.c), assetsManager.getDesign(LAYER2.c)}, &supportedKeys));
 }
 
 // Constructor
@@ -69,12 +71,12 @@ bool Game::isRunning() const {
 	return this->window->isOpen();
 }
 
-void Game::makeNewCombat(const int numberOfEnemis) {
+void Game::makeNewCombat(const int numberOfEnemies) {
 	Texture* alien_texture = assetsManager.getTexture(ALIEN.c);
 	Animation alien_animation(alien_texture, sf::IntRect(50, 25, 105, 145), Interval(210, 0), Position(100, 100));
 	Character alien("Alien", Stats(15, 25, 50, 30), alien_animation);
 	Enemies enemies{};
-	for(int i = 0; i < numberOfEnemis; i++) {
+	for(int i = 0; i < numberOfEnemies; i++) {
 		alien.animation.move({50, 0});
 		enemies.push_back(alien);
 	}
@@ -124,10 +126,10 @@ void Game::pollEvents() {
 					// open pause menu
 					break;
 				case sf::Keyboard::Up: // Up arrow
-				                       // swich action up
+				                       // switch action up
 					break;
 				case sf::Keyboard::Down: // Down arrow
-				                         // swich action down
+				                         // switch action down
 					break;
 				case sf::Keyboard::Space:
 					// select combat action
@@ -149,15 +151,15 @@ void Game::pollEvents() {
 void Game::update() {
 	this->pollEvents();
 
-	if(!this->states.empty()) {
+	if(!states.empty()) {
 		// update current game state
-		this->states.top()->update(this->dt);
+		states.top()->update(this->dt);
 		// check if the state is about to be quit
-		if(this->states.top()->shouldQuit()) {
+		if(states.top()->shouldQuit()) {
 			// quit actions
-			this->states.top()->quitStateActions();
-			delete this->states.top();
-			this->states.pop();
+			states.top()->quitStateActions();
+			delete states.top();
+			states.pop();
 		}
 	} else { // End of application
 		// Since the game depends on the window being open (see function
@@ -177,22 +179,20 @@ void Game::render() {
 		this->states.top()->render(this->window);
 	}
 	window->setView(view);
-	if(states.size() > 0) states.top()->drawPlayer(window);
+	if(!states.empty()) states.top()->drawPlayer(window);
 	// Window is done drawing --> display result
 	window->display();
 }
 
 void Game::updateDT() {
 	this->dt = this->dtClock.restart().asSeconds();
-	// std::cout << "Time delta: " << this->dt << std::endl;
 }
 
 void Game::endApplication() {
 	std::cout << "Ending application" << std::endl;
 }
 
-void updateKeybinds(const float& dt) {}
-void quitStateActions() {}
+
 
 void Game::initKeys() {
 	std::ifstream ifs(KEYS.c);
@@ -202,7 +202,7 @@ void Game::initKeys() {
 		int key_value = 0;
 
 		while(ifs >> key >> key_value) {
-			supportedkeys.emplace(key, key_value);
+			supportedKeys.emplace(key, key_value);
 		}
 	}
 	ifs.close();

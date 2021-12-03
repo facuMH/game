@@ -3,7 +3,8 @@
 
 void CombatState::addCombatString(const Character& c, AssetsManager& am) {
 	sf::Text characterInfo{};
-	characterInfo.setColor(sf::Color::Black);
+	characterInfo.setOutlineColor(sf::Color::Black);
+	characterInfo.setFillColor(sf::Color::Black);
 	characterInfo.setFont(*am.getFont(ALEX.c));
 	characterInfo.setString(std::string(" HP:") + std::to_string(c.currentStats.hp) + "/" + std::to_string(c.maxStats.hp));
 	lifeCounters.emplace(c.name, characterInfo);
@@ -11,7 +12,7 @@ void CombatState::addCombatString(const Character& c, AssetsManager& am) {
 
 CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am,             //
     std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns, //
-    Party p, Enemies e)
+    const Party& p, const Enemies& e)
     : State(window), map(am, textureSheets, levelDesigns) {
 	party = p;
 	enemies = e;
@@ -24,7 +25,7 @@ CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am,           
 	}
 }
 
-CombatState::~CombatState() {}
+CombatState::~CombatState() = default;
 
 void CombatState::update(const float& dt) {
 	updateKeybinds(dt);
@@ -40,7 +41,7 @@ void CombatState::updateKeybinds(const float& dt) {
 
 bool CombatState::shouldQuit() {
 	bool quit = isQuit();
-	if(enemies.size() == 0 || party.size() == 0) { quit = true; }
+	if(enemies.empty() || party.empty()) { quit = true; }
 	return quit;
 }
 
@@ -80,15 +81,15 @@ StateAction CombatState::handleKeys(const sf::Keyboard::Key key, [[maybe_unused]
 }
 
 StateAction CombatState::shouldAct() {
-	// depending on selected action this should triger attack animation, use item animation, etc.
+	// depending on selected action this should trigger attack animation, use item animation, etc.
 	return StateAction::NONE;
 }
 
 void CombatState::drawPlayer(sf::RenderWindow* window) {
-	for(auto p : party) {
+	for(const auto& p : party) {
 		window->draw(p.animation.sprite);
 	}
-	for(auto e : enemies) {
+	for(const auto& e : enemies) {
 		window->draw(e.animation.sprite);
 	}
 }

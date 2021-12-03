@@ -1,4 +1,3 @@
-
 #include <SFML/Window.hpp>
 
 #include "MainMenuState.h"
@@ -47,10 +46,10 @@ void MainMenuState::initButtons() {
 	buttons.push_back(Button(300, 250, 150, 50, &font, "QUIT", GREY, LIGHTGREY, BLACK));
 }
 
-MainMenuState::~MainMenuState() {}
+MainMenuState::~MainMenuState() = default;
 
 void MainMenuState::endState() {
-	std::cout << "Ending Maun Menu!"
+	std::cout << "Ending Main Menu!"
 	          << "\n";
 }
 
@@ -58,7 +57,7 @@ void MainMenuState::updateInput(const float& dt) {
 }
 
 void MainMenuState::updateButtons() {
-	/*Updates all the buttons in the state and handels their functionality*/
+	/*Updates all the buttons in the state and handles their functionality*/
 	for(auto it : buttons) {
 		it.update(mousePosView);
 	}

@@ -25,7 +25,7 @@ class GameState : public State {
 	void updateKeybinds(const float& dt) override;
 	bool shouldQuit() override;
 	void quitStateActions() override;
-	StateAction handleKeys(const sf::Keyboard::Key key, sf::View* view) override;
+	StateAction handleKeys(sf::Keyboard::Key key, sf::View* view) override;
 	void playerIdle();
 	void drawPlayer(sf::RenderWindow *window) override;
 	Character* getPlayer() { return &player; };
