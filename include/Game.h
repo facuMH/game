@@ -30,7 +30,7 @@ class Game {
 	sf::VideoMode videoMode;
 	sf::Event event{};
 
-    KeyList supportedKeys;
+	KeyList supportedKeys;
 	AssetsManager assetsManager;
 	bool in_combat = false;
 

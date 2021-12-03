@@ -24,8 +24,7 @@ class AssetsManager {
 	void emplace(const std::string& name, const Design& newAsset) { design.emplace(name, newAsset); }
 	void emplace(const std::string& name, const sf::SoundBuffer& newAsset) { sounds.emplace(name, newAsset); }
 
-	template <typename U, typename T = typename U::mapped_type>
-	T* getAsset(const std::string& name, U &map) {
+	template <typename U, typename T = typename U::mapped_type> T* getAsset(const std::string& name, U& map) {
 		auto found = map.find(name);
 		if(found != map.end())
 			return &found->second;
@@ -43,8 +42,7 @@ class AssetsManager {
 	Design* getDesign(const std::string& name) { return getAsset(name, design); }
 	sf::SoundBuffer getSoundBuffer(const std::string& name) { return *getAsset(name, sounds); }
 
-	template <typename Asset>
-	bool loadAsset(const std::string& path) {
+	template <typename Asset> bool loadAsset(const std::string& path) {
 		Asset newAsset;
 		if(newAsset.loadFromFile(path)) {
 			emplace(path, newAsset);

@@ -24,7 +24,7 @@ class State {
 
   public:
 	// Constructor
-	State(sf::RenderWindow* window);
+	explicit State(sf::RenderWindow* window);
 	// Destructor
 	virtual ~State();
 
@@ -37,7 +37,7 @@ class State {
 	const bool& isQuit() const { return isQuitting; }
 	virtual void endState() { isQuitting = true; }
 	virtual void quitStateActions() = 0;
-	virtual StateAction handleKeys(const sf::Keyboard::Key key, sf::View* view) = 0;
+	virtual StateAction handleKeys(sf::Keyboard::Key key, sf::View* view) = 0;
 	virtual StateAction shouldAct() = 0;
 	virtual void drawPlayer(sf::RenderWindow* window) = 0;
 	Position_i getMouse() const { return sf::Mouse::getPosition(*window); }

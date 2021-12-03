@@ -1,12 +1,8 @@
 #include <string>
 
 // constexpr string concat from https://stackoverflow.com/a/65440575
-template <unsigned L>
-struct String {
-	char c[L];
-};
-template <unsigned L1, unsigned L2>
-constexpr auto cat(const char (&s1)[L1], const char (&s2)[L2]) {
+template <unsigned L> struct String { char c[L]; };
+template <unsigned L1, unsigned L2> constexpr auto cat(const char (&s1)[L1], const char (&s2)[L2]) {
 	constexpr unsigned L3 = L1 + L2;
 	String<L3 + 1> result = {};
 	result.c[L3] = '\0';

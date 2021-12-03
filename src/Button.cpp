@@ -61,7 +61,6 @@ void Button::render(sf::RenderTarget* target) {
 void Button::setActive() {
 	shape.setFillColor(hoverColor);
 	buttonState = BTN_ACTIVE;
-
 }
 void Button::setInactive() {
 	shape.setFillColor(idleColor);

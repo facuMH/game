@@ -55,7 +55,6 @@ void TileMap::setUpGrid(std::vector<MapBackground*> textureSheets, std::vector<D
 
 // Constructor
 TileMap::TileMap(AssetsManager& am, std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns) {
-
 	initializeVariables(am);
 	nLayers = levelDesigns.size();
 	// load level design

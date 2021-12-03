@@ -1,6 +1,5 @@
 
 #pragma once
-
 #include "Button.h"
 #include "GameState.h"
 #include "definitions.h"
@@ -53,6 +52,6 @@ class MainMenuState : public State {
 	void updateKeybinds(const float& dt) override;
 	void quitStateActions() override;
 	bool shouldQuit() override;
-	void drawPlayer(sf::RenderWindow *window) override{};
+	void drawPlayer(sf::RenderWindow* window) override{};
 	StateAction shouldAct() override;
 };

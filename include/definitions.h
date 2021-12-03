@@ -20,21 +20,21 @@ class Design : public std::vector<std::vector<int>> {
   public:
 	// Helper function for reading a level definition from a CSV file into a vector
 	bool loadFromFile(const std::string& inputFile) {
-        std::ifstream in;
-        in.open(inputFile);
+		std::ifstream in;
+		in.open(inputFile);
 
 		if(!in.is_open()) { return false; }
 		std::string line;
-        while(getline(in, line)) {
-            std::stringstream sep(line);
-            std::string cell;
+		while(getline(in, line)) {
+			std::stringstream sep(line);
+			std::string cell;
 
-            push_back(std::vector<int>());
+			push_back(std::vector<int>());
 
-            while(getline(sep, cell, ',')) {
-                back().push_back(stoi(cell));
-            }
-        }
+			while(getline(sep, cell, ',')) {
+				back().push_back(stoi(cell));
+			}
+		}
 		return true;
 	}
 };

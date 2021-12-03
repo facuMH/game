@@ -45,9 +45,7 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key, sf::View* view) {
 		player.animation.set_texture();
 		player.move(key, view);
 		break;
-	case sf::Keyboard::C:
-		result = StateAction::START_COMBAT;
-		break;
+	case sf::Keyboard::C: result = StateAction::START_COMBAT; break;
 	default: playerIdle(); break;
 	}
 	return result;

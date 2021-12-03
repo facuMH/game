@@ -12,10 +12,10 @@ class TileMap {
 	int nLayers;
 	// max. number of tiles in x and y direction
 	sf::Vector2u maxSize;
-    // number of visible tiles in x and y direction
-    sf::Vector2u visibleFrom;
-    // number of visible tiles in x and y direction
-    sf::Vector2u visibleTo;
+	// number of visible tiles in x and y direction
+	sf::Vector2u visibleFrom;
+	// number of visible tiles in x and y direction
+	sf::Vector2u visibleTo;
 	// for manipulation rectangle-shaped tiles
 	sf::IntRect textureRectangle;
 	// Concept:
@@ -27,7 +27,7 @@ class TileMap {
   public:
 	TileMap(AssetsManager& am, std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns);
 	virtual ~TileMap();
-    void initializeVariables(AssetsManager& am);
+	void initializeVariables(AssetsManager& am);
 	void updateLevel(std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns);
 	void render(sf::RenderTarget& target);
 };

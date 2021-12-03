@@ -1,7 +1,7 @@
 #include <SFML/Window.hpp>
 
-#include "MainMenuState.h"
 #include "AssetsPaths.h"
+#include "MainMenuState.h"
 
 MainMenuState::MainMenuState(
     sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns, KeyList* gameSupportedKeys)
@@ -53,8 +53,7 @@ void MainMenuState::endState() {
 	          << "\n";
 }
 
-void MainMenuState::updateInput(const float& dt) {
-}
+void MainMenuState::updateInput(const float& dt) {}
 
 void MainMenuState::updateButtons() {
 	/*Updates all the buttons in the state and handles their functionality*/
@@ -86,8 +85,7 @@ void MainMenuState::render(sf::RenderTarget* target) {
 	renderButtons(target);
 }
 
-void MainMenuState::updateKeybinds(const float& dt) {
-}
+void MainMenuState::updateKeybinds(const float& dt) {}
 
 bool MainMenuState::shouldQuit() {
 	return isQuit();
@@ -108,9 +106,9 @@ StateAction MainMenuState::handleKeys(sf::Keyboard::Key key, sf::View* view) {
 		}
 		buttons[activeButton].setActive();
 		break;
-	case sf::Keyboard::Down : // Down arrow
+	case sf::Keyboard::Down: // Down arrow
 		buttons[activeButton].setInactive();
-		if(activeButton == MAX_BUTTONS-1) {
+		if(activeButton == MAX_BUTTONS - 1) {
 			activeButton = 0;
 		} else {
 			activeButton++;

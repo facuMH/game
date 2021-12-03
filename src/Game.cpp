@@ -116,7 +116,7 @@ void Game::pollEvents() {
 						sound.play();
 					}
 					previousKey = this->event.key.code;
-					if(action == StateAction::START_COMBAT) { makeNewCombat(1);}
+					if(action == StateAction::START_COMBAT) { makeNewCombat(1); }
 					if(action == StateAction::EXIT_GAME) { this->window->close(); }
 					break;
 				}
@@ -191,7 +191,6 @@ void Game::updateDT() {
 void Game::endApplication() {
 	std::cout << "Ending application" << std::endl;
 }
-
 
 
 void Game::initKeys() {
