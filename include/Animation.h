@@ -23,7 +23,7 @@ class Animation {
 		sprite.setPosition(initial);
 	};
 
-	void set_texture() { sprite.setTexture(*texture); }
+	void set_texture(const sf::Texture* new_texture) { sprite.setTexture(*new_texture); }
 
 	void next() {
 		if(texture != nullptr) {
