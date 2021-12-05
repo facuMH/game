@@ -3,7 +3,6 @@
 #include "tileson.hpp"
 
 void TileMap::initializeVariables(AssetsManager& am) {
-	gridSize = 16;
 	maxSize.x = 50;
 	maxSize.y = 50;
 
@@ -12,9 +11,6 @@ void TileMap::initializeVariables(AssetsManager& am) {
 	visibleTo.y = 0;
 	visibleTo.x = 32;
 	visibleTo.y = 24;
-
-	// initialize first rectangle (or tile) position in the upper left corner of the window
-	textureRectangle = sf::IntRect(0, 0, gridSize, gridSize);
 }
 
 void TileMap::loadFromJson(const std::string& path, std::vector<MapBackground*> textureSheets) {
@@ -43,19 +39,15 @@ void TileMap::loadFromJson(const std::string& path, std::vector<MapBackground*> 
 }
 
 // Constructor
-TileMap::TileMap(AssetsManager& am, std::vector<MapBackground*> textureSheets, JSONFilePath designPath) {
+TileMap::TileMap(AssetsManager& am, std::vector<MapBackground*> textureSheets, const JSONFilePath& designPath) {
 	initializeVariables(am);
-	// nLayers = levelDesigns.size();
-	// load level design
-	// setUpGrid(textureSheets, levelDesigns);
-
 	loadFromJson(designPath, textureSheets);
 }
 
 TileMap::~TileMap() {
-	for(size_t x = 0; x < maxSize.x; x++) {
-		for(size_t y = 0; y < maxSize.y; y++) {
-			for(size_t z = 0; z < nLayers; z++) {
+	for(int z = 0; z < nLayers; z++) {
+		for(int y = 0; y < maxSize.y; y++) {
+			for(int x = 0; x < maxSize.x; x++) {
 				delete tiles[z][y][x][0];
 			}
 		}

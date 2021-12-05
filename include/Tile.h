@@ -20,7 +20,6 @@ class Tile {
 	Tile();
 
 	Tile(tson::TileObject* tileObject, MapBackground* textureSheet);
-	Tile(float x, float y, float gridSize, const sf::Texture* texture, sf::IntRect rect);
 
 	virtual ~Tile();
 
