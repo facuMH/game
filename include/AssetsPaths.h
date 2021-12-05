@@ -44,9 +44,7 @@ constexpr auto TILESHEET_NATURE = cat(TILES.c, "TilesetNature.png");
 constexpr char CONFIG[] = "../config/";
 constexpr auto LAYER1 = cat(CONFIG, "layer1.csv");
 constexpr auto LAYER2 = cat(CONFIG, "layer2.csv");
-constexpr auto KEYBIND = cat(CONFIG, "gamestate_Keysbind.ini");
-constexpr auto MENUKEYBIND = cat(CONFIG, "mainmenustate_keysbind.ini");
-constexpr auto KEYS = cat(CONFIG, "Keys.ini");
+constexpr auto KEYS = cat(CONFIG, "keysbind.ini");
 constexpr auto COMBATLEVEL = cat(CONFIG, "combat1.csv");
 
 // --- FONTS

@@ -29,18 +29,13 @@ class Game {
 	sf::RenderWindow* window;
 	sf::VideoMode videoMode;
 	sf::Event event{};
+	sf::View view;
+	sf::Clock dtClock;
 
-	KeyList supportedKeys;
+	KeyList keyBindings;
+	std::unordered_map<std::string, KeyAction> keyActionString;
 	AssetsManager assetsManager;
 	bool in_combat = false;
-
-	sf::View view;
-	sf::SoundBuffer soundBuffer;
-	sf::Sound sound;
-	// just for demonstration purposes
-	sf::Keyboard::Key previousKey;
-
-	sf::Clock dtClock;
 	float dt{}; // time delta
 
 	// Stack of states - the top entry is the active state, i.e. [main menu,

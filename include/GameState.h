@@ -11,11 +11,17 @@ class GameState : public State {
 	TileMap map;
 	Character player;
 	AssetsManager* am;
+	KeyList* keybinds;
 	sf::Clock clock;
+	sf::SoundBuffer soundBuffer;
+	sf::Sound sound;
+	// just for demonstration purposes
+	sf::Keyboard::Key previousKey;
 
   public:
 	// Constructor
-	GameState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns);
+	GameState(
+	    sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns, KeyList* gameSupportedKeys);
 	// Destructor
 	~GameState() override;
 

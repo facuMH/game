@@ -18,29 +18,29 @@ void Character::equip(Weapon* arms) {
 }
 
 // Move character up, down, left or right
-void Character::move(const sf::Keyboard::Key key, sf::View* view) {
+void Character::move(const KeyAction key, sf::View* view) {
 	constexpr float stepsize = 10.0f;
 	animation.next();
 	switch(key) {
-	case sf::Keyboard::Left:
+	case KeyAction::LEFT:
 		animation.sprite.move({-stepsize, 0.0f});
 		if(animation.get_orientation().x > 0) {
 			animation.mirror(animation.sprite.getLocalBounds().width);
 		}
 		view->move(-stepsize, 0.f);
 		break;
-	case sf::Keyboard::Right:
+	case KeyAction::RIGHT:
 		animation.sprite.move({stepsize, 0.0f});
 		if(animation.get_orientation().x < 0) {
 			animation.mirror();
 		}
 		view->move(stepsize, 0.f);
 		break;
-	case sf::Keyboard::Up:
+	case KeyAction::UP:
 		animation.sprite.move({0.0f, -stepsize});
 		view->move(0.f, -stepsize);
 		break;
-	case sf::Keyboard::Down:
+	case KeyAction::DOWN:
 		animation.sprite.move({0.0f, stepsize});
 		view->move(0.f, stepsize);
 		break;

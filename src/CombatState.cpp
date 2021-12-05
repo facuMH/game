@@ -6,14 +6,15 @@ void CombatState::addCombatString(const Character& c, AssetsManager& am) {
 	characterInfo.setOutlineColor(sf::Color::Black);
 	characterInfo.setFillColor(sf::Color::Black);
 	characterInfo.setFont(*am.getFont(ALEX.c));
-	characterInfo.setString(std::string(" HP:") + std::to_string(c.currentStats.hp) + "/" + std::to_string(c.maxStats.hp));
+	characterInfo.setString(
+	    std::string(" HP:") + std::to_string(c.currentStats.hp) + "/" + std::to_string(c.maxStats.hp));
 	lifeCounters.emplace(c.name, characterInfo);
 }
 
-CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am,             //
-    std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns, //
-    const Party& p, const Enemies& e)
+CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets,
+    std::vector<Design*> levelDesigns, const Party& p, const Enemies& e, KeyList* gameSupportedKeys)
     : State(window), map(am, textureSheets, levelDesigns) {
+	keybinds = gameSupportedKeys;
 	party = p;
 	enemies = e;
 	std::cout << "New Combat\n";
@@ -54,31 +55,48 @@ void CombatState::quitStateActions() {
 }
 
 StateAction CombatState::handleKeys(const sf::Keyboard::Key key, [[maybe_unused]] sf::View* view) {
-	switch(key) {
-		// up, down, right, left should be used to move around the actions menu
-	case sf::Keyboard::Up: // Up arrow
-		/* buttons[activeButton].setInactive();
-		if(activeButton == 0) {
-		    activeButton = MAX_BUTTONS - 1;
-		} else {
-		    activeButton--;
+	auto action = std::find_if(keybinds->begin(), keybinds->end(),
+	    [key](const std::pair<KeyAction, sf::Keyboard::Key>& v) { return key == v.second; });
+	if(action != keybinds->end()) {
+		switch(action->first) {
+		case KeyAction::UP:
+			/* buttons[activeButton].setInactive();
+			if(activeButton == 0) {
+			    activeButton = MAX_BUTTONS - 1;
+			} else {
+			    activeButton--;
+			}
+			buttons[activeButton].setActive();*/
+			break;
+		case KeyAction::DOWN:
+			/* buttons[activeButton].setInactive();
+			if(activeButton == MAX_BUTTONS - 1) {
+			    activeButton = 0;
+			} else {
+			    activeButton++;
+			}
+			buttons[activeButton].setActive();
+			break;*/
+		case KeyAction::SELECT:
+			// select action - if possible
+			break;
+		default: break;
 		}
-		buttons[activeButton].setActive();*/
-		break;
-	case sf::Keyboard::Down: // Down arrow
-		                     /* buttons[activeButton].setInactive();
-		                     if(activeButton == MAX_BUTTONS - 1) {
-		                         activeButton = 0;
-		                     } else {
-		                         activeButton++;
-		                     }
-		                     buttons[activeButton].setActive();
-		                     break;*/
-	case sf::Keyboard::Enter:
-		// select action - if possible
-		break;
-	default: break;
 	}
+	// this is here just as a guide for future implementation
+	 /* case sf::Keyboard::Escape:
+		// open pause menu
+		break;
+	 case sf::Keyboard::Up: // Up arrow
+	                       // switch action up
+		break;
+	 case sf::Keyboard::Down: // Down arrow
+	                         // switch action down
+		break;
+	 case sf::Keyboard::Space:
+		// select combat action
+		break;*/
+	if(key == sf::Keyboard::X) return StateAction::EXIT_COMBAT;
 	return StateAction::NONE;
 }
 
