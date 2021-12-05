@@ -30,15 +30,16 @@ class Button {
 	sf::Color activeColor;
 
   public:
-	Button(float x, float y, float width, float height, sf::Font* font, std::string text, sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor);
+	Button(
+	    float x, float y, float width, float height, sf::Font* font, const std::string& text, sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor);
 
 	~Button();
 
 	// Accessors
-	const bool isPressed() const;
+	bool isPressed() const;
 
 	// Functions
-	void update(const sf::Vector2f mousePos);
+	void update(sf::Vector2f mousePos);
 	void render(sf::RenderTarget* target);
 	void setActive();
 	void setInactive();

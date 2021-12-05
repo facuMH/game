@@ -16,7 +16,8 @@ class CombatState : public State {
 
   public:
 	// Constructor
-	CombatState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns, Party p, Enemies e);
+	CombatState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns, const Party& p,
+	    const Enemies& e);
 	// Destructor
 	~CombatState() override;
 
@@ -26,7 +27,7 @@ class CombatState : public State {
 	void updateKeybinds(const float& dt) override;
 	bool shouldQuit() override;
 	void quitStateActions() override;
-	StateAction handleKeys(const sf::Keyboard::Key key, sf::View* view) override;
+	StateAction handleKeys(sf::Keyboard::Key key, sf::View* view) override;
 	void drawPlayer(sf::RenderWindow* window) override;
 	StateAction shouldAct() override;
 };

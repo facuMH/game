@@ -15,19 +15,19 @@ class GameState : public State {
 
   public:
 	// Constructor
-    GameState(sf::RenderWindow *window, AssetsManager &am, std::vector<MapBackground *> textureSheets, std::vector<Design *> levelDesigns);
+	GameState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns);
 	// Destructor
 	~GameState() override;
-  
+
 	// Functions
 	void update(const float& dt) override;
 	void render(sf::RenderTarget* target) override;
 	void updateKeybinds(const float& dt) override;
 	bool shouldQuit() override;
 	void quitStateActions() override;
-	StateAction handleKeys(const sf::Keyboard::Key key, sf::View* view) override;
+	StateAction handleKeys(sf::Keyboard::Key key, sf::View* view) override;
 	void playerIdle();
-	void drawPlayer(sf::RenderWindow *window) override;
+	void drawPlayer(sf::RenderWindow* window) override;
 	Character* getPlayer() { return &player; };
 	StateAction shouldAct() override;
 };

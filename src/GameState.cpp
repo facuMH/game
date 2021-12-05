@@ -18,7 +18,7 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 GameState::~GameState() = default;
 
 void GameState::update(const float& dt) {
-	this->updateKeybinds(dt);
+	updateKeybinds(dt);
 	if(clock.getElapsedTime().asSeconds() > .05f) {
 		playerIdle();
 		clock.restart();
@@ -42,19 +42,17 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key, sf::View* view) {
 	case sf::Keyboard::Left:  // Left arrow
 	case sf::Keyboard::Up:    // Up arrow
 	case sf::Keyboard::Down:  // Down arrow
-		player.animation.set_texture(am->getTexture(RUN.c));
+		player.animation.set_texture();
 		player.move(key, view);
 		break;
-	case sf::Keyboard::C:
-		result = StateAction::START_COMBAT;
-		break;
+	case sf::Keyboard::C: result = StateAction::START_COMBAT; break;
 	default: playerIdle(); break;
 	}
 	return result;
 }
 
 void GameState::playerIdle() {
-	player.animation.set_texture(am->getTexture(IDLE.c));
+	player.animation.set_texture();
 	player.animation.next();
 }
 
