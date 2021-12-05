@@ -42,7 +42,7 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key, sf::View* view) {
 	case sf::Keyboard::Left:  // Left arrow
 	case sf::Keyboard::Up:    // Up arrow
 	case sf::Keyboard::Down:  // Down arrow
-		player.animation.set_texture();
+		player.animation.set_texture(am->getTexture(RUN.c));
 		player.move(key, view);
 		break;
 	case sf::Keyboard::C: result = StateAction::START_COMBAT; break;
@@ -52,7 +52,7 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key, sf::View* view) {
 }
 
 void GameState::playerIdle() {
-	player.animation.set_texture();
+	player.animation.set_texture(am->getTexture(IDLE.c));
 	player.animation.next();
 }
 

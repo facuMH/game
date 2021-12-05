@@ -5,17 +5,16 @@
 #include <SFML/Graphics.hpp>
 
 #include "Button.h"
-#include "Tile.h"
 
 using Position = sf::Vector2f;
 using Position_i = sf::Vector2i;
 using Interval = sf::Vector2f;
 using Name = std::string;
 
-using TileLayers = std::vector<Tile*>;
-using TileMapColumns = std::vector<TileLayers>;
-using TileMapRows = std::vector<TileMapColumns>;
-using TileMapVector = std::vector<TileMapRows>;
+//using TileLayers = std::vector<Tile*>;
+//using TileMapColumns = std::vector<std::vector<Tile*>>;
+//using TileMapRows = std::vector<std::vector<std::vector<Tile*>>>;
+//using TileMapVector = std::vector<std::vector<std::vector<std::vector<Tile*>>>>;
 class Design : public std::vector<std::vector<int>> {
   public:
 	// Helper function for reading a level definition from a CSV file into a vector

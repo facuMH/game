@@ -4,6 +4,8 @@
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 
+#include "definitions.h"
+#include "tileson.hpp"
 #include <fstream>
 #include <sstream>
 #include <stack>
@@ -17,6 +19,7 @@ class Tile {
   public:
 	Tile();
 
+	Tile(tson::TileObject* tileObject, MapBackground* textureSheet);
 	Tile(float x, float y, float gridSize, const sf::Texture* texture, sf::IntRect rect);
 
 	virtual ~Tile();
