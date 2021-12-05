@@ -37,6 +37,7 @@ constexpr auto ALIEN = cat(ENEMIES.c, "alien.png");
 
 // ---- TILES
 constexpr auto TILES = cat(ASSETS, "tiles/");
+constexpr auto MAP_LEVEL1 = cat(TILES.c, "map1.json");
 constexpr auto TILESHEET_FLOOR = cat(TILES.c, "TilesetFloor.png");
 constexpr auto TILESHEET_NATURE = cat(TILES.c, "TilesetNature.png");
 constexpr auto TILESHEET_HOUSES = cat(TILES.c, "TilesetHouse.png");

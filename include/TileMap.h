@@ -22,8 +22,7 @@ class TileMap {
 	sf::IntRect textureRectangle;
 	// Concept:
 	// We create a matrix of tiles, but each tile itself is a vector of layers
-	//TileMapVector tiles;
-	std::vector<std::vector<std::vector<std::vector<Tile*>>>> tiles2;
+	std::vector<std::vector<std::vector<std::vector<Tile*>>>> tiles;
 	// set up 3D vector
 	void setUpGrid(std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns);
 

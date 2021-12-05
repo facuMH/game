@@ -110,7 +110,7 @@ void Game::pollEvents() {
 						window->close();
 					}
 					if(action == StateAction::START_GAME) {
-						states.push(new GameState(window, assetsManager, {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c)},
+						states.push(new GameState(window, assetsManager, {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c), assetsManager.getMap(TILESHEET_HOUSES.c)},
 						    {assetsManager.getDesign(LAYER1.c), assetsManager.getDesign(LAYER2.c)}));
 					}
 					break;
