@@ -26,7 +26,7 @@ class MainMenuState : public State {
 	bool quit{};
 
 	// Functions
-	void initBackground(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns);
+	void initBackground(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets);
 	void initFonts(AssetsManager& am);
 	void initKeybinds();
 	void initButtons();
@@ -35,7 +35,7 @@ class MainMenuState : public State {
 
   public:
 	MainMenuState(
-	    sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns, KeyList* supportedKeys);
+	    sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets, KeyList* supportedKeys);
 
 	~MainMenuState() override;
 

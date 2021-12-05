@@ -24,10 +24,9 @@ class TileMap {
 	// We create a matrix of tiles, but each tile itself is a vector of layers
 	std::vector<std::vector<std::vector<std::vector<Tile*>>>> tiles;
 	// set up 3D vector
-	void setUpGrid(std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns);
 
   public:
-	TileMap(AssetsManager& am, std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns);
+	TileMap(AssetsManager& am, std::vector<MapBackground*> textureSheets, JSONFilePath designPath);
 	virtual ~TileMap();
 	void initializeVariables(AssetsManager& am);
 	void render(sf::RenderTarget& target);

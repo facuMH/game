@@ -43,13 +43,13 @@ void TileMap::loadFromJson(const std::string& path, std::vector<MapBackground*> 
 }
 
 // Constructor
-TileMap::TileMap(AssetsManager& am, std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns) {
+TileMap::TileMap(AssetsManager& am, std::vector<MapBackground*> textureSheets, JSONFilePath designPath) {
 	initializeVariables(am);
 	// nLayers = levelDesigns.size();
 	// load level design
 	// setUpGrid(textureSheets, levelDesigns);
 
-	loadFromJson("../assets/tiles/map1.json", textureSheets);
+	loadFromJson(designPath, textureSheets);
 }
 
 TileMap::~TileMap() {

@@ -4,16 +4,16 @@
 #include "MainMenuState.h"
 
 MainMenuState::MainMenuState(
-    sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns, KeyList* gameSupportedKeys)
+    sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets, KeyList* gameSupportedKeys)
     : State(window) {
 	supportedKeys = gameSupportedKeys;
-	initBackground(window, am, textureSheets, levelDesigns);
+	initBackground(window, am, textureSheets);
 	initFonts(am);
 	initKeybinds();
 	initButtons();
 }
 
-void MainMenuState::initBackground(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns) {
+void MainMenuState::initBackground(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets) {
 	background.setSize(sf::Vector2f(static_cast<float>(window->getSize().x), static_cast<float>(window->getSize().y)));
 	backgroundTexture = *am.getTexture(BACKGROUND.c);
 	background.setTexture(&backgroundTexture);

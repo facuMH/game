@@ -11,9 +11,9 @@ void CombatState::addCombatString(const Character& c, AssetsManager& am) {
 }
 
 CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am,             //
-    std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns, //
+    std::vector<MapBackground*> textureSheets, JSONFilePath path, //
     const Party& p, const Enemies& e)
-    : State(window), map(am, textureSheets, levelDesigns) {
+    : State(window), map(am, textureSheets, path) {
 	party = p;
 	enemies = e;
 	std::cout << "New Combat\n";

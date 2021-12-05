@@ -11,31 +11,11 @@ using Position_i = sf::Vector2i;
 using Interval = sf::Vector2f;
 using Name = std::string;
 
-//using TileLayers = std::vector<Tile*>;
-//using TileMapColumns = std::vector<std::vector<Tile*>>;
-//using TileMapRows = std::vector<std::vector<std::vector<Tile*>>>;
-//using TileMapVector = std::vector<std::vector<std::vector<std::vector<Tile*>>>>;
-class Design : public std::vector<std::vector<int>> {
+
+class JSONFilePath : public std::string {
   public:
-	// Helper function for reading a level definition from a CSV file into a vector
-	bool loadFromFile(const std::string& inputFile) {
-		std::ifstream in;
-		in.open(inputFile);
-
-		if(!in.is_open()) {
-			return false;
-		}
-		std::string line;
-		while(getline(in, line)) {
-			std::stringstream sep(line);
-			std::string cell;
-
-			push_back(std::vector<int>());
-
-			while(getline(sep, cell, ',')) {
-				back().push_back(stoi(cell));
-			}
-		}
+	bool loadFromFile(const std::string& input) {
+		append(input);
 		return true;
 	}
 };

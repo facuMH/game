@@ -7,8 +7,8 @@
 #include "AssetsPaths.h"
 #include "GameState.h"
 
-GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns)
-    : State(window), map(gameAM, textureSheets, levelDesigns) {
+GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vector<MapBackground*> textureSheets, JSONFilePath path)
+    : State(window), map(gameAM, textureSheets, path) {
 	am = &gameAM;
 	Texture* play_text = am->getTexture(IDLE.c);
 	Animation player_animation(play_text, sf::IntRect(65, 55, 45, 50), Interval(162, 0), Position(50, 50));

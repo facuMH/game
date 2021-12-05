@@ -38,18 +38,16 @@ constexpr auto ALIEN = cat(ENEMIES.c, "alien.png");
 // ---- TILES
 constexpr auto TILES = cat(ASSETS, "tiles/");
 constexpr auto MAP_LEVEL1 = cat(TILES.c, "map1.json");
+constexpr auto COMBAT_LEVEL1 = cat(TILES.c, "combat.json");
 constexpr auto TILESHEET_FLOOR = cat(TILES.c, "TilesetFloor.png");
 constexpr auto TILESHEET_NATURE = cat(TILES.c, "TilesetNature.png");
 constexpr auto TILESHEET_HOUSES = cat(TILES.c, "TilesetHouse.png");
 
 // ---- CONFIG
 constexpr char CONFIG[] = "../config/";
-constexpr auto LAYER1 = cat(CONFIG, "maps/layer1.csv");
-constexpr auto LAYER2 = cat(CONFIG, "maps/layer2.csv");
 constexpr auto KEYBIND = cat(CONFIG, "gamestate_Keysbind.ini");
 constexpr auto MENUKEYBIND = cat(CONFIG, "mainmenustate_keysbind.ini");
 constexpr auto KEYS = cat(CONFIG, "Keys.ini");
-constexpr auto COMBATLEVEL = cat(CONFIG, "maps/combat1.csv");
 
 // --- FONTS
 constexpr auto FONTS = cat(ASSETS, "fonts/");
