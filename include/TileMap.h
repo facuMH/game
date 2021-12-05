@@ -18,7 +18,7 @@ class TileMap {
 	sf::Vector2u visibleTo;
 	// Concept:
 	// We create a matrix of tiles, but each tile itself is a vector of layers
-	std::vector<std::vector<std::vector<std::vector<Tile*>>>> tiles;
+	std::vector<std::vector<std::vector<Tile*>>> tiles;
 
   public:
 	TileMap(AssetsManager& am, std::vector<MapBackground*> textureSheets, const JSONFilePath& designPath);

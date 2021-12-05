@@ -22,16 +22,15 @@ void TileMap::loadFromJson(const std::string& path, std::vector<MapBackground*> 
 	}
 	std::vector<tson::Layer> layers = map->getLayers();
 	nLayers = layers.size();
-	tiles.resize(nLayers, std::vector<std::vector<std::vector<Tile*>>>());
+	tiles.resize(nLayers, std::vector<std::vector<Tile*>>());
 	for(int z = 0; z < nLayers; z++) {
 		tson::Vector2 size = layers[z].getSize();
 		if(layers[z].getType() == tson::LayerType::TileLayer) {
 			for(int y = 0; y < size.y; y++) {
-				tiles[z].resize(size.y, std::vector<std::vector<Tile*>>());
+				tiles[z].resize(size.y, std::vector<Tile*>());
 				for(int x = 0; x < size.x; x++) {
-					tiles[z][y].resize(size.x, std::vector<Tile*>());
 					tson::TileObject* tileObj = layers[z].getTileObject(y, x);
-					tiles[z][y][x].push_back(new Tile(tileObj, textureSheets[z]));
+					tiles[z][y].push_back(new Tile(tileObj, textureSheets[z]));
 				}
 			}
 		}
@@ -48,7 +47,7 @@ TileMap::~TileMap() {
 	for(int z = 0; z < nLayers; z++) {
 		for(int y = 0; y < maxSize.y; y++) {
 			for(int x = 0; x < maxSize.x; x++) {
-				delete tiles[z][y][x][0];
+				delete tiles[z][y][x];
 			}
 		}
 	}
@@ -58,7 +57,7 @@ void TileMap::render(sf::RenderTarget& target) {
 	for(int z = 0; z < nLayers; z++) {
 		for(int y = 0; y < maxSize.y; y++) {
 			for(int x = 0; x < maxSize.x; x++) {
-				tiles[z][y][x][0]->render(target);
+				tiles[z][y][x]->render(target);
 			}
 		}
 	}
