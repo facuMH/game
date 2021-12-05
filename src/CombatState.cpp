@@ -12,8 +12,8 @@ void CombatState::addCombatString(const Character& c, AssetsManager& am) {
 }
 
 CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets,
-    std::vector<Design*> levelDesigns, const Party& p, const Enemies& e, KeyList* gameSupportedKeys)
-    : State(window), map(am, textureSheets, levelDesigns) {
+    JSONFilePath path, const Party& p, const Enemies& e, KeyList* gameSupportedKeys)
+    : State(window), map(am, textureSheets, path) {
 	keybinds = gameSupportedKeys;
 	party = p;
 	enemies = e;

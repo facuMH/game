@@ -22,21 +22,21 @@ class MainMenuState : public State {
 	sf::Vector2i mousePoseWindow;
 	sf::Vector2f mousePosView;
 
-	KeyList* keybinds;
+	KeyList* supportedKeys;
 
 	bool quit{};
 
 	// Functions
-	void initBackground(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets,
-	    std::vector<Design*> levelDesigns);
+	void initBackground(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets);
 	void initFonts(AssetsManager& am);
 	void initButtons();
 
 	void updateMousePositions();
 
   public:
-	MainMenuState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets,
-	    std::vector<Design*> levelDesigns, KeyList* gameSupportedKeys);
+	MainMenuState(
+	    sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets, KeyList* supportedKeys);
+
 
 	~MainMenuState() override;
 
