@@ -2,6 +2,12 @@
 #include "AssetsPaths.h"
 #include "tileson.hpp"
 
+// Constructor
+TileMap::TileMap(AssetsManager& am, std::vector<MapBackground*> textureSheets, const JSONFilePath& designPath) {
+	initializeVariables(am);
+	loadFromJson(designPath, textureSheets);
+}
+
 void TileMap::initializeVariables(AssetsManager& am) {
 	maxSize.x = 50;
 	maxSize.y = 50;
@@ -35,12 +41,6 @@ void TileMap::loadFromJson(const std::string& path, std::vector<MapBackground*> 
 			}
 		}
 	}
-}
-
-// Constructor
-TileMap::TileMap(AssetsManager& am, std::vector<MapBackground*> textureSheets, const JSONFilePath& designPath) {
-	initializeVariables(am);
-	loadFromJson(designPath, textureSheets);
 }
 
 TileMap::~TileMap() {
