@@ -6,17 +6,17 @@
 #include "MainMenuState.h"
 
 MainMenuState::MainMenuState(
-    sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns, KeyList* gameSupportedKeys)
+    sf::RenderWindow* window, AssetsManager& am, KeyList* gameSupportedKeys)
     : State(window) {
-	keybinds = gameSupportedKeys;
-	initBackground(window, am, textureSheets, levelDesigns);
+	supportedKeys = gameSupportedKeys;
+	initBackground(window, am);
 	initFonts(am);
 	initButtons();
 	soundBuffer = am.getSoundBuffer(GASP.c);
 	sound.setBuffer(soundBuffer);
 }
 
-void MainMenuState::initBackground(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns) {
+void MainMenuState::initBackground(sf::RenderWindow* window, AssetsManager& am) {
 	background.setSize(sf::Vector2f(static_cast<float>(window->getSize().x), static_cast<float>(window->getSize().y)));
 	backgroundTexture = *am.getTexture(BACKGROUND.c);
 	background.setTexture(&backgroundTexture);
@@ -85,9 +85,9 @@ void MainMenuState::quitStateActions() {
 }
 
 StateAction MainMenuState::handleKeys(sf::Keyboard::Key key, sf::View* view) {
-	auto action = std::find_if(keybinds->begin(), keybinds->end(),
+	auto action = std::find_if(supportedKeys->begin(), supportedKeys->end(),
 	    [key](const std::pair<KeyAction, sf::Keyboard::Key>& v) { return key == v.second; });
-	if(action != keybinds->end()) {
+	if(action != supportedKeys->end()) {
 		switch(action->first) {
 		case KeyAction::UP: // Up arrow
 			buttons[activeButton].setInactive();

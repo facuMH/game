@@ -8,9 +8,8 @@
 #include "GameState.h"
 
 GameState::GameState(
-    sf::RenderWindow* window, AssetsManager& gameAM, std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns, KeyList* gameSupportedKeys)
-    : State(window), map(gameAM, textureSheets, levelDesigns) {
-
+    sf::RenderWindow* window, AssetsManager& gameAM, std::vector<MapBackground*> textureSheets, JSONFilePath &path, KeyList* gameSupportedKeys)
+    : State(window), map(gameAM, textureSheets, path) {
 	am = &gameAM;
 	keybinds = gameSupportedKeys;
 	Texture* play_text = am->getTexture(IDLE.c);
@@ -50,7 +49,7 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key, sf::View* view) {
 		case KeyAction::DOWN:
 		case KeyAction::RIGHT:
 		case KeyAction::LEFT:
-			player.animation.set_texture();
+			player.animation.set_texture(am->getTexture(RUN.c));
 			player.move(action->first, view);
 			if(previousKey != key) {
 				// play gasping sound each time the player changes direction
@@ -66,7 +65,7 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key, sf::View* view) {
 }
 
 void GameState::playerIdle() {
-	player.animation.set_texture();
+	player.animation.set_texture(am->getTexture(IDLE.c));
 	player.animation.next();
 }
 

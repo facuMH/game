@@ -37,9 +37,7 @@ void Game::initWindow() {
 }
 
 void Game::initStates() {
-	states.push(new MainMenuState(window, assetsManager,
-	    {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c)},
-	    {assetsManager.getDesign(LAYER1.c), assetsManager.getDesign(LAYER2.c)}, &keyBindings));
+	states.push(new MainMenuState(window, assetsManager, &keyBindings));
 }
 
 // Constructor
@@ -78,10 +76,11 @@ void Game::makeNewCombat(const int numberOfEnemies) {
 		alien.animation.move({50, 0});
 		enemies.push_back(alien);
 	}
-	auto mapTexture = {assetsManager.getMap(TILESHEET_FLOOR.c)};
-	auto designs = {assetsManager.getDesign(COMBATLEVEL.c)};
+	auto mapTexture = {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c),
+	    assetsManager.getMap(TILESHEET_HOUSES.c)};
+	JSONFilePath* design = assetsManager.getMapDesign(COMBAT_LEVEL1.c);
 	Party party{*dynamic_cast<GameState*>(states.top())->getPlayer()};
-	states.push(new CombatState(window, assetsManager, mapTexture, designs, party, enemies, &keyBindings));
+	states.push(new CombatState(window, assetsManager, mapTexture, *design, party, enemies, &keyBindings));
 	in_combat = true;
 }
 
@@ -105,8 +104,9 @@ void Game::pollEvents() {
 				}
 				if(action == StateAction::START_GAME) {
 					states.push(new GameState(window, assetsManager,
-					    {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c)},
-					    {assetsManager.getDesign(LAYER1.c), assetsManager.getDesign(LAYER2.c)}, &keyBindings));
+					    {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c),
+					        assetsManager.getMap(TILESHEET_HOUSES.c)},
+					    *assetsManager.getMapDesign(MAP_LEVEL1.c), &keyBindings));
 				}
 				break;
 			default:
