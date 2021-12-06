@@ -7,8 +7,6 @@
 // Private functions
 void Game::initVariables() {
 	window = nullptr;
-	soundBuffer = assetsManager.getSoundBuffer(GASP.c);
-	sound.setBuffer(soundBuffer);
 }
 
 void Game::initWindow() {
@@ -39,8 +37,9 @@ void Game::initWindow() {
 }
 
 void Game::initStates() {
-	states.push(new MainMenuState(window, assetsManager, {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c)},
-	    {assetsManager.getDesign(LAYER1.c), assetsManager.getDesign(LAYER2.c)}, &supportedKeys));
+	states.push(new MainMenuState(window, assetsManager,
+	    {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c)},
+	    {assetsManager.getDesign(LAYER1.c), assetsManager.getDesign(LAYER2.c)}, &keyBindings));
 }
 
 // Constructor
@@ -82,7 +81,7 @@ void Game::makeNewCombat(const int numberOfEnemies) {
 	auto mapTexture = {assetsManager.getMap(TILESHEET_FLOOR.c)};
 	auto designs = {assetsManager.getDesign(COMBATLEVEL.c)};
 	Party party{*dynamic_cast<GameState*>(states.top())->getPlayer()};
-	states.push(new CombatState(window, assetsManager, mapTexture, designs, party, enemies));
+	states.push(new CombatState(window, assetsManager, mapTexture, designs, party, enemies, &keyBindings));
 	in_combat = true;
 }
 
@@ -96,55 +95,34 @@ void Game::pollEvents() {
 		// Event that is called when the close button is clicked
 		case sf::Event::Closed: window->close(); break;
 		case sf::Event::KeyPressed:
-			if(!in_combat) {
-				// Event that is called when the Escape button is pressed
-				switch(event.key.code) {
-				case sf::Keyboard::Escape: window->close(); break;
-				case sf::Keyboard::Enter:
-					action = states.top()->shouldAct();
-					if(action == StateAction::EXIT_GAME) {
-						window->close();
-					}
-					if(action == StateAction::START_GAME) {
-						states.push(new GameState(window, assetsManager, {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c)},
-						    {assetsManager.getDesign(LAYER1.c), assetsManager.getDesign(LAYER2.c)}));
-					}
-					break;
-				default:
-					action = states.top()->handleKeys(event.key.code, &view);
-					if(previousKey != event.key.code) {
-						// play gasping sound each time the player changes direction
-						sound.play();
-					}
-					previousKey = event.key.code;
-					if(action == StateAction::START_COMBAT) {
-						makeNewCombat(1);
-					}
-					if(action == StateAction::EXIT_GAME) {
-						window->close();
-					}
-					break;
+			// Event that is called when the Escape button is pressed
+			switch(event.key.code) {
+			case sf::Keyboard::Escape: window->close(); break;
+			case sf::Keyboard::Enter:
+				action = states.top()->shouldAct();
+				if(action == StateAction::EXIT_GAME) {
+					window->close();
 				}
-			} else {
-				switch(event.key.code) {
-				case sf::Keyboard::Escape:
-					// open pause menu
-					break;
-				case sf::Keyboard::Up: // Up arrow
-				                       // switch action up
-					break;
-				case sf::Keyboard::Down: // Down arrow
-				                         // switch action down
-					break;
-				case sf::Keyboard::Space:
-					// select combat action
-					break;
-				case sf::Keyboard::A:
+				if(action == StateAction::START_GAME) {
+					states.push(new GameState(window, assetsManager,
+					    {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c)},
+					    {assetsManager.getDesign(LAYER1.c), assetsManager.getDesign(LAYER2.c)}, &keyBindings));
+				}
+				break;
+			default:
+				action = states.top()->handleKeys(event.key.code, &view);
+				if(action == StateAction::START_COMBAT) {
+					makeNewCombat(1);
+				}
+				if(action == StateAction::EXIT_GAME) {
+					window->close();
+				}
+				if(action == StateAction::EXIT_COMBAT) {
 					// calling quitStateActions here is only for debug reasons
 					states.top()->quitStateActions();
 					in_combat = false;
-				default: break;
 				}
+				break;
 			}
 			break;
 		case sf::Event::MouseMoved: break;
@@ -199,14 +177,21 @@ void Game::endApplication() {
 
 
 void Game::initKeys() {
+	keyActionString.emplace("UP", KeyAction::UP);
+	keyActionString.emplace("DOWN", KeyAction::DOWN);
+	keyActionString.emplace("RIGHT", KeyAction::RIGHT);
+	keyActionString.emplace("LEFT", KeyAction::LEFT);
+	keyActionString.emplace("SELECT", KeyAction::SELECT);
+	keyActionString.emplace("BACK", KeyAction::BACK);
+	keyActionString.emplace("INTERACT", KeyAction::INTERACT);
+
 	std::ifstream ifs(KEYS.c);
+	std::string key;
+	size_t key_value = 0;
 
 	if(ifs.is_open()) {
-		std::string key;
-		int key_value = 0;
-
 		while(ifs >> key >> key_value) {
-			supportedKeys.emplace(key, key_value);
+			keyBindings.emplace(keyActionString.at(key), static_cast<sf::Keyboard::Key>(key_value));
 		}
 	}
 	ifs.close();

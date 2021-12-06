@@ -12,12 +12,15 @@ class CombatState : public State {
 	Enemies enemies;
 	TileMap map;
 	CombatText lifeCounters;
+	KeyList* keybinds;
 	void addCombatString(const Character& c, AssetsManager& am);
+	sf::SoundBuffer soundBuffer;
+	sf::Sound sound;
 
   public:
 	// Constructor
-	CombatState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns, const Party& p,
-	    const Enemies& e);
+	CombatState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets,
+	    std::vector<Design*> levelDesigns, const Party& p, const Enemies& e, KeyList* gameSupportedKeys);
 	// Destructor
 	~CombatState() override;
 

@@ -7,12 +7,18 @@
 #include "AssetsPaths.h"
 #include "GameState.h"
 
-GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns)
+GameState::GameState(
+    sf::RenderWindow* window, AssetsManager& gameAM, std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns, KeyList* gameSupportedKeys)
     : State(window), map(gameAM, textureSheets, levelDesigns) {
+
 	am = &gameAM;
+	keybinds = gameSupportedKeys;
 	Texture* play_text = am->getTexture(IDLE.c);
 	Animation player_animation(play_text, sf::IntRect(65, 55, 45, 50), Interval(162, 0), Position(50, 50));
 	player = Character("Adventurer", Stats(15, 20, 50, 30), player_animation);
+	soundBuffer = am->getSoundBuffer(GASP.c);
+	sound.setBuffer(soundBuffer);
+	previousKey = sf::Keyboard::Unknown;
 }
 
 GameState::~GameState() = default;
@@ -36,18 +42,27 @@ void GameState::updateKeybinds(const float& dt) {
 
 StateAction GameState::handleKeys(sf::Keyboard::Key key, sf::View* view) {
 	StateAction result = StateAction::NONE;
-	switch(key) {
-	case sf::Keyboard::Q: result = StateAction::EXIT_GAME; break;
-	case sf::Keyboard::Right: // Right arrow
-	case sf::Keyboard::Left:  // Left arrow
-	case sf::Keyboard::Up:    // Up arrow
-	case sf::Keyboard::Down:  // Down arrow
-		player.animation.set_texture();
-		player.move(key, view);
-		break;
-	case sf::Keyboard::C: result = StateAction::START_COMBAT; break;
-	default: playerIdle(); break;
+	auto action = std::find_if(keybinds->begin(), keybinds->end(),
+	    [key](const std::pair<KeyAction, sf::Keyboard::Key>& v) { return key == v.second; });
+	if(action != keybinds->end()) {
+		switch(action->first) {
+		case KeyAction::BACK: result = StateAction::EXIT_GAME; break;
+		case KeyAction::UP:
+		case KeyAction::DOWN:
+		case KeyAction::RIGHT:
+		case KeyAction::LEFT:
+			player.animation.set_texture();
+			player.move(action->first, view);
+			if(previousKey != key) {
+				// play gasping sound each time the player changes direction
+				sound.play();
+			}
+			previousKey = key;
+		default: playerIdle(); break;
+		}
 	}
+	if (key == sf::Keyboard::C) result = StateAction::START_COMBAT;
+	if (key == sf::Keyboard::Q) result = StateAction::EXIT_GAME;
 	return result;
 }
 

@@ -45,7 +45,6 @@ class MapBackground : public sf::Texture {};
 class Texture : public sf::Texture {};
 
 using Buttons = std::vector<Button>;
-using KeyList = std::unordered_map<std::string, int>;
 
 struct Stats {
 	int str = 0;  // Strength
@@ -60,6 +59,16 @@ const sf::Color LIGHTGREY = sf::Color(150, 150, 150, 255);
 const sf::Color BLACK = sf::Color(20, 20, 20, 200);
 
 enum class StateAction { NONE, START_GAME, START_COMBAT, EXIT_COMBAT, EXIT_GAME };
+
+enum class KeyAction { UP, DOWN, RIGHT, LEFT, SELECT, BACK, INTERACT };
+
+namespace std {
+template <> struct hash<KeyAction> {
+	size_t operator()(const KeyAction& k) const { return hash<int>()(static_cast<int>(k)); }
+};
+}; // namespace std
+
+using KeyList = std::unordered_map<KeyAction, sf::Keyboard::Key>;
 
 class Character;
 using Enemies = std::vector<Character>;

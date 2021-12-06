@@ -12,6 +12,8 @@ class MainMenuState : public State {
 	sf::Texture backgroundTexture;
 	sf::RectangleShape background;
 	sf::Font font;
+	sf::SoundBuffer soundBuffer;
+	sf::Sound sound;
 
 	Buttons buttons;
 	int activeButton;
@@ -20,22 +22,21 @@ class MainMenuState : public State {
 	sf::Vector2i mousePoseWindow;
 	sf::Vector2f mousePosView;
 
-	KeyList* supportedKeys;
-	KeyList keybinds;
+	KeyList* keybinds;
 
 	bool quit{};
 
 	// Functions
-	void initBackground(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns);
+	void initBackground(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets,
+	    std::vector<Design*> levelDesigns);
 	void initFonts(AssetsManager& am);
-	void initKeybinds();
 	void initButtons();
 
 	void updateMousePositions();
 
   public:
-	MainMenuState(
-	    sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns, KeyList* supportedKeys);
+	MainMenuState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets,
+	    std::vector<Design*> levelDesigns, KeyList* gameSupportedKeys);
 
 	~MainMenuState() override;
 

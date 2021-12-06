@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include <SFML/Window.hpp>
 
 #include "AssetsPaths.h"
@@ -6,11 +8,12 @@
 MainMenuState::MainMenuState(
     sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns, KeyList* gameSupportedKeys)
     : State(window) {
-	supportedKeys = gameSupportedKeys;
+	keybinds = gameSupportedKeys;
 	initBackground(window, am, textureSheets, levelDesigns);
 	initFonts(am);
-	initKeybinds();
 	initButtons();
+	soundBuffer = am.getSoundBuffer(GASP.c);
+	sound.setBuffer(soundBuffer);
 }
 
 void MainMenuState::initBackground(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets, std::vector<Design*> levelDesigns) {
@@ -22,20 +25,6 @@ void MainMenuState::initBackground(sf::RenderWindow* window, AssetsManager& am, 
 
 void MainMenuState::initFonts(AssetsManager& am) {
 	font = *am.getFont(DOSIS.c);
-}
-
-void MainMenuState::initKeybinds() {
-	std::ifstream ifs(MENUKEYBIND.c);
-
-	if(ifs.is_open()) {
-		std::string key;
-		std::string key2;
-
-		while(ifs >> key >> key2) {
-			keybinds[key] = supportedKeys->at(key2);
-		}
-	}
-	ifs.close();
 }
 
 void MainMenuState::initButtons() {
@@ -96,27 +85,33 @@ void MainMenuState::quitStateActions() {
 }
 
 StateAction MainMenuState::handleKeys(sf::Keyboard::Key key, sf::View* view) {
-	switch(key) {
-	case sf::Keyboard::Up: // Up arrow
-		buttons[activeButton].setInactive();
-		if(activeButton == 0) {
-			activeButton = MAX_BUTTONS - 1;
-		} else {
-			activeButton--;
+	auto action = std::find_if(keybinds->begin(), keybinds->end(),
+	    [key](const std::pair<KeyAction, sf::Keyboard::Key>& v) { return key == v.second; });
+	if(action != keybinds->end()) {
+		switch(action->first) {
+		case KeyAction::UP: // Up arrow
+			buttons[activeButton].setInactive();
+			if(activeButton == 0) {
+				activeButton = MAX_BUTTONS - 1;
+			} else {
+				activeButton--;
+			}
+			buttons[activeButton].setActive();
+			break;
+		case KeyAction::DOWN: // Down arrow
+			buttons[activeButton].setInactive();
+			if(activeButton == MAX_BUTTONS - 1) {
+				activeButton = 0;
+			} else {
+				activeButton++;
+			}
+			buttons[activeButton].setActive();
+			break;
+		default: break;
 		}
-		buttons[activeButton].setActive();
-		break;
-	case sf::Keyboard::Down: // Down arrow
-		buttons[activeButton].setInactive();
-		if(activeButton == MAX_BUTTONS - 1) {
-			activeButton = 0;
-		} else {
-			activeButton++;
-		}
-		buttons[activeButton].setActive();
-		break;
-	default: break;
 	}
+	// play gasping sound each time change button.
+	sound.play();
 	return StateAction::NONE;
 }
 
