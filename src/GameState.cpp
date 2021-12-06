@@ -37,7 +37,6 @@ void GameState::render(sf::RenderTarget* target) {
 }
 
 void GameState::updateKeybinds(const float& dt) {
-	shouldQuit();
 }
 
 StateAction GameState::handleKeys(sf::Keyboard::Key key, sf::View* view) {

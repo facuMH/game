@@ -37,7 +37,6 @@ void CombatState::render(sf::RenderTarget* target) {
 }
 
 void CombatState::updateKeybinds(const float& dt) {
-	shouldQuit();
 }
 
 bool CombatState::shouldQuit() {
