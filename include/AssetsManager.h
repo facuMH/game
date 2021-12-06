@@ -15,14 +15,14 @@ class AssetsManager {
 	std::unordered_map<std::string, Texture> textures;
 	std::unordered_map<std::string, sf::Font> fonts;
 	std::unordered_map<std::string, MapBackground> maps;
-	std::unordered_map<std::string, Design> design;
 	std::unordered_map<std::string, sf::SoundBuffer> sounds;
+	std::unordered_map<std::string, JSONFilePath> mapDesigns;
 
 	void emplace(const std::string& name, const Texture& newAsset) { textures.emplace(name, newAsset); }
 	void emplace(const std::string& name, const sf::Font& newAsset) { fonts.emplace(name, newAsset); }
 	void emplace(const std::string& name, const MapBackground& newAsset) { maps.emplace(name, newAsset); }
-	void emplace(const std::string& name, const Design& newAsset) { design.emplace(name, newAsset); }
 	void emplace(const std::string& name, const sf::SoundBuffer& newAsset) { sounds.emplace(name, newAsset); }
+	void emplace(const std::string& name, const JSONFilePath& newAsset) { mapDesigns.emplace(name, newAsset); }
 
 	template <typename U, typename T = typename U::mapped_type> T* getAsset(const std::string& name, U& map) {
 		auto found = map.find(name);
@@ -41,8 +41,8 @@ class AssetsManager {
 	Texture* getTexture(const std::string& name) { return getAsset(name, textures); }
 	sf::Font* getFont(const std::string& name) { return getAsset(name, fonts); }
 	MapBackground* getMap(const std::string& name) { return getAsset(name, maps); }
-	Design* getDesign(const std::string& name) { return getAsset(name, design); }
 	sf::SoundBuffer getSoundBuffer(const std::string& name) { return *getAsset(name, sounds); }
+	JSONFilePath* getMapDesign(const std::string& name) {return getAsset(name, mapDesigns); }
 
 	template <typename Asset> bool loadAsset(const std::string& path) {
 		Asset newAsset;

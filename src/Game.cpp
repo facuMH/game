@@ -37,9 +37,7 @@ void Game::initWindow() {
 }
 
 void Game::initStates() {
-	states.push(new MainMenuState(window, assetsManager,
-	    {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c)},
-	    {assetsManager.getDesign(LAYER1.c), assetsManager.getDesign(LAYER2.c)}, &keyBindings));
+	states.push(new MainMenuState(window, assetsManager, &keyBindings));
 }
 
 // Constructor
@@ -78,10 +76,11 @@ void Game::makeNewCombat(const int numberOfEnemies) {
 		alien.animation.move({50, 0});
 		enemies.push_back(alien);
 	}
-	auto mapTexture = {assetsManager.getMap(TILESHEET_FLOOR.c)};
-	auto designs = {assetsManager.getDesign(COMBATLEVEL.c)};
+	auto mapTexture = {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c),
+	    assetsManager.getMap(TILESHEET_HOUSES.c)};
+	JSONFilePath* design = assetsManager.getMapDesign(COMBAT_LEVEL1.c);
 	Party party{*dynamic_cast<GameState*>(states.top())->getPlayer()};
-	states.push(new CombatState(window, assetsManager, mapTexture, designs, party, enemies, &keyBindings));
+	states.push(new CombatState(window, assetsManager, mapTexture, *design, party, enemies, &keyBindings));
 	in_combat = true;
 }
 
@@ -95,38 +94,41 @@ void Game::pollEvents() {
 		// Event that is called when the close button is clicked
 		case sf::Event::Closed: window->close(); break;
 		case sf::Event::KeyPressed:
-			// Event that is called when the Escape button is pressed
-			switch(event.key.code) {
-			case sf::Keyboard::Escape: window->close(); break;
-			case sf::Keyboard::Enter:
-				action = states.top()->shouldAct();
-				if(action == StateAction::EXIT_GAME) {
-					window->close();
-				}
-				if(action == StateAction::START_GAME) {
-					states.push(new GameState(window, assetsManager,
-					    {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c)},
-					    {assetsManager.getDesign(LAYER1.c), assetsManager.getDesign(LAYER2.c)}, &keyBindings));
+			if(!in_combat) {
+				// Event that is called when the Escape button is pressed
+				switch(event.key.code) {
+				case sf::Keyboard::Escape: window->close(); break;
+				case sf::Keyboard::Enter:
+					action = states.top()->shouldAct();
+					if(action == StateAction::EXIT_GAME) {
+						window->close();
+					}
+					if(action == StateAction::START_GAME) {
+						states.push(new GameState(window, assetsManager,
+						    {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c),
+						        assetsManager.getMap(TILESHEET_HOUSES.c)},
+						    *assetsManager.getMapDesign(MAP_LEVEL1.c), &keyBindings));
+					}
+					break;
+				default:
+					action = states.top()->handleKeys(event.key.code, &view);
+					if(action == StateAction::START_COMBAT) {
+						makeNewCombat(1);
+					}
+					if(action == StateAction::EXIT_GAME) {
+						window->close();
+					}
+					if(action == StateAction::EXIT_COMBAT) {
+						// calling quitStateActions here is only for debug reasons
+						states.top()->quitStateActions();
+						in_combat = false;
+					}
+					break;
 				}
 				break;
-			default:
-				action = states.top()->handleKeys(event.key.code, &view);
-				if(action == StateAction::START_COMBAT) {
-					makeNewCombat(1);
-				}
-				if(action == StateAction::EXIT_GAME) {
-					window->close();
-				}
-				if(action == StateAction::EXIT_COMBAT) {
-					// calling quitStateActions here is only for debug reasons
-					states.top()->quitStateActions();
-					in_combat = false;
-				}
-				break;
+			case sf::Event::MouseMoved: break;
+			default: break;
 			}
-			break;
-		case sf::Event::MouseMoved: break;
-		default: break;
 		}
 	}
 }

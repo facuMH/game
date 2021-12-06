@@ -40,6 +40,7 @@ set(HEADERS include/Animation.h
         include/GameState.h
         include/Tile.h
         include/TileMap.h
+        include/tileson.hpp
         include/MainMenuState.h
         include/Button.h)
 
