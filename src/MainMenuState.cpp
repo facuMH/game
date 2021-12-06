@@ -6,17 +6,17 @@
 #include "MainMenuState.h"
 
 MainMenuState::MainMenuState(
-    sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets, KeyList* gameSupportedKeys)
+    sf::RenderWindow* window, AssetsManager& am, KeyList* gameSupportedKeys)
     : State(window) {
 	supportedKeys = gameSupportedKeys;
-	initBackground(window, am, textureSheets);
+	initBackground(window, am);
 	initFonts(am);
 	initButtons();
 	soundBuffer = am.getSoundBuffer(GASP.c);
 	sound.setBuffer(soundBuffer);
 }
 
-void MainMenuState::initBackground(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets) {
+void MainMenuState::initBackground(sf::RenderWindow* window, AssetsManager& am) {
 	background.setSize(sf::Vector2f(static_cast<float>(window->getSize().x), static_cast<float>(window->getSize().y)));
 	backgroundTexture = *am.getTexture(BACKGROUND.c);
 	background.setTexture(&backgroundTexture);

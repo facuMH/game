@@ -37,10 +37,7 @@ void Game::initWindow() {
 }
 
 void Game::initStates() {
-	states.push(new MainMenuState(window, assetsManager,
-	    {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c),
-	        assetsManager.getMap(TILESHEET_HOUSES.c)},
-	    &keyBindings));
+	states.push(new MainMenuState(window, assetsManager, &keyBindings));
 }
 
 // Constructor

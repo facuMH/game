@@ -8,7 +8,7 @@
 #include "GameState.h"
 
 GameState::GameState(
-    sf::RenderWindow* window, AssetsManager& gameAM, std::vector<MapBackground*> textureSheets, JSONFilePath path, KeyList* gameSupportedKeys)
+    sf::RenderWindow* window, AssetsManager& gameAM, std::vector<MapBackground*> textureSheets, JSONFilePath &path, KeyList* gameSupportedKeys)
     : State(window), map(gameAM, textureSheets, path) {
 	am = &gameAM;
 	keybinds = gameSupportedKeys;

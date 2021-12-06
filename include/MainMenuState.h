@@ -27,15 +27,14 @@ class MainMenuState : public State {
 	bool quit{};
 
 	// Functions
-	void initBackground(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets);
+	void initBackground(sf::RenderWindow* window, AssetsManager& am);
 	void initFonts(AssetsManager& am);
 	void initButtons();
 
 	void updateMousePositions();
 
   public:
-	MainMenuState(
-	    sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets, KeyList* supportedKeys);
+	MainMenuState(sf::RenderWindow* window, AssetsManager& am, KeyList* supportedKeys);
 
 
 	~MainMenuState() override;
