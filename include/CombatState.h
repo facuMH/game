@@ -13,10 +13,12 @@ class CombatState : public State {
 	TileMap map;
 	CombatText lifeCounters;
 	KeyList* keybinds;
-	void addCombatString(const Character& c, AssetsManager& am);
+	void addCombatString(const Character& c, AssetsManager& am, const int i);
 	sf::SoundBuffer soundBuffer;
 	sf::Sound sound;
 	sf::View view;
+	Position initialText{50.f, 300.f};
+	float textIntervalHeigh = 50;
 
   public:
 	// Constructor
