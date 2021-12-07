@@ -11,7 +11,6 @@ using Position_i = sf::Vector2i;
 using Interval = sf::Vector2f;
 using Name = std::string;
 
-
 class JSONFilePath : public std::string {
   public:
 	bool loadFromFile(const std::string& input) {
@@ -27,18 +26,6 @@ class MusicPath : public std::string {
 		return true;
 	}
 };
-/*
-class MusicPointer : public std::unique_ptr<sf::Music> {
-  public:
-	bool loadFromFile(const std::string& input) {
-		auto* music(new sf::Music);
-		music->openFromFile(input);
-		reset(music);
-		return true;
-	}
-};
- */
-
 
 class MapBackground : public sf::Texture {};
 class Texture : public sf::Texture {};
