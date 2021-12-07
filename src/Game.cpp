@@ -104,6 +104,7 @@ void Game::pollEvents() {
 					window->close();
 				}
 				if(action == StateAction::START_GAME) {
+					turnOffMusic();
 					states.push(new GameState(window, assetsManager,
 					    {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c),
 					        assetsManager.getMap(TILESHEET_HOUSES.c)},
@@ -154,7 +155,7 @@ void Game::update() {
 	}
 }
 
-void Game::turnOffMusic(){
+void Game::turnOffMusic() {
 	states.top()->stopMusic();
 }
 
