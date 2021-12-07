@@ -15,6 +15,7 @@ class GameState : public State {
 	sf::Clock clock;
 	sf::SoundBuffer soundBuffer;
 	sf::Sound sound;
+	sf::Music music;
 	// just for demonstration purposes
 	sf::Keyboard::Key previousKey;
 
@@ -35,4 +36,6 @@ class GameState : public State {
 	void drawPlayer(sf::RenderWindow* window) override;
 	Character* getPlayer() { return &player; };
 	StateAction shouldAct() override;
+	void stopMusic() override;
+	void resumeMusic() override;
 };

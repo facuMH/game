@@ -80,6 +80,7 @@ void Game::makeNewCombat(const int numberOfEnemies) {
 	    assetsManager.getMap(TILESHEET_HOUSES.c)};
 	JSONFilePath* design = assetsManager.getMapDesign(COMBAT_LEVEL1.c);
 	Party party{*dynamic_cast<GameState*>(states.top())->getPlayer()};
+	turnOffMusic();
 	states.push(new CombatState(window, assetsManager, mapTexture, *design, party, enemies, &keyBindings));
 	in_combat = true;
 }
@@ -103,6 +104,7 @@ void Game::pollEvents() {
 					window->close();
 				}
 				if(action == StateAction::START_GAME) {
+					turnOffMusic();
 					states.push(new GameState(window, assetsManager,
 					    {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c),
 					        assetsManager.getMap(TILESHEET_HOUSES.c)},
@@ -143,6 +145,7 @@ void Game::update() {
 			states.top()->quitStateActions();
 			delete states.top();
 			states.pop();
+			states.top()->resumeMusic();
 		}
 	} else { // End of application
 		// Since the game depends on the window being open (see function
@@ -150,6 +153,10 @@ void Game::update() {
 		Game::endApplication();
 		window->close();
 	}
+}
+
+void Game::turnOffMusic() {
+	states.top()->stopMusic();
 }
 
 void Game::render() {

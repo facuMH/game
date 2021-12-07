@@ -57,3 +57,9 @@ constexpr auto ALEX = cat(FONTS.c, "AlexandriaFLF.ttf");
 // ---- SOUND FX
 constexpr auto SOUNDS = cat(ASSETS, "sounds/");
 constexpr auto GASP = cat(SOUNDS.c, "gasp.wav");
+
+// ---- MUSIC
+constexpr auto MUSIC = cat(ASSETS, "music/");
+constexpr auto MENU_MUSIC = cat(MUSIC.c, "main_menu.ogg");
+constexpr auto VILLAGE_MUSIC = cat(MUSIC.c, "town.ogg");
+constexpr auto COMBAT_MUSIC = cat(MUSIC.c, "combat.ogg");

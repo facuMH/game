@@ -11,8 +11,15 @@ using Position_i = sf::Vector2i;
 using Interval = sf::Vector2f;
 using Name = std::string;
 
-
 class JSONFilePath : public std::string {
+  public:
+	bool loadFromFile(const std::string& input) {
+		append(input);
+		return true;
+	}
+};
+
+class MusicPath : public std::string {
   public:
 	bool loadFromFile(const std::string& input) {
 		append(input);

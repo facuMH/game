@@ -73,4 +73,6 @@ class Game {
 
 	// Accessors
 	bool isRunning() const;
+
+	void turnOffMusic();
 };

@@ -16,6 +16,7 @@ class CombatState : public State {
 	void addCombatString(const Character& c, AssetsManager& am);
 	sf::SoundBuffer soundBuffer;
 	sf::Sound sound;
+	sf::Music music;
 
   public:
 	// Constructor
@@ -34,4 +35,6 @@ class CombatState : public State {
 	StateAction handleKeys(sf::Keyboard::Key key, sf::View* view) override;
 	void drawPlayer(sf::RenderWindow* window) override;
 	StateAction shouldAct() override;
+	void stopMusic() override;
+	void resumeMusic() override;
 };

@@ -18,6 +18,10 @@ GameState::GameState(
 	soundBuffer = am->getSoundBuffer(GASP.c);
 	sound.setBuffer(soundBuffer);
 	previousKey = sf::Keyboard::Unknown;
+
+	MusicPath* musicPath = gameAM.getMusic(VILLAGE_MUSIC.c);
+	music.openFromFile(*musicPath);
+	music.play();
 }
 
 GameState::~GameState() = default;
@@ -83,4 +87,10 @@ void GameState::drawPlayer(sf::RenderWindow* window) {
 
 bool GameState::shouldQuit() {
 	return isQuit();
+}
+void GameState::stopMusic() {
+	music.stop();
+}
+void GameState::resumeMusic() {
+	music.play();
 }
