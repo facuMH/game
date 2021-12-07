@@ -24,6 +24,10 @@ CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, std::vecto
 	for(const auto& c : e) {
 		addCombatString(c, am);
 	}
+
+	MusicPath* musicPath = am.getMusic(COMBAT_MUSIC.c);
+	music.openFromFile(*musicPath);
+	music.play();
 }
 
 CombatState::~CombatState() = default;
@@ -111,4 +115,10 @@ void CombatState::drawPlayer(sf::RenderWindow* window) {
 	for(const auto& e : enemies) {
 		window->draw(e.animation.sprite);
 	}
+}
+void CombatState::stopMusic() {
+	music.stop();
+}
+void CombatState::resumeMusic() {
+	music.play();
 }

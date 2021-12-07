@@ -14,6 +14,7 @@ class MainMenuState : public State {
 	sf::Font font;
 	sf::SoundBuffer soundBuffer;
 	sf::Sound sound;
+	sf::Music music;
 
 	Buttons buttons;
 	int activeButton;
@@ -54,4 +55,6 @@ class MainMenuState : public State {
 	bool shouldQuit() override;
 	void drawPlayer(sf::RenderWindow* window) override{};
 	StateAction shouldAct() override;
+	void stopMusic() override;
+	void resumeMusic() override;
 };

@@ -20,6 +20,26 @@ class JSONFilePath : public std::string {
 	}
 };
 
+class MusicPath : public std::string {
+  public:
+	bool loadFromFile(const std::string& input) {
+		append(input);
+		return true;
+	}
+};
+/*
+class MusicPointer : public std::unique_ptr<sf::Music> {
+  public:
+	bool loadFromFile(const std::string& input) {
+		auto* music(new sf::Music);
+		music->openFromFile(input);
+		reset(music);
+		return true;
+	}
+};
+ */
+
+
 class MapBackground : public sf::Texture {};
 class Texture : public sf::Texture {};
 
