@@ -94,41 +94,39 @@ void Game::pollEvents() {
 		// Event that is called when the close button is clicked
 		case sf::Event::Closed: window->close(); break;
 		case sf::Event::KeyPressed:
-			if(!in_combat) {
-				// Event that is called when the Escape button is pressed
-				switch(event.key.code) {
-				case sf::Keyboard::Escape: window->close(); break;
-				case sf::Keyboard::Enter:
-					action = states.top()->shouldAct();
-					if(action == StateAction::EXIT_GAME) {
-						window->close();
-					}
-					if(action == StateAction::START_GAME) {
-						states.push(new GameState(window, assetsManager,
-						    {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c),
-						        assetsManager.getMap(TILESHEET_HOUSES.c)},
-						    *assetsManager.getMapDesign(MAP_LEVEL1.c), &keyBindings));
-					}
-					break;
-				default:
-					action = states.top()->handleKeys(event.key.code, &view);
-					if(action == StateAction::START_COMBAT) {
-						makeNewCombat(1);
-					}
-					if(action == StateAction::EXIT_GAME) {
-						window->close();
-					}
-					if(action == StateAction::EXIT_COMBAT) {
-						// calling quitStateActions here is only for debug reasons
-						states.top()->quitStateActions();
-						in_combat = false;
-					}
-					break;
+			// Event that is called when the Escape button is pressed
+			switch(event.key.code) {
+			case sf::Keyboard::Escape: window->close(); break;
+			case sf::Keyboard::Enter:
+				action = states.top()->shouldAct();
+				if(action == StateAction::EXIT_GAME) {
+					window->close();
+				}
+				if(action == StateAction::START_GAME) {
+					states.push(new GameState(window, assetsManager,
+					    {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c),
+					        assetsManager.getMap(TILESHEET_HOUSES.c)},
+					    *assetsManager.getMapDesign(MAP_LEVEL1.c), &keyBindings));
 				}
 				break;
-			case sf::Event::MouseMoved: break;
-			default: break;
+			default:
+				action = states.top()->handleKeys(event.key.code, &view);
+				if(action == StateAction::START_COMBAT) {
+					makeNewCombat(1);
+				}
+				if(action == StateAction::EXIT_GAME) {
+					window->close();
+				}
+				if(action == StateAction::EXIT_COMBAT) {
+					// calling quitStateActions here is only for debug reasons
+					states.top()->quitStateActions();
+					in_combat = false;
+				}
+				break;
 			}
+			break;
+		case sf::Event::MouseMoved: break;
+		default: break;
 		}
 	}
 }
