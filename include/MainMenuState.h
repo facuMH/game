@@ -14,6 +14,7 @@ class MainMenuState : public State {
 	sf::Font font;
 	sf::SoundBuffer soundBuffer;
 	sf::Sound sound;
+	sf::View view;
 
 	Buttons buttons;
 	int activeButton;
@@ -48,10 +49,11 @@ class MainMenuState : public State {
 
 	void update(const float& dt) override;
 	void render(sf::RenderTarget* target) override;
-	StateAction handleKeys(sf::Keyboard::Key key, sf::View* view) override;
+	StateAction handleKeys(sf::Keyboard::Key key) override;
 	void updateKeybinds(const float& dt) override;
 	void quitStateActions() override;
 	bool shouldQuit() override;
 	void drawPlayer(sf::RenderWindow* window) override{};
 	StateAction shouldAct() override;
+	sf::View getView() override { return view; };
 };

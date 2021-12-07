@@ -14,6 +14,7 @@ MainMenuState::MainMenuState(
 	initButtons();
 	soundBuffer = am.getSoundBuffer(GASP.c);
 	sound.setBuffer(soundBuffer);
+	view = window->getDefaultView();
 }
 
 void MainMenuState::initBackground(sf::RenderWindow* window, AssetsManager& am) {
@@ -84,7 +85,7 @@ void MainMenuState::quitStateActions() {
 	std::cout << "Ending current game state" << std::endl;
 }
 
-StateAction MainMenuState::handleKeys(sf::Keyboard::Key key, sf::View* view) {
+StateAction MainMenuState::handleKeys(sf::Keyboard::Key key) {
 	auto action = std::find_if(supportedKeys->begin(), supportedKeys->end(),
 	    [key](const std::pair<KeyAction, sf::Keyboard::Key>& v) { return key == v.second; });
 	if(action != supportedKeys->end()) {

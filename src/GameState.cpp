@@ -18,6 +18,7 @@ GameState::GameState(
 	soundBuffer = am->getSoundBuffer(GASP.c);
 	sound.setBuffer(soundBuffer);
 	previousKey = sf::Keyboard::Unknown;
+	view = window->getDefaultView();
 }
 
 GameState::~GameState() = default;
@@ -38,7 +39,7 @@ void GameState::render(sf::RenderTarget* target) {
 void GameState::updateKeybinds(const float& dt) {
 }
 
-StateAction GameState::handleKeys(sf::Keyboard::Key key, sf::View* view) {
+StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 	StateAction result = StateAction::NONE;
 	auto action = std::find_if(keybinds->begin(), keybinds->end(),
 	    [key](const std::pair<KeyAction, sf::Keyboard::Key>& v) { return key == v.second; });
@@ -50,7 +51,7 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key, sf::View* view) {
 		case KeyAction::RIGHT:
 		case KeyAction::LEFT:
 			player.animation.set_texture(am->getTexture(RUN.c));
-			player.move(action->first, view);
+			player.move(action->first, &view);
 			if(previousKey != key) {
 				// play gasping sound each time the player changes direction
 				sound.play();

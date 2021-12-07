@@ -17,6 +17,7 @@ class GameState : public State {
 	sf::Sound sound;
 	// just for demonstration purposes
 	sf::Keyboard::Key previousKey;
+	sf::View view;
 
   public:
 	// Constructor
@@ -30,9 +31,10 @@ class GameState : public State {
 	void updateKeybinds(const float& dt) override;
 	bool shouldQuit() override;
 	void quitStateActions() override;
-	StateAction handleKeys(sf::Keyboard::Key key, sf::View* view) override;
+	StateAction handleKeys(sf::Keyboard::Key key) override;
 	void playerIdle();
 	void drawPlayer(sf::RenderWindow* window) override;
 	Character* getPlayer() { return &player; };
 	StateAction shouldAct() override;
+	sf::View getView() override { return view; };
 };
