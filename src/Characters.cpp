@@ -27,7 +27,6 @@ void Character::move(const KeyAction key, sf::View* view) {
 		if(animation.get_orientation().x > 0) {
 			animation.mirror(animation.sprite.getLocalBounds().width);
 		}
-		//view->move(-stepsize, 0.f);
 		view->setCenter(animation.sprite.getPosition());
 		break;
 	case KeyAction::RIGHT:
@@ -35,17 +34,14 @@ void Character::move(const KeyAction key, sf::View* view) {
 		if(animation.get_orientation().x < 0) {
 			animation.mirror();
 		}
-		//view->move(stepsize, 0.f);
 		view->setCenter(animation.sprite.getPosition());
 		break;
 	case KeyAction::UP:
 		animation.sprite.move({0.0f, -stepsize});
-		//view->move(0.f, -stepsize);
 		view->setCenter(animation.sprite.getPosition());
 		break;
 	case KeyAction::DOWN:
 		animation.sprite.move({0.0f, stepsize});
-		//view->move(0.f, stepsize);
 		view->setCenter(animation.sprite.getPosition());
 		break;
 	default: break;
