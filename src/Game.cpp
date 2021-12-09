@@ -30,7 +30,7 @@ void Game::initWindow() {
 	ifs.close();
 
 	// create window
-	window = new sf::RenderWindow(videoMode, title, sf::Style::Titlebar | sf::Style::Close);
+	window = new sf::RenderWindow(videoMode, title, sf::Style::Titlebar | sf::Style::Close | sf::Style::Resize);
 	window->setFramerateLimit(framerate_limit);
 	window->setVerticalSyncEnabled(vertical_sync_enabled);
 }
