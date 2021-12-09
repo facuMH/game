@@ -9,6 +9,7 @@ constexpr int MAX_BUTTONS = 3;
 class MainMenuState : public State {
   private:
 	// Variable
+	sf::View view;
 	sf::Texture backgroundTexture;
 	sf::RectangleShape background;
 	sf::Font font;
@@ -49,7 +50,7 @@ class MainMenuState : public State {
 
 	void update(const float& dt) override;
 	void render(sf::RenderTarget* target) override;
-	StateAction handleKeys(sf::Keyboard::Key key, sf::View* view) override;
+	StateAction handleKeys(sf::Keyboard::Key key) override;
 	void updateKeybinds(const float& dt) override;
 	void quitStateActions() override;
 	bool shouldQuit() override;

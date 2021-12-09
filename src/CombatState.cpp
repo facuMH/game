@@ -14,6 +14,7 @@ void CombatState::addCombatString(const Character& c, AssetsManager& am) {
 CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets,
     JSONFilePath path, const Party& p, const Enemies& e, KeyList* gameSupportedKeys)
     : State(window), map(am, textureSheets, path) {
+	view = window->getDefaultView();
 	keybinds = gameSupportedKeys;
 	party = p;
 	enemies = e;
@@ -37,6 +38,7 @@ void CombatState::update(const float& dt) {
 }
 
 void CombatState::render(sf::RenderTarget* target) {
+	target->setView(view);
 	map.render(*target);
 }
 
@@ -57,7 +59,7 @@ void CombatState::quitStateActions() {
 	std::cout << "Ending current game state" << std::endl;
 }
 
-StateAction CombatState::handleKeys(const sf::Keyboard::Key key, [[maybe_unused]] sf::View* view) {
+StateAction CombatState::handleKeys(const sf::Keyboard::Key key) {
 	auto action = std::find_if(keybinds->begin(), keybinds->end(),
 	    [key](const std::pair<KeyAction, sf::Keyboard::Key>& v) { return key == v.second; });
 	if(action != keybinds->end()) {
