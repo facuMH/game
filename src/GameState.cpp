@@ -7,10 +7,9 @@
 #include "AssetsPaths.h"
 #include "GameState.h"
 
-GameState::GameState(
-    sf::RenderWindow* window, AssetsManager& gameAM, std::vector<MapBackground*> textureSheets, JSONFilePath &path, KeyList* gameSupportedKeys)
+GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vector<MapBackground*> textureSheets,
+    JSONFilePath& path, KeyList* gameSupportedKeys)
     : State(window), map(gameAM, textureSheets, path) {
-
 	am = &gameAM;
 	keybinds = gameSupportedKeys;
 	Texture* play_text = am->getTexture(IDLE.c);
@@ -19,19 +18,17 @@ GameState::GameState(
 	soundBuffer = am->getSoundBuffer(GASP.c);
 	sound.setBuffer(soundBuffer);
 	previousKey = sf::Keyboard::Unknown;
-
 	view = sf::View(player.get_position(), {720.0, 480.0});
-
 	MusicPath* musicPath = gameAM.getMusic(VILLAGE_MUSIC.c);
 	music.openFromFile(*musicPath);
 	music.play();
 }
 
+
 GameState::~GameState() = default;
 
 void GameState::update(const float& dt) {
 	updateKeybinds(dt);
-
 	if(clock.getElapsedTime().asSeconds() > .05f) {
 		playerIdle();
 		clock.restart();
@@ -44,8 +41,7 @@ void GameState::render(sf::RenderTarget* target) {
 	target->draw(player.animation.sprite);
 }
 
-void GameState::updateKeybinds(const float& dt) {
-}
+void GameState::updateKeybinds(const float& dt) {}
 
 StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 	StateAction result = StateAction::NONE;
@@ -68,8 +64,8 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 		default: playerIdle(); break;
 		}
 	}
-	if (key == sf::Keyboard::C) result = StateAction::START_COMBAT;
-	if (key == sf::Keyboard::Q) result = StateAction::EXIT_GAME;
+	if(key == sf::Keyboard::C) result = StateAction::START_COMBAT;
+	if(key == sf::Keyboard::Q) result = StateAction::EXIT_GAME;
 	return result;
 }
 
