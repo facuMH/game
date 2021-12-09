@@ -8,6 +8,7 @@
 
 class CombatState : public State {
   private:
+	sf::View view;
 	Party party;
 	Enemies enemies;
 	TileMap map;
@@ -32,7 +33,7 @@ class CombatState : public State {
 	void updateKeybinds(const float& dt) override;
 	bool shouldQuit() override;
 	void quitStateActions() override;
-	StateAction handleKeys(sf::Keyboard::Key key, sf::View* view) override;
+	StateAction handleKeys(sf::Keyboard::Key key) override;
 	void drawPlayer(sf::RenderWindow* window) override;
 	StateAction shouldAct() override;
 	void stopMusic() override;

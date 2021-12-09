@@ -33,7 +33,6 @@ void Game::initWindow() {
 	window = new sf::RenderWindow(videoMode, title, sf::Style::Titlebar | sf::Style::Close);
 	window->setFramerateLimit(framerate_limit);
 	window->setVerticalSyncEnabled(vertical_sync_enabled);
-	view = sf::View(sf::Vector2f(320.f, 240.f), sf::Vector2f(640.f, 480.f));
 }
 
 void Game::initStates() {
@@ -112,7 +111,7 @@ void Game::pollEvents() {
 				}
 				break;
 			default:
-				action = states.top()->handleKeys(event.key.code, &view);
+				action = states.top()->handleKeys(event.key.code);
 				if(action == StateAction::START_COMBAT) {
 					makeNewCombat(1);
 				}
@@ -168,7 +167,7 @@ void Game::render() {
 		// render current game state
 		states.top()->render(window);
 	}
-	window->setView(view);
+
 	if(!states.empty()) states.top()->drawPlayer(window);
 	// Window is done drawing --> display result
 	window->display();
