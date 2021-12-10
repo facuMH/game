@@ -4,7 +4,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "Button.h"
+#include "Gui.h"
 
 using Position = sf::Vector2f;
 using Position_i = sf::Vector2i;
@@ -30,7 +30,7 @@ class MusicPath : public std::string {
 class MapBackground : public sf::Texture {};
 class Texture : public sf::Texture {};
 
-using Buttons = std::vector<Button>;
+using Buttons = std::vector<gui::Button>;
 
 struct Stats {
 	int str = 0;  // Strength
@@ -44,7 +44,7 @@ const sf::Color GREY = sf::Color(70, 70, 70, 200);
 const sf::Color LIGHTGREY = sf::Color(150, 150, 150, 255);
 const sf::Color BLACK = sf::Color(20, 20, 20, 200);
 
-enum class StateAction { NONE, START_GAME, START_COMBAT, EXIT_COMBAT, EXIT_GAME };
+enum class StateAction { NONE, SETTINGS_GAME, START_GAME, START_COMBAT, EXIT_COMBAT, EXIT_GAME };
 
 enum class KeyAction { UP, DOWN, RIGHT, LEFT, SELECT, BACK, INTERACT };
 

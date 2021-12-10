@@ -19,10 +19,11 @@
 class State {
   private:
 	std::vector<sf::Texture> textures;
-	sf::RenderWindow* window;
+
 	bool isQuitting = false;
 
   public:
+	sf::RenderWindow* window;
 	// Constructor
 	explicit State(sf::RenderWindow* window);
 	// Destructor

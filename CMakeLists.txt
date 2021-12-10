@@ -25,7 +25,8 @@ set(SOURCES src/main.cpp
         src/Tile.cpp
         src/TileMap.cpp
         src/MainMenuState.cpp
-        src/Button.cpp)
+        src/Gui.cpp
+        src/SettingsState.cpp)
 
 set(HEADERS include/Animation.h
         include/AssetsManager.h
@@ -42,7 +43,8 @@ set(HEADERS include/Animation.h
         include/TileMap.h
         include/tileson.hpp
         include/MainMenuState.h
-        include/Button.h)
+        include/Gui.h
+        include/SettingsState.h)
 
 #------------- DEPENDENCIES
 

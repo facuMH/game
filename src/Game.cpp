@@ -3,6 +3,7 @@
 #include "AssetsPaths.h"
 #include "CombatState.h"
 #include "Game.h"
+#include "SettingsState.h"
 
 // Private functions
 void Game::initVariables() {
@@ -109,6 +110,10 @@ void Game::pollEvents() {
 					    {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c),
 					        assetsManager.getMap(TILESHEET_HOUSES.c)},
 					    *assetsManager.getMapDesign(MAP_LEVEL1.c), &keyBindings));
+				}
+				if(action == StateAction::SETTINGS_GAME) {
+					turnOffMusic();
+					states.push(new SettingsState(window, assetsManager, &keyBindings));
 				}
 				break;
 			default:

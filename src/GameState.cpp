@@ -7,8 +7,8 @@
 #include "AssetsPaths.h"
 #include "GameState.h"
 
-GameState::GameState(
-    sf::RenderWindow* window, AssetsManager& gameAM, std::vector<MapBackground*> textureSheets, JSONFilePath &path, KeyList* gameSupportedKeys)
+GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vector<MapBackground*> textureSheets,
+    JSONFilePath& path, KeyList* gameSupportedKeys)
     : State(window), map(gameAM, textureSheets, path) {
 	am = &gameAM;
 	keybinds = gameSupportedKeys;
@@ -39,8 +39,7 @@ void GameState::render(sf::RenderTarget* target) {
 	target->draw(player.animation.sprite);
 }
 
-void GameState::updateKeybinds(const float& dt) {
-}
+void GameState::updateKeybinds(const float& dt) {}
 
 StateAction GameState::handleKeys(sf::Keyboard::Key key, sf::View* view) {
 	StateAction result = StateAction::NONE;
@@ -63,8 +62,8 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key, sf::View* view) {
 		default: playerIdle(); break;
 		}
 	}
-	if (key == sf::Keyboard::C) result = StateAction::START_COMBAT;
-	if (key == sf::Keyboard::Q) result = StateAction::EXIT_GAME;
+	if(key == sf::Keyboard::C) result = StateAction::START_COMBAT;
+	if(key == sf::Keyboard::Q) result = StateAction::EXIT_GAME;
 	return result;
 }
 

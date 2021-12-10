@@ -3,11 +3,10 @@
 #include <SFML/Window.hpp>
 
 #include "AssetsPaths.h"
+#include "Gui.h"
 #include "MainMenuState.h"
 
-MainMenuState::MainMenuState(
-    sf::RenderWindow* window, AssetsManager& am, KeyList* gameSupportedKeys)
-    : State(window) {
+MainMenuState::MainMenuState(sf::RenderWindow* window, AssetsManager& am, KeyList* gameSupportedKeys) : State(window) {
 	supportedKeys = gameSupportedKeys;
 	initBackground(window, am);
 	initFonts(am);
@@ -32,11 +31,11 @@ void MainMenuState::initFonts(AssetsManager& am) {
 }
 
 void MainMenuState::initButtons() {
-	buttons.push_back(Button(300, 150, 150, 50, &font, "New Game", GREY, LIGHTGREY, BLACK));
+	buttons.push_back(gui::Button(300, 150, 150, 50, &font, "New Game", GREY, LIGHTGREY, BLACK));
 	activeButton = 0;
 	buttons[activeButton].setActive();
-	buttons.push_back(Button(300, 200, 150, 50, &font, "Settings", GREY, LIGHTGREY, BLACK));
-	buttons.push_back(Button(300, 250, 150, 50, &font, "QUIT", GREY, LIGHTGREY, BLACK));
+	buttons.push_back(gui::Button(300, 200, 150, 50, &font, "Settings", GREY, LIGHTGREY, BLACK));
+	buttons.push_back(gui::Button(300, 250, 150, 50, &font, "QUIT", GREY, LIGHTGREY, BLACK));
 }
 
 MainMenuState::~MainMenuState() = default;
@@ -54,7 +53,6 @@ void MainMenuState::updateButtons() {
 		it.update(mousePosView);
 	}
 }
-
 
 
 void MainMenuState::updateMousePositions() {
@@ -124,6 +122,8 @@ StateAction MainMenuState::handleKeys(sf::Keyboard::Key key, sf::View* view) {
 StateAction MainMenuState::shouldAct() {
 	if(activeButton == 0) {
 		return StateAction::START_GAME;
+	} else if(activeButton == 1) {
+		return StateAction::SETTINGS_GAME;
 	} else if(activeButton == 2) {
 		return StateAction::EXIT_GAME;
 	} else {

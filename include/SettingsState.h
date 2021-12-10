@@ -1,14 +1,13 @@
-
 #pragma once
-#include "GameState.h"
+#include "AssetsManager.h"
 #include "Gui.h"
-#include "SettingsState.h"
-#include "definitions.h"
+#include "State.h"
+#include <SFML/Graphics/Text.hpp>
+#include <SFML/Window/VideoMode.hpp>
 #include <map>
+#include <vector>
 
-constexpr int MAX_BUTTONS = 3;
-
-class MainMenuState : public State {
+class SettingsState : public State {
   private:
 	// Variable
 	sf::Texture backgroundTexture;
@@ -21,6 +20,7 @@ class MainMenuState : public State {
 	Buttons buttons;
 	int activeButton;
 
+
 	sf::Vector2i mousePosScreen;
 	sf::Vector2i mousePoseWindow;
 	sf::Vector2f mousePosView;
@@ -32,22 +32,35 @@ class MainMenuState : public State {
 	// Functions
 	void initBackground(sf::RenderWindow* window, AssetsManager& am);
 	void initFonts(AssetsManager& am);
-	void initButtons();
+	void updateGui();
+	// void initGui();
+
+	void initVariables();
+
+	sf::Text optionsText;
+	void initText();
+
+	std::vector<sf::VideoMode> modes;
 
 	void updateMousePositions();
 
   public:
-	MainMenuState(sf::RenderWindow* window, AssetsManager& am, KeyList* supportedKeys);
+	SettingsState(sf::RenderWindow* window, AssetsManager& am, KeyList* supportedKeys);
+
+	virtual ~SettingsState() override;
+
+	std::map<std::string, gui::DropDownList*> dropdownList;
 
 
-	~MainMenuState() override;
+	// Accessors
 
 	// Functions
+
 	void endState();
 
 	void updateInput(const float& dt);
-	void updateButtons();
-	void renderButtons(sf::RenderTarget* target);
+	void updateGui(const float& dt);
+	void renderGui(sf::RenderTarget* target);
 
 	void update(const float& dt) override;
 	void render(sf::RenderTarget* target) override;
@@ -59,4 +72,5 @@ class MainMenuState : public State {
 	StateAction shouldAct() override;
 	void stopMusic() override;
 	void resumeMusic() override;
+	void initGui();
 };
