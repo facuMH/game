@@ -614,7 +614,7 @@ namespace json11 {
 						return fail("unexpected end of input after start of comment", false);
 					if (str[i] == '/') { // inline comment
 						i++;
-						// advance until nextWalk line, or end of input
+						// advance until next line, or end of input
 						while (i < str.size() && str[i] != '\n') {
 							i++;
 						}
@@ -659,7 +659,7 @@ namespace json11 {
 
 			/* get_next_token()
 			 *
-			 * Return the nextWalk non-whitespace character. If the end of the input is reached,
+			 * Return the next non-whitespace character. If the end of the input is reached,
 			 * flag an error and return 0.
 			 */
 			char get_next_token() {
