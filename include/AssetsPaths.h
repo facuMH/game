@@ -29,12 +29,13 @@ constexpr auto BACKGROUND = cat(MAINMENU.c, "Background.jpeg");
 // ---- CHARACTER
 constexpr auto CHARACTER = cat(ASSETS, "characters/");
 constexpr auto NINJA = cat(CHARACTER.c, "green_ninja/");
-constexpr auto NINJA_IDLE = cat(NINJA.c, "Idle.png");
 constexpr auto NINJA_RUN = cat(NINJA.c, "Walk.png");
 
 // ---- ENEMIES
 constexpr auto ENEMIES = cat(ASSETS, "enemies/");
 constexpr auto ALIEN = cat(ENEMIES.c, "alien.png");
+constexpr auto MOLE = cat(ENEMIES.c, "Mole.png");
+
 
 // ---- TILES
 constexpr auto TILES = cat(ASSETS, "tiles/");
