@@ -12,7 +12,7 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
     : State(window), map(gameAM, textureSheets, path) {
 	am = &gameAM;
 	keybinds = gameSupportedKeys;
-	Texture* play_text = am->getTexture(NINJA_IDLE.c);
+	Texture* play_text = am->getTexture(NINJA_RUN.c);
 	Animation player_animation(play_text, sf::IntRect(0, 0, 16, 16), Interval(0, 16), Position(50, 50));
 	player = Character("Adventurer", Stats(15, 20, 50, 30), player_animation);
 	soundBuffer = am->getSoundBuffer(GASP.c);
@@ -30,7 +30,6 @@ GameState::~GameState() = default;
 void GameState::update(const float& dt) {
 	updateKeybinds(dt);
 	if(clock.getElapsedTime().asSeconds() > .05f) {
-		playerIdle();
 		clock.restart();
 	}
 }
@@ -61,17 +60,12 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 				sound.play();
 			}
 			previousKey = key;
-		default: playerIdle(); break;
+		default: break;
 		}
 	}
 	if(key == sf::Keyboard::C) result = StateAction::START_COMBAT;
 	if(key == sf::Keyboard::Q) result = StateAction::EXIT_GAME;
 	return result;
-}
-
-void GameState::playerIdle() {
-	player.animation.set_texture(am->getTexture(NINJA_RUN.c));
-	player.animation.nextIdle(previousKey);
 }
 
 StateAction GameState::shouldAct() {

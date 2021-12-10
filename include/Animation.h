@@ -25,27 +25,6 @@ class Animation {
 
 	void set_texture(const sf::Texture* new_texture) { sprite.setTexture(*new_texture); }
 
-
-	void nextIdle(sf::Keyboard::Key prev)
-	{
-		switch(prev) {
-		case sf::Keyboard::S:
-			texture_rectangle.left = 0;
-			break;
-		case sf::Keyboard::W:
-			texture_rectangle.left = 16;
-			break;
-		case sf::Keyboard::A:
-			texture_rectangle.left = 32;
-			break;
-		case sf::Keyboard::D:
-			texture_rectangle.left = 48;
-			break;
-		default:
-			break;
-		}
-	}
-
 	void next(KeyAction keyAction, sf::View* view, float stepsize) {
 		switch(keyAction) {
 		case KeyAction::DOWN:
