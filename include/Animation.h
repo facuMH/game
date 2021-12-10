@@ -25,11 +25,53 @@ class Animation {
 
 	void set_texture(const sf::Texture* new_texture) { sprite.setTexture(*new_texture); }
 
-	void next() {
-		if(texture != nullptr) {
-			texture_rectangle.left = int(texture_rectangle.left + sprite_interval.x) % texture->getSize().x;
-			sprite.setTextureRect(texture_rectangle);
+
+	void nextIdle(sf::Keyboard::Key prev)
+	{
+		switch(prev) {
+		case sf::Keyboard::S:
+			texture_rectangle.left = 0;
+			break;
+		case sf::Keyboard::W:
+			texture_rectangle.left = 16;
+			break;
+		case sf::Keyboard::A:
+			texture_rectangle.left = 32;
+			break;
+		case sf::Keyboard::D:
+			texture_rectangle.left = 48;
+			break;
+		default:
+			break;
 		}
+	}
+
+	void next(KeyAction keyAction, sf::View* view, float stepsize) {
+		switch(keyAction) {
+		case KeyAction::DOWN:
+			sprite.move({0.0f, stepsize});
+			view->setCenter(sprite.getPosition());
+			texture_rectangle.left = 0;
+			break;
+		case KeyAction::UP:
+			sprite.move({0.0f, -stepsize});
+			view->setCenter(sprite.getPosition());
+			texture_rectangle.left = texture_rectangle.width;
+			break;
+		case KeyAction::LEFT:
+			sprite.move({-stepsize, 0.0f});
+			view->setCenter(sprite.getPosition());
+			texture_rectangle.left = 2 * texture_rectangle.width;
+			break;
+		case KeyAction::RIGHT:
+			sprite.move({stepsize, 0.0f});
+			view->setCenter(sprite.getPosition());
+			texture_rectangle.left = 3 * texture_rectangle.width;
+			break;
+		default: break;
+		}
+		texture_rectangle.top = int(texture_rectangle.top + texture_rectangle.height) % 64; // num of bits
+		sprite.setTextureRect(texture_rectangle);
 	}
 
 	void move(const Position& offset) { sprite.move(offset); }
@@ -37,17 +79,4 @@ class Animation {
 	Position get_position() { return sprite.getPosition(); }
 
 	void set_position(Position pos) { sprite.setPosition(pos); }
-
-	sf::Vector2f get_orientation() { return sprite.getScale(); }
-
-	// TODO: consider taking parameters to set origin depending on orientation
-	void mirror() {
-		sprite.setOrigin({0, 0});
-		sprite.scale({-1.f, 1.f});
-	}
-
-	void mirror(float origin_x) {
-		sprite.setOrigin({origin_x, 0});
-		sprite.scale({-1.f, 1.f});
-	}
 };

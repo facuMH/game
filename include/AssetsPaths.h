@@ -27,9 +27,10 @@ constexpr auto MAINMENU = cat(ASSETS, "menuBackgrounds/");
 constexpr auto BACKGROUND = cat(MAINMENU.c, "Background.jpeg");
 
 // ---- CHARACTER
-constexpr auto CHARACTER = cat(ASSETS, "character/");
-constexpr auto IDLE = cat(CHARACTER.c, "Idle.png");
-constexpr auto RUN = cat(CHARACTER.c, "Run.png");
+constexpr auto CHARACTER = cat(ASSETS, "characters/");
+constexpr auto NINJA = cat(CHARACTER.c, "green_ninja/");
+constexpr auto NINJA_IDLE = cat(NINJA.c, "Idle.png");
+constexpr auto NINJA_RUN = cat(NINJA.c, "Walk.png");
 
 // ---- ENEMIES
 constexpr auto ENEMIES = cat(ASSETS, "enemies/");
