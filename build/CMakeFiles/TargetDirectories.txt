@@ -1,3 +1,0 @@
-/home/abdul/Desktop/game/build/CMakeFiles/rebuild_cache.dir
-/home/abdul/Desktop/game/build/CMakeFiles/edit_cache.dir
-/home/abdul/Desktop/game/build/CMakeFiles/rpg.dir
