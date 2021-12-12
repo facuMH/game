@@ -25,11 +25,28 @@ class Animation {
 
 	void set_texture(const sf::Texture* new_texture) { sprite.setTexture(*new_texture); }
 
-	void next() {
-		if(texture != nullptr) {
-			texture_rectangle.left = int(texture_rectangle.left + sprite_interval.x) % texture->getSize().x;
-			sprite.setTextureRect(texture_rectangle);
+
+	// Helper function for moving the player, getting the new animation texture and moving the view accordingly
+	void movePlayerAndView(const sf::Vector2<float> &offset, sf::View *view, int newTextureRect) {
+		sprite.move(offset);
+		texture_rectangle.left = newTextureRect;
+		view->setCenter(sprite.getPosition());
+	}
+
+	void next(KeyAction keyAction, sf::View* view, float stepsize) {
+		switch(keyAction) {
+		case KeyAction::DOWN: movePlayerAndView({0.0f, stepsize}, view, 0);
+			break;
+		case KeyAction::UP: movePlayerAndView({0.0f, -stepsize}, view, texture_rectangle.width);
+			break;
+		case KeyAction::LEFT: movePlayerAndView({-stepsize, 0.0f}, view, 2 * texture_rectangle.width);
+			break;
+		case KeyAction::RIGHT: movePlayerAndView({stepsize, 0.0f}, view, 3 * texture_rectangle.width);
+			break;
+		default: break;
 		}
+		texture_rectangle.top = int(texture_rectangle.top + texture_rectangle.height) % 64; // num of bits
+		sprite.setTextureRect(texture_rectangle);
 	}
 
 	void move(const Position& offset) { sprite.move(offset); }
@@ -37,17 +54,4 @@ class Animation {
 	Position get_position() { return sprite.getPosition(); }
 
 	void set_position(Position pos) { sprite.setPosition(pos); }
-
-	sf::Vector2f get_orientation() { return sprite.getScale(); }
-
-	// TODO: consider taking parameters to set origin depending on orientation
-	void mirror() {
-		sprite.setOrigin({0, 0});
-		sprite.scale({-1.f, 1.f});
-	}
-
-	void mirror(float origin_x) {
-		sprite.setOrigin({origin_x, 0});
-		sprite.scale({-1.f, 1.f});
-	}
 };
