@@ -25,27 +25,23 @@ class Animation {
 
 	void set_texture(const sf::Texture* new_texture) { sprite.setTexture(*new_texture); }
 
+
+	// Helper function for moving the player, getting the new animation texture and moving the view accordingly
+	void movePlayerAndView(const sf::Vector2<float> &offset, sf::View *view, int newTextureRect) {
+		sprite.move(offset);
+		texture_rectangle.left = newTextureRect;
+		view->setCenter(sprite.getPosition());
+	}
+
 	void next(KeyAction keyAction, sf::View* view, float stepsize) {
 		switch(keyAction) {
-		case KeyAction::DOWN:
-			sprite.move({0.0f, stepsize});
-			view->setCenter(sprite.getPosition());
-			texture_rectangle.left = 0;
+		case KeyAction::DOWN: movePlayerAndView({0.0f, stepsize}, view, 0);
 			break;
-		case KeyAction::UP:
-			sprite.move({0.0f, -stepsize});
-			view->setCenter(sprite.getPosition());
-			texture_rectangle.left = texture_rectangle.width;
+		case KeyAction::UP: movePlayerAndView({0.0f, -stepsize}, view, texture_rectangle.width);
 			break;
-		case KeyAction::LEFT:
-			sprite.move({-stepsize, 0.0f});
-			view->setCenter(sprite.getPosition());
-			texture_rectangle.left = 2 * texture_rectangle.width;
+		case KeyAction::LEFT: movePlayerAndView({-stepsize, 0.0f}, view, 2 * texture_rectangle.width);
 			break;
-		case KeyAction::RIGHT:
-			sprite.move({stepsize, 0.0f});
-			view->setCenter(sprite.getPosition());
-			texture_rectangle.left = 3 * texture_rectangle.width;
+		case KeyAction::RIGHT: movePlayerAndView({stepsize, 0.0f}, view, 3 * texture_rectangle.width);
 			break;
 		default: break;
 		}
