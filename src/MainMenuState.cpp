@@ -6,11 +6,13 @@
 #include "Gui.h"
 #include "MainMenuState.h"
 
-MainMenuState::MainMenuState(sf::RenderWindow* window, AssetsManager& am, KeyList* gameSupportedKeys) : State(window) {
+MainMenuState::MainMenuState(sf::RenderWindow* window, AssetsManager& am, KeyList* gameSupportedKeys, std::stack<State*>* states) : State(window, states) {
 	supportedKeys = gameSupportedKeys;
 	initBackground(window, am);
 	initFonts(am);
 	initButtons();
+
+	view = window->getDefaultView();
 
 	soundBuffer = am.getSoundBuffer(GASP.c);
 	sound.setBuffer(soundBuffer);
@@ -74,6 +76,7 @@ void MainMenuState::renderButtons(sf::RenderTarget* target) {
 }
 
 void MainMenuState::render(sf::RenderTarget* target) {
+	target->setView(view);
 	target->draw(background);
 	renderButtons(target);
 }
@@ -88,7 +91,7 @@ void MainMenuState::quitStateActions() {
 	std::cout << "Ending current game state" << std::endl;
 }
 
-StateAction MainMenuState::handleKeys(sf::Keyboard::Key key, sf::View* view) {
+StateAction MainMenuState::handleKeys(sf::Keyboard::Key key) {
 	auto action = std::find_if(supportedKeys->begin(), supportedKeys->end(),
 	    [key](const std::pair<KeyAction, sf::Keyboard::Key>& v) { return key == v.second; });
 	if(action != supportedKeys->end()) {

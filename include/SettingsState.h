@@ -10,6 +10,10 @@
 class SettingsState : public State {
   private:
 	// Variable
+	AssetsManager& am;
+	std::stack<State*>* states;
+
+	sf::View view;
 	sf::Texture backgroundTexture;
 	sf::RectangleShape background;
 	sf::Font font;
@@ -31,25 +35,19 @@ class SettingsState : public State {
 
 	// Functions
 	void initBackground(sf::RenderWindow* window, AssetsManager& am);
+	void applyResolution(unsigned int width, unsigned int height); 
 	void initFonts(AssetsManager& am);
 	void updateGui();
-	// void initGui();
-
-	void initVariables();
-
-	sf::Text optionsText;
-	void initText();
-
-	std::vector<sf::VideoMode> modes;
+	void initButtons();
+	void updateButtons();
+	void renderButtons(sf::RenderTarget* target);
 
 	void updateMousePositions();
 
   public:
-	SettingsState(sf::RenderWindow* window, AssetsManager& am, KeyList* supportedKeys);
+	SettingsState(sf::RenderWindow* window, AssetsManager& am, KeyList* supportedKeys, std::stack<State*>* states);
 
 	virtual ~SettingsState() override;
-
-	std::map<std::string, gui::DropDownList*> dropdownList;
 
 
 	// Accessors
@@ -59,18 +57,15 @@ class SettingsState : public State {
 	void endState();
 
 	void updateInput(const float& dt);
-	void updateGui(const float& dt);
-	void renderGui(sf::RenderTarget* target);
 
 	void update(const float& dt) override;
 	void render(sf::RenderTarget* target) override;
-	StateAction handleKeys(sf::Keyboard::Key key, sf::View* view) override;
+	StateAction handleKeys(sf::Keyboard::Key key) override;
 	void updateKeybinds(const float& dt) override;
 	void quitStateActions() override;
 	bool shouldQuit() override;
-	void drawPlayer(sf::RenderWindow* window) override{};
+	void drawPlayer(sf::RenderWindow* window) override;
 	StateAction shouldAct() override;
 	void stopMusic() override;
 	void resumeMusic() override;
-	void initGui();
 };

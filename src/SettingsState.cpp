@@ -10,39 +10,15 @@
 #include "AssetsPaths.h"
 #include "MainMenuState.h"
 
-void SettingsState::initBackground(sf::RenderWindow* window, AssetsManager& am) {
-	background.setSize(sf::Vector2f(static_cast<float>(window->getSize().x), static_cast<float>(window->getSize().y)));
-	backgroundTexture = *am.getTexture(SETTING_BACKGROUND.c);
-	background.setTexture(&backgroundTexture);
-}
+constexpr int MAX_RESOLUTION_COUNT = 7;
 
-void SettingsState::initFonts(AssetsManager& am) {
-	font = *am.getFont(DOSIS.c);
-}
-
-// void SettingsState::initGui() {
-// 	buttons.push_back(gui::Button(300, 250, 150, 50, &font, "QUIT", GREY, LIGHTGREY, BLACK));
-// }
-
-void SettingsState::initText() {
-	this->optionsText.setFont(this->font);
-
-	this->optionsText.setPosition(sf::Vector2f(100.f, 100.f));
-
-	this->optionsText.setCharacterSize(30);
-
-	this->optionsText.setFillColor(sf::Color::Black);
-
-	this->optionsText.setString("Resolution \nFullscreen \nVsync \nAntialiasing \n");
-}
-
-
-SettingsState::SettingsState(sf::RenderWindow* window, AssetsManager& am, KeyList* supportedKeys) : State(window) {
-	// supportedKeys = gameSupportedKeys;
+SettingsState::SettingsState(sf::RenderWindow* window, AssetsManager& am, KeyList* gameSupportedKeys, std::stack<State*>* states) : State(window, states), am(am), states(states) {
+	supportedKeys = gameSupportedKeys;
 	initBackground(window, am);
 	initFonts(am);
-	initGui();
-	initText();
+	
+	initButtons();
+	view = window->getDefaultView();
 
 	soundBuffer = am.getSoundBuffer(GASP.c);
 	sound.setBuffer(soundBuffer);
@@ -52,29 +28,96 @@ SettingsState::SettingsState(sf::RenderWindow* window, AssetsManager& am, KeyLis
 	music.play();
 }
 
-SettingsState::~SettingsState() {
-	// void SettingsState::endState() {
-	// std::cout << "Ending Main Menu!"
-	//           << "\n";
-	// }
+SettingsState::~SettingsState()  = default;
 
-	// auto it = this->buttons.begin();
-	// for(it = this->buttons.begin(); it != this->buttons.end(); ++it)
-	// {
-	// 	delete it->second;
-	// }
+void SettingsState::initBackground(sf::RenderWindow* window, AssetsManager& am) {
+	background.setSize(sf::Vector2f(static_cast<float>(window->getSize().x), static_cast<float>(window->getSize().y)));
+	backgroundTexture = *am.getTexture(SETTING_BACKGROUND.c);
+	background.setTexture(&backgroundTexture);
+}
 
-	auto it2 = this->dropdownList.begin();
-	for(it2 = this->dropdownList.begin(); it2 != this->dropdownList.end(); ++it2) {
-		delete it2->second;
+void SettingsState::applyResolution(unsigned int width, unsigned int height) {
+
+	window->setSize(sf::Vector2u(width, height));
+}
+
+void SettingsState::initFonts(AssetsManager& am) {
+	font = *am.getFont(DOSIS.c);
+}
+
+void SettingsState::updateGui() {
+
+	if(activeButton == 1){
+		applyResolution(800, 600);
+	}
+	if(activeButton == 2){
+		applyResolution(1024, 768);
+	}
+	if(activeButton == 3){
+		applyResolution(1280, 720);
+	}
+	if(activeButton == 4){
+		applyResolution(1440, 900);
+	}
+	if(activeButton == 5){
+		applyResolution(1920, 1080);
+	}                      
+}
+//creating buttons showing different resolution
+void SettingsState::initButtons() {
+
+	// get the size of the window
+	sf::Vector2u currentSize = window->getSize();
+	unsigned int width = currentSize.x;
+	unsigned int height = currentSize.y;
+	unsigned int buttonPos = 150;
+	unsigned int buttonPosInc = 30;
+	buttons.push_back(gui::Button(300, buttonPos, 150, buttonPosInc, &font, std::to_string(width) + 'x' + std::to_string(height), GREY, LIGHTGREY, BLACK));
+	activeButton = 0;
+	buttons[activeButton].setActive();
+
+	if(!(width == 800  && height == 600)){
+		buttonPos += buttonPosInc;
+		buttons.push_back(gui::Button(300, buttonPos, 150, buttonPosInc, &font, "800x600", GREY, LIGHTGREY, BLACK));
+	}
+	if(!(width == 1024 && height == 768)){
+		buttonPos += buttonPosInc;
+		buttons.push_back(gui::Button(300, buttonPos, 150, buttonPosInc, &font, "1024x768", GREY, LIGHTGREY, BLACK));
+	}
+	if(!(width == 1280 && height == 720)){
+		buttonPos += buttonPosInc;
+		buttons.push_back(gui::Button(300, buttonPos, 150, buttonPosInc, &font, "1280x720", GREY, LIGHTGREY, BLACK));
+	}
+	if(!(width == 1440 && height == 900)){
+		buttonPos += buttonPosInc;
+		buttons.push_back(gui::Button(300, buttonPos, 150, buttonPosInc, &font, "1440x900", GREY, LIGHTGREY, BLACK));
+	}
+	if(!(width == 1920 && height == 1080 )){
+		buttonPos += buttonPosInc;
+		buttons.push_back(gui::Button(300, buttonPos, 150, buttonPosInc, &font, "1920x1080", GREY, LIGHTGREY, BLACK));
+	}
+	buttonPos += buttonPosInc;
+	buttons.push_back(gui::Button(300, buttonPos, 150, buttonPosInc, &font, "BACK", GREY, LIGHTGREY, BLACK));
+}
+
+void SettingsState::updateButtons() {
+
+	for(auto it : buttons) {
+		it.update(mousePosView);
 	}
 }
 
+void SettingsState::renderButtons(sf::RenderTarget* target) {
+	for(auto& it : buttons) {
+		it.render(target);
+	}
+}
 
-// Accessors
-
-
-// Functions
+void SettingsState::updateMousePositions() {
+	mousePosScreen = sf::Mouse::getPosition();
+	mousePoseWindow = State::getMouse();
+	mousePosView = getPos(mousePoseWindow);
+}
 
 void SettingsState::endState() {
 	std::cout << "Ending Main Menu!"
@@ -83,70 +126,20 @@ void SettingsState::endState() {
 
 void SettingsState::updateInput(const float& dt) {}
 
-// void SettingsState::updateGui(const float& dt)
-// {
-// 	this->ddl->update(this->mousePosView, dt)
-// }
-
-void SettingsState::updateGui(const float& dt) {
-	/*Updates all the buttons in the state and handles their functionality*/
-	for(auto it : buttons) {
-		it.update(mousePosView);
-	}
-
-	// Dropdown list
-	for(auto& it : this->dropdownList) {
-		it.second->update(this->mousePosView, dt);
-	}
-
-	// Apply selected settings
-	// if(buttons["APPLY"]->isPressed()))
-	//		this->window->create(this->modes[this->dropDownLists["RESOLUTION"]->getActiveElementId()], "Test",
-	// sf::Style::Default);
-	// Dropdown functionality
-}
-
-
-void SettingsState::updateMousePositions() {
-	mousePosScreen = sf::Mouse::getPosition();
-	mousePoseWindow = State::getMouse();
-	mousePosView = getPos(mousePoseWindow);
-}
-
 void SettingsState::update(const float& dt) {
-	this->updateMousePositions();
-	this->updateInput(dt);
-	this->updateGui(dt);
+	updateMousePositions();
+	updateInput(dt);
+	updateButtons();
 }
 
-void SettingsState::renderGui(sf::RenderTarget* target) {
-	for(auto& it : this->buttons) {
-		it.render(target);
-	}
-
-	for(auto& it : this->dropdownList) {
-		it.second->render(target);
-	}
-}
 
 void SettingsState::render(sf::RenderTarget* target) {
+	target->setView(view);
 	target->draw(background);
-	renderGui(target);
-
-	target->draw(this->optionsText);
+	renderButtons(target);
 }
 
-void SettingsState::updateKeybinds(const float& dt) {}
-
-bool SettingsState::shouldQuit() {
-	return isQuit();
-}
-
-void SettingsState::quitStateActions() {
-	std::cout << "Ending current game state" << std::endl;
-}
-
-StateAction SettingsState::handleKeys(sf::Keyboard::Key key, sf::View* view) {
+StateAction SettingsState::handleKeys(sf::Keyboard::Key key) {
 	auto action = std::find_if(supportedKeys->begin(), supportedKeys->end(),
 	    [key](const std::pair<KeyAction, sf::Keyboard::Key>& v) { return key == v.second; });
 	if(action != supportedKeys->end()) {
@@ -154,7 +147,7 @@ StateAction SettingsState::handleKeys(sf::Keyboard::Key key, sf::View* view) {
 		case KeyAction::UP: // Up arrow
 			buttons[activeButton].setInactive();
 			if(activeButton == 0) {
-				activeButton = MAX_BUTTONS - 1;
+				activeButton = MAX_RESOLUTION_COUNT - 1;
 			} else {
 				activeButton--;
 			}
@@ -162,7 +155,7 @@ StateAction SettingsState::handleKeys(sf::Keyboard::Key key, sf::View* view) {
 			break;
 		case KeyAction::DOWN: // Down arrow
 			buttons[activeButton].setInactive();
-			if(activeButton == MAX_BUTTONS - 1) {
+			if(activeButton == MAX_RESOLUTION_COUNT - 1) {
 				activeButton = 0;
 			} else {
 				activeButton++;
@@ -177,16 +170,24 @@ StateAction SettingsState::handleKeys(sf::Keyboard::Key key, sf::View* view) {
 	return StateAction::NONE;
 }
 
+void SettingsState::updateKeybinds(const float& dt) {}
+
+void SettingsState::quitStateActions() {
+	std::cout << "Ending current game state" << std::endl;
+}
+
+void SettingsState::drawPlayer(sf::RenderWindow* window) {}
+
+bool SettingsState::shouldQuit() {
+	return isQuit();
+}
+
 StateAction SettingsState::shouldAct() {
-	if(activeButton == 0) {
-		return StateAction::START_GAME;
-	} else if(activeButton == 1) {
-		return StateAction::SETTINGS_GAME;
-	} else if(activeButton == 2) {
-		return StateAction::EXIT_GAME;
-	} else {
-		return StateAction::NONE;
-	}
+	updateGui();
+	if(activeButton == 6){
+		states->push(new MainMenuState(window, am, supportedKeys, states));
+	}   
+	return StateAction::NONE;
 }
 
 void SettingsState::stopMusic() {
@@ -195,26 +196,4 @@ void SettingsState::stopMusic() {
 
 void SettingsState::resumeMusic() {
 	music.play();
-}
-
-void SettingsState::initGui() {
-	buttons.push_back(gui::Button(380, 350, 200, 50, &font, "BACK", GREY, LIGHTGREY, BLACK));
-
-	buttons.push_back(gui::Button(80, 350, 200, 50, &font, "APPLY", GREY, LIGHTGREY, BLACK));
-
-	std::vector<std::string> modes_str;
-
-	for(auto& i : this->modes) {
-		modes_str.push_back(std::to_string(i.width) + 'x' + std::to_string(i.height));
-	}
-
-	this->dropdownList["RESOLUTION"] =
-	    new gui::DropDownList(230, 60, 200, 50, font, modes_str.data(), modes_str.size());
-
-	// buttons.push_back(gui::Button(500, 880, 250, 50, &font, "BACK", GREY, LIGHTGREY, BLACK));
-	// activeButton = 0;
-}
-
-void SettingsState::initVariables() {
-	this->modes = sf::VideoMode::getFullscreenModes();
 }

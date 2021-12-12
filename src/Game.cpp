@@ -10,6 +10,43 @@ void Game::initVariables() {
 	window = nullptr;
 }
 
+void Game::closeWindow() {
+
+	std::ifstream ifs("../config/window.ini");
+
+	// set default values
+	std::string title = "RPG";
+	unsigned int framerate_limit = 120;
+	bool vertical_sync_enabled = false;
+
+	// read default configs with file contents
+	if(ifs.is_open()) {
+		std::getline(ifs, title);
+		ifs >> videoMode.width >> videoMode.height;
+		ifs >> framerate_limit;
+		ifs >> vertical_sync_enabled;
+	}
+	ifs.close();
+	
+	std::ofstream ofs("../config/window.ini");
+   	// get the size of the window
+	sf::Vector2u currentSize = window->getSize();
+	unsigned int width = currentSize.x;
+	unsigned int height = currentSize.y;
+	// write new configs
+	if(ofs.is_open()) {
+		std::string res = std::to_string(width) + " " + std::to_string(height);
+		std::cout << res << std::endl;
+		ofs << title << std::endl;
+		ofs << res << std::endl;
+		ofs << framerate_limit << std::endl;
+		ofs << vertical_sync_enabled << std::endl;
+	}
+	ofs.close();
+	
+	window->close();
+}
+
 void Game::initWindow() {
 	videoMode.height = 720;
 	videoMode.width = 1280;
@@ -34,11 +71,10 @@ void Game::initWindow() {
 	window = new sf::RenderWindow(videoMode, title, sf::Style::Titlebar | sf::Style::Close);
 	window->setFramerateLimit(framerate_limit);
 	window->setVerticalSyncEnabled(vertical_sync_enabled);
-	view = sf::View(sf::Vector2f(320.f, 240.f), sf::Vector2f(640.f, 480.f));
 }
 
 void Game::initStates() {
-	states.push(new MainMenuState(window, assetsManager, &keyBindings));
+	states.push(new MainMenuState(window, assetsManager, &keyBindings, &states));
 }
 
 // Constructor
@@ -82,7 +118,7 @@ void Game::makeNewCombat(const int numberOfEnemies) {
 	JSONFilePath* design = assetsManager.getMapDesign(COMBAT_LEVEL1.c);
 	Party party{*dynamic_cast<GameState*>(states.top())->getPlayer()};
 	turnOffMusic();
-	states.push(new CombatState(window, assetsManager, mapTexture, *design, party, enemies, &keyBindings));
+	states.push(new CombatState(window, assetsManager, mapTexture, *design, party, enemies, &keyBindings, &states));
 	in_combat = true;
 }
 
@@ -94,35 +130,37 @@ void Game::pollEvents() {
 	while(window->pollEvent(event)) {
 		switch(event.type) {
 		// Event that is called when the close button is clicked
-		case sf::Event::Closed: window->close(); break;
+		case sf::Event::Closed: closeWindow(); break;
 		case sf::Event::KeyPressed:
 			// Event that is called when the Escape button is pressed
 			switch(event.key.code) {
-			case sf::Keyboard::Escape: window->close(); break;
+			case sf::Keyboard::Escape: closeWindow(); break;
 			case sf::Keyboard::Enter:
 				action = states.top()->shouldAct();
 				if(action == StateAction::EXIT_GAME) {
-					window->close();
+					 closeWindow();
 				}
 				if(action == StateAction::START_GAME) {
 					turnOffMusic();
 					states.push(new GameState(window, assetsManager,
-					    {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c),
-					        assetsManager.getMap(TILESHEET_HOUSES.c)},
-					    *assetsManager.getMapDesign(MAP_LEVEL1.c), &keyBindings));
+								{assetsManager.getMap(TILESHEET_FLOOR.c),
+								assetsManager.getMap(TILESHEET_NATURE.c),
+								assetsManager.getMap(TILESHEET_HOUSES.c)},
+								*assetsManager.getMapDesign(MAP_LEVEL1.c),
+								&keyBindings, &states));
 				}
 				if(action == StateAction::SETTINGS_GAME) {
 					turnOffMusic();
-					states.push(new SettingsState(window, assetsManager, &keyBindings));
+					states.push(new SettingsState(window, assetsManager, &keyBindings, &states));
 				}
 				break;
 			default:
-				action = states.top()->handleKeys(event.key.code, &view);
+				action = states.top()->handleKeys(event.key.code);
 				if(action == StateAction::START_COMBAT) {
 					makeNewCombat(1);
 				}
 				if(action == StateAction::EXIT_GAME) {
-					window->close();
+					 closeWindow();
 				}
 				if(action == StateAction::EXIT_COMBAT) {
 					// calling quitStateActions here is only for debug reasons
@@ -156,7 +194,7 @@ void Game::update() {
 		// Since the game depends on the window being open (see function
 		// isRunning()), closing the window ends the game
 		Game::endApplication();
-		window->close();
+		 closeWindow();
 	}
 }
 
@@ -173,7 +211,7 @@ void Game::render() {
 		// render current game state
 		states.top()->render(window);
 	}
-	window->setView(view);
+
 	if(!states.empty()) states.top()->drawPlayer(window);
 	// Window is done drawing --> display result
 	window->display();

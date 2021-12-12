@@ -8,8 +8,8 @@
 #include "GameState.h"
 
 GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vector<MapBackground*> textureSheets,
-    JSONFilePath& path, KeyList* gameSupportedKeys)
-    : State(window), map(gameAM, textureSheets, path) {
+    JSONFilePath& path, KeyList* gameSupportedKeys, std::stack<State*>* states)
+    : State(window, states), map(gameAM, textureSheets, path) {
 	am = &gameAM;
 	keybinds = gameSupportedKeys;
 	Texture* play_text = am->getTexture(IDLE.c);
@@ -18,11 +18,12 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 	soundBuffer = am->getSoundBuffer(GASP.c);
 	sound.setBuffer(soundBuffer);
 	previousKey = sf::Keyboard::Unknown;
-
+	view = sf::View(player.get_position(), {720.0, 480.0});
 	MusicPath* musicPath = gameAM.getMusic(VILLAGE_MUSIC.c);
 	music.openFromFile(*musicPath);
 	music.play();
 }
+
 
 GameState::~GameState() = default;
 
@@ -35,13 +36,14 @@ void GameState::update(const float& dt) {
 }
 
 void GameState::render(sf::RenderTarget* target) {
+	target->setView(view);
 	map.render(*target);
 	target->draw(player.animation.sprite);
 }
 
 void GameState::updateKeybinds(const float& dt) {}
 
-StateAction GameState::handleKeys(sf::Keyboard::Key key, sf::View* view) {
+StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 	StateAction result = StateAction::NONE;
 	auto action = std::find_if(keybinds->begin(), keybinds->end(),
 	    [key](const std::pair<KeyAction, sf::Keyboard::Key>& v) { return key == v.second; });
@@ -53,7 +55,7 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key, sf::View* view) {
 		case KeyAction::RIGHT:
 		case KeyAction::LEFT:
 			player.animation.set_texture(am->getTexture(RUN.c));
-			player.move(action->first, view);
+			player.move(action->first, &view);
 			if(previousKey != key) {
 				// play gasping sound each time the player changes direction
 				sound.play();

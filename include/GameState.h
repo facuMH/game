@@ -10,6 +10,7 @@ class GameState : public State {
   private:
 	TileMap map;
 	Character player;
+	sf::View view;
 	AssetsManager* am;
 	KeyList* keybinds;
 	sf::Clock clock;
@@ -22,7 +23,7 @@ class GameState : public State {
   public:
 	// Constructor
 	GameState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets,
-	    JSONFilePath& path, KeyList* gameSupportedKeys);
+	    JSONFilePath& path, KeyList* gameSupportedKeys, std::stack<State*>* states);
 	// Destructor
 	~GameState() override;
 
@@ -32,7 +33,7 @@ class GameState : public State {
 	void updateKeybinds(const float& dt) override;
 	bool shouldQuit() override;
 	void quitStateActions() override;
-	StateAction handleKeys(sf::Keyboard::Key key, sf::View* view) override;
+	StateAction handleKeys(sf::Keyboard::Key key) override;
 	void playerIdle();
 	void drawPlayer(sf::RenderWindow* window) override;
 	Character* getPlayer() { return &player; };

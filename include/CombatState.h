@@ -8,6 +8,7 @@
 
 class CombatState : public State {
   private:
+	sf::View view;
 	Party party;
 	Enemies enemies;
 	TileMap map;
@@ -21,7 +22,7 @@ class CombatState : public State {
   public:
 	// Constructor
 	CombatState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets,
-	    JSONFilePath path, const Party& p, const Enemies& e, KeyList* gameSupportedKeys);
+	    JSONFilePath path, const Party& p, const Enemies& e, KeyList* gameSupportedKeys, std::stack<State*>* states);
 
 	// Destructor
 	~CombatState() override;
@@ -32,7 +33,7 @@ class CombatState : public State {
 	void updateKeybinds(const float& dt) override;
 	bool shouldQuit() override;
 	void quitStateActions() override;
-	StateAction handleKeys(sf::Keyboard::Key key, sf::View* view) override;
+	StateAction handleKeys(sf::Keyboard::Key key) override;
 	void drawPlayer(sf::RenderWindow* window) override;
 	StateAction shouldAct() override;
 	void stopMusic() override;

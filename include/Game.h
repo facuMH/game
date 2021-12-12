@@ -20,6 +20,7 @@
 class Game {
   private:
 	void initVariables();
+	void closeWindow();
 	void initWindow();
 	void initStates();
 	void initKeys();
