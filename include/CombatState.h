@@ -31,7 +31,7 @@ class CombatState : public State {
 
 	// Functions
 	void update(const float& dt) override;
-	void render(sf::RenderTarget* target) override;
+	void render(sf::RenderWindow* window) override;
 	void updateKeybinds(const float& dt) override;
 	bool shouldQuit() override;
 	void quitStateActions() override;

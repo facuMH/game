@@ -46,10 +46,10 @@ class MainMenuState : public State {
 
 	void updateInput(const float& dt);
 	void updateButtons();
-	void renderButtons(sf::RenderTarget* target);
+	void renderButtons(sf::RenderWindow* window);
 
 	void update(const float& dt) override;
-	void render(sf::RenderTarget* target) override;
+	void render(sf::RenderWindow* window) override;
 	StateAction handleKeys(sf::Keyboard::Key key) override;
 	void updateKeybinds(const float& dt) override;
 	void quitStateActions() override;

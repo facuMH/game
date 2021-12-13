@@ -1,6 +1,7 @@
+#include "AssetsPaths.h"
 #include "Button.h"
 #include "CombatState.h"
-#include "AssetsPaths.h"
+#include "definitions.h"
 
 void CombatState::addCombatString(const Character& c, AssetsManager& am, const int i) {
 	sf::Text characterInfo{};
@@ -23,7 +24,16 @@ CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, std::vecto
 	enemies = e;
 	std::cout << "New Combat\n";
 	for(int i = 0; i < p.size(); i++) {
+		auto pPos = COMBAT_FIRST_PLAYER_POSITION;
 		addCombatString(p[i], am, i);
+		party[i].animation.set_position(pPos);
+		pPos.y += i * 50;
+		party[i].animation.sprite.setScale({3.f, 3.f});
+	}
+	for(int i = 0; i < e.size(); i++) {
+		auto ePos = COMBAT_FIRST_ENEMY_POSITION;
+		enemies[i].animation.set_position(ePos);
+		ePos.y += i * 50;
 	}
 
 	MusicPath* musicPath = am.getMusic(COMBAT_MUSIC.c);
@@ -37,11 +47,12 @@ void CombatState::update(const float& dt) {
 	updateKeybinds(dt);
 }
 
-void CombatState::render(sf::RenderTarget* target) {
-	target->setView(view);
-	map.render(*target);
+void CombatState::render(sf::RenderWindow* window) {
+	window->setView(view);
+	map.render(*window);
+	drawPlayer(window);
 	for(auto character : lifeCounters) {
-		character.second.render(target);
+		character.second.render(window);
 	}
 }
 
@@ -113,11 +124,11 @@ StateAction CombatState::shouldAct() {
 }
 
 void CombatState::drawPlayer(sf::RenderWindow* window) {
-	for(const auto& p : party) {
-		window->draw(p.animation.sprite);
-	}
 	for(const auto& e : enemies) {
 		window->draw(e.animation.sprite);
+	}
+	for(const auto& p : party) {
+		window->draw(p.animation.sprite);
 	}
 }
 void CombatState::stopMusic() {

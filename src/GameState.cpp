@@ -35,10 +35,10 @@ void GameState::update(const float& dt) {
 	}
 }
 
-void GameState::render(sf::RenderTarget* target) {
-	target->setView(view);
-	map.render(*target);
-	target->draw(player.animation.sprite);
+void GameState::render(sf::RenderWindow* window) {
+	window->setView(view);
+	map.render(*window);
+	window->draw(player.animation.sprite);
 }
 
 void GameState::updateKeybinds(const float& dt) {}

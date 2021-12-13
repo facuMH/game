@@ -15,7 +15,6 @@
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 
-
 enum button_states { BTN_IDLE = 0, BTN_HOVER, BTN_ACTIVE };
 
 class Button {
@@ -42,7 +41,7 @@ class Button {
 
 	// Functions
 	void update(sf::Vector2f mousePos);
-	void render(sf::RenderTarget* target);
+	void render(sf::RenderWindow* window);
 	void setActive();
 	void setInactive();
 };

@@ -18,8 +18,8 @@ Tile::~Tile() = default;
 
 void Tile::update() {}
 
-void Tile::render(sf::RenderTarget& target) {
-	target.draw(shape);
+void Tile::render(sf::RenderWindow& window) {
+	window.draw(shape);
 }
 
 Tile::Tile() = default;

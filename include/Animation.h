@@ -25,7 +25,6 @@ class Animation {
 
 	void set_texture(const sf::Texture* new_texture) { sprite.setTexture(*new_texture); }
 
-
 	// Helper function for moving the player, getting the new animation texture and moving the view accordingly
 	void movePlayerAndView(const sf::Vector2<float> &offset, sf::View *view, int newTextureRect) {
 		sprite.move(offset);

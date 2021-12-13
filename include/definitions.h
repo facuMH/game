@@ -60,3 +60,6 @@ class Character;
 using Enemies = std::vector<Character>;
 using Party = std::vector<Character>;
 using CombatText = std::unordered_map<Name, Button>;
+
+const Position COMBAT_FIRST_PLAYER_POSITION{150.f, 150.f};
+const Position COMBAT_FIRST_ENEMY_POSITION{500.f, 150.f};

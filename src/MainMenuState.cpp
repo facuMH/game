@@ -69,16 +69,16 @@ void MainMenuState::update(const float& dt) {
 	updateButtons();
 }
 
-void MainMenuState::renderButtons(sf::RenderTarget* target) {
+void MainMenuState::renderButtons(sf::RenderWindow* window) {
 	for(auto& it : buttons) {
-		it.render(target);
+		it.render(window);
 	}
 }
 
-void MainMenuState::render(sf::RenderTarget* target) {
-	target->setView(view);
-	target->draw(background);
-	renderButtons(target);
+void MainMenuState::render(sf::RenderWindow* window) {
+	window->setView(view);
+	window->draw(background);
+	renderButtons(window);
 }
 
 void MainMenuState::updateKeybinds(const float& dt) {}

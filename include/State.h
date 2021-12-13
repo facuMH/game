@@ -31,7 +31,7 @@ class State {
 	// virtual ==> application on run-time object of child class (i.e. GameState)
 	// these MUST be defined in child class
 	virtual void update(const float& dt) = 0;
-	virtual void render(sf::RenderTarget* target) = 0;
+	virtual void render(sf::RenderWindow* window) = 0;
 	virtual void updateKeybinds(const float& dt) = 0;
 	virtual bool shouldQuit() = 0;
 	const bool& isQuit() const { return isQuitting; }
