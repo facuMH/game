@@ -18,13 +18,13 @@ class CombatState : public State {
 	sf::SoundBuffer soundBuffer;
 	sf::Sound sound;
 	Position initialText{50.f, 300.f};
-	float textIntervalHeigh = 50;
+	float textIntervalHeight = 50;
 	sf::Music music;
 
   public:
 	// Constructor
 	CombatState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets,
-	    JSONFilePath path, const Party& p, const Enemies& e, KeyList* gameSupportedKeys);
+	    JSONFilePath& path, const Party& p, const Enemies& e, KeyList* gameSupportedKeys);
 
 	// Destructor
 	~CombatState() override;

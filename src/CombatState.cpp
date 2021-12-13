@@ -11,11 +11,11 @@ void CombatState::addCombatString(const Character& c, AssetsManager& am, const i
 	characterInfo.setFont(*am.getFont(ALEX.c));
 	characterInfo.setString(c.name.c_str() +
 	    std::string(" HP:") + std::to_string(c.currentStats.hp) + "/" + std::to_string(c.maxStats.hp));
-	lifeCounters.emplace(c.name, Button(initialText.x + i * textIntervalHeigh, initialText.y, 200, 50, characterInfo));
+	lifeCounters.emplace(c.name, Button(initialText.x + i * textIntervalHeight, initialText.y, 200, 50, characterInfo));
 }
 
 CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets,
-    JSONFilePath path, const Party& p, const Enemies& e, KeyList* gameSupportedKeys)
+    JSONFilePath& path, const Party& p, const Enemies& e, KeyList* gameSupportedKeys)
     : State(window), map(am, textureSheets, path) {
 	view = window->getDefaultView();
 	keybinds = gameSupportedKeys;
@@ -23,14 +23,14 @@ CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, std::vecto
 	party = p;
 	enemies = e;
 	std::cout << "New Combat\n";
-	for(int i = 0; i < p.size(); i++) {
+	for(int i = 0; i < party.size(); i++) {
 		auto pPos = COMBAT_FIRST_PLAYER_POSITION;
-		addCombatString(p[i], am, i);
+		addCombatString(party[i], am, i);
 		party[i].animation.set_position(pPos);
 		pPos.y += i * 50;
 		party[i].animation.sprite.setScale({3.f, 3.f});
 	}
-	for(int i = 0; i < e.size(); i++) {
+	for(int i = 0; i < enemies.size(); i++) {
 		auto ePos = COMBAT_FIRST_ENEMY_POSITION;
 		enemies[i].animation.set_position(ePos);
 		ePos.y += i * 50;
