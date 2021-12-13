@@ -12,16 +12,21 @@ MainMenuState::MainMenuState(
 	initBackground(window, am);
 	initFonts(am);
 	initButtons();
+
+	view = window->getDefaultView();
+
 	soundBuffer = am.getSoundBuffer(GASP.c);
 	sound.setBuffer(soundBuffer);
 	view = window->getDefaultView();
+	MusicPath* path = am.getMusic(MENU_MUSIC.c);
+	music.openFromFile(*path);
+	music.play();
 }
 
 void MainMenuState::initBackground(sf::RenderWindow* window, AssetsManager& am) {
 	background.setSize(sf::Vector2f(static_cast<float>(window->getSize().x), static_cast<float>(window->getSize().y)));
 	backgroundTexture = *am.getTexture(BACKGROUND.c);
 	background.setTexture(&backgroundTexture);
-	// TODO: load background from textureSheets and Designs
 }
 
 void MainMenuState::initFonts(AssetsManager& am) {
@@ -71,6 +76,7 @@ void MainMenuState::renderButtons(sf::RenderTarget* target) {
 }
 
 void MainMenuState::render(sf::RenderTarget* target) {
+	target->setView(view);
 	target->draw(background);
 	renderButtons(target);
 }
@@ -124,4 +130,12 @@ StateAction MainMenuState::shouldAct() {
 	} else {
 		return StateAction::NONE;
 	}
+}
+
+void MainMenuState::stopMusic() {
+	music.stop();
+}
+
+void MainMenuState::resumeMusic() {
+	music.play();
 }

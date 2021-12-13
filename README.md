@@ -4,5 +4,10 @@
 - SFML (Install using ```sudo apt-get install libsfml-dev```)
 
 ## Controls
-Q      End current GameState
-Esc    Quit application
+- A: left
+- S: down
+- D: right
+- W: up
+- C: start combat
+- X: end combat
+- Esc and Q: Quit application

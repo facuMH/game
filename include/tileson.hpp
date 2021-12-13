@@ -2660,7 +2660,7 @@ namespace tson
 				m_json = nullptr;
 				if (fs::exists(path) && fs::is_regular_file(path))
 				{
-					std::ifstream file(path.u8string());
+					std::ifstream file(path.string());
 					std::string str;
 					m_path = path.parent_path();
 
@@ -7411,7 +7411,7 @@ namespace tson
 				m_subFolders.emplace_back(entry.path());//.loadData(); - loadData() is called in the constructor, so don't call again.
 			else if (fs::is_regular_file(entry.path()))
 			{
-				if(m_hasWorldFile && m_world.contains(entry.path().filename().u8string()))
+				if(m_hasWorldFile && m_world.contains(entry.path().filename().string()))
 					m_files.emplace_back(entry.path());
 				else if(!m_hasWorldFile)
 					m_files.emplace_back(entry.path());
@@ -7523,7 +7523,7 @@ namespace tson
 	bool Project::parse(const fs::path &path)
 	{
 		m_path = path;
-		std::ifstream i(m_path.u8string());
+		std::ifstream i(m_path.string());
 
 		try
 		{
@@ -7653,7 +7653,7 @@ std::unique_ptr<tson::Map> tson::Tileson::parse(const fs::path &path, std::uniqu
 	}
 
 	std::string msg = "File not found: ";
-	msg += std::string(path.u8string());
+	msg += std::string(path.string());
 	return std::make_unique<tson::Map>(tson::ParseStatus::FileNotFound, msg);
 }
 

@@ -16,6 +16,7 @@ void CombatState::addCombatString(const Character& c, AssetsManager& am, const i
 CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets,
     JSONFilePath path, const Party& p, const Enemies& e, KeyList* gameSupportedKeys)
     : State(window), map(am, textureSheets, path) {
+	view = window->getDefaultView();
 	keybinds = gameSupportedKeys;
 	view = window->getDefaultView();
 	party = p;
@@ -24,6 +25,10 @@ CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, std::vecto
 	for(int i = 0; i < p.size(); i++) {
 		addCombatString(p[i], am, i);
 	}
+
+	MusicPath* musicPath = am.getMusic(COMBAT_MUSIC.c);
+	music.openFromFile(*musicPath);
+	music.play();
 }
 
 CombatState::~CombatState() = default;
@@ -33,6 +38,7 @@ void CombatState::update(const float& dt) {
 }
 
 void CombatState::render(sf::RenderTarget* target) {
+	target->setView(view);
 	map.render(*target);
 	for(auto character : lifeCounters) {
 		character.second.render(target);
@@ -113,4 +119,10 @@ void CombatState::drawPlayer(sf::RenderWindow* window) {
 	for(const auto& e : enemies) {
 		window->draw(e.animation.sprite);
 	}
+}
+void CombatState::stopMusic() {
+	music.stop();
+}
+void CombatState::resumeMusic() {
+	music.play();
 }

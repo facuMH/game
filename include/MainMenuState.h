@@ -9,12 +9,13 @@ constexpr int MAX_BUTTONS = 3;
 class MainMenuState : public State {
   private:
 	// Variable
+	sf::View view;
 	sf::Texture backgroundTexture;
 	sf::RectangleShape background;
 	sf::Font font;
 	sf::SoundBuffer soundBuffer;
 	sf::Sound sound;
-	sf::View view;
+	sf::Music music;
 
 	Buttons buttons;
 	int activeButton;
@@ -56,4 +57,6 @@ class MainMenuState : public State {
 	void drawPlayer(sf::RenderWindow* window) override{};
 	StateAction shouldAct() override;
 	sf::View getView() override { return view; };
+	void stopMusic() override;
+	void resumeMusic() override;
 };

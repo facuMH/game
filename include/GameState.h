@@ -10,14 +10,15 @@ class GameState : public State {
   private:
 	TileMap map;
 	Character player;
+	sf::View view;
 	AssetsManager* am;
 	KeyList* keybinds;
 	sf::Clock clock;
 	sf::SoundBuffer soundBuffer;
 	sf::Sound sound;
+	sf::Music music;
 	// just for demonstration purposes
 	sf::Keyboard::Key previousKey;
-	sf::View view;
 
   public:
 	// Constructor
@@ -32,9 +33,10 @@ class GameState : public State {
 	bool shouldQuit() override;
 	void quitStateActions() override;
 	StateAction handleKeys(sf::Keyboard::Key key) override;
-	void playerIdle();
+	sf::View getView() override { return view; };
 	void drawPlayer(sf::RenderWindow* window) override;
 	Character* getPlayer() { return &player; };
 	StateAction shouldAct() override;
-	sf::View getView() override { return view; };
+	void stopMusic() override;
+	void resumeMusic() override;
 };

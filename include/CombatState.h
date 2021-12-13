@@ -8,6 +8,7 @@
 
 class CombatState : public State {
   private:
+	sf::View view;
 	Party party;
 	Enemies enemies;
 	TileMap map;
@@ -16,9 +17,9 @@ class CombatState : public State {
 	void addCombatString(const Character& c, AssetsManager& am, const int i);
 	sf::SoundBuffer soundBuffer;
 	sf::Sound sound;
-	sf::View view;
 	Position initialText{50.f, 300.f};
 	float textIntervalHeigh = 50;
+	sf::Music music;
 
   public:
 	// Constructor
@@ -38,4 +39,7 @@ class CombatState : public State {
 	void drawPlayer(sf::RenderWindow* window) override;
 	StateAction shouldAct() override;
 	sf::View getView() override { return view; };
+	void stopMusic() override;
+	void resumeMusic() override;
+
 };
