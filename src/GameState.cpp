@@ -18,6 +18,7 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 	soundBuffer = am->getSoundBuffer(GASP.c);
 	sound.setBuffer(soundBuffer);
 	previousKey = sf::Keyboard::Unknown;
+	//view = window->getDefaultView();
 	view = sf::View(player.get_position(), {720.0, 480.0});
 	MusicPath* musicPath = gameAM.getMusic(VILLAGE_MUSIC.c);
 	music.openFromFile(*musicPath);
@@ -34,10 +35,10 @@ void GameState::update(const float& dt) {
 	}
 }
 
-void GameState::render(sf::RenderTarget* target) {
-	target->setView(view);
-	map.render(*target);
-	target->draw(player.animation.sprite);
+void GameState::render(sf::RenderWindow* window) {
+	window->setView(view);
+	map.render(*window);
+	window->draw(player.animation.sprite);
 }
 
 void GameState::updateKeybinds(const float& dt) {}

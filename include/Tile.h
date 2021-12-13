@@ -25,5 +25,5 @@ class Tile {
 
 	void update();
 
-	void render(sf::RenderTarget& target);
+	void render(sf::RenderWindow& window);
 };

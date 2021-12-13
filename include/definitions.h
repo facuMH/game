@@ -42,7 +42,7 @@ struct Stats {
 
 const sf::Color GREY = sf::Color(70, 70, 70, 200);
 const sf::Color LIGHTGREY = sf::Color(150, 150, 150, 255);
-const sf::Color BLACK = sf::Color(20, 20, 20, 200);
+const sf::Color BLACK = sf::Color(0, 0, 0, 255);
 
 enum class StateAction { NONE, START_GAME, START_COMBAT, EXIT_COMBAT, EXIT_GAME };
 
@@ -59,4 +59,7 @@ using KeyList = std::unordered_map<KeyAction, sf::Keyboard::Key>;
 class Character;
 using Enemies = std::vector<Character>;
 using Party = std::vector<Character>;
-using CombatText = std::unordered_map<Name, sf::Text>;
+using CombatText = std::unordered_map<Name, Button>;
+
+const Position COMBAT_FIRST_PLAYER_POSITION{150.f, 150.f};
+const Position COMBAT_FIRST_ENEMY_POSITION{500.f, 150.f};

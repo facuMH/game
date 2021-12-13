@@ -31,7 +31,7 @@ class State {
 	// virtual ==> application on run-time object of child class (i.e. GameState)
 	// these MUST be defined in child class
 	virtual void update(const float& dt) = 0;
-	virtual void render(sf::RenderTarget* target) = 0;
+	virtual void render(sf::RenderWindow* window) = 0;
 	virtual void updateKeybinds(const float& dt) = 0;
 	virtual bool shouldQuit() = 0;
 	const bool& isQuit() const { return isQuitting; }
@@ -40,6 +40,7 @@ class State {
 	virtual StateAction handleKeys(sf::Keyboard::Key key) = 0;
 	virtual StateAction shouldAct() = 0;
 	virtual void drawPlayer(sf::RenderWindow* window) = 0;
+	virtual sf::View getView() = 0;
 	Position_i getMouse() const { return sf::Mouse::getPosition(*window); }
 	Position getPos(Position_i objectPosition) const { return window->mapPixelToCoords(objectPosition); }
 	virtual void stopMusic() = 0;

@@ -1,25 +1,40 @@
 #include "Button.h"
+#include "definitions.h"
 
 Button::Button(
-    float x, float y, float width, float height, sf::Font* font, const std::string& text, sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor) {
-	this->buttonState = BTN_IDLE;
+    float x, float y, float width, float height, sf::Font* newFont, const std::string& newText, sf::Color newIdleColor, sf::Color newHoverColor, sf::Color newActiveColor) {
+	buttonState = BTN_IDLE;
 
 	shape.setPosition(sf::Vector2f(x, y));
 	shape.setSize(sf::Vector2f(width, height));
 
-	this->font = font;
-	this->text.setFont(*this->font);
-	this->text.setString(text);
-	this->text.setFillColor(sf::Color::White);
-	this->text.setCharacterSize(12);
-	this->text.setPosition(this->shape.getPosition().x + (this->shape.getGlobalBounds().width / 2.f) - this->text.getGlobalBounds().width / 2.f,
-	    this->shape.getPosition().y + (this->shape.getGlobalBounds().height / 2.f) - this->text.getGlobalBounds().height / 2.f);
+	font = newFont;
+	text.setFont(*font);
+	text.setString(newText);
+	text.setFillColor(sf::Color::White);
+	text.setCharacterSize(12);
+	text.setPosition(shape.getPosition().x + (shape.getGlobalBounds().width / 2.f) - text.getGlobalBounds().width / 2.f,
+	    shape.getPosition().y + (shape.getGlobalBounds().height / 2.f) - text.getGlobalBounds().height / 2.f);
 
-	this->idleColor = idleColor;
-	this->hoverColor = hoverColor;
-	this->activeColor = activeColor;
+	idleColor = newIdleColor;
+	hoverColor = newHoverColor;
+	activeColor = newActiveColor;
 
-	this->shape.setFillColor(this->idleColor);
+	shape.setFillColor(idleColor);
+}
+
+Button::Button(float x, float y, float width, float height, const sf::Text newText) {
+	buttonState = BTN_IDLE;
+
+	shape.setPosition(sf::Vector2f(x, y));
+	shape.setSize(sf::Vector2f(width, height));
+	text = newText;
+	text.setFillColor(sf::Color::White);
+	text.setCharacterSize(20);
+	auto Xs = shape.getPosition().x + (shape.getGlobalBounds().width / 2.f) - text.getGlobalBounds().width / 2.f;
+	auto Ys = shape.getPosition().y + (shape.getGlobalBounds().height / 2.f) - text.getGlobalBounds().height / 2.f;
+	text.setPosition(Xs, Ys);
+	shape.setFillColor(BLACK);
 }
 
 Button::~Button() = default;
@@ -48,16 +63,16 @@ void Button::update(const sf::Vector2f mousePos) {
 	}
 
 	switch(buttonState) {
-	case BTN_IDLE: shape.setFillColor(this->idleColor); break;
-	case BTN_HOVER: shape.setFillColor(this->hoverColor); break;
+	case BTN_IDLE: shape.setFillColor(idleColor); break;
+	case BTN_HOVER: shape.setFillColor(hoverColor); break;
 	case BTN_ACTIVE: shape.setFillColor(sf::Color::Red); break;
 	default: break;
 	}
 }
 
-void Button::render(sf::RenderTarget* target) {
-	target->draw(shape);
-	target->draw(text);
+void Button::render(sf::RenderWindow* window) {
+	window->draw(shape);
+	window->draw(text);
 }
 
 void Button::setActive() {

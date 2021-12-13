@@ -24,6 +24,6 @@ class TileMap {
 	TileMap(AssetsManager& am, std::vector<MapBackground*> textureSheets, const JSONFilePath& designPath);
 	virtual ~TileMap();
 	void initializeVariables(AssetsManager& am);
-	void render(sf::RenderTarget& target);
+	void render(sf::RenderWindow& window);
 	void loadFromJson(const std::string& path, std::vector<MapBackground*> textureSheets);
 };

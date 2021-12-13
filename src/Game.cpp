@@ -167,7 +167,7 @@ void Game::render() {
 		// render current game state
 		states.top()->render(window);
 	}
-
+	window->setView(states.top()->getView());
 	if(!states.empty()) states.top()->drawPlayer(window);
 	// Window is done drawing --> display result
 	window->display();

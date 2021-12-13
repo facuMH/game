@@ -28,11 +28,12 @@ class GameState : public State {
 
 	// Functions
 	void update(const float& dt) override;
-	void render(sf::RenderTarget* target) override;
+	void render(sf::RenderWindow* window) override;
 	void updateKeybinds(const float& dt) override;
 	bool shouldQuit() override;
 	void quitStateActions() override;
 	StateAction handleKeys(sf::Keyboard::Key key) override;
+	sf::View getView() override { return view; };
 	void drawPlayer(sf::RenderWindow* window) override;
 	Character* getPlayer() { return &player; };
 	StateAction shouldAct() override;
