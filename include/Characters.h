@@ -15,7 +15,8 @@ class Character : public Entity {
 
 	Name name;
 	Character() : name(""), maxStats(0, 0, 0, 0), currentStats(0, 0, 0, 0) {}
-	Character(Name new_name, Stats new_stats, Animation new_anim) : name(new_name), maxStats(new_stats), currentStats(new_stats) {
+	Character(Name new_name, Stats new_stats, Animation new_anim)
+	    : name(new_name), maxStats(new_stats), currentStats(new_stats) {
 		animation = std::move(new_anim);
 		is_solid = true;
 		can_interact = true;
@@ -35,7 +36,7 @@ class Character : public Entity {
 	void recover_mana(const int recover) { currentStats.mana += recover; }
 
 	void equip(Weapon* arms);
-	void move(KeyAction key, sf::View* view);
+	void move(KeyAction key, sf::View* view, const TileMap* map);
 
 	// TODO: multiple animations (idle, run, attack) perhaps on Entity.
 };

@@ -17,6 +17,6 @@ void Character::equip(Weapon* arms) {
 	}
 }
 
-void Character::move(const KeyAction key, sf::View* view) {
-	animation.next(key, view, 6.0f);
+void Character::move(const KeyAction key, sf::View* view, const TileMap* map) {
+	animation.next(key, view, const_cast<TileMap*>(map), 6.0f);
 }

@@ -2,6 +2,8 @@
 #include "AssetsPaths.h"
 #include "tileson.hpp"
 
+#define TILESIZE 16
+
 // Constructor
 TileMap::TileMap(AssetsManager& am, std::vector<MapBackground*> textureSheets, const JSONFilePath& designPath) {
 	initializeVariables(am);
@@ -17,6 +19,9 @@ void TileMap::initializeVariables(AssetsManager& am) {
 	visibleTo.y = 0;
 	visibleTo.x = 32;
 	visibleTo.y = 24;
+
+	// initialize matrix for collision detection
+	blockMask.resize(maxSize.x, std::vector<bool>(maxSize.y, false));
 }
 
 void TileMap::loadFromJson(const std::string& path, std::vector<MapBackground*> textureSheets) {
@@ -37,6 +42,10 @@ void TileMap::loadFromJson(const std::string& path, std::vector<MapBackground*> 
 				for(int x = 0; x < size.x; x++) {
 					tson::TileObject* tileObj = layers[z].getTileObject(y, x);
 					tiles[z][y].push_back(new Tile(tileObj, textureSheets[z]));
+					tson::Property* prp = tileObj->getTile()->getProp("isBlocked");
+					if(prp != nullptr && prp->getValue<bool>()) {
+						blockMask[y][x] = true;
+					}
 				}
 			}
 		}
@@ -61,4 +70,11 @@ void TileMap::render(sf::RenderWindow& window) {
 			}
 		}
 	}
+}
+
+
+bool TileMap::hasCollision(sf::Vector2i position) {
+	int tilePosX = position.x / TILESIZE;
+	int tilePosY = position.y / TILESIZE;
+	return blockMask[tilePosX][tilePosY];
 }
