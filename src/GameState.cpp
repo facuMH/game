@@ -55,7 +55,7 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 		case KeyAction::RIGHT:
 		case KeyAction::LEFT:
 			player.animation.set_texture(am->getTexture(NINJA_RUN.c));
-			player.move(action->first, &view);
+			player.move(action->first, &view, &map);
 			if(previousKey != key) {
 				// play gasping sound each time the player changes direction
 				sound.play();

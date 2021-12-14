@@ -121,8 +121,7 @@ void Game::makeNewCombat(const int numberOfEnemies) {
 		alien.animation.move({50, 0});
 		enemies.push_back(alien);
 	}
-	auto mapTexture = {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c),
-	    assetsManager.getMap(TILESHEET_HOUSES.c)};
+	auto mapTexture = {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c)};
 	JSONFilePath* design = assetsManager.getMapDesign(COMBAT_LEVEL1.c);
 	Party party{*dynamic_cast<GameState*>(states.top())->getPlayer()};
 	turnOffMusic();
@@ -151,8 +150,8 @@ void Game::pollEvents() {
 				if(action == StateAction::START_GAME) {
 					turnOffMusic();
 					states.push(new GameState(window, assetsManager,
-					    {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c),
-					        assetsManager.getMap(TILESHEET_HOUSES.c)},
+					    {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_FLOOR.c),
+					        assetsManager.getMap(TILESHEET_HOUSES.c), assetsManager.getMap(TILESHEET_NATURE.c)},
 					    *assetsManager.getMapDesign(MAP_LEVEL1.c), &keyBindings));
 				}
 				if(action == StateAction::START_SETTING) {
