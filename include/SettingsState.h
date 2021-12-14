@@ -9,10 +9,6 @@
 
 class SettingsState : public State {
   private:
-	// Variable
-	AssetsManager& am;
-	std::stack<State*>* states;
-
 	sf::View view;
 	sf::Texture backgroundTexture;
 	sf::RectangleShape background;
@@ -45,7 +41,7 @@ class SettingsState : public State {
 	void updateMousePositions();
 
   public:
-	SettingsState(sf::RenderWindow* window, AssetsManager& am, KeyList* supportedKeys, std::stack<State*>* states);
+	SettingsState(sf::RenderWindow* window, AssetsManager& am, KeyList* supportedKeys);
 
 	virtual ~SettingsState() override;
 

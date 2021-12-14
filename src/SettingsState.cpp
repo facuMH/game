@@ -12,7 +12,7 @@
 
 constexpr int MAX_RESOLUTION_COUNT = 7;
 
-SettingsState::SettingsState(sf::RenderWindow* window, AssetsManager& am, KeyList* gameSupportedKeys, std::stack<State*>* states) : State(window, states), am(am), states(states) {
+SettingsState::SettingsState(sf::RenderWindow* window, AssetsManager& am, KeyList* gameSupportedKeys) : State(window), activeButton(0) {
 	supportedKeys = gameSupportedKeys;
 	initBackground(window, am);
 	initFonts(am);
@@ -46,23 +46,32 @@ void SettingsState::initFonts(AssetsManager& am) {
 }
 
 void SettingsState::updateGui() {
-
-	if(activeButton == 1){
-		applyResolution(800, 600);
+	
+	switch(activeButton) {
+		case 0:
+			applyResolution(720, 480);
+			break;
+		case 1:
+			applyResolution(800, 600);
+			break;	
+		case 2:
+			applyResolution(1024, 768);
+			break;
+		case 3:
+			applyResolution(1280, 720);
+			break;
+		case 4:
+			applyResolution(1440, 900);
+			break;
+		case 5:
+			applyResolution(1920, 1080);
+			break;
+		default:
+			break;
 	}
-	if(activeButton == 2){
-		applyResolution(1024, 768);
-	}
-	if(activeButton == 3){
-		applyResolution(1280, 720);
-	}
-	if(activeButton == 4){
-		applyResolution(1440, 900);
-	}
-	if(activeButton == 5){
-		applyResolution(1920, 1080);
-	}                      
+		
 }
+
 //creating buttons showing different resolution
 void SettingsState::initButtons() {
 
@@ -72,32 +81,36 @@ void SettingsState::initButtons() {
 	unsigned int height = currentSize.y;
 	unsigned int buttonPos = 150;
 	unsigned int buttonPosInc = 30;
-	buttons.push_back(gui::Button(300, buttonPos, 150, buttonPosInc, &font, std::to_string(width) + 'x' + std::to_string(height), GREY, LIGHTGREY, BLACK));
-	activeButton = 0;
-	buttons[activeButton].setActive();
-
-	if(!(width == 800  && height == 600)){
-		buttonPos += buttonPosInc;
-		buttons.push_back(gui::Button(300, buttonPos, 150, buttonPosInc, &font, "800x600", GREY, LIGHTGREY, BLACK));
-	}
-	if(!(width == 1024 && height == 768)){
-		buttonPos += buttonPosInc;
-		buttons.push_back(gui::Button(300, buttonPos, 150, buttonPosInc, &font, "1024x768", GREY, LIGHTGREY, BLACK));
-	}
-	if(!(width == 1280 && height == 720)){
-		buttonPos += buttonPosInc;
-		buttons.push_back(gui::Button(300, buttonPos, 150, buttonPosInc, &font, "1280x720", GREY, LIGHTGREY, BLACK));
-	}
-	if(!(width == 1440 && height == 900)){
-		buttonPos += buttonPosInc;
-		buttons.push_back(gui::Button(300, buttonPos, 150, buttonPosInc, &font, "1440x900", GREY, LIGHTGREY, BLACK));
-	}
-	if(!(width == 1920 && height == 1080 )){
-		buttonPos += buttonPosInc;
-		buttons.push_back(gui::Button(300, buttonPos, 150, buttonPosInc, &font, "1920x1080", GREY, LIGHTGREY, BLACK));
-	}
-	buttonPos += buttonPosInc;
+	
+	buttons.push_back(gui::Button(300, buttonPos, 150, buttonPosInc, &font, "720x480", GREY, LIGHTGREY, BLACK)); buttonPos += buttonPosInc;
+	buttons.push_back(gui::Button(300, buttonPos, 150, buttonPosInc, &font, "800x600", GREY, LIGHTGREY, BLACK)); buttonPos += buttonPosInc;
+	buttons.push_back(gui::Button(300, buttonPos, 150, buttonPosInc, &font, "1024x768", GREY, LIGHTGREY, BLACK)); buttonPos += buttonPosInc;
+	buttons.push_back(gui::Button(300, buttonPos, 150, buttonPosInc, &font, "1280x720", GREY, LIGHTGREY, BLACK)); buttonPos += buttonPosInc;
+	buttons.push_back(gui::Button(300, buttonPos, 150, buttonPosInc, &font, "1440x900", GREY, LIGHTGREY, BLACK)); buttonPos += buttonPosInc;
+	buttons.push_back(gui::Button(300, buttonPos, 150, buttonPosInc, &font, "1920x1080", GREY, LIGHTGREY, BLACK)); buttonPos += buttonPosInc;
 	buttons.push_back(gui::Button(300, buttonPos, 150, buttonPosInc, &font, "BACK", GREY, LIGHTGREY, BLACK));
+		
+	if((width == 720  && height == 480)){
+		activeButton = 0;
+	}	
+	if((width == 800  && height == 600)){
+		activeButton = 1;
+	}
+	if((width == 1024 && height == 768)){
+		activeButton = 2;
+	}
+	if((width == 1280 && height == 720)){
+		activeButton = 3;
+	}
+	if((width == 1440 && height == 900)){
+		activeButton = 4;
+	}
+	if((width == 1920 && height == 1080 )){
+		activeButton = 5;
+	}
+	
+	buttons[activeButton].setActive();
+	
 }
 
 void SettingsState::updateButtons() {
@@ -144,6 +157,7 @@ StateAction SettingsState::handleKeys(sf::Keyboard::Key key) {
 	    [key](const std::pair<KeyAction, sf::Keyboard::Key>& v) { return key == v.second; });
 	if(action != supportedKeys->end()) {
 		switch(action->first) {
+
 		case KeyAction::UP: // Up arrow
 			buttons[activeButton].setInactive();
 			if(activeButton == 0) {
@@ -152,6 +166,7 @@ StateAction SettingsState::handleKeys(sf::Keyboard::Key key) {
 				activeButton--;
 			}
 			buttons[activeButton].setActive();
+			
 			break;
 		case KeyAction::DOWN: // Down arrow
 			buttons[activeButton].setInactive();
@@ -183,11 +198,8 @@ bool SettingsState::shouldQuit() {
 }
 
 StateAction SettingsState::shouldAct() {
-	updateGui();
-	if(activeButton == 6){
-		states->push(new MainMenuState(window, am, supportedKeys, states));
-	}   
-	return StateAction::NONE;
+	updateGui(); 
+	return StateAction::MAIN_MENU;
 }
 
 void SettingsState::stopMusic() {

@@ -6,7 +6,7 @@
 #include "Gui.h"
 #include "MainMenuState.h"
 
-MainMenuState::MainMenuState(sf::RenderWindow* window, AssetsManager& am, KeyList* gameSupportedKeys, std::stack<State*>* states) : State(window, states) {
+MainMenuState::MainMenuState(sf::RenderWindow* window, AssetsManager& am, KeyList* gameSupportedKeys) : State(window) {
 	supportedKeys = gameSupportedKeys;
 	initBackground(window, am);
 	initFonts(am);

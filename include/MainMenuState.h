@@ -38,7 +38,7 @@ class MainMenuState : public State {
 	void updateMousePositions();
 
   public:
-	MainMenuState(sf::RenderWindow* window, AssetsManager& am, KeyList* supportedKeys, std::stack<State*>* states);
+	MainMenuState(sf::RenderWindow* window, AssetsManager& am, KeyList* supportedKeys);
 
 
 	~MainMenuState() override;

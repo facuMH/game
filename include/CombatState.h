@@ -21,8 +21,7 @@ class CombatState : public State {
 
   public:
 	// Constructor
-	CombatState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets,
-	    JSONFilePath path, const Party& p, const Enemies& e, KeyList* gameSupportedKeys, std::stack<State*>* states);
+	CombatState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets, JSONFilePath path, const Party& p, const Enemies& e, KeyList* gameSupportedKeys);
 
 	// Destructor
 	~CombatState() override;

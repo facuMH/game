@@ -74,7 +74,7 @@ void Game::initWindow() {
 }
 
 void Game::initStates() {
-	states.push(new MainMenuState(window, assetsManager, &keyBindings, &states));
+	states.push(new MainMenuState(window, assetsManager, &keyBindings));
 }
 
 // Constructor
@@ -118,7 +118,7 @@ void Game::makeNewCombat(const int numberOfEnemies) {
 	JSONFilePath* design = assetsManager.getMapDesign(COMBAT_LEVEL1.c);
 	Party party{*dynamic_cast<GameState*>(states.top())->getPlayer()};
 	turnOffMusic();
-	states.push(new CombatState(window, assetsManager, mapTexture, *design, party, enemies, &keyBindings, &states));
+	states.push(new CombatState(window, assetsManager, mapTexture, *design, party, enemies, &keyBindings));
 	in_combat = true;
 }
 
@@ -147,11 +147,14 @@ void Game::pollEvents() {
 								assetsManager.getMap(TILESHEET_NATURE.c),
 								assetsManager.getMap(TILESHEET_HOUSES.c)},
 								*assetsManager.getMapDesign(MAP_LEVEL1.c),
-								&keyBindings, &states));
+								&keyBindings));
 				}
 				if(action == StateAction::SETTINGS_GAME) {
 					turnOffMusic();
-					states.push(new SettingsState(window, assetsManager, &keyBindings, &states));
+					states.push(new SettingsState(window, assetsManager, &keyBindings));
+				}
+				if(action == StateAction::MAIN_MENU) {
+					states.push(new MainMenuState(window, assetsManager, &keyBindings));
 				}
 				break;
 			default:

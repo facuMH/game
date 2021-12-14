@@ -22,13 +22,11 @@ class State {
 
 	bool isQuitting = false;
 
-protected:
-	std::stack<State*>* states;
 	
   public:
 	sf::RenderWindow* window;
 	// Constructor
-	explicit State(sf::RenderWindow* window, std::stack<State*>* states);
+	explicit State(sf::RenderWindow* window);
 	// Destructor
 	virtual ~State();
 

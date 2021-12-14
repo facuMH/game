@@ -8,8 +8,8 @@
 #include "GameState.h"
 
 GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vector<MapBackground*> textureSheets,
-    JSONFilePath& path, KeyList* gameSupportedKeys, std::stack<State*>* states)
-    : State(window, states), map(gameAM, textureSheets, path) {
+    JSONFilePath& path, KeyList* gameSupportedKeys)
+    : State(window), map(gameAM, textureSheets, path) {
 	am = &gameAM;
 	keybinds = gameSupportedKeys;
 	Texture* play_text = am->getTexture(IDLE.c);
