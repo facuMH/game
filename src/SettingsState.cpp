@@ -133,7 +133,7 @@ void SettingsState::updateMousePositions() {
 }
 
 void SettingsState::endState() {
-	std::cout << "Ending Main Menu!"
+	std::cout << "Ending Settings Menu!"
 	          << "\n";
 }
 

@@ -36,7 +36,6 @@ void Game::closeWindow() {
 	// write new configs
 	if(ofs.is_open()) {
 		std::string res = std::to_string(width) + " " + std::to_string(height);
-		std::cout << res << std::endl;
 		ofs << title << std::endl;
 		ofs << res << std::endl;
 		ofs << framerate_limit << std::endl;
