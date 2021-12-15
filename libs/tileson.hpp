@@ -7640,7 +7640,7 @@ std::unique_ptr<tson::Map> tson::Tileson::parse(const fs::path &path, std::uniqu
 	if(decompressor != nullptr)
 	{
 		std::vector<uint8_t> decompressed = decompressor->decompressFile(path);
-		result = (decompressed.empty()) ? false : true;
+		result = !(decompressed.empty());
 		if(!result)
 			return std::make_unique<tson::Map>(tson::ParseStatus::DecompressionError, "Error during decompression");
 		result = m_json->parse(&decompressed[0], decompressed.size());
