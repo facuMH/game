@@ -28,7 +28,7 @@ class Animation {
 	void set_texture(const sf::Texture* new_texture) { sprite.setTexture(*new_texture); }
 
 	// Helper function for moving the player, getting the new animation texture and moving the view accordingly
-	void movePlayerAndView(const sf::Vector2<float>& offset, int newTextureRect, sf::View* view, TileMap* map) {
+	void movePlayerAndView(const Position& offset, int newTextureRect, sf::View* view, TileMap* map) {
 		auto nextPosition = sprite.getPosition() + offset;
 		if(!map->hasCollision({int(nextPosition.x), int(nextPosition.y)})) {
 			sprite.move(offset);
