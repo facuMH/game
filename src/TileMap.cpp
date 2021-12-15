@@ -53,11 +53,11 @@ TileMap::~TileMap() {
 	}
 }
 
-void TileMap::render(sf::RenderTarget& target) {
+void TileMap::render(sf::RenderWindow& window) {
 	for(int z = 0; z < nLayers; z++) {
 		for(int y = 0; y < maxSize.y; y++) {
 			for(int x = 0; x < maxSize.x; x++) {
-				tiles[z][y][x]->render(target);
+				tiles[z][y][x]->render(window);
 			}
 		}
 	}

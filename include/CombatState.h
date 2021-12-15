@@ -14,27 +14,31 @@ class CombatState : public State {
 	TileMap map;
 	CombatText lifeCounters;
 	KeyList* keybinds;
-	void addCombatString(const Character& c, AssetsManager& am);
+	void addCombatString(const Character& c, AssetsManager& am, const int i);
 	sf::SoundBuffer soundBuffer;
 	sf::Sound sound;
+	Position initialText{50.f, 300.f};
+	float textIntervalHeight = 50;
 	sf::Music music;
 
   public:
 	// Constructor
-	CombatState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets, JSONFilePath path, const Party& p, const Enemies& e, KeyList* gameSupportedKeys);
+	CombatState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets,
+	    JSONFilePath& path, const Party& p, const Enemies& e, KeyList* gameSupportedKeys);
 
 	// Destructor
 	~CombatState() override;
 
 	// Functions
 	void update(const float& dt) override;
-	void render(sf::RenderTarget* target) override;
+	void render(sf::RenderWindow* window) override;
 	void updateKeybinds(const float& dt) override;
 	bool shouldQuit() override;
 	void quitStateActions() override;
 	StateAction handleKeys(sf::Keyboard::Key key) override;
 	void drawPlayer(sf::RenderWindow* window) override;
 	StateAction shouldAct() override;
+	sf::View getView() override { return view; };
 	void stopMusic() override;
 	void resumeMusic() override;
 };

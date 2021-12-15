@@ -68,7 +68,7 @@ void Game::initWindow() {
 	ifs.close();
 
 	// create window
-	window = new sf::RenderWindow(videoMode, title, sf::Style::Titlebar | sf::Style::Close);
+	window = new sf::RenderWindow(videoMode, title, sf::Style::Titlebar | sf::Style::Close | sf::Style::Resize);
 	window->setFramerateLimit(framerate_limit);
 	window->setVerticalSyncEnabled(vertical_sync_enabled);
 }
@@ -214,7 +214,7 @@ void Game::render() {
 		// render current game state
 		states.top()->render(window);
 	}
-
+	window->setView(states.top()->getView());
 	if(!states.empty()) states.top()->drawPlayer(window);
 	// Window is done drawing --> display result
 	window->display();

@@ -28,18 +28,20 @@ constexpr auto BACKGROUND = cat(MAINMENU.c, "Background.jpeg");
 constexpr auto SETTING_BACKGROUND = cat(MAINMENU.c, "RPG_projects.jpg");
 
 // ---- CHARACTER
-constexpr auto CHARACTER = cat(ASSETS, "character/");
-constexpr auto IDLE = cat(CHARACTER.c, "Idle.png");
-constexpr auto RUN = cat(CHARACTER.c, "Run.png");
+constexpr auto CHARACTER = cat(ASSETS, "characters/");
+constexpr auto NINJA = cat(CHARACTER.c, "green_ninja/");
+constexpr auto NINJA_RUN = cat(NINJA.c, "Walk.png");
 
 // ---- ENEMIES
 constexpr auto ENEMIES = cat(ASSETS, "enemies/");
 constexpr auto ALIEN = cat(ENEMIES.c, "alien.png");
+constexpr auto MOLE = cat(ENEMIES.c, "Mole.png");
+
 
 // ---- TILES
 constexpr auto TILES = cat(ASSETS, "tiles/");
 constexpr auto MAP_LEVEL1 = cat(TILES.c, "map1.json");
-constexpr auto COMBAT_LEVEL1 = cat(TILES.c, "combat.json");
+constexpr auto COMBAT_LEVEL1 = cat(TILES.c, "combatArena.json");
 constexpr auto TILESHEET_FLOOR = cat(TILES.c, "TilesetFloor.png");
 constexpr auto TILESHEET_NATURE = cat(TILES.c, "TilesetNature.png");
 constexpr auto TILESHEET_HOUSES = cat(TILES.c, "TilesetHouse.png");

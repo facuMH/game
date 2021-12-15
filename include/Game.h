@@ -30,7 +30,6 @@ class Game {
 	sf::RenderWindow* window;
 	sf::VideoMode videoMode;
 	sf::Event event{};
-	sf::View view;
 	sf::Clock dtClock;
 
 	KeyList keyBindings;
