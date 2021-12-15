@@ -38,6 +38,7 @@ CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, std::vecto
 
 	MusicPath* musicPath = am.getMusic(COMBAT_MUSIC.c);
 	music.openFromFile(*musicPath);
+	music.setLoop(true);
 	music.play();
 }
 
