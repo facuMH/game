@@ -20,7 +20,7 @@ SettingsState::SettingsState(sf::RenderWindow* window, AssetsManager& am, KeyLis
 	initButtons();
 	view = window->getDefaultView();
 
-	soundBuffer = am.getSoundBuffer(GASP.c);
+	soundBuffer = am.getSoundBuffer(MENU_BLIP.c);
 	sound.setBuffer(soundBuffer);
 
 	MusicPath* path = am.getMusic(MENU_MUSIC.c);

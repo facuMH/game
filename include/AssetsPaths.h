@@ -58,6 +58,8 @@ constexpr auto ALEX = cat(FONTS.c, "AlexandriaFLF.ttf");
 // ---- SOUND FX
 constexpr auto SOUNDS = cat(ASSETS, "sounds/");
 constexpr auto GASP = cat(SOUNDS.c, "gasp.wav");
+constexpr auto MENU_BLIP = cat(SOUNDS.c, "menu.wav");
+
 
 // ---- MUSIC
 constexpr auto MUSIC = cat(ASSETS, "music/");
