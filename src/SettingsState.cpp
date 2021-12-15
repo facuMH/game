@@ -146,10 +146,10 @@ void SettingsState::update(const float& dt) {
 }
 
 
-void SettingsState::render(sf::RenderTarget* target) {
-	target->setView(view);
-	target->draw(background);
-	renderButtons(target);
+void SettingsState::render(sf::RenderWindow* window) {
+	window->setView(view);
+	window->draw(background);
+	renderButtons(window);
 }
 
 StateAction SettingsState::handleKeys(sf::Keyboard::Key key) {

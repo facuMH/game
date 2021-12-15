@@ -59,7 +59,7 @@ using KeyList = std::unordered_map<KeyAction, sf::Keyboard::Key>;
 class Character;
 using Enemies = std::vector<Character>;
 using Party = std::vector<Character>;
-using CombatText = std::unordered_map<Name, Button>;
+using CombatText = std::unordered_map<Name, gui::Button>;
 
 const Position COMBAT_FIRST_PLAYER_POSITION{150.f, 150.f};
 const Position COMBAT_FIRST_ENEMY_POSITION{500.f, 150.f};

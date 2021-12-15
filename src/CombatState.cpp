@@ -1,17 +1,16 @@
 #include "AssetsPaths.h"
-#include "Button.h"
+#include "Gui.h"
 #include "CombatState.h"
 #include "definitions.h"
 
 void CombatState::addCombatString(const Character& c, AssetsManager& am, const int i) {
-	sf::Text characterInfo{};
-
-	characterInfo.setOutlineColor(sf::Color::Black);
-	characterInfo.setFillColor(sf::Color::Black);
-	characterInfo.setFont(*am.getFont(ALEX.c));
-	characterInfo.setString(c.name.c_str() +
-	    std::string(" HP:") + std::to_string(c.currentStats.hp) + "/" + std::to_string(c.maxStats.hp));
-	lifeCounters.emplace(c.name, Button(initialText.x + i * textIntervalHeight, initialText.y, 200, 50, characterInfo));
+		
+	std::string text = c.name + std::string(" HP:") + std::to_string(c.currentStats.hp) + "/" + std::to_string(c.maxStats.hp);
+	float x = static_cast<float>(initialText.x + (i * textIntervalHeight));
+	float y = static_cast<float>(initialText.y);
+	float height = 30, width = 150;
+	
+	lifeCounters.emplace(c.name, gui::Button(x, y, width, height, am.getFont(ALEX.c), text, GREY, LIGHTGREY, BLACK));
 }
 
 CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets,
