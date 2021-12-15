@@ -27,7 +27,8 @@ set(SOURCES src/main.cpp
         src/MainMenuState.cpp
         src/Button.cpp)
 
-set(HEADERS include/Animation.h
+set(HEADERS libs/tileson.hpp
+        include/Animation.h
         include/AssetsManager.h
         include/AssetsPaths.h
         include/Characters.h
@@ -40,7 +41,6 @@ set(HEADERS include/Animation.h
         include/GameState.h
         include/Tile.h
         include/TileMap.h
-        include/tileson.hpp
         include/MainMenuState.h
         include/Button.h)
 

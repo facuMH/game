@@ -34,11 +34,11 @@ void MainMenuState::initFonts(AssetsManager& am) {
 }
 
 void MainMenuState::initButtons() {
-	buttons.push_back(Button(300, 150, 150, 50, &font, "New Game", GREY, LIGHTGREY, BLACK));
+	buttons.push_back(Button(300, 150, 150, 50, &font, "New Game", GREY, LIGHTGREY, sf::Color::Black));
 	activeButton = 0;
 	buttons[activeButton].setActive();
-	buttons.push_back(Button(300, 200, 150, 50, &font, "Settings", GREY, LIGHTGREY, BLACK));
-	buttons.push_back(Button(300, 250, 150, 50, &font, "QUIT", GREY, LIGHTGREY, BLACK));
+	buttons.push_back(Button(300, 200, 150, 50, &font, "Settings", GREY, LIGHTGREY, sf::Color::Black));
+	buttons.push_back(Button(300, 250, 150, 50, &font, "QUIT", GREY, LIGHTGREY, sf::Color::Black));
 }
 
 MainMenuState::~MainMenuState() = default;

@@ -4,7 +4,7 @@
 #include "Tile.h"
 #include "definitions.h"
 
-#include "tileson.hpp"
+#include "../libs/tileson.hpp"
 
 class TileMap {
   private:
@@ -12,10 +12,6 @@ class TileMap {
 	int nLayers;
 	// max. number of tiles in x and y direction
 	sf::Vector2u maxSize;
-	// number of visible tiles in x and y direction
-	sf::Vector2u visibleFrom;
-	// number of visible tiles in x and y direction
-	sf::Vector2u visibleTo;
 	// Concept:
 	// We create a matrix of tiles, but each tile itself is a vector of layers
 	std::vector<std::vector<std::vector<Tile*>>> tiles;

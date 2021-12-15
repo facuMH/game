@@ -1,8 +1,6 @@
 #include "TileMap.h"
+#include "../libs/tileson.hpp"
 #include "AssetsPaths.h"
-#include "tileson.hpp"
-
-#define TILESIZE 16
 
 // Constructor
 TileMap::TileMap(AssetsManager& am, std::vector<MapBackground*> textureSheets, const JSONFilePath& designPath) {
@@ -13,12 +11,6 @@ TileMap::TileMap(AssetsManager& am, std::vector<MapBackground*> textureSheets, c
 void TileMap::initializeVariables(AssetsManager& am) {
 	maxSize.x = 50;
 	maxSize.y = 50;
-
-	// bounds for rendering only those tiles that are in visible range
-	visibleFrom.x = 0;
-	visibleTo.y = 0;
-	visibleTo.x = 32;
-	visibleTo.y = 24;
 
 	// initialize matrix for collision detection
 	blockMask.resize(maxSize.x, std::vector<bool>(maxSize.y, false));
@@ -73,7 +65,7 @@ void TileMap::render(sf::RenderWindow& window) {
 }
 
 
-bool TileMap::hasCollision(sf::Vector2i position) {
+bool TileMap::hasCollision(Position_i position) {
 	int tilePosX = position.x / TILESIZE;
 	int tilePosY = position.y / TILESIZE;
 	return blockMask[tilePosX][tilePosY];

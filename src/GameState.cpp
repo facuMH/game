@@ -9,7 +9,8 @@
 
 GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vector<MapBackground*> textureSheets,
     JSONFilePath& path, KeyList* gameSupportedKeys)
-    : State(window), map(gameAM, textureSheets, path) {
+    : State(window),
+      map(gameAM, textureSheets, path) {
 	am = &gameAM;
 	keybinds = gameSupportedKeys;
 	Texture* play_text = am->getTexture(NINJA_RUN.c);
@@ -18,13 +19,12 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 	soundBuffer = am->getSoundBuffer(GASP.c);
 	sound.setBuffer(soundBuffer);
 	previousKey = sf::Keyboard::Unknown;
-	// view = window->getDefaultView();
 	view = sf::View(player.get_position(), {720.0, 480.0});
 	MusicPath* musicPath = gameAM.getMusic(VILLAGE_MUSIC.c);
 	music.openFromFile(*musicPath);
+	music.setLoop(true);
 	music.play();
 }
-
 
 GameState::~GameState() = default;
 

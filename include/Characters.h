@@ -36,7 +36,7 @@ class Character : public Entity {
 	void recover_mana(const int recover) { currentStats.mana += recover; }
 
 	void equip(Weapon* arms);
-	void move(KeyAction key, sf::View* view, const TileMap* map);
+	void move(KeyAction key, sf::View* view, TileMap* map);
 
 	// TODO: multiple animations (idle, run, attack) perhaps on Entity.
 };
