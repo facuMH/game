@@ -30,7 +30,7 @@ class Animation {
 	// Helper function for moving the player, getting the new animation texture and moving the view accordingly
 	void movePlayerAndView(const Position& offset, int newTextureRect, sf::View* view, TileMap* map) {
 		auto nextPosition = sprite.getPosition() + offset;
-		if(!map->hasCollision({int(nextPosition.x), int(nextPosition.y)})) {
+		if(!map->hasCollision(nextPosition)) {
 			sprite.move(offset);
 			view->setCenter(sprite.getPosition());
 		}

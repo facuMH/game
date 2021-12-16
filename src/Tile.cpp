@@ -12,6 +12,7 @@ Tile::Tile(tson::TileObject* tileObject, MapBackground* textureSheet) {
 	shape.setPosition(tilePos.x, tilePos.y);
 	shape.setTexture(textureSheet);
 	shape.setTextureRect(intRect);
+	is_solid = false;
 }
 
 Tile::~Tile() = default;
