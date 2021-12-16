@@ -10,7 +10,7 @@ void CombatState::addCombatString(const Character& c, AssetsManager& am, const i
 	float y = static_cast<float>(initialText.y);
 	float height = 30, width = 150;
 	
-	lifeCounters.emplace(c.name, gui::Button(x, y, width, height, am.getFont(ALEX.c), text, GREY, LIGHTGREY, BLACK));
+	lifeCounters.emplace(c.name, Button(x, y, width, height, am.getFont(ALEX.c), text, GREY, LIGHTGREY, BLACK));
 }
 
 CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets,

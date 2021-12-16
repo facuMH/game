@@ -1,16 +1,18 @@
 #pragma once
+
+#include <vector>
+#include <SFML/Graphics/Text.hpp>
+#include <SFML/Window/VideoMode.hpp>
+
 #include "AssetsManager.h"
 #include "Gui.h"
 #include "State.h"
-#include <SFML/Graphics/Text.hpp>
-#include <SFML/Window/VideoMode.hpp>
-#include <map>
-#include <vector>
+
+
 
 class SettingsState : public State {
   private:
 	sf::View view;
-	sf::Texture backgroundTexture;
 	sf::RectangleShape background;
 	sf::Font font;
 	sf::SoundBuffer soundBuffer;
@@ -36,7 +38,7 @@ class SettingsState : public State {
 	void updateGui();
 	void initButtons();
 	void updateButtons();
-	void renderButtons(sf::RenderTarget* target);
+	void renderButtons(sf::RenderWindow* window);
 
 	void updateMousePositions();
 

@@ -1,12 +1,11 @@
-#include "SettingsState.h"
-#include "Gui.h"
+#include <algorithm>
+#include <string>
+#include <SFML/Window.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Window/VideoMode.hpp>
-#include <algorithm>
 
-#include <SFML/Window.hpp>
-#include <string>
-
+#include "SettingsState.h"
+#include "Gui.h"
 #include "AssetsPaths.h"
 #include "MainMenuState.h"
 
@@ -32,11 +31,10 @@ SettingsState::~SettingsState()  = default;
 
 void SettingsState::initBackground(sf::RenderWindow* window, AssetsManager& am) {
 	background.setSize(sf::Vector2f(static_cast<float>(window->getSize().x), static_cast<float>(window->getSize().y)));
-	backgroundTexture = *am.getTexture(SETTING_BACKGROUND.c);
-	background.setTexture(&backgroundTexture);
+	background.setTexture(am.getTexture(SETTING_BACKGROUND.c));
 }
 
-void SettingsState::applyResolution(unsigned int width, unsigned int height) {
+void SettingsState::applyResolution(const unsigned int width, const unsigned int height) {
 
 	window->setSize(sf::Vector2u(width, height));
 }
@@ -82,30 +80,25 @@ void SettingsState::initButtons() {
 	unsigned int buttonPos = 150;
 	unsigned int buttonPosInc = 30;
 	
-	buttons.push_back(gui::Button(300, buttonPos, 150, buttonPosInc, &font, "720x480", GREY, LIGHTGREY, BLACK)); buttonPos += buttonPosInc;
-	buttons.push_back(gui::Button(300, buttonPos, 150, buttonPosInc, &font, "800x600", GREY, LIGHTGREY, BLACK)); buttonPos += buttonPosInc;
-	buttons.push_back(gui::Button(300, buttonPos, 150, buttonPosInc, &font, "1024x768", GREY, LIGHTGREY, BLACK)); buttonPos += buttonPosInc;
-	buttons.push_back(gui::Button(300, buttonPos, 150, buttonPosInc, &font, "1280x720", GREY, LIGHTGREY, BLACK)); buttonPos += buttonPosInc;
-	buttons.push_back(gui::Button(300, buttonPos, 150, buttonPosInc, &font, "1440x900", GREY, LIGHTGREY, BLACK)); buttonPos += buttonPosInc;
-	buttons.push_back(gui::Button(300, buttonPos, 150, buttonPosInc, &font, "1920x1080", GREY, LIGHTGREY, BLACK)); buttonPos += buttonPosInc;
-	buttons.push_back(gui::Button(300, buttonPos, 150, buttonPosInc, &font, "BACK", GREY, LIGHTGREY, BLACK));
+	buttons.push_back(Button(300, buttonPos, 150, buttonPosInc, &font, "720x480", GREY, LIGHTGREY, BLACK)); buttonPos += buttonPosInc;
+	buttons.push_back(Button(300, buttonPos, 150, buttonPosInc, &font, "800x600", GREY, LIGHTGREY, BLACK)); buttonPos += buttonPosInc;
+	buttons.push_back(Button(300, buttonPos, 150, buttonPosInc, &font, "1024x768", GREY, LIGHTGREY, BLACK)); buttonPos += buttonPosInc;
+	buttons.push_back(Button(300, buttonPos, 150, buttonPosInc, &font, "1280x720", GREY, LIGHTGREY, BLACK)); buttonPos += buttonPosInc;
+	buttons.push_back(Button(300, buttonPos, 150, buttonPosInc, &font, "1440x900", GREY, LIGHTGREY, BLACK)); buttonPos += buttonPosInc;
+	buttons.push_back(Button(300, buttonPos, 150, buttonPosInc, &font, "1920x1080", GREY, LIGHTGREY, BLACK)); buttonPos += buttonPosInc;
+	buttons.push_back(Button(300, buttonPos, 150, buttonPosInc, &font, "BACK", GREY, LIGHTGREY, BLACK));
 		
-	if((width == 720  && height == 480)){
+	if(width == 720){
 		activeButton = 0;
-	}	
-	if((width == 800  && height == 600)){
+	} else if(width == 800){
 		activeButton = 1;
-	}
-	if((width == 1024 && height == 768)){
+	} else if(width == 1024){
 		activeButton = 2;
-	}
-	if((width == 1280 && height == 720)){
+	} else if(width == 1280){
 		activeButton = 3;
-	}
-	if((width == 1440 && height == 900)){
+	} else if(width == 1440){
 		activeButton = 4;
-	}
-	if((width == 1920 && height == 1080 )){
+	} else if(width == 1920){
 		activeButton = 5;
 	}
 	
@@ -120,9 +113,9 @@ void SettingsState::updateButtons() {
 	}
 }
 
-void SettingsState::renderButtons(sf::RenderTarget* target) {
+void SettingsState::renderButtons(sf::RenderWindow* window) {
 	for(auto& it : buttons) {
-		it.render(target);
+		it.render(window);
 	}
 }
 

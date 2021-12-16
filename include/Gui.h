@@ -1,28 +1,15 @@
 #pragma once
 
+#include <vector>
+
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
-#include <cstdlib>
-#include <ctime>
-#include <fstream>
-#include <iostream>
-#include <map>
-#include <sstream>
-#include <stack>
-#include <string>
-#include <vector>
 
-#include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
-#include <SFML/Network.hpp>
-#include <SFML/System.hpp>
-#include <SFML/Window.hpp>
 
 
 enum button_states { BTN_IDLE = 0, BTN_HOVER, BTN_ACTIVE };
-
-namespace gui {
 
 class Button {
   private:
@@ -69,28 +56,27 @@ class Button {
 
 class DropDownList {
   private:
-	float keyTime;
-	float keyTimeMax;
-	sf::Font& font;
-	gui::Button* activeElement;
-	std::vector<gui::Button*> list;
-	bool showList;
+       float keyTime;
+       float keyTimeMax;
+       sf::Font& font;
+       Button* activeElement;
+       std::vector<Button*> list;
+       bool showList;
 
   public:
-	DropDownList(float x, float y, float width, float height, sf::Font& font, std::string list[], unsigned nrOfElements,
-	    unsigned default_index = 0);
-	~DropDownList();
+       DropDownList(float x, float y, float width, float height, sf::Font& font, std::string list[], unsigned nrOfElements,
+           unsigned default_index = 0);
+       ~DropDownList();
 
-	// Accessors
-	const unsigned short& getActiveElementId() const;
+       // Accessors
+       const unsigned short& getActiveElementId() const;
 
-	// Functions
-	const bool getkeyTime();
-	void updateKeyTime(const float& dt);
-	void update(sf::Vector2f mousePos, const float& dt);
-	void render(sf::RenderTarget* target);
-	void setActive();
-	void setInactive();
+       // Functions
+       const bool getkeyTime();
+       void updateKeyTime(const float& dt);
+       void update(sf::Vector2f mousePos, const float& dt);
+       void render(sf::RenderTarget* target);
+       void setActive();
+       void setInactive();
 };
 
-} // namespace gui

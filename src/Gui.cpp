@@ -5,7 +5,7 @@
 #include <cstddef>
 #include <iterator>
 
-gui::Button::Button(float x, float y, float width, float height, sf::Font* font, const std::string& text,
+Button::Button(float x, float y, float width, float height, sf::Font* font, const std::string& text,
     sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor, sf::Color outline_idle_color,
     sf::Color outline_hover_color, sf::Color outline_active_color, short unsigned id) {
 	this->buttonState = BTN_IDLE;
@@ -37,35 +37,35 @@ gui::Button::Button(float x, float y, float width, float height, sf::Font* font,
 	this->shape.setFillColor(this->idleColor);
 }
 
-// gui::Button::Button() {}
+// Button::Button() {}
 
-gui::Button::~Button() = default;
+Button::~Button() = default;
 
 // Accessors
-bool gui::Button::isPressed() const {
+bool Button::isPressed() const {
 	if(buttonState == BTN_ACTIVE) return true;
 	return false;
 }
 
-const std::string gui::Button::getText() const {
+const std::string Button::getText() const {
 	return this->text.getString();
 }
 
 // Modifiers
-void gui::Button::setText(const std::string text) {
+void Button::setText(const std::string text) {
 	this->text.setString(text);
 }
 
-void gui::Button::setId(const unsigned short id) {
+void Button::setId(const unsigned short id) {
 	this->id = id;
 }
 
-const short unsigned& gui::Button::getId() const {
+const short unsigned& Button::getId() const {
 	return id;
 }
 
 // Function
-void gui::Button::update(const sf::Vector2f mousePos) {
+void Button::update(const sf::Vector2f mousePos) {
 	// update the boolean for hover and pressed
 
 	// idle
@@ -98,16 +98,16 @@ void gui::Button::update(const sf::Vector2f mousePos) {
 	}
 }
 
-void gui::Button::render(sf::RenderTarget* target) {
+void Button::render(sf::RenderTarget* target) {
 	target->draw(shape);
 	target->draw(text);
 }
 
-void gui::Button::setActive() {
+void Button::setActive() {
 	shape.setFillColor(hoverColor);
 	buttonState = BTN_ACTIVE;
 }
-void gui::Button::setInactive() {
+void Button::setInactive() {
 	shape.setFillColor(idleColor);
 	buttonState = BTN_IDLE;
 }
@@ -115,23 +115,21 @@ void gui::Button::setInactive() {
 ////////////////		 DropDownList		/////////////////////
 
 // Accessor
-const bool gui::DropDownList::getkeyTime() {
-	if(this->keyTime >= this->keyTimeMax) {
-		return true;
-	}
-	return false;
+const bool DropDownList::getkeyTime() {
+
+	return this->keyTime >= this->keyTimeMax;
 }
 
 // Functions
-void gui::DropDownList::updateKeyTime(const float& dt) {
+void DropDownList::updateKeyTime(const float& dt) {
 	if(this->keyTime < this->keyTimeMax) this->keyTime += 10.f * dt;
 }
 
-const unsigned short& gui::DropDownList::getActiveElementId() const {
+const unsigned short& DropDownList::getActiveElementId() const {
 	return this->activeElement->getId();
 }
 
-void gui::DropDownList::update(sf::Vector2f mousePos, const float& dt) {
+void DropDownList::update(sf::Vector2f mousePos, const float& dt) {
 	this->updateKeyTime(dt);
 	this->activeElement->update(mousePos);
 
@@ -155,7 +153,7 @@ void gui::DropDownList::update(sf::Vector2f mousePos, const float& dt) {
 		}
 	}
 }
-void gui::DropDownList::render(sf::RenderTarget* target) {
+void DropDownList::render(sf::RenderTarget* target) {
 	this->activeElement->render(target);
 	if(this->showList) {
 		for(auto& i : this->list) {
@@ -164,19 +162,19 @@ void gui::DropDownList::render(sf::RenderTarget* target) {
 	}
 }
 
-gui::DropDownList::DropDownList(float x, float y, float width, float height, sf::Font& font, std::string list[],
+DropDownList::DropDownList(float x, float y, float width, float height, sf::Font& font, std::string list[],
     unsigned nrOfElements, unsigned default_index)
     : font(font), showList(false), keyTimeMax(10.f), keyTime(keyTimeMax) {
-	this->activeElement = new gui::Button(x, y, width, height, &font, list[default_index], GREY, LIGHTGREY, BLACK,
+	this->activeElement = new Button(x, y, width, height, &font, list[default_index], GREY, LIGHTGREY, BLACK,
 	    sf::Color::White, sf::Color::Red, sf::Color::Blue);
 
 	for(size_t i = 0; i < nrOfElements; i++) {
-		this->list.push_back(new gui::Button(x, y + (i + 1) * height, width, height, &font, list[i], GREY, LIGHTGREY,
+		this->list.push_back(new Button(x, y + (i + 1) * height, width, height, &font, list[i], GREY, LIGHTGREY,
 		    BLACK, sf::Color::White, sf::Color::Blue, sf::Color::Black, i));
 	}
 }
 
-gui::DropDownList::~DropDownList() {
+DropDownList::~DropDownList() {
 	delete this->activeElement;
 	// for(auto *&i : this->list)
 	// 	delete i;

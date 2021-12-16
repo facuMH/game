@@ -4,7 +4,7 @@
 #include "Gui.h"
 #include "SettingsState.h"
 #include "definitions.h"
-#include <map>
+
 
 constexpr int MAX_BUTTONS = 3;
 
