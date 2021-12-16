@@ -18,13 +18,9 @@ class Tile {
   public:
 	bool is_solid;
 
-	Tile();
-
 	Tile(tson::TileObject* tileObject, MapBackground* textureSheet);
-
 	virtual ~Tile();
 
 	void update();
-
 	void render(sf::RenderWindow& window);
 };

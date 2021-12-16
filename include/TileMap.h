@@ -12,15 +12,15 @@ class TileMap {
 	int nLayers;
 	// max. number of tiles in x and y direction
 	sf::Vector2u maxSize;
-	// Concept:
-	// We create a matrix of tiles, but each tile itself is a vector of layers
+	// Tiles are saved in a matrix, but each tile itself is a vector of layers
 	std::vector<std::vector<std::vector<Tile*>>> tiles;
 
   public:
 	TileMap(AssetsManager& am, std::vector<MapBackground*> textureSheets, const JSONFilePath& designPath);
 	virtual ~TileMap();
+
 	void initializeVariables(AssetsManager& am);
+	void loadFromJson(const std::string& path, std::vector<MapBackground*> textureSheets);
 	bool hasCollision(Position position);
 	void render(sf::RenderWindow& window);
-	void loadFromJson(const std::string& path, std::vector<MapBackground*> textureSheets);
 };
