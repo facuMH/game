@@ -1,11 +1,22 @@
 #include "TileMap.h"
-#include "../libs/tileson.hpp"
 #include "AssetsPaths.h"
+
 
 // Constructor
 TileMap::TileMap(AssetsManager& am, std::vector<MapBackground*> textureSheets, const JSONFilePath& designPath) {
 	initializeVariables(am);
 	loadFromJson(designPath, textureSheets);
+}
+
+// Destructor
+TileMap::~TileMap() {
+	for(int z = 0; z < nLayers; z++) {
+		for(int y = 0; y < maxSize.y; y++) {
+			for(int x = 0; x < maxSize.x; x++) {
+				delete tiles[z][y][x];
+			}
+		}
+	}
 }
 
 void TileMap::initializeVariables(AssetsManager& am) {
@@ -41,14 +52,10 @@ void TileMap::loadFromJson(const std::string& path, std::vector<MapBackground*> 
 	}
 }
 
-TileMap::~TileMap() {
-	for(int z = 0; z < nLayers; z++) {
-		for(int y = 0; y < maxSize.y; y++) {
-			for(int x = 0; x < maxSize.x; x++) {
-				delete tiles[z][y][x];
-			}
-		}
-	}
+bool TileMap::hasCollision(Position position) {
+	int tilePosX = std::ceil(position.x / TILESIZE);
+	int tilePosY = std::ceil(position.y / TILESIZE);
+	return tiles[0][tilePosX][tilePosY]->is_solid;
 }
 
 void TileMap::render(sf::RenderWindow& window) {
@@ -59,11 +66,4 @@ void TileMap::render(sf::RenderWindow& window) {
 			}
 		}
 	}
-}
-
-
-bool TileMap::hasCollision(Position position) {
-	int tilePosX = ceil(position.x / TILESIZE);
-	int tilePosY = ceil(position.y / TILESIZE);
-	return tiles[0][tilePosX][tilePosY]->is_solid;
 }
