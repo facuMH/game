@@ -5,39 +5,36 @@
 #include <cstddef>
 #include <iterator>
 
-Button::Button(float x, float y, float width, float height, sf::Font* font, const std::string& text,
-    sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor, sf::Color outline_idle_color,
-    sf::Color outline_hover_color, sf::Color outline_active_color, short unsigned id) {
-	this->buttonState = BTN_IDLE;
+Button::Button(float x, float y, float width, float height, sf::Font* _font, const std::string& _text,
+    sf::Color _idleColor, sf::Color _hoverColor, sf::Color _activeColor, sf::Color _outlineIdleColor,
+    sf::Color _outlineHoverColor, sf::Color _outlineActiveColor, short unsigned _id) {
+	buttonState = BTN_IDLE;
 
-	this->id = id;
-	shape.setPosition(sf::Vector2f(x, y));
+	id = _id;
+	shape.setPosition(Position(x, y));
 	shape.setSize(sf::Vector2f(width, height));
 
-	this->font = font;
-	this->text.setFont(*this->font);
-	this->text.setString(text);
-	this->text.setFillColor(sf::Color::White);
-	this->text.setCharacterSize(12);
-	this->shape.setOutlineThickness(1.f);
-	this->shape.setOutlineColor(outline_idle_color);
-	this->text.setPosition(this->shape.getPosition().x + (this->shape.getGlobalBounds().width / 2.f)
-	                           - this->text.getGlobalBounds().width / 2.f,
-	    this->shape.getPosition().y + (this->shape.getGlobalBounds().height / 2.f)
-	        - this->text.getGlobalBounds().height / 2.f);
+	font = _font;
+	text.setFont(*font);
+	text.setString(_text);
+	text.setFillColor(sf::Color::White);
+	text.setCharacterSize(12);
+	shape.setOutlineThickness(1.f);
+	shape.setOutlineColor(_outlineIdleColor);
+	text.setPosition(shape.getPosition().x + (shape.getGlobalBounds().width / 2.f) - text.getGlobalBounds().width / 2.f,
+			shape.getPosition().y + (shape.getGlobalBounds().height / 2.f) - text.getGlobalBounds().height / 2.f
+		     );
 
-	this->idleColor = idleColor;
-	this->hoverColor = hoverColor;
-	this->activeColor = activeColor;
+	idleColor = _idleColor;
+	hoverColor = _hoverColor;
+	activeColor = _activeColor;
 
-	this->outlineIdleColor = outline_idle_color;
-	this->outlineHoverColor = outline_hover_color;
-	this->outlineActiveColor = outline_active_color;
+	outlineIdleColor = _outlineIdleColor;
+	outlineHoverColor = _outlineHoverColor;
+	outlineActiveColor = _outlineActiveColor;
 
-	this->shape.setFillColor(this->idleColor);
+	shape.setFillColor(idleColor);
 }
-
-// Button::Button() {}
 
 Button::~Button() = default;
 
@@ -176,8 +173,6 @@ DropDownList::DropDownList(float x, float y, float width, float height, sf::Font
 
 DropDownList::~DropDownList() {
 	delete this->activeElement;
-	// for(auto *&i : this->list)
-	// 	delete i;
 
 	for(size_t i = 0; i < this->list.size(); i++) {
 		delete this->list[i];

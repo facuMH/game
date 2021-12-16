@@ -28,10 +28,10 @@ class Button {
 	sf::Color outlineActiveColor;
 
   public:
-	Button(float x, float y, float width, float height, sf::Font* font, const std::string& text, sf::Color idleColor,
-	    sf::Color hoverColor, sf::Color activeColor, sf::Color outline_idle_color = sf::Color::Transparent,
-	    sf::Color outline_hover_color = sf::Color::Transparent, sf::Color outline_active_color = sf::Color::Transparent,
-	    short unsigned id = 0);
+	Button(float x, float y, float width, float height, sf::Font* _font, const std::string& _text, sf::Color _idleColor,
+	    sf::Color _hoverColor, sf::Color _activeColor, sf::Color _outlineIdleColor = sf::Color::Transparent,
+	    sf::Color _outlineHoverColor = sf::Color::Transparent, sf::Color _outlineActiveColor = sf::Color::Transparent,
+	    short unsigned _id = 0);
 
 
 	Button();

@@ -125,7 +125,7 @@ StateAction MainMenuState::shouldAct() {
 	if(activeButton == 0) {
 		return StateAction::START_GAME;
 	} else if(activeButton == 1) {
-		return StateAction::SETTINGS_GAME;
+		return StateAction::ENTER;
 	} else if(activeButton == 2) {
 		return StateAction::EXIT_GAME;
 	} else {

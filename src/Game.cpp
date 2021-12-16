@@ -148,11 +148,11 @@ void Game::pollEvents() {
 								*assetsManager.getMapDesign(MAP_LEVEL1.c),
 								&keyBindings));
 				}
-				if(action == StateAction::SETTINGS_GAME) {
+				if(action == StateAction::ENTER) {
 					turnOffMusic();
 					states.push(new SettingsState(window, assetsManager, &keyBindings));
 				}
-				if(action == StateAction::MAIN_MENU) {
+				if(action == StateAction::EXIT) {
 					states.push(new MainMenuState(window, assetsManager, &keyBindings));
 				}
 				break;

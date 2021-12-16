@@ -191,8 +191,8 @@ bool SettingsState::shouldQuit() {
 }
 
 StateAction SettingsState::shouldAct() {
-	updateGui(); 
-	return StateAction::MAIN_MENU;
+	updateGui();
+	return StateAction::EXIT;
 }
 
 void SettingsState::stopMusic() {
