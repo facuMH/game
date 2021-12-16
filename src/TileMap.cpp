@@ -11,9 +11,6 @@ TileMap::TileMap(AssetsManager& am, std::vector<MapBackground*> textureSheets, c
 void TileMap::initializeVariables(AssetsManager& am) {
 	maxSize.x = 50;
 	maxSize.y = 50;
-
-	// initialize matrix for collision detection
-	blockMask.resize(maxSize.x, std::vector<bool>(maxSize.y, false));
 }
 
 void TileMap::loadFromJson(const std::string& path, std::vector<MapBackground*> textureSheets) {
@@ -36,7 +33,7 @@ void TileMap::loadFromJson(const std::string& path, std::vector<MapBackground*> 
 					tiles[z][y].push_back(new Tile(tileObj, textureSheets[z]));
 					tson::Property* prp = tileObj->getTile()->getProp("isBlocked");
 					if(prp != nullptr && prp->getValue<bool>()) {
-						blockMask[y][x] = true;
+						tiles[0][y][x]->is_solid = true;
 					}
 				}
 			}
@@ -65,8 +62,8 @@ void TileMap::render(sf::RenderWindow& window) {
 }
 
 
-bool TileMap::hasCollision(Position_i position) {
-	int tilePosX = position.x / TILESIZE;
-	int tilePosY = position.y / TILESIZE;
-	return blockMask[tilePosX][tilePosY];
+bool TileMap::hasCollision(Position position) {
+	int tilePosX = ceil(position.x / TILESIZE);
+	int tilePosY = ceil(position.y / TILESIZE);
+	return tiles[0][tilePosX][tilePosY]->is_solid;
 }

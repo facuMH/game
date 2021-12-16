@@ -13,10 +13,11 @@
 
 class Tile {
   private:
-  protected:
 	sf::RectangleShape shape;
 
   public:
+	bool is_solid;
+
 	Tile();
 
 	Tile(tson::TileObject* tileObject, MapBackground* textureSheet);
