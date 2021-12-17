@@ -5,37 +5,36 @@
 #include <SFML/Window/VideoMode.hpp>
 
 #include "SettingsState.h"
-#include "Gui.h"
+#include "Button.h"
 #include "AssetsPaths.h"
 #include "MainMenuState.h"
 
 constexpr int MAX_RESOLUTION_COUNT = 7;
 
 SettingsState::SettingsState(sf::RenderWindow* window, AssetsManager& am, KeyList* gameSupportedKeys) : State(window), activeButton(0) {
-	supportedKeys = gameSupportedKeys;
+	view = window->getDefaultView();
 	initBackground(window, am);
 	initFonts(am);
-	
-	initButtons();
-	view = window->getDefaultView();
-
 	soundBuffer = am.getSoundBuffer(MENU_BLIP.c);
 	sound.setBuffer(soundBuffer);
 
 	MusicPath* path = am.getMusic(MENU_MUSIC.c);
 	music.openFromFile(*path);
 	music.play();
+	
+	supportedKeys = gameSupportedKeys;
+	initButtons();
 }
 
 SettingsState::~SettingsState()  = default;
 
 void SettingsState::initBackground(sf::RenderWindow* window, AssetsManager& am) {
-	background.setSize(sf::Vector2f(static_cast<float>(window->getSize().x), static_cast<float>(window->getSize().y)));
+	background.setSize(Position(static_cast<float>(window->getSize().x), static_cast<float>(window->getSize().y)));
 	background.setTexture(am.getTexture(SETTING_BACKGROUND.c));
 }
 
 void SettingsState::applyResolution(const unsigned int width, const unsigned int height) {
-
+	sf::RenderWindow* window = getWindow();
 	window->setSize(sf::Vector2u(width, height));
 }
 
@@ -74,6 +73,7 @@ void SettingsState::updateGui() {
 void SettingsState::initButtons() {
 
 	// get the size of the window
+	sf::RenderWindow* window = getWindow();
 	sf::Vector2u currentSize = window->getSize();
 	unsigned int width = currentSize.x;
 	unsigned int height = currentSize.y;
@@ -98,7 +98,7 @@ void SettingsState::initButtons() {
 		activeButton = 3;
 	} else if(width == 1440){
 		activeButton = 4;
-	} else if(width == 1920){
+	} else {
 		activeButton = 5;
 	}
 	
@@ -184,15 +184,15 @@ void SettingsState::quitStateActions() {
 	std::cout << "Ending current game state" << std::endl;
 }
 
-void SettingsState::drawPlayer(sf::RenderWindow* window) {}
-
 bool SettingsState::shouldQuit() {
 	return isQuit();
 }
 
+void SettingsState::drawPlayer(sf::RenderWindow* window) {}
+
 StateAction SettingsState::shouldAct() {
 	updateGui();
-	return StateAction::EXIT;
+	return StateAction::EXIT_SETTING;
 }
 
 void SettingsState::stopMusic() {

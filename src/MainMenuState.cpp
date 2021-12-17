@@ -3,7 +3,7 @@
 #include <SFML/Window.hpp>
 
 #include "AssetsPaths.h"
-#include "Gui.h"
+#include "Button.h"
 #include "MainMenuState.h"
 
 MainMenuState::MainMenuState(sf::RenderWindow* window, AssetsManager& am, KeyList* gameSupportedKeys) : State(window) {
@@ -125,7 +125,7 @@ StateAction MainMenuState::shouldAct() {
 	if(activeButton == 0) {
 		return StateAction::START_GAME;
 	} else if(activeButton == 1) {
-		return StateAction::ENTER;
+		return StateAction::START_SETTING;
 	} else if(activeButton == 2) {
 		return StateAction::EXIT_GAME;
 	} else {

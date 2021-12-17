@@ -142,17 +142,15 @@ void Game::pollEvents() {
 				if(action == StateAction::START_GAME) {
 					turnOffMusic();
 					states.push(new GameState(window, assetsManager,
-								{assetsManager.getMap(TILESHEET_FLOOR.c),
-								assetsManager.getMap(TILESHEET_NATURE.c),
-								assetsManager.getMap(TILESHEET_HOUSES.c)},
-								*assetsManager.getMapDesign(MAP_LEVEL1.c),
-								&keyBindings));
+					    {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c),
+					        assetsManager.getMap(TILESHEET_HOUSES.c)},
+					    *assetsManager.getMapDesign(MAP_LEVEL1.c), &keyBindings));
 				}
-				if(action == StateAction::ENTER) {
+				if(action == StateAction::START_SETTING) {
 					turnOffMusic();
 					states.push(new SettingsState(window, assetsManager, &keyBindings));
 				}
-				if(action == StateAction::EXIT) {
+				if(action == StateAction::EXIT_SETTING) {
 					states.push(new MainMenuState(window, assetsManager, &keyBindings));
 				}
 				break;

@@ -1,7 +1,7 @@
 
 #pragma once
 #include "GameState.h"
-#include "Gui.h"
+#include "Button.h"
 #include "SettingsState.h"
 #include "definitions.h"
 

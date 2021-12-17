@@ -5,9 +5,7 @@
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
-
 #include <SFML/Graphics.hpp>
-
 
 enum button_states { BTN_IDLE = 0, BTN_HOVER, BTN_ACTIVE };
 
@@ -49,34 +47,7 @@ class Button {
 
 	// Functions
 	void update(sf::Vector2f mousePos);
-	void render(sf::RenderTarget* target);
+	void render(sf::RenderWindow* window);
 	void setActive();
 	void setInactive();
 };
-
-class DropDownList {
-  private:
-       float keyTime;
-       float keyTimeMax;
-       sf::Font& font;
-       Button* activeElement;
-       std::vector<Button*> list;
-       bool showList;
-
-  public:
-       DropDownList(float x, float y, float width, float height, sf::Font& font, std::string list[], unsigned nrOfElements,
-           unsigned default_index = 0);
-       ~DropDownList();
-
-       // Accessors
-       const unsigned short& getActiveElementId() const;
-
-       // Functions
-       const bool getkeyTime();
-       void updateKeyTime(const float& dt);
-       void update(sf::Vector2f mousePos, const float& dt);
-       void render(sf::RenderTarget* target);
-       void setActive();
-       void setInactive();
-};
-
