@@ -41,4 +41,5 @@ class CombatState : public State {
 	sf::View getView() override { return view; };
 	void stopMusic() override;
 	void resumeMusic() override;
+
 };

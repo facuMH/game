@@ -4,7 +4,7 @@
 #include "definitions.h"
 
 void CombatState::addCombatString(const Character& c, AssetsManager& am, const int i) {
-		
+
 	std::string text = c.name + std::string(" HP:") + std::to_string(c.currentStats.hp) + "/" + std::to_string(c.maxStats.hp);
 	float x = static_cast<float>(initialText.x + (i * textIntervalHeight));
 	float y = static_cast<float>(initialText.y);
