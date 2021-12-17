@@ -5,3 +5,4 @@ State::State(sf::RenderWindow* renderWindow) {
 }
 
 State::~State() = default;
+//eof
