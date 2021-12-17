@@ -62,7 +62,6 @@ constexpr auto SOUNDS = cat(ASSETS, "sounds/");
 constexpr auto GASP = cat(SOUNDS.c, "gasp.wav");
 constexpr auto MENU_BLIP = cat(SOUNDS.c, "menu.wav");
 
-
 // ---- MUSIC
 constexpr auto MUSIC = cat(ASSETS, "music/");
 constexpr auto MENU_MUSIC = cat(MUSIC.c, "main_menu.ogg");

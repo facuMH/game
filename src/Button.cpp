@@ -20,9 +20,10 @@ Button::Button(float x, float y, float width, float height, sf::Font* _font, con
 	text.setCharacterSize(12);
 	shape.setOutlineThickness(1.f);
 	shape.setOutlineColor(_outlineIdleColor);
-	text.setPosition(shape.getPosition().x + (shape.getGlobalBounds().width / 2.f) - text.getGlobalBounds().width / 2.f,
-			shape.getPosition().y + (shape.getGlobalBounds().height / 2.f) - text.getGlobalBounds().height / 2.f
-		     );
+	auto Xs = shape.getPosition().x + (shape.getGlobalBounds().width / 2.f) - text.getGlobalBounds().width / 2.f;
+	auto Ys = shape.getPosition().y + (shape.getGlobalBounds().height / 2.f) - text.getGlobalBounds().height / 2.f;
+	
+	text.setPosition(Xs, Ys);
 
 	idleColor = _idleColor;
 	hoverColor = _hoverColor;
