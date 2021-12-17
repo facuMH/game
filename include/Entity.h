@@ -13,8 +13,7 @@ class Entity {
 
 	Entity() = default;
 	Entity(bool isSolid, bool canInteract) : is_solid(isSolid), can_interact(canInteract) {}
-	Entity(Animation& anim, bool isSolid, bool canInteract)
-	    : animation(anim), is_solid(isSolid), can_interact(canInteract) {}
+	Entity(Animation& anim, bool isSolid, bool canInteract) : animation(anim), is_solid(isSolid), can_interact(canInteract) {}
 
 	Position get_position() { return animation.get_position(); }
 };

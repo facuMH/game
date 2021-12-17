@@ -31,7 +31,6 @@ class Button {
 	    sf::Color _outlineHoverColor = sf::Color::Transparent, sf::Color _outlineActiveColor = sf::Color::Transparent,
 	    short unsigned _id = 0);
 
-
 	Button();
 
 	~Button();

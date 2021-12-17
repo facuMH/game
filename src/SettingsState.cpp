@@ -80,12 +80,18 @@ void SettingsState::initButtons() {
 	unsigned int buttonPos = 150;
 	unsigned int buttonPosInc = 30;
 	
-	buttons.push_back(Button(300, buttonPos, 150, buttonPosInc, &font, "720x480", GREY, LIGHTGREY, BLACK)); buttonPos += buttonPosInc;
-	buttons.push_back(Button(300, buttonPos, 150, buttonPosInc, &font, "800x600", GREY, LIGHTGREY, BLACK)); buttonPos += buttonPosInc;
-	buttons.push_back(Button(300, buttonPos, 150, buttonPosInc, &font, "1024x768", GREY, LIGHTGREY, BLACK)); buttonPos += buttonPosInc;
-	buttons.push_back(Button(300, buttonPos, 150, buttonPosInc, &font, "1280x720", GREY, LIGHTGREY, BLACK)); buttonPos += buttonPosInc;
-	buttons.push_back(Button(300, buttonPos, 150, buttonPosInc, &font, "1440x900", GREY, LIGHTGREY, BLACK)); buttonPos += buttonPosInc;
-	buttons.push_back(Button(300, buttonPos, 150, buttonPosInc, &font, "1920x1080", GREY, LIGHTGREY, BLACK)); buttonPos += buttonPosInc;
+	buttons.push_back(Button(300, buttonPos, 150, buttonPosInc, &font, "720x480", GREY, LIGHTGREY, BLACK));
+	buttonPos += buttonPosInc;
+	buttons.push_back(Button(300, buttonPos, 150, buttonPosInc, &font, "800x600", GREY, LIGHTGREY, BLACK));
+	buttonPos += buttonPosInc;
+	buttons.push_back(Button(300, buttonPos, 150, buttonPosInc, &font, "1024x768", GREY, LIGHTGREY, BLACK));
+	buttonPos += buttonPosInc;
+	buttons.push_back(Button(300, buttonPos, 150, buttonPosInc, &font, "1280x720", GREY, LIGHTGREY, BLACK));
+	buttonPos += buttonPosInc;
+	buttons.push_back(Button(300, buttonPos, 150, buttonPosInc, &font, "1440x900", GREY, LIGHTGREY, BLACK));
+	buttonPos += buttonPosInc;
+	buttons.push_back(Button(300, buttonPos, 150, buttonPosInc, &font, "1920x1080", GREY, LIGHTGREY, BLACK));
+	buttonPos += buttonPosInc;
 	buttons.push_back(Button(300, buttonPos, 150, buttonPosInc, &font, "BACK", GREY, LIGHTGREY, BLACK));
 		
 	if(width == 720){
