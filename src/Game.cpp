@@ -245,5 +245,4 @@ void Game::initKeys() {
 		}
 	}
 	ifs.close();
-
 }
