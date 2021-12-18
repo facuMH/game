@@ -11,7 +11,6 @@ void Game::initVariables() {
 }
 
 void Game::closeWindow() {
-
 	std::ifstream ifs("../config/window.ini");
 
 	// set default values
@@ -27,9 +26,9 @@ void Game::closeWindow() {
 		ifs >> vertical_sync_enabled;
 	}
 	ifs.close();
-	
+
 	std::ofstream ofs("../config/window.ini");
-   	// get the size of the window
+	// get the size of the window
 	sf::Vector2u currentSize = window->getSize();
 	unsigned int width = currentSize.x;
 	unsigned int height = currentSize.y;
@@ -42,7 +41,7 @@ void Game::closeWindow() {
 		ofs << vertical_sync_enabled << std::endl;
 	}
 	ofs.close();
-	
+
 	window->close();
 }
 
@@ -137,7 +136,7 @@ void Game::pollEvents() {
 			case sf::Keyboard::Enter:
 				action = states.top()->shouldAct();
 				if(action == StateAction::EXIT_GAME) {
-					 closeWindow();
+					closeWindow();
 				}
 				if(action == StateAction::START_GAME) {
 					turnOffMusic();
@@ -161,7 +160,7 @@ void Game::pollEvents() {
 					makeNewCombat(1);
 				}
 				if(action == StateAction::EXIT_GAME) {
-					 closeWindow();
+					closeWindow();
 				}
 				if(action == StateAction::EXIT_COMBAT) {
 					// calling quitStateActions here is only for debug reasons
@@ -195,7 +194,7 @@ void Game::update() {
 		// Since the game depends on the window being open (see function
 		// isRunning()), closing the window ends the game
 		Game::endApplication();
-		 closeWindow();
+		closeWindow();
 	}
 }
 

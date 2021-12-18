@@ -1,17 +1,19 @@
 #include <algorithm>
 #include <string>
-#include <SFML/Window.hpp>
+
 #include <SFML/System/Vector2.hpp>
+#include <SFML/Window.hpp>
 #include <SFML/Window/VideoMode.hpp>
 
-#include "SettingsState.h"
-#include "Button.h"
 #include "AssetsPaths.h"
+#include "Button.h"
 #include "MainMenuState.h"
+#include "SettingsState.h"
 
 constexpr int MAX_RESOLUTION_COUNT = 7;
 
-SettingsState::SettingsState(sf::RenderWindow* window, AssetsManager& am, KeyList* gameSupportedKeys) : State(window), activeButton(0) {
+SettingsState::SettingsState(sf::RenderWindow* window, AssetsManager& am, KeyList* gameSupportedKeys)
+    : State(window), activeButton(0) {
 	view = window->getDefaultView();
 	initBackground(window, am);
 	initFonts(am);
@@ -21,12 +23,12 @@ SettingsState::SettingsState(sf::RenderWindow* window, AssetsManager& am, KeyLis
 	MusicPath* path = am.getMusic(MENU_MUSIC.c);
 	music.openFromFile(*path);
 	music.play();
-	
+
 	supportedKeys = gameSupportedKeys;
 	initButtons();
 }
 
-SettingsState::~SettingsState()  = default;
+SettingsState::~SettingsState() = default;
 
 void SettingsState::initBackground(sf::RenderWindow* window, AssetsManager& am) {
 	background.setSize(Position(static_cast<float>(window->getSize().x), static_cast<float>(window->getSize().y)));
@@ -43,35 +45,19 @@ void SettingsState::initFonts(AssetsManager& am) {
 }
 
 void SettingsState::updateGui() {
-	
 	switch(activeButton) {
-		case 0:
-			applyResolution(720, 480);
-			break;
-		case 1:
-			applyResolution(800, 600);
-			break;	
-		case 2:
-			applyResolution(1024, 768);
-			break;
-		case 3:
-			applyResolution(1280, 720);
-			break;
-		case 4:
-			applyResolution(1440, 900);
-			break;
-		case 5:
-			applyResolution(1920, 1080);
-			break;
-		default:
-			break;
+	case 0: applyResolution(720, 480); break;
+	case 1: applyResolution(800, 600); break;
+	case 2: applyResolution(1024, 768); break;
+	case 3: applyResolution(1280, 720); break;
+	case 4: applyResolution(1440, 900); break;
+	case 5: applyResolution(1920, 1080); break;
+	default: break;
 	}
-		
 }
 
-//creating buttons showing different resolution
+// creating buttons showing different resolution
 void SettingsState::initButtons() {
-
 	// get the size of the window
 	sf::RenderWindow* window = getWindow();
 	sf::Vector2u currentSize = window->getSize();
@@ -79,7 +65,7 @@ void SettingsState::initButtons() {
 	unsigned int height = currentSize.y;
 	unsigned int buttonPos = 150;
 	unsigned int buttonPosInc = 30;
-	
+
 	buttons.push_back(Button(300, buttonPos, 150, buttonPosInc, &font, "720x480", GREY, LIGHTGREY, BLACK));
 	buttonPos += buttonPosInc;
 	buttons.push_back(Button(300, buttonPos, 150, buttonPosInc, &font, "800x600", GREY, LIGHTGREY, BLACK));
@@ -93,27 +79,25 @@ void SettingsState::initButtons() {
 	buttons.push_back(Button(300, buttonPos, 150, buttonPosInc, &font, "1920x1080", GREY, LIGHTGREY, BLACK));
 	buttonPos += buttonPosInc;
 	buttons.push_back(Button(300, buttonPos, 150, buttonPosInc, &font, "BACK", GREY, LIGHTGREY, BLACK));
-		
-	if(width == 720){
+
+	if(width == 720) {
 		activeButton = 0;
-	} else if(width == 800){
+	} else if(width == 800) {
 		activeButton = 1;
-	} else if(width == 1024){
+	} else if(width == 1024) {
 		activeButton = 2;
-	} else if(width == 1280){
+	} else if(width == 1280) {
 		activeButton = 3;
-	} else if(width == 1440){
+	} else if(width == 1440) {
 		activeButton = 4;
 	} else {
 		activeButton = 5;
 	}
-	
+
 	buttons[activeButton].setActive();
-	
 }
 
 void SettingsState::updateButtons() {
-
 	for(auto it : buttons) {
 		it.update(mousePosView);
 	}
@@ -156,7 +140,6 @@ StateAction SettingsState::handleKeys(sf::Keyboard::Key key) {
 	    [key](const std::pair<KeyAction, sf::Keyboard::Key>& v) { return key == v.second; });
 	if(action != supportedKeys->end()) {
 		switch(action->first) {
-
 		case KeyAction::UP: // Up arrow
 			buttons[activeButton].setInactive();
 			if(activeButton == 0) {
@@ -165,7 +148,7 @@ StateAction SettingsState::handleKeys(sf::Keyboard::Key key) {
 				activeButton--;
 			}
 			buttons[activeButton].setActive();
-			
+
 			break;
 		case KeyAction::DOWN: // Down arrow
 			buttons[activeButton].setInactive();

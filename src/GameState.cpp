@@ -18,7 +18,7 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 	soundBuffer = am->getSoundBuffer(GASP.c);
 	sound.setBuffer(soundBuffer);
 	previousKey = sf::Keyboard::Unknown;
-	//view = window->getDefaultView();
+	// view = window->getDefaultView();
 	view = sf::View(player.get_position(), {720.0, 480.0});
 	MusicPath* musicPath = gameAM.getMusic(VILLAGE_MUSIC.c);
 	music.openFromFile(*musicPath);

@@ -22,7 +22,7 @@ Button::Button(float x, float y, float width, float height, sf::Font* _font, con
 	shape.setOutlineColor(_outlineIdleColor);
 	auto Xs = shape.getPosition().x + (shape.getGlobalBounds().width / 2.f) - text.getGlobalBounds().width / 2.f;
 	auto Ys = shape.getPosition().y + (shape.getGlobalBounds().height / 2.f) - text.getGlobalBounds().height / 2.f;
-	
+
 	text.setPosition(Xs, Ys);
 
 	idleColor = _idleColor;
@@ -40,7 +40,6 @@ Button::~Button() = default;
 
 // Accessors
 bool Button::isPressed() const {
-	
 	return (buttonState == BTN_ACTIVE);
 }
 
