@@ -22,7 +22,8 @@ class GameState : public State {
 
   public:
 	// Constructor
-	GameState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets, JSONFilePath &path, KeyList* gameSupportedKeys);
+	GameState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets,
+	    JSONFilePath& path, KeyList* gameSupportedKeys);
 	// Destructor
 	~GameState() override;
 

@@ -44,7 +44,7 @@ const sf::Color GREY = sf::Color(70, 70, 70, 200);
 const sf::Color LIGHTGREY = sf::Color(150, 150, 150, 255);
 const sf::Color BLACK = sf::Color(0, 0, 0, 255);
 
-enum class StateAction { NONE, START_SETTING, START_GAME, START_COMBAT, EXIT_COMBAT, EXIT_GAME, EXIT_SETTING};
+enum class StateAction { NONE, START_SETTING, START_GAME, START_COMBAT, EXIT_COMBAT, EXIT_GAME, EXIT_SETTING };
 
 enum class KeyAction { UP, DOWN, RIGHT, LEFT, SELECT, BACK, INTERACT };
 

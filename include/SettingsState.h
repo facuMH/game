@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Window/VideoMode.hpp>
 
@@ -9,12 +10,11 @@
 #include "State.h"
 
 
-
 class SettingsState : public State {
   private:
-  	int activeButton;
+	int activeButton;
 	bool quit{};
-	
+
 	sf::View view;
 	sf::RectangleShape background;
 	sf::Font font;
@@ -31,7 +31,7 @@ class SettingsState : public State {
 
 	// Functions
 	void initBackground(sf::RenderWindow* window, AssetsManager& am);
-	void applyResolution(const unsigned int width, const unsigned int height); 
+	void applyResolution(const unsigned int width, const unsigned int height);
 	void initFonts(AssetsManager& am);
 	void updateGui();
 	void initButtons();
