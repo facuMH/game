@@ -151,6 +151,7 @@ void Game::pollEvents() {
 					states.push(new SettingsState(window, assetsManager, &keyBindings));
 				}
 				if(action == StateAction::EXIT_SETTING) {
+					turnOffMusic();
 					states.push(new MainMenuState(window, assetsManager, &keyBindings));
 				}
 				break;
