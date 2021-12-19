@@ -11,7 +11,7 @@ void Game::initVariables() {
 }
 
 void Game::closeWindow() {
-	std::ifstream ifs("../config/window.ini");
+	std::ifstream ifs(WINDOW.c);
 
 	// set default values
 	std::string title = "RPG";
@@ -27,7 +27,7 @@ void Game::closeWindow() {
 	}
 	ifs.close();
 
-	std::ofstream ofs("../config/window.ini");
+	std::ofstream ofs(WINDOW.c);
 	// get the size of the window
 	sf::Vector2u currentSize = window->getSize();
 	unsigned int width = currentSize.x;
@@ -41,7 +41,6 @@ void Game::closeWindow() {
 		ofs << vertical_sync_enabled << std::endl;
 	}
 	ofs.close();
-
 	window->close();
 }
 
@@ -49,7 +48,7 @@ void Game::initWindow() {
 	videoMode.height = 720;
 	videoMode.width = 1280;
 	// load window configs from file
-	std::ifstream ifs("../config/window.ini");
+	std::ifstream ifs(WINDOW.c);
 
 	// set default values
 	std::string title = "RPG";
@@ -146,12 +145,11 @@ void Game::pollEvents() {
 					    *assetsManager.getMapDesign(MAP_LEVEL1.c), &keyBindings));
 				}
 				if(action == StateAction::START_SETTING) {
-					turnOffMusic();
 					states.push(new SettingsState(window, assetsManager, &keyBindings));
+
 				}
 				if(action == StateAction::EXIT_SETTING) {
-					turnOffMusic();
-					states.push(new MainMenuState(window, assetsManager, &keyBindings));
+					states.pop();
 				}
 				break;
 			default:

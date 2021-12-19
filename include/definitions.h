@@ -2,6 +2,7 @@
 
 #include <unordered_map>
 
+#include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 
 #include "Button.h"
@@ -63,3 +64,19 @@ using CombatText = std::unordered_map<Name, Button>;
 
 const Position COMBAT_FIRST_PLAYER_POSITION{150.f, 150.f};
 const Position COMBAT_FIRST_ENEMY_POSITION{500.f, 150.f};
+
+inline Position_i getDesktopCenter(const sf::RenderWindow& window) {
+	auto desktop = sf::VideoMode::getDesktopMode();
+	auto size = window.getSize();
+	auto x = static_cast<int>(desktop.width / 2 - size.x / 2);
+	auto y = static_cast<int>(desktop.height / 2 - size.y / 2);
+	return {x, y};
+}
+
+inline Position getWindowCenter(const sf::RenderWindow& window) {
+	auto center = window.getSize();
+		//getView().getCenter();
+	auto x = center.x / 2.f;
+	auto y = center.y / 2.f;
+	return {x,y};
+}

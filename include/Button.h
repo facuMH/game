@@ -3,15 +3,12 @@
 #include <vector>
 
 #include <SFML/Graphics.hpp>
-#include <SFML/Graphics/Color.hpp>
-#include <SFML/Graphics/Font.hpp>
-#include <SFML/Graphics/RectangleShape.hpp>
 
-enum button_states { BTN_IDLE = 0, BTN_HOVER, BTN_ACTIVE };
+enum class ButtonStates { BTN_IDLE = 0, BTN_HOVER, BTN_ACTIVE };
 
 class Button {
   private:
-	short unsigned buttonState;
+	ButtonStates buttonState;
 	short unsigned id;
 	sf::RectangleShape shape;
 	sf::Font* font;
@@ -31,7 +28,7 @@ class Button {
 	    sf::Color _outlineHoverColor = sf::Color::Transparent, sf::Color _outlineActiveColor = sf::Color::Transparent,
 	    short unsigned _id = 0);
 
-	Button();
+	Button(float x, float y, float width, float height, const sf::Text newText);
 
 	~Button();
 
@@ -41,11 +38,11 @@ class Button {
 	const short unsigned& getId() const;
 
 	// Modifiers
-	void setText(const std::string text);
+	void setText(const std::string& text);
 	void setId(const short unsigned id);
 
 	// Functions
-	void update(sf::Vector2f mousePos);
+	void update(const sf::Vector2f mousePos);
 	void render(sf::RenderWindow* window);
 	void setActive();
 	void setInactive();

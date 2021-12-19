@@ -7,7 +7,7 @@
 Button::Button(float x, float y, float width, float height, sf::Font* _font, const std::string& _text,
     sf::Color _idleColor, sf::Color _hoverColor, sf::Color _activeColor, sf::Color _outlineIdleColor,
     sf::Color _outlineHoverColor, sf::Color _outlineActiveColor, short unsigned _id) {
-	buttonState = BTN_IDLE;
+	buttonState = ButtonStates::BTN_IDLE;
 
 	id = _id;
 	shape.setPosition(Position(x, y));
@@ -36,11 +36,25 @@ Button::Button(float x, float y, float width, float height, sf::Font* _font, con
 	shape.setFillColor(idleColor);
 }
 
+Button::Button(float x, float y, float width, float height, const sf::Text newText) {
+	buttonState = ButtonStates::BTN_IDLE;
+
+	shape.setPosition(sf::Vector2f(x, y));
+	shape.setSize(sf::Vector2f(width, height));
+	text = newText;
+	text.setFillColor(sf::Color::White);
+	text.setCharacterSize(20);
+	auto Xs = shape.getPosition().x + (shape.getGlobalBounds().width / 2.f) - text.getGlobalBounds().width / 2.f;
+	auto Ys = shape.getPosition().y + (shape.getGlobalBounds().height / 2.f) - text.getGlobalBounds().height / 2.f;
+	text.setPosition(Xs, Ys);
+	shape.setFillColor(BLACK);
+}
+
 Button::~Button() = default;
 
 // Accessors
 bool Button::isPressed() const {
-	return (buttonState == BTN_ACTIVE);
+	return (buttonState == ButtonStates::BTN_ACTIVE);
 }
 
 const std::string Button::getText() const {
@@ -48,7 +62,7 @@ const std::string Button::getText() const {
 }
 
 // Modifiers
-void Button::setText(const std::string _text) {
+void Button::setText(const std::string& _text) {
 	text.setString(_text);
 }
 
@@ -65,28 +79,27 @@ void Button::update(const Position mousePos) {
 	// update the boolean for hover and pressed
 
 	// idle
-	buttonState = BTN_IDLE;
+	buttonState = ButtonStates::BTN_IDLE;
 
 	// Hover
 	if(shape.getGlobalBounds().contains(mousePos)) {
-		buttonState = BTN_HOVER;
-
+		buttonState = ButtonStates::BTN_HOVER;
 		// Pressed
 		if(sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-			buttonState = BTN_ACTIVE;
+			buttonState = ButtonStates::BTN_ACTIVE;
 		}
 	}
 
 	switch(buttonState) {
-	case BTN_IDLE:
+	case ButtonStates::BTN_IDLE:
 		shape.setFillColor(idleColor);
 		shape.setOutlineColor(outlineIdleColor);
 		break;
-	case BTN_HOVER:
+	case ButtonStates::BTN_HOVER:
 		shape.setFillColor(hoverColor);
 		shape.setOutlineColor(outlineHoverColor);
 		break;
-	case BTN_ACTIVE:
+	case ButtonStates::BTN_ACTIVE:
 		shape.setFillColor(sf::Color::Red);
 		shape.setOutlineColor(outlineActiveColor);
 		break;
@@ -101,9 +114,9 @@ void Button::render(sf::RenderWindow* window) {
 
 void Button::setActive() {
 	shape.setFillColor(hoverColor);
-	buttonState = BTN_ACTIVE;
+	buttonState = ButtonStates::BTN_ACTIVE;
 }
 void Button::setInactive() {
 	shape.setFillColor(idleColor);
-	buttonState = BTN_IDLE;
+	buttonState = ButtonStates::BTN_IDLE;
 }

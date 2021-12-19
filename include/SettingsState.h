@@ -9,12 +9,8 @@
 #include "Button.h"
 #include "State.h"
 
-
 class SettingsState : public State {
   private:
-	int activeButton;
-	bool quit{};
-
 	sf::View view;
 	sf::RectangleShape background;
 	sf::Font font;
@@ -28,6 +24,9 @@ class SettingsState : public State {
 
 	KeyList* supportedKeys;
 	Buttons buttons;
+
+	int activeButton;
+	bool quit{};
 
 	// Functions
 	void initBackground(sf::RenderWindow* window, AssetsManager& am);

@@ -1,10 +1,10 @@
 
 #pragma once
+
 #include "Button.h"
 #include "GameState.h"
 #include "SettingsState.h"
 #include "definitions.h"
-
 
 constexpr int MAX_BUTTONS = 3;
 
@@ -33,13 +33,12 @@ class MainMenuState : public State {
 	// Functions
 	void initBackground(sf::RenderWindow* window, AssetsManager& am);
 	void initFonts(AssetsManager& am);
-	void initButtons();
+	void initButtons(const sf::Vector2f pos);
 
 	void updateMousePositions();
 
   public:
 	MainMenuState(sf::RenderWindow* window, AssetsManager& am, KeyList* supportedKeys);
-
 
 	~MainMenuState() override;
 

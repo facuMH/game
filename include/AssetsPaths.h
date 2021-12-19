@@ -37,7 +37,6 @@ constexpr auto ENEMIES = cat(ASSETS, "enemies/");
 constexpr auto ALIEN = cat(ENEMIES.c, "alien.png");
 constexpr auto MOLE = cat(ENEMIES.c, "Mole.png");
 
-
 // ---- TILES
 constexpr auto TILES = cat(ASSETS, "tiles/");
 constexpr auto MAP_LEVEL1 = cat(TILES.c, "map1.json");
@@ -51,6 +50,7 @@ constexpr char CONFIG[] = "../config/";
 constexpr auto KEYS = cat(CONFIG, "keysbind.ini");
 constexpr auto KEYBIND = cat(CONFIG, "gamestate_Keysbind.ini");
 constexpr auto MENUKEYBIND = cat(CONFIG, "mainmenustate_keysbind.ini");
+constexpr auto WINDOW= cat(CONFIG, "window.ini");
 
 // --- FONTS
 constexpr auto FONTS = cat(ASSETS, "fonts/");

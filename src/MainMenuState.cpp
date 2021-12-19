@@ -1,16 +1,19 @@
 #include <algorithm>
 
+#include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
 #include "AssetsPaths.h"
 #include "Button.h"
 #include "MainMenuState.h"
 
+#include "definitions.h"
+
 MainMenuState::MainMenuState(sf::RenderWindow* window, AssetsManager& am, KeyList* gameSupportedKeys) : State(window) {
 	supportedKeys = gameSupportedKeys;
 	initBackground(window, am);
 	initFonts(am);
-	initButtons();
+	initButtons(getWindowCenter(*window));
 
 	view = window->getDefaultView();
 
@@ -32,12 +35,14 @@ void MainMenuState::initFonts(AssetsManager& am) {
 	font = *am.getFont(DOSIS.c);
 }
 
-void MainMenuState::initButtons() {
-	buttons.push_back(Button(300, 150, 150, 50, &font, "New Game", GREY, LIGHTGREY, BLACK));
+void MainMenuState::initButtons(const Position pos) {
+	auto x = pos.x-75;
+	auto y = pos.y-150;
+	buttons.push_back(Button(x, y, 150, 50, &font, "New Game", GREY, LIGHTGREY, BLACK));
+	buttons.push_back(Button(x, y+50, 150, 50, &font, "Settings", GREY, LIGHTGREY, BLACK));
+	buttons.push_back(Button(x, y+100, 150, 50, &font, "QUIT", GREY, LIGHTGREY, BLACK));
 	activeButton = 0;
 	buttons[activeButton].setActive();
-	buttons.push_back(Button(300, 200, 150, 50, &font, "Settings", GREY, LIGHTGREY, BLACK));
-	buttons.push_back(Button(300, 250, 150, 50, &font, "QUIT", GREY, LIGHTGREY, BLACK));
 }
 
 MainMenuState::~MainMenuState() = default;

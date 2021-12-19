@@ -1,14 +1,15 @@
 #include <algorithm>
 #include <string>
 
-#include <SFML/System/Vector2.hpp>
+#include <SFML/System.hpp>
 #include <SFML/Window.hpp>
-#include <SFML/Window/VideoMode.hpp>
 
 #include "AssetsPaths.h"
 #include "Button.h"
 #include "MainMenuState.h"
 #include "SettingsState.h"
+
+#include "definitions.h"
 
 constexpr int MAX_RESOLUTION_COUNT = 7;
 
@@ -20,9 +21,7 @@ SettingsState::SettingsState(sf::RenderWindow* window, AssetsManager& am, KeyLis
 	soundBuffer = am.getSoundBuffer(MENU_BLIP.c);
 	sound.setBuffer(soundBuffer);
 
-	MusicPath* path = am.getMusic(MENU_MUSIC.c);
-	music.openFromFile(*path);
-	music.play();
+	// Settings should keep on playing music from Menu
 
 	supportedKeys = gameSupportedKeys;
 	initButtons();
@@ -38,6 +37,7 @@ void SettingsState::initBackground(sf::RenderWindow* window, AssetsManager& am) 
 void SettingsState::applyResolution(const unsigned int width, const unsigned int height) {
 	sf::RenderWindow* window = getWindow();
 	window->setSize(sf::Vector2u(width, height));
+	window->setPosition(getDesktopCenter(*window));
 }
 
 void SettingsState::initFonts(AssetsManager& am) {
@@ -61,37 +61,36 @@ void SettingsState::initButtons() {
 	// get the size of the window
 	sf::RenderWindow* window = getWindow();
 	sf::Vector2u currentSize = window->getSize();
-	unsigned int width = currentSize.x;
-	unsigned int height = currentSize.y;
-	unsigned int buttonPos = 150;
-	unsigned int buttonPosInc = 30;
 
-	buttons.push_back(Button(300, buttonPos, 150, buttonPosInc, &font, "720x480", GREY, LIGHTGREY, BLACK));
-	buttonPos += buttonPosInc;
-	buttons.push_back(Button(300, buttonPos, 150, buttonPosInc, &font, "800x600", GREY, LIGHTGREY, BLACK));
-	buttonPos += buttonPosInc;
-	buttons.push_back(Button(300, buttonPos, 150, buttonPosInc, &font, "1024x768", GREY, LIGHTGREY, BLACK));
-	buttonPos += buttonPosInc;
-	buttons.push_back(Button(300, buttonPos, 150, buttonPosInc, &font, "1280x720", GREY, LIGHTGREY, BLACK));
-	buttonPos += buttonPosInc;
-	buttons.push_back(Button(300, buttonPos, 150, buttonPosInc, &font, "1440x900", GREY, LIGHTGREY, BLACK));
-	buttonPos += buttonPosInc;
-	buttons.push_back(Button(300, buttonPos, 150, buttonPosInc, &font, "1920x1080", GREY, LIGHTGREY, BLACK));
-	buttonPos += buttonPosInc;
-	buttons.push_back(Button(300, buttonPos, 150, buttonPosInc, &font, "BACK", GREY, LIGHTGREY, BLACK));
+	unsigned int bWidth = 150;
+	unsigned int bHeight = 40;
+	auto center = getWindowCenter(*window);
+	center.x -= 75;
+	center.y -= 150;
+	auto bPos = center.y;
 
-	if(width == 720) {
-		activeButton = 0;
-	} else if(width == 800) {
-		activeButton = 1;
-	} else if(width == 1024) {
-		activeButton = 2;
-	} else if(width == 1280) {
-		activeButton = 3;
-	} else if(width == 1440) {
-		activeButton = 4;
-	} else {
-		activeButton = 5;
+	buttons.push_back(Button(center.x, bPos, bWidth, bHeight, &font, "720x480", GREY, LIGHTGREY, BLACK));
+	bPos += bHeight;
+	buttons.push_back(Button(center.x, bPos, bWidth, bHeight, &font, "800x600", GREY, LIGHTGREY, BLACK));
+	bPos += bHeight;
+	buttons.push_back(Button(center.x, bPos, bWidth, bHeight, &font, "1024x768", GREY, LIGHTGREY, BLACK));
+	bPos += bHeight;
+	buttons.push_back(Button(center.x, bPos, bWidth, bHeight, &font, "1280x720", GREY, LIGHTGREY, BLACK));
+	bPos += bHeight;
+	buttons.push_back(Button(center.x, bPos, bWidth, bHeight, &font, "1440x900", GREY, LIGHTGREY, BLACK));
+	bPos += bHeight;
+	buttons.push_back(Button(center.x, bPos, bWidth, bHeight, &font, "1920x1080", GREY, LIGHTGREY, BLACK));
+	bPos += bHeight;
+	buttons.push_back(Button(center.x, bPos, bWidth, bHeight, &font, "BACK", GREY, LIGHTGREY, BLACK));
+
+	switch(currentSize.x) {
+	case 720: activeButton = 0; break;
+	case 800: activeButton = 1; break;
+	case 1024: activeButton = 2; break;
+	case 1280: activeButton = 3; break;
+	case 1440: activeButton = 4; break;
+	case 1920: activeButton = 5; break;
+	default: break;
 	}
 
 	buttons[activeButton].setActive();
