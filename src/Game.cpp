@@ -44,6 +44,10 @@ void Game::closeWindow() {
 	window->close();
 }
 
+std::string PosToString(Position_i pos) {
+	return "(" + std::to_string(pos.x) + ", " + std::to_string(pos.y) + ")";
+}
+
 void Game::initWindow() {
 	videoMode.height = 720;
 	videoMode.width = 1280;
@@ -80,6 +84,12 @@ Game::Game() {
 	initVariables();
 	initWindow();
 	initStates();
+	mousePos = sf::Mouse::getPosition();
+	mousePosText.setFont(*assetsManager.getFont(ALEX.c));
+	mousePosText.setColor(sf::Color::Black);
+	mousePosText.setOutlineColor(sf::Color::Black);
+	mousePosText.setFillColor(sf::Color::Black);
+	mousePosText.setString(PosToString(mousePos));
 }
 
 // Destructor
@@ -146,7 +156,6 @@ void Game::pollEvents() {
 				}
 				if(action == StateAction::START_SETTING) {
 					states.push(new SettingsState(window, assetsManager, &keyBindings));
-
 				}
 				if(action == StateAction::EXIT_SETTING) {
 					states.pop();
@@ -176,6 +185,9 @@ void Game::pollEvents() {
 
 void Game::update() {
 	pollEvents();
+
+	mousePos = sf::Mouse::getPosition();
+	mousePosText.setString(PosToString(mousePos));
 
 	if(!states.empty()) {
 		// update current game state
@@ -212,6 +224,7 @@ void Game::render() {
 	window->setView(states.top()->getView());
 	if(!states.empty()) states.top()->drawPlayer(window);
 	// Window is done drawing --> display result
+	window->draw(mousePosText);
 	window->display();
 }
 

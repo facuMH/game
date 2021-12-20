@@ -47,6 +47,9 @@ class Game {
 
 	void makeNewCombat(int numberOfEnemies);
 
+	Position_i mousePos;
+	sf::Text mousePosText;
+
   public:
 	// Constructor
 	Game();

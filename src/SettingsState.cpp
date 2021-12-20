@@ -30,8 +30,10 @@ SettingsState::SettingsState(sf::RenderWindow* window, AssetsManager& am, KeyLis
 SettingsState::~SettingsState() = default;
 
 void SettingsState::initBackground(sf::RenderWindow* window, AssetsManager& am) {
-	background.setSize(Position(static_cast<float>(window->getSize().x), static_cast<float>(window->getSize().y)));
 	background.setTexture(am.getTexture(SETTING_BACKGROUND.c));
+	std::cout << " bg size:" << window->getSize().x << ", " << window->getSize().y << "\n";
+	background.setSize(Position(static_cast<float>(window->getSize().x), static_cast<float>(window->getSize().y)));
+	std::cout << " bg size:" << background.getSize().x << ", " << background.getSize().y << "\n";
 }
 
 void SettingsState::applyResolution(const unsigned int width, const unsigned int height) {
@@ -65,6 +67,7 @@ void SettingsState::initButtons() {
 	unsigned int bWidth = 150;
 	unsigned int bHeight = 40;
 	auto center = getWindowCenter(*window);
+	std::cout << "button center: " << center.x << ", " << center.y << "\n";
 	center.x -= 75;
 	center.y -= 150;
 	auto bPos = center.y;
