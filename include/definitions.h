@@ -2,8 +2,8 @@
 
 #include <unordered_map>
 
-#include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
 
 #include "Button.h"
 
@@ -74,9 +74,8 @@ inline Position_i getDesktopCenter(const sf::RenderWindow& window) {
 }
 
 inline Position getWindowCenter(const sf::RenderWindow& window) {
-	auto center = window.getSize();
-		//getView().getCenter();
+	auto center = window.getDefaultView().getSize();
 	auto x = center.x / 2.f;
 	auto y = center.y / 2.f;
-	return {x,y};
+	return {x, y};
 }

@@ -1,5 +1,7 @@
 #include <iostream>
 
+#include <SFML/Graphics.hpp>
+
 #include "AssetsPaths.h"
 #include "CombatState.h"
 #include "Game.h"
@@ -84,9 +86,8 @@ Game::Game() {
 	initVariables();
 	initWindow();
 	initStates();
-	mousePos = sf::Mouse::getPosition();
+	mousePos = sf::Mouse::getPosition(*window);
 	mousePosText.setFont(*assetsManager.getFont(ALEX.c));
-	mousePosText.setColor(sf::Color::Black);
 	mousePosText.setOutlineColor(sf::Color::Black);
 	mousePosText.setFillColor(sf::Color::Black);
 	mousePosText.setString(PosToString(mousePos));
@@ -186,7 +187,7 @@ void Game::pollEvents() {
 void Game::update() {
 	pollEvents();
 
-	mousePos = sf::Mouse::getPosition();
+	mousePos = sf::Mouse::getPosition(*window);
 	mousePosText.setString(PosToString(mousePos));
 
 	if(!states.empty()) {
@@ -235,7 +236,6 @@ void Game::updateDT() {
 void Game::endApplication() {
 	std::cout << "Ending application" << std::endl;
 }
-
 
 void Game::initKeys() {
 	keyActionString.emplace("UP", KeyAction::UP);

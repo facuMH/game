@@ -24,21 +24,21 @@ SettingsState::SettingsState(sf::RenderWindow* window, AssetsManager& am, KeyLis
 	// Settings should keep on playing music from Menu
 
 	supportedKeys = gameSupportedKeys;
-	initButtons();
+	initButtons(window);
 }
 
 SettingsState::~SettingsState() = default;
 
 void SettingsState::initBackground(sf::RenderWindow* window, AssetsManager& am) {
 	background.setTexture(am.getTexture(SETTING_BACKGROUND.c));
-	std::cout << " bg size:" << window->getSize().x << ", " << window->getSize().y << "\n";
-	background.setSize(Position(static_cast<float>(window->getSize().x), static_cast<float>(window->getSize().y)));
-	std::cout << " bg size:" << background.getSize().x << ", " << background.getSize().y << "\n";
+	background.setSize(view.getSize());
 }
 
 void SettingsState::applyResolution(const unsigned int width, const unsigned int height) {
 	sf::RenderWindow* window = getWindow();
+	view.setSize(sf::Vector2f(width, height));
 	window->setSize(sf::Vector2u(width, height));
+	window->setView(view);
 	window->setPosition(getDesktopCenter(*window));
 }
 
@@ -59,17 +59,19 @@ void SettingsState::updateGui() {
 }
 
 // creating buttons showing different resolution
-void SettingsState::initButtons() {
+void SettingsState::initButtons(sf::RenderWindow* window) {
 	// get the size of the window
-	sf::RenderWindow* window = getWindow();
 	sf::Vector2u currentSize = window->getSize();
 
+	// button size
 	unsigned int bWidth = 150;
 	unsigned int bHeight = 40;
+	auto offsetX = 0.5 * bWidth;
+	auto offsetY = 4 * bHeight;
+
 	auto center = getWindowCenter(*window);
-	std::cout << "button center: " << center.x << ", " << center.y << "\n";
-	center.x -= 75;
-	center.y -= 150;
+	center.x -= offsetX;
+	center.y -= offsetY;
 	auto bPos = center.y;
 
 	buttons.push_back(Button(center.x, bPos, bWidth, bHeight, &font, "720x480", GREY, LIGHTGREY, BLACK));
@@ -118,8 +120,7 @@ void SettingsState::updateMousePositions() {
 }
 
 void SettingsState::endState() {
-	std::cout << "Ending Settings Menu!"
-	          << "\n";
+	std::cout << "Ending Settings Menu!\n";
 }
 
 void SettingsState::updateInput(const float& dt) {}

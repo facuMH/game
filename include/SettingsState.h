@@ -33,7 +33,7 @@ class SettingsState : public State {
 	void applyResolution(const unsigned int width, const unsigned int height);
 	void initFonts(AssetsManager& am);
 	void updateGui();
-	void initButtons();
+	void initButtons(sf::RenderWindow* window);
 	void updateButtons();
 	void renderButtons(sf::RenderWindow* window);
 	void updateMousePositions();
