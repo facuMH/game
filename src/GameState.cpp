@@ -9,13 +9,21 @@
 
 GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vector<MapBackground*> textureSheets,
     JSONFilePath& path, KeyList* gameSupportedKeys)
-    : State(window),
-      map(gameAM, textureSheets, path) {
+    : State(window), map(gameAM, textureSheets, path) {
 	am = &gameAM;
 	keybinds = gameSupportedKeys;
-	Texture* play_text = am->getTexture(NINJA_RUN.c);
-	Animation player_animation(play_text, sf::IntRect(0, 0, 16, 16), Interval(0, 16), Position(50, 50));
+
+	Texture* play_text = am->getTexture(NINJA_WALK.c);
+	Animation player_animation(
+	    play_text, sf::IntRect(0, 0, TILESIZE, TILESIZE), Position(50, 50));
 	player = Character("Adventurer", Stats(15, 20, 50, 30), player_animation);
+
+	Texture* girl_text = am->getTexture(EGG_GIRL_WALK.c);
+	Animation girl_animation(
+	    girl_text, sf::IntRect(0, 0, TILESIZE, TILESIZE), Position(300, 50));
+	Character girl = Character("Egg Girl", Stats(0, 0, 0, 0), girl_animation);
+	characters.push_back(girl);
+
 	soundBuffer = am->getSoundBuffer(GASP.c);
 	sound.setBuffer(soundBuffer);
 	previousKey = sf::Keyboard::Unknown;
@@ -38,7 +46,6 @@ void GameState::update(const float& dt) {
 void GameState::render(sf::RenderWindow* window) {
 	window->setView(view);
 	map.render(*window);
-	window->draw(player.animation.sprite);
 }
 
 void GameState::updateKeybinds(const float& dt) {}
@@ -54,7 +61,7 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 		case KeyAction::DOWN:
 		case KeyAction::RIGHT:
 		case KeyAction::LEFT:
-			player.animation.set_texture(am->getTexture(NINJA_RUN.c));
+			player.animation.set_texture(am->getTexture(NINJA_WALK.c));
 			player.move(action->first, &view, &map);
 			if(previousKey != key) {
 				// play gasping sound each time the player changes direction
@@ -79,6 +86,9 @@ void GameState::quitStateActions() {
 
 void GameState::drawPlayer(sf::RenderWindow* window) {
 	window->draw(player.animation.sprite);
+	for(auto& c : characters) {
+		window->draw(c.animation.sprite);
+	}
 }
 
 bool GameState::shouldQuit() {

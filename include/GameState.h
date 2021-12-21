@@ -10,6 +10,8 @@ class GameState : public State {
   private:
 	TileMap map;
 	Character player;
+	std::vector<Character> characters;
+
 	sf::View view;
 	AssetsManager* am;
 	KeyList* keybinds;

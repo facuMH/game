@@ -14,12 +14,11 @@ class Animation {
 
 	Animation() = default;
 
-	Animation(Texture* newTexture, const sf::IntRect& first_animation, const Interval& new_sprite_interval,
+	Animation(Texture* newTexture, const sf::IntRect& first_animation,
 	    const Position& initial) {
 		texture = newTexture;
 		texture_rectangle = first_animation;
 
-		sprite_interval = new_sprite_interval;
 		sprite.setTexture(*texture);
 		sprite.setTextureRect(texture_rectangle);
 		sprite.setPosition(initial);

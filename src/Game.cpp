@@ -114,7 +114,7 @@ bool Game::isRunning() const {
 
 void Game::makeNewCombat(const int numberOfEnemies) {
 	Texture* alien_texture = assetsManager.getTexture(ALIEN.c);
-	Animation alien_animation(alien_texture, sf::IntRect(50, 25, 105, 145), Interval(210, 0), Position(100, 100));
+	Animation alien_animation(alien_texture, sf::IntRect(50, 25, 105, 145), Position(100, 100));
 	Character alien("Alien", Stats(15, 25, 50, 30), alien_animation);
 	Enemies enemies{};
 	for(int i = 0; i < numberOfEnemies; i++) {
