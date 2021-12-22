@@ -37,7 +37,8 @@ void SettingsState::initBackground(sf::RenderWindow* window, AssetsManager& am) 
 
 void SettingsState::applyResolution(const unsigned int width, const unsigned int height) {
 	sf::RenderWindow* window = getWindow();
-	window->setSize(sf::Vector2u(width, height));
+	//std::string title = sf::Window::GetTitle();
+	window->create(sf::VideoMode(width, height), "title");
 }
 
 void SettingsState::initFonts(AssetsManager& am) {
