@@ -33,6 +33,9 @@ constexpr auto NINJA = cat(CHARACTER.c, "green_ninja/");
 constexpr auto NINJA_WALK = cat(NINJA.c, "Walk.png");
 constexpr auto EGG_GIRL = cat(CHARACTER.c, "egg_girl/");
 constexpr auto EGG_GIRL_WALK = cat(EGG_GIRL.c, "Walk.png");
+constexpr auto OLD_MAN = cat(CHARACTER.c, "old_man/");
+constexpr auto OLD_MAN_WALK = cat(OLD_MAN.c, "Walk.png");
+
 
 // ---- ENEMIES
 constexpr auto ENEMIES = cat(ASSETS, "enemies/");

@@ -18,11 +18,11 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 	    play_text, sf::IntRect(0, 0, TILESIZE, TILESIZE), Position(50, 50));
 	player = Character("Adventurer", Stats(15, 20, 50, 30), player_animation);
 
-	Texture* girl_text = am->getTexture(EGG_GIRL_WALK.c);
-	Animation girl_animation(
-	    girl_text, sf::IntRect(0, 0, TILESIZE, TILESIZE), Position(300, 50));
-	Villager girl = Villager(girl_animation, MovementDirection::UP_DOWN);
+	Villager girl = createVillager(EGG_GIRL_WALK.c, Position(300, 50), MovementDirection::UP_DOWN);
 	villagers.push_back(girl);
+
+	Villager old_man = createVillager(OLD_MAN_WALK.c, Position(50, 150), MovementDirection::LEFT_RIGHT);
+	villagers.push_back(old_man);
 
 	soundBuffer = am->getSoundBuffer(GASP.c);
 	gaspSound.setBuffer(soundBuffer);
@@ -32,6 +32,12 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 	music.openFromFile(*musicPath);
 	music.setLoop(true);
 	music.play();
+}
+
+Villager GameState::createVillager(const std::string& textureName, Position position, MovementDirection movementDirection) {
+	Texture* tex = am->getTexture(textureName);
+	Animation anim(tex, sf::IntRect(0, 0, TILESIZE, TILESIZE), position);
+	return Villager(anim, movementDirection);
 }
 
 GameState::~GameState() = default;

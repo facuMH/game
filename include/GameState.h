@@ -40,6 +40,7 @@ class GameState : public State {
 	sf::View getView() override { return view; };
 	void drawPlayer(sf::RenderWindow* window) override;
 	Character* getPlayer() { return &player; };
+	Villager createVillager(const std::string& textureName, Position position, MovementDirection movementDirection);
 	StateAction shouldAct() override;
 	void stopMusic() override;
 	void resumeMusic() override;
