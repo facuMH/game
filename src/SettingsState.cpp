@@ -74,19 +74,19 @@ void SettingsState::initButtons(sf::RenderWindow* window) {
 	center.y -= offsetY;
 	auto bPos = center.y;
 
-	buttons.push_back(Button(center.x, bPos, bWidth, bHeight, &font, "720x480", GREY, LIGHTGREY, BLACK));
+	buttons.push_back(Button(center.x, bPos, bWidth, bHeight, &font, "720x480", GREY, LIGHTGREY, sf::Color::Black));
 	bPos += bHeight;
-	buttons.push_back(Button(center.x, bPos, bWidth, bHeight, &font, "800x600", GREY, LIGHTGREY, BLACK));
+	buttons.push_back(Button(center.x, bPos, bWidth, bHeight, &font, "800x600", GREY, LIGHTGREY, sf::Color::Black));
 	bPos += bHeight;
-	buttons.push_back(Button(center.x, bPos, bWidth, bHeight, &font, "1024x768", GREY, LIGHTGREY, BLACK));
+	buttons.push_back(Button(center.x, bPos, bWidth, bHeight, &font, "1024x768", GREY, LIGHTGREY, sf::Color::Black));
 	bPos += bHeight;
-	buttons.push_back(Button(center.x, bPos, bWidth, bHeight, &font, "1280x720", GREY, LIGHTGREY, BLACK));
+	buttons.push_back(Button(center.x, bPos, bWidth, bHeight, &font, "1280x720", GREY, LIGHTGREY, sf::Color::Black));
 	bPos += bHeight;
-	buttons.push_back(Button(center.x, bPos, bWidth, bHeight, &font, "1440x900", GREY, LIGHTGREY, BLACK));
+	buttons.push_back(Button(center.x, bPos, bWidth, bHeight, &font, "1440x900", GREY, LIGHTGREY, sf::Color::Black));
 	bPos += bHeight;
-	buttons.push_back(Button(center.x, bPos, bWidth, bHeight, &font, "1920x1080", GREY, LIGHTGREY, BLACK));
+	buttons.push_back(Button(center.x, bPos, bWidth, bHeight, &font, "1920x1080", GREY, LIGHTGREY, sf::Color::Black));
 	bPos += bHeight;
-	buttons.push_back(Button(center.x, bPos, bWidth, bHeight, &font, "BACK", GREY, LIGHTGREY, BLACK));
+	buttons.push_back(Button(center.x, bPos, bWidth, bHeight, &font, "BACK", GREY, LIGHTGREY, sf::Color::Black));
 
 	switch(currentSize.x) {
 	case 720: activeButton = 0; break;
