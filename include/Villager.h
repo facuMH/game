@@ -1,5 +1,7 @@
 #pragma once
 
+#include <utility>
+
 #include "Animation.h"
 #include "Entity.h"
 #include "definitions.h"
@@ -9,7 +11,7 @@ class Villager : public Entity {
 
   public:
 	explicit Villager(Animation new_anim, MovementDirection dir) {
-		animation = new_anim;
+		animation = std::move(new_anim);
 		movementDirection = dir;
 		is_solid = true;
 		can_interact = true;
@@ -20,7 +22,7 @@ class Villager : public Entity {
 	Position currentPosition;
 	MovementDirection movementDirection;
 
-	void blockTile(TileMap* map) {
+	void blockTile(TileMap* map) const {
 		map->occupyTile(currentPosition);
 	}
 	void move(TileMap* map, float stepsize) {
