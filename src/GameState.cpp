@@ -25,7 +25,7 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 	characters.push_back(girl);
 
 	soundBuffer = am->getSoundBuffer(GASP.c);
-	sound.setBuffer(soundBuffer);
+	gaspSound.setBuffer(soundBuffer);
 	previousKey = sf::Keyboard::Unknown;
 	view = sf::View(player.get_position(), {720.0, 480.0});
 	MusicPath* musicPath = gameAM.getMusic(VILLAGE_MUSIC.c);
@@ -64,8 +64,8 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 			player.animation.set_texture(am->getTexture(NINJA_WALK.c));
 			player.move(action->first, &view, &map);
 			if(previousKey != key) {
-				// play gasping sound each time the player changes direction
-				sound.play();
+				// play gasping gaspSound each time the player changes direction
+				gaspSound.play();
 			}
 			previousKey = key;
 		default: break;

@@ -17,7 +17,7 @@ class GameState : public State {
 	KeyList* keybinds;
 	sf::Clock clock;
 	sf::SoundBuffer soundBuffer;
-	sf::Sound sound;
+	sf::Sound gaspSound;
 	sf::Music music;
 	// just for demonstration purposes
 	sf::Keyboard::Key previousKey;

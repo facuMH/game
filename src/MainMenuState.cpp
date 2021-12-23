@@ -121,7 +121,7 @@ StateAction MainMenuState::handleKeys(sf::Keyboard::Key key) {
 		default: break;
 		}
 	}
-	// play gasping sound each time change button.
+	// play gasping gaspSound each time change button.
 	sound.play();
 	return StateAction::NONE;
 }
