@@ -21,8 +21,8 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 	Texture* girl_text = am->getTexture(EGG_GIRL_WALK.c);
 	Animation girl_animation(
 	    girl_text, sf::IntRect(0, 0, TILESIZE, TILESIZE), Position(300, 50));
-	Character girl = Character("Egg Girl", Stats(0, 0, 0, 0), girl_animation);
-	characters.push_back(girl);
+	Villager girl = Villager(girl_animation, MovementDirection::UP_DOWN);
+	villagers.push_back(girl);
 
 	soundBuffer = am->getSoundBuffer(GASP.c);
 	gaspSound.setBuffer(soundBuffer);
@@ -86,8 +86,10 @@ void GameState::quitStateActions() {
 
 void GameState::drawPlayer(sf::RenderWindow* window) {
 	window->draw(player.animation.sprite);
-	for(auto& c : characters) {
-		window->draw(c.animation.sprite);
+	for(auto& v : villagers) {
+		window->draw(v.animation.sprite);
+		v.currentPosition = v.animation.get_position();
+		v.blockTile(&map);
 	}
 }
 

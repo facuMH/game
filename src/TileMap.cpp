@@ -52,10 +52,16 @@ void TileMap::loadFromJson(const std::string& path, std::vector<MapBackground*> 
 	}
 }
 
-bool TileMap::hasCollision(Position position) {
+bool TileMap::hasNoCollision(Position position) {
 	int tilePosX = std::ceil(position.x / TILESIZE);
 	int tilePosY = std::ceil(position.y / TILESIZE);
-	return tiles[0][tilePosX][tilePosY]->is_solid;
+	return !tiles[0][tilePosX][tilePosY]->is_solid && !tiles[0][tilePosX][tilePosY]->is_occupied;
+}
+
+void TileMap::occupyTile(Position position) {
+	int tilePosX = std::ceil(position.x / TILESIZE);
+	int tilePosY = std::ceil(position.y / TILESIZE);
+	tiles[0][tilePosX][tilePosY]->is_occupied = true;
 }
 
 void TileMap::render(sf::RenderWindow& window) {

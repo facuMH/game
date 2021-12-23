@@ -21,6 +21,7 @@ class TileMap {
 
 	void initializeVariables(AssetsManager& am);
 	void loadFromJson(const std::string& path, std::vector<MapBackground*> textureSheets);
-	bool hasCollision(Position position);
+	bool hasNoCollision(Position position);
+	void occupyTile(Position position);
 	void render(sf::RenderWindow& window);
 };

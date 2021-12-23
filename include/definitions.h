@@ -11,6 +11,7 @@ constexpr int TILESIZE = 16;
 
 enum class StateAction { NONE, START_SETTING, START_GAME, START_COMBAT, EXIT_COMBAT, EXIT_GAME, EXIT_SETTING };
 enum class KeyAction { UP, DOWN, RIGHT, LEFT, SELECT, BACK, INTERACT };
+enum class MovementDirection { UP_DOWN, LEFT_RIGHT };
 
 using Position = sf::Vector2f;
 using Position_i = sf::Vector2i;

@@ -17,6 +17,7 @@ class Tile {
 
   public:
 	bool is_solid;
+	bool is_occupied;
 
 	Tile(tson::TileObject* tileObject, MapBackground* textureSheet);
 	virtual ~Tile();

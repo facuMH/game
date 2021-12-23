@@ -45,7 +45,7 @@ set(HEADERS libs/tileson.hpp
         include/SettingsState.h
         include/Tile.h
         include/TileMap.h
-        include/Button.h)
+        include/Villager.h)
 
 #------------- DEPENDENCIES
 

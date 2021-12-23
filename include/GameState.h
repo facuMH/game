@@ -5,12 +5,13 @@
 #include "State.h"
 #include "TileMap.h"
 #include "definitions.h"
+#include "Villager.h"
 
 class GameState : public State {
   private:
 	TileMap map;
 	Character player;
-	std::vector<Character> characters;
+	std::vector<Villager> villagers;
 
 	sf::View view;
 	AssetsManager* am;
