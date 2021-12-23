@@ -10,7 +10,6 @@ class Animation {
 	sf::Sprite sprite;
 	Texture* texture = nullptr;
 	sf::IntRect texture_rectangle;
-	Interval sprite_interval;
 
 	Animation() = default;
 
@@ -26,7 +25,7 @@ class Animation {
 	void set_texture(const sf::Texture* new_texture) { sprite.setTexture(*new_texture); }
 
 	// Helper function for moving the player, getting the new animation texture and moving the view accordingly
-	void movePlayerAndView(const Position& offset, int newTextureRect, sf::View* view, TileMap* map) {
+	void moveCharacterAndView(const Position& offset, int newTextureRect, sf::View* view, TileMap* map) {
 		auto nextPosition = sprite.getPosition() + offset;
 		if(map->hasNoCollision(nextPosition)) {
 			sprite.move(offset);
@@ -39,32 +38,25 @@ class Animation {
 		sprite.setTextureRect(texture_rectangle);
 	}
 
-	void next(KeyAction keyAction, sf::View* view, TileMap* map, float stepsize) {
-		switch(keyAction) {
-		case KeyAction::DOWN: movePlayerAndView({0.0f, stepsize}, 0, view, map); break;
-		case KeyAction::UP: movePlayerAndView({0.0f, -stepsize}, texture_rectangle.width, view, map); break;
-		case KeyAction::LEFT: movePlayerAndView({-stepsize, 0.0f}, 2 * texture_rectangle.width, view, map); break;
-		case KeyAction::RIGHT: movePlayerAndView({stepsize, 0.0f}, 3 * texture_rectangle.width, view, map); break;
-		default: break;
-		}
-	}
-
-	Position nextVillager(TileMap* map, float stepsize, Direction nextDirection, Position position) {
+	Position next(KeyAction nextDirection, TileMap* map, float stepsize, Position position, sf::View* view) {
 		Position offset;
 		switch(nextDirection) {
-		case Direction::UP:
+		case KeyAction::UP:
 			offset = {0.0f, -stepsize};
-			movePlayerAndView(offset, texture_rectangle.width, nullptr, map);
+			moveCharacterAndView(offset, texture_rectangle.width, view, map);
 			break;
-		case Direction::DOWN:
+		case KeyAction::DOWN:
 			offset = {0.0f, stepsize};
-			movePlayerAndView(offset, 0, nullptr, map); break;
-		case Direction::RIGHT:
+			moveCharacterAndView(offset, 0, view, map);
+			break;
+		case KeyAction::RIGHT:
 			offset = {stepsize, 0.0f};
-			movePlayerAndView({stepsize, 0.0f}, 3 * texture_rectangle.width, nullptr, map); break;
-		case Direction::LEFT:
+			moveCharacterAndView({stepsize, 0.0f}, 3 * texture_rectangle.width, view, map);
+			break;
+		case KeyAction::LEFT:
 			offset = {-stepsize, 0.0f};
-			movePlayerAndView({-stepsize, 0.0f}, 2 * texture_rectangle.width, nullptr, map); break;
+			moveCharacterAndView({-stepsize, 0.0f}, 2 * texture_rectangle.width, view, map);
+			break;
 		}
 		return position + offset;
 	}

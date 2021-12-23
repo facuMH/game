@@ -18,11 +18,14 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 	    play_text, sf::IntRect(0, 0, TILESIZE, TILESIZE), Position(50, 50));
 	player = Character("Adventurer", Stats(15, 20, 50, 30), player_animation);
 
-	Villager girl = createVillager(EGG_GIRL_WALK.c, Position(300, 50), MovementType::VERTICAL, 3.0f);
+	Villager girl = createVillager(EGG_GIRL_WALK.c, Position(300, 50), MovementType::VERTICAL, 0.3f);
 	villagers.push_back(girl);
 
-	Villager old_man = createVillager(OLD_MAN_WALK.c, Position(50, 150), MovementType::HORIZONTAL, 3.0f);
+	Villager old_man = createVillager(OLD_MAN_WALK.c, Position(50, 150), MovementType::HORIZONTAL, 0.4f);
 	villagers.push_back(old_man);
+
+	Villager princess = createVillager(PRINCESS_WALK.c, Position(230, 150), MovementType::VERTICAL, 0.2f);
+	villagers.push_back(princess);
 
 	soundBuffer = am->getSoundBuffer(GASP.c);
 	gaspSound.setBuffer(soundBuffer);

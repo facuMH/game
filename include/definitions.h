@@ -13,6 +13,7 @@ enum class StateAction { NONE, START_SETTING, START_GAME, START_COMBAT, EXIT_COM
 enum class KeyAction { UP, DOWN, RIGHT, LEFT, SELECT, BACK, INTERACT };
 enum class MovementType { VERTICAL, HORIZONTAL };
 enum class Direction { UP, DOWN, RIGHT, LEFT };
+enum class CharacterType { PLAYER, VILLAGER };
 
 using Position = sf::Vector2f;
 using Position_i = sf::Vector2i;

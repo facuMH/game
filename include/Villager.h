@@ -17,9 +17,9 @@ class Villager : public Entity {
 		can_interact = true;
 
 		if(movementType == MovementType::HORIZONTAL) {
-			currentDirection = Direction::LEFT;
+			currentDirection = KeyAction::LEFT;
 		} else {
-			currentDirection = Direction::DOWN;
+			currentDirection = KeyAction::DOWN;
 		}
 		currentPosition = _currentPos;
 		startPosition = _currentPos;
@@ -31,7 +31,7 @@ class Villager : public Entity {
 	Position endPosition;
 	Position currentPosition;
 	MovementType movementType;
-	Direction currentDirection;
+	KeyAction currentDirection;
 	float stepsize;
 
 	void setTileOccupation(TileMap* map, bool isOccupied) const { map->setTileOccupation(currentPosition, isOccupied); }
@@ -39,38 +39,38 @@ class Villager : public Entity {
 	void move(TileMap* map) {
 		setTileOccupation(map, false);
 		currentDirection = nextDirection();
-		currentPosition = animation.nextVillager(map, stepsize, currentDirection, currentPosition);
+		currentPosition = animation.next(currentDirection, map, stepsize, currentPosition, nullptr);
 		setTileOccupation(map, true);
 	};
 
-	Direction nextDirection() const {
-		switch(movementType) {
-		case MovementType::VERTICAL:
-			if(currentDirection == Direction::DOWN) {
+	KeyAction nextDirection() const {
+		if (movementType == MovementType::VERTICAL) {
+			if(currentDirection == KeyAction::DOWN) {
 				if(currentPosition.y < endPosition.y) {
-					return Direction::DOWN;
+					return KeyAction::DOWN;
 				} else {
-					return Direction::UP;
+					return KeyAction::UP;
 				}
 			} else {
 				if(currentPosition.y >= startPosition.y) {
-					return Direction::UP;
+					return KeyAction::UP;
 				} else {
-					return Direction::DOWN;
+					return KeyAction::DOWN;
 				}
 			}
-		case MovementType::HORIZONTAL:
-			if(currentDirection == Direction::RIGHT) {
+		}
+		else {
+			if(currentDirection == KeyAction::RIGHT) {
 				if(currentPosition.x < endPosition.x) {
-					return Direction::RIGHT;
+					return KeyAction::RIGHT;
 				} else {
-					return Direction::LEFT;
+					return KeyAction::LEFT;
 				}
 			} else {
 				if(currentPosition.x > startPosition.x) {
-					return Direction::LEFT;
+					return KeyAction::LEFT;
 				} else {
-					return Direction::RIGHT;
+					return KeyAction::RIGHT;
 				}
 			}
 		}
