@@ -25,6 +25,7 @@ constexpr char ASSETS[] = "../assets/";
 // ---- MAIN MENU
 constexpr auto MAINMENU = cat(ASSETS, "menuBackgrounds/");
 constexpr auto BACKGROUND = cat(MAINMENU.c, "Background.jpeg");
+constexpr auto SETTING_BACKGROUND = cat(MAINMENU.c, "RPG_projects.jpg");
 
 // ---- CHARACTER
 constexpr auto CHARACTER = cat(ASSETS, "characters/");
@@ -35,7 +36,6 @@ constexpr auto NINJA_RUN = cat(NINJA.c, "Walk.png");
 constexpr auto ENEMIES = cat(ASSETS, "enemies/");
 constexpr auto ALIEN = cat(ENEMIES.c, "alien.png");
 constexpr auto MOLE = cat(ENEMIES.c, "Mole.png");
-
 
 // ---- TILES
 constexpr auto TILES = cat(ASSETS, "tiles/");
@@ -50,6 +50,7 @@ constexpr char CONFIG[] = "../config/";
 constexpr auto KEYS = cat(CONFIG, "keysbind.ini");
 constexpr auto KEYBIND = cat(CONFIG, "gamestate_Keysbind.ini");
 constexpr auto MENUKEYBIND = cat(CONFIG, "mainmenustate_keysbind.ini");
+constexpr auto WINDOW= cat(CONFIG, "window.ini");
 
 // --- FONTS
 constexpr auto FONTS = cat(ASSETS, "fonts/");
@@ -59,6 +60,7 @@ constexpr auto ALEX = cat(FONTS.c, "AlexandriaFLF.ttf");
 // ---- SOUND FX
 constexpr auto SOUNDS = cat(ASSETS, "sounds/");
 constexpr auto GASP = cat(SOUNDS.c, "gasp.wav");
+constexpr auto MENU_BLIP = cat(SOUNDS.c, "menu.wav");
 
 // ---- MUSIC
 constexpr auto MUSIC = cat(ASSETS, "music/");

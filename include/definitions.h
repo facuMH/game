@@ -3,6 +3,7 @@
 #include <unordered_map>
 
 #include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
 
 #include "Button.h"
 
@@ -44,7 +45,7 @@ const sf::Color GREY = sf::Color(70, 70, 70, 200);
 const sf::Color LIGHTGREY = sf::Color(150, 150, 150, 255);
 const sf::Color BLACK = sf::Color(0, 0, 0, 255);
 
-enum class StateAction { NONE, START_GAME, START_COMBAT, EXIT_COMBAT, EXIT_GAME };
+enum class StateAction { NONE, START_SETTING, START_GAME, START_COMBAT, EXIT_COMBAT, EXIT_GAME, EXIT_SETTING };
 
 enum class KeyAction { UP, DOWN, RIGHT, LEFT, SELECT, BACK, INTERACT };
 
@@ -63,3 +64,18 @@ using CombatText = std::unordered_map<Name, Button>;
 
 const Position COMBAT_FIRST_PLAYER_POSITION{150.f, 150.f};
 const Position COMBAT_FIRST_ENEMY_POSITION{500.f, 150.f};
+
+inline Position_i getDesktopCenter(const sf::RenderWindow& window) {
+	auto desktop = sf::VideoMode::getDesktopMode();
+	auto size = window.getSize();
+	auto x = static_cast<int>(desktop.width / 2 - size.x / 2);
+	auto y = static_cast<int>(desktop.height / 2 - size.y / 2);
+	return {x, y};
+}
+
+inline Position getWindowCenter(const sf::RenderWindow& window) {
+	auto center = window.getDefaultView().getSize();
+	auto x = center.x / 2.f;
+	auto y = center.y / 2.f;
+	return {x, y};
+}

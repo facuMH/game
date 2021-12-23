@@ -1,19 +1,60 @@
 #include <iostream>
 
+#include <SFML/Graphics.hpp>
+
 #include "AssetsPaths.h"
 #include "CombatState.h"
 #include "Game.h"
+#include "SettingsState.h"
 
 // Private functions
 void Game::initVariables() {
 	window = nullptr;
 }
 
+void Game::closeWindow() {
+	std::ifstream ifs(WINDOW.c);
+
+	// set default values
+	std::string title = "RPG";
+	unsigned int framerate_limit = 120;
+	bool vertical_sync_enabled = false;
+
+	// read default configs with file contents
+	if(ifs.is_open()) {
+		std::getline(ifs, title);
+		ifs >> videoMode.width >> videoMode.height;
+		ifs >> framerate_limit;
+		ifs >> vertical_sync_enabled;
+	}
+	ifs.close();
+
+	std::ofstream ofs(WINDOW.c);
+	// get the size of the window
+	sf::Vector2u currentSize = window->getSize();
+	unsigned int width = currentSize.x;
+	unsigned int height = currentSize.y;
+	// write new configs
+	if(ofs.is_open()) {
+		std::string res = std::to_string(width) + " " + std::to_string(height);
+		ofs << title << std::endl;
+		ofs << res << std::endl;
+		ofs << framerate_limit << std::endl;
+		ofs << vertical_sync_enabled << std::endl;
+	}
+	ofs.close();
+	window->close();
+}
+
+std::string PosToString(Position_i pos) {
+	return "(" + std::to_string(pos.x) + ", " + std::to_string(pos.y) + ")";
+}
+
 void Game::initWindow() {
 	videoMode.height = 720;
 	videoMode.width = 1280;
 	// load window configs from file
-	std::ifstream ifs("../config/window.ini");
+	std::ifstream ifs(WINDOW.c);
 
 	// set default values
 	std::string title = "RPG";
@@ -45,6 +86,11 @@ Game::Game() {
 	initVariables();
 	initWindow();
 	initStates();
+	mousePos = sf::Mouse::getPosition(*window);
+	mousePosText.setFont(*assetsManager.getFont(ALEX.c));
+	mousePosText.setOutlineColor(sf::Color::Black);
+	mousePosText.setFillColor(sf::Color::Black);
+	mousePosText.setString(PosToString(mousePos));
 }
 
 // Destructor
@@ -92,15 +138,15 @@ void Game::pollEvents() {
 	while(window->pollEvent(event)) {
 		switch(event.type) {
 		// Event that is called when the close button is clicked
-		case sf::Event::Closed: window->close(); break;
+		case sf::Event::Closed: closeWindow(); break;
 		case sf::Event::KeyPressed:
 			// Event that is called when the Escape button is pressed
 			switch(event.key.code) {
-			case sf::Keyboard::Escape: window->close(); break;
+			case sf::Keyboard::Escape: closeWindow(); break;
 			case sf::Keyboard::Enter:
 				action = states.top()->shouldAct();
 				if(action == StateAction::EXIT_GAME) {
-					window->close();
+					closeWindow();
 				}
 				if(action == StateAction::START_GAME) {
 					turnOffMusic();
@@ -109,6 +155,12 @@ void Game::pollEvents() {
 					        assetsManager.getMap(TILESHEET_HOUSES.c)},
 					    *assetsManager.getMapDesign(MAP_LEVEL1.c), &keyBindings));
 				}
+				if(action == StateAction::START_SETTING) {
+					states.push(new SettingsState(window, assetsManager, &keyBindings));
+				}
+				if(action == StateAction::EXIT_SETTING) {
+					states.pop();
+				}
 				break;
 			default:
 				action = states.top()->handleKeys(event.key.code);
@@ -116,7 +168,7 @@ void Game::pollEvents() {
 					makeNewCombat(1);
 				}
 				if(action == StateAction::EXIT_GAME) {
-					window->close();
+					closeWindow();
 				}
 				if(action == StateAction::EXIT_COMBAT) {
 					// calling quitStateActions here is only for debug reasons
@@ -135,6 +187,9 @@ void Game::pollEvents() {
 void Game::update() {
 	pollEvents();
 
+	mousePos = sf::Mouse::getPosition(*window);
+	mousePosText.setString(PosToString(mousePos));
+
 	if(!states.empty()) {
 		// update current game state
 		states.top()->update(dt);
@@ -150,7 +205,7 @@ void Game::update() {
 		// Since the game depends on the window being open (see function
 		// isRunning()), closing the window ends the game
 		Game::endApplication();
-		window->close();
+		closeWindow();
 	}
 }
 
@@ -170,6 +225,7 @@ void Game::render() {
 	window->setView(states.top()->getView());
 	if(!states.empty()) states.top()->drawPlayer(window);
 	// Window is done drawing --> display result
+	window->draw(mousePosText);
 	window->display();
 }
 
@@ -180,7 +236,6 @@ void Game::updateDT() {
 void Game::endApplication() {
 	std::cout << "Ending application" << std::endl;
 }
-
 
 void Game::initKeys() {
 	keyActionString.emplace("UP", KeyAction::UP);

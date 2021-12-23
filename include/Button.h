@@ -1,25 +1,15 @@
 #pragma once
 
-#include <cstdlib>
-#include <ctime>
-#include <fstream>
-#include <iostream>
-#include <map>
-#include <sstream>
-#include <stack>
 #include <vector>
 
-#include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
-#include <SFML/Network.hpp>
-#include <SFML/System.hpp>
-#include <SFML/Window.hpp>
 
-enum button_states { BTN_IDLE = 0, BTN_HOVER, BTN_ACTIVE };
+enum class ButtonStates { BTN_IDLE = 0, BTN_HOVER, BTN_ACTIVE };
 
 class Button {
   private:
-	short unsigned buttonState;
+	ButtonStates buttonState;
+	short unsigned id;
 	sf::RectangleShape shape;
 	sf::Font* font;
 	sf::Text text;
@@ -28,9 +18,15 @@ class Button {
 	sf::Color hoverColor;
 	sf::Color activeColor;
 
+	sf::Color outlineIdleColor;
+	sf::Color outlineHoverColor;
+	sf::Color outlineActiveColor;
+
   public:
-	Button(
-	    float x, float y, float width, float height, sf::Font* font, const std::string& text, sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor);
+	Button(float x, float y, float width, float height, sf::Font* _font, const std::string& _text, sf::Color _idleColor,
+	    sf::Color _hoverColor, sf::Color _activeColor, sf::Color _outlineIdleColor = sf::Color::Transparent,
+	    sf::Color _outlineHoverColor = sf::Color::Transparent, sf::Color _outlineActiveColor = sf::Color::Transparent,
+	    short unsigned _id = 0);
 
 	Button(float x, float y, float width, float height, const sf::Text newText);
 
@@ -38,9 +34,15 @@ class Button {
 
 	// Accessors
 	bool isPressed() const;
+	const std::string getText() const;
+	const short unsigned& getId() const;
+
+	// Modifiers
+	void setText(const std::string& text);
+	void setId(const short unsigned id);
 
 	// Functions
-	void update(sf::Vector2f mousePos);
+	void update(const sf::Vector2f mousePos);
 	void render(sf::RenderWindow* window);
 	void setActive();
 	void setInactive();

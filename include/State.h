@@ -45,4 +45,5 @@ class State {
 	Position getPos(Position_i objectPosition) const { return window->mapPixelToCoords(objectPosition); }
 	virtual void stopMusic() = 0;
 	virtual void resumeMusic() = 0;
+	sf::RenderWindow* getWindow() { return window; }
 };

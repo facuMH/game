@@ -1,30 +1,43 @@
+#include <cstddef>
+#include <iterator>
+
 #include "Button.h"
-#include "definitions.h"
+#include "MainMenuState.h"
 
-Button::Button(
-    float x, float y, float width, float height, sf::Font* newFont, const std::string& newText, sf::Color newIdleColor, sf::Color newHoverColor, sf::Color newActiveColor) {
-	buttonState = BTN_IDLE;
+Button::Button(float x, float y, float width, float height, sf::Font* _font, const std::string& _text,
+    sf::Color _idleColor, sf::Color _hoverColor, sf::Color _activeColor, sf::Color _outlineIdleColor,
+    sf::Color _outlineHoverColor, sf::Color _outlineActiveColor, short unsigned _id) {
+	buttonState = ButtonStates::BTN_IDLE;
 
-	shape.setPosition(sf::Vector2f(x, y));
-	shape.setSize(sf::Vector2f(width, height));
+	id = _id;
+	shape.setPosition(Position(x, y));
+	shape.setSize(Position(width, height));
 
-	font = newFont;
+	font = _font;
 	text.setFont(*font);
-	text.setString(newText);
+	text.setString(_text);
 	text.setFillColor(sf::Color::White);
 	text.setCharacterSize(12);
-	text.setPosition(shape.getPosition().x + (shape.getGlobalBounds().width / 2.f) - text.getGlobalBounds().width / 2.f,
-	    shape.getPosition().y + (shape.getGlobalBounds().height / 2.f) - text.getGlobalBounds().height / 2.f);
+	shape.setOutlineThickness(1.f);
+	shape.setOutlineColor(_outlineIdleColor);
+	auto Xs = shape.getPosition().x + (shape.getGlobalBounds().width / 2.f) - text.getGlobalBounds().width / 2.f;
+	auto Ys = shape.getPosition().y + (shape.getGlobalBounds().height / 2.f) - text.getGlobalBounds().height / 2.f;
 
-	idleColor = newIdleColor;
-	hoverColor = newHoverColor;
-	activeColor = newActiveColor;
+	text.setPosition(Xs, Ys);
+
+	idleColor = _idleColor;
+	hoverColor = _hoverColor;
+	activeColor = _activeColor;
+
+	outlineIdleColor = _outlineIdleColor;
+	outlineHoverColor = _outlineHoverColor;
+	outlineActiveColor = _outlineActiveColor;
 
 	shape.setFillColor(idleColor);
 }
 
 Button::Button(float x, float y, float width, float height, const sf::Text newText) {
-	buttonState = BTN_IDLE;
+	buttonState = ButtonStates::BTN_IDLE;
 
 	shape.setPosition(sf::Vector2f(x, y));
 	shape.setSize(sf::Vector2f(width, height));
@@ -41,31 +54,55 @@ Button::~Button() = default;
 
 // Accessors
 bool Button::isPressed() const {
-	if(buttonState == BTN_ACTIVE) return true;
-	return false;
+	return (buttonState == ButtonStates::BTN_ACTIVE);
+}
+
+const std::string Button::getText() const {
+	return text.getString();
+}
+
+// Modifiers
+void Button::setText(const std::string& _text) {
+	text.setString(_text);
+}
+
+void Button::setId(const unsigned short _id) {
+	id = _id;
+}
+
+const short unsigned& Button::getId() const {
+	return id;
 }
 
 // Function
-void Button::update(const sf::Vector2f mousePos) {
+void Button::update(const Position mousePos) {
 	// update the boolean for hover and pressed
 
 	// idle
-	buttonState = BTN_IDLE;
+	buttonState = ButtonStates::BTN_IDLE;
 
 	// Hover
 	if(shape.getGlobalBounds().contains(mousePos)) {
-		buttonState = BTN_HOVER;
-
+		buttonState = ButtonStates::BTN_HOVER;
 		// Pressed
 		if(sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-			buttonState = BTN_ACTIVE;
+			buttonState = ButtonStates::BTN_ACTIVE;
 		}
 	}
 
 	switch(buttonState) {
-	case BTN_IDLE: shape.setFillColor(idleColor); break;
-	case BTN_HOVER: shape.setFillColor(hoverColor); break;
-	case BTN_ACTIVE: shape.setFillColor(sf::Color::Red); break;
+	case ButtonStates::BTN_IDLE:
+		shape.setFillColor(idleColor);
+		shape.setOutlineColor(outlineIdleColor);
+		break;
+	case ButtonStates::BTN_HOVER:
+		shape.setFillColor(hoverColor);
+		shape.setOutlineColor(outlineHoverColor);
+		break;
+	case ButtonStates::BTN_ACTIVE:
+		shape.setFillColor(sf::Color::Red);
+		shape.setOutlineColor(outlineActiveColor);
+		break;
 	default: break;
 	}
 }
@@ -77,9 +114,9 @@ void Button::render(sf::RenderWindow* window) {
 
 void Button::setActive() {
 	shape.setFillColor(hoverColor);
-	buttonState = BTN_ACTIVE;
+	buttonState = ButtonStates::BTN_ACTIVE;
 }
 void Button::setInactive() {
 	shape.setFillColor(idleColor);
-	buttonState = BTN_IDLE;
+	buttonState = ButtonStates::BTN_IDLE;
 }
