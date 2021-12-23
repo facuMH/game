@@ -17,8 +17,8 @@ MainMenuState::MainMenuState(sf::RenderWindow* window, AssetsManager& am, KeyLis
 
 	view = window->getDefaultView();
 
-	soundBuffer = am.getSoundBuffer(GASP.c);
-	sound.setBuffer(soundBuffer);
+	soundBuffer = am.getSoundBuffer(MENU_BLIP.c);
+	blipSound.setBuffer(soundBuffer);
 	view = window->getDefaultView();
 	MusicPath* path = am.getMusic(MENU_MUSIC.c);
 	music.openFromFile(*path);
@@ -121,8 +121,7 @@ StateAction MainMenuState::handleKeys(sf::Keyboard::Key key) {
 		default: break;
 		}
 	}
-	// play gasping gaspSound each time change button.
-	sound.play();
+	blipSound.play();
 	return StateAction::NONE;
 }
 
