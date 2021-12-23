@@ -14,8 +14,7 @@ class Animation {
 
 	Animation() = default;
 
-	Animation(Texture* newTexture, const sf::IntRect& first_animation,
-	    const Position& initial) {
+	Animation(Texture* newTexture, const sf::IntRect& first_animation, const Position& initial) {
 		texture = newTexture;
 		texture_rectangle = first_animation;
 
@@ -31,7 +30,9 @@ class Animation {
 		auto nextPosition = sprite.getPosition() + offset;
 		if(map->hasNoCollision(nextPosition)) {
 			sprite.move(offset);
-			view->setCenter(sprite.getPosition());
+			if(view != nullptr) {
+				view->setCenter(sprite.getPosition());
+			}
 		}
 		texture_rectangle.left = newTextureRect;
 		texture_rectangle.top = int(texture_rectangle.top + texture_rectangle.height) % 64; // num of bits
@@ -46,6 +47,26 @@ class Animation {
 		case KeyAction::RIGHT: movePlayerAndView({stepsize, 0.0f}, 3 * texture_rectangle.width, view, map); break;
 		default: break;
 		}
+	}
+
+	Position nextVillager(TileMap* map, float stepsize, Direction nextDirection, Position position) {
+		Position offset;
+		switch(nextDirection) {
+		case Direction::UP:
+			offset = {0.0f, -stepsize};
+			movePlayerAndView(offset, texture_rectangle.width, nullptr, map);
+			break;
+		case Direction::DOWN:
+			offset = {0.0f, stepsize};
+			movePlayerAndView(offset, 0, nullptr, map); break;
+		case Direction::RIGHT:
+			offset = {stepsize, 0.0f};
+			movePlayerAndView({stepsize, 0.0f}, 3 * texture_rectangle.width, nullptr, map); break;
+		case Direction::LEFT:
+			offset = {-stepsize, 0.0f};
+			movePlayerAndView({-stepsize, 0.0f}, 2 * texture_rectangle.width, nullptr, map); break;
+		}
+		return position + offset;
 	}
 
 	void move(const Position& offset) { sprite.move(offset); }

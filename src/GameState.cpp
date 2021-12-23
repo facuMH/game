@@ -18,10 +18,10 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 	    play_text, sf::IntRect(0, 0, TILESIZE, TILESIZE), Position(50, 50));
 	player = Character("Adventurer", Stats(15, 20, 50, 30), player_animation);
 
-	Villager girl = createVillager(EGG_GIRL_WALK.c, Position(300, 50), MovementDirection::UP_DOWN);
+	Villager girl = createVillager(EGG_GIRL_WALK.c, Position(300, 50), MovementType::VERTICAL, 3.0f);
 	villagers.push_back(girl);
 
-	Villager old_man = createVillager(OLD_MAN_WALK.c, Position(50, 150), MovementDirection::LEFT_RIGHT);
+	Villager old_man = createVillager(OLD_MAN_WALK.c, Position(50, 150), MovementType::HORIZONTAL, 3.0f);
 	villagers.push_back(old_man);
 
 	soundBuffer = am->getSoundBuffer(GASP.c);
@@ -34,10 +34,16 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 	music.play();
 }
 
-Villager GameState::createVillager(const std::string& textureName, Position position, MovementDirection movementDirection) {
+Villager GameState::createVillager(const std::string& textureName, Position position, MovementType movementDirection, float stepsize) {
 	Texture* tex = am->getTexture(textureName);
 	Animation anim(tex, sf::IntRect(0, 0, TILESIZE, TILESIZE), position);
-	return Villager(anim, movementDirection);
+	Position endPosition;
+	if (movementDirection == MovementType::HORIZONTAL) {
+		endPosition = {position.x + 50, position.y };
+	} else {
+		endPosition = {position.x, position.y + 60};
+	}
+	return {anim, movementDirection, position, endPosition, stepsize};
 }
 
 GameState::~GameState() = default;
@@ -94,8 +100,7 @@ void GameState::drawPlayer(sf::RenderWindow* window) {
 	window->draw(player.animation.sprite);
 	for(auto& v : villagers) {
 		window->draw(v.animation.sprite);
-		v.currentPosition = v.animation.get_position();
-		v.blockTile(&map);
+		v.move(&map);
 	}
 }
 

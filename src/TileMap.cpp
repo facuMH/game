@@ -58,10 +58,10 @@ bool TileMap::hasNoCollision(Position position) {
 	return !tiles[0][tilePosX][tilePosY]->is_solid && !tiles[0][tilePosX][tilePosY]->is_occupied;
 }
 
-void TileMap::occupyTile(Position position) {
+void TileMap::setTileOccupation(Position position, bool isOccupied) {
 	int tilePosX = std::ceil(position.x / TILESIZE);
 	int tilePosY = std::ceil(position.y / TILESIZE);
-	tiles[0][tilePosX][tilePosY]->is_occupied = true;
+	tiles[0][tilePosX][tilePosY]->is_occupied = isOccupied;
 }
 
 void TileMap::render(sf::RenderWindow& window) {
