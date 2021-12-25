@@ -29,12 +29,9 @@ class Villager : public Entity {
 	// Define an area in which the villager can move
 	Position startPosition;
 	Position endPosition;
-	Position currentPosition;
 	MovementType movementType;
 	KeyAction currentDirection;
 	float stepsize;
-
-	void setTileOccupation(TileMap* map, bool isOccupied) const { map->setTileOccupation(currentPosition, isOccupied); }
 
 	void move(TileMap* map) {
 		setTileOccupation(map, false);

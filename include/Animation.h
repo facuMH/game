@@ -63,7 +63,7 @@ class Animation {
 
 	void move(const Position& offset) { sprite.move(offset); }
 
-	Position get_position() { return sprite.getPosition(); }
+	Position get_position() const { return sprite.getPosition(); }
 
 	void set_position(Position pos) { sprite.setPosition(pos); }
 };

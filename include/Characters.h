@@ -20,6 +20,7 @@ class Character : public Entity {
 		animation = std::move(new_anim);
 		is_solid = true;
 		can_interact = true;
+		currentPosition = animation.get_position();
 	}
 
 	int get_str() const { return currentStats.str; }
