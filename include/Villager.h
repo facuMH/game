@@ -9,10 +9,10 @@
 class Villager : public Entity {
   private:
   public:
-	Villager(Animation _animation, MovementType _movementType, Position _currentPos, Position _endPosition,
-	    float _stepsize) {
+	Villager(Animation _animation, Name _name, MovementType _movementType, Position _endPosition, float _stepsize) {
 		animation = std::move(_animation);
 		movementType = _movementType;
+		name = _name;
 		is_solid = true;
 		can_interact = true;
 
@@ -21,8 +21,7 @@ class Villager : public Entity {
 		} else {
 			currentDirection = KeyAction::DOWN;
 		}
-		currentPosition = _currentPos;
-		startPosition = _currentPos;
+		startPosition = animation.get_position();
 		endPosition = _endPosition;
 		stepsize = _stepsize;
 	}
@@ -36,12 +35,13 @@ class Villager : public Entity {
 	void move(TileMap* map) {
 		setTileOccupation(map, false);
 		currentDirection = nextDirection();
-		currentPosition = animation.next(currentDirection, map, stepsize, currentPosition, nullptr);
+		animation.next(currentDirection, map, stepsize, animation.get_position(), nullptr);
 		setTileOccupation(map, true);
 	};
 
 	KeyAction nextDirection() const {
-		if (movementType == MovementType::VERTICAL) {
+		Position currentPosition = animation.get_position();
+		if(movementType == MovementType::VERTICAL) {
 			if(currentDirection == KeyAction::DOWN) {
 				if(currentPosition.y < endPosition.y) {
 					return KeyAction::DOWN;
@@ -55,8 +55,7 @@ class Villager : public Entity {
 					return KeyAction::DOWN;
 				}
 			}
-		}
-		else {
+		} else {
 			if(currentDirection == KeyAction::RIGHT) {
 				if(currentPosition.x < endPosition.x) {
 					return KeyAction::RIGHT;

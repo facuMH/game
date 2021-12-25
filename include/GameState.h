@@ -1,7 +1,7 @@
 #pragma once
 
 #include "AssetsManager.h"
-#include "Characters.h"
+#include "Player.h"
 #include "State.h"
 #include "TileMap.h"
 #include "definitions.h"
@@ -10,7 +10,7 @@
 class GameState : public State {
   private:
 	TileMap map;
-	Character player;
+	Player player;
 	std::vector<Villager> villagers;
 
 	sf::View view;
@@ -39,8 +39,8 @@ class GameState : public State {
 	StateAction handleKeys(sf::Keyboard::Key key) override;
 	sf::View getView() override { return view; };
 	void drawPlayer(sf::RenderWindow* window) override;
-	Character* getPlayer() { return &player; };
-	Villager createVillager(const std::string& textureName, Position position, MovementType movementDirection, float stepsize);
+	Player* getPlayer() { return &player; };
+	Villager createVillager(const std::string& textureName, Name name, Position position, MovementType movementDirection, float stepsize);
 	StateAction shouldAct() override;
 	void stopMusic() override;
 	void resumeMusic() override;

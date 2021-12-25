@@ -14,17 +14,16 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 	keybinds = gameSupportedKeys;
 
 	Texture* play_text = am->getTexture(NINJA_WALK.c);
-	Animation player_animation(
-	    play_text, sf::IntRect(0, 0, TILESIZE, TILESIZE), Position(50, 50));
-	player = Character("Adventurer", Stats(15, 20, 50, 30), player_animation);
+	Animation player_animation(play_text, sf::IntRect(0, 0, TILESIZE, TILESIZE), Position(50, 50));
+	player = Player("Adventurer", Stats(15, 20, 50, 30), player_animation);
 
-	Villager girl = createVillager(EGG_GIRL_WALK.c, Position(300, 50), MovementType::VERTICAL, 0.3f);
+	Villager girl = createVillager(EGG_GIRL_WALK.c, "Egg Girl", Position(300, 50), MovementType::VERTICAL, 0.3f);
 	villagers.push_back(girl);
 
-	Villager old_man = createVillager(OLD_MAN_WALK.c, Position(50, 150), MovementType::HORIZONTAL, 0.4f);
+	Villager old_man = createVillager(OLD_MAN_WALK.c, "Old Man", Position(50, 150), MovementType::HORIZONTAL, 0.4f);
 	villagers.push_back(old_man);
 
-	Villager princess = createVillager(PRINCESS_WALK.c, Position(230, 150), MovementType::VERTICAL, 0.2f);
+	Villager princess = createVillager(PRINCESS_WALK.c, "Princess", Position(230, 150), MovementType::VERTICAL, 0.2f);
 	villagers.push_back(princess);
 
 	soundBuffer = am->getSoundBuffer(GASP.c);
@@ -37,21 +36,23 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 	music.play();
 }
 
-Villager GameState::createVillager(const std::string& textureName, Position position, MovementType movementDirection, float stepsize) {
+Villager GameState::createVillager(
+    const std::string& textureName, Name name, Position position, MovementType movementDirection, float stepsize) {
 	Texture* tex = am->getTexture(textureName);
 	Animation anim(tex, sf::IntRect(0, 0, TILESIZE, TILESIZE), position);
 	Position endPosition;
-	if (movementDirection == MovementType::HORIZONTAL) {
-		endPosition = {position.x + 50, position.y };
+	if(movementDirection == MovementType::HORIZONTAL) {
+		endPosition = {position.x + 50, position.y};
 	} else {
 		endPosition = {position.x, position.y + 60};
 	}
-	return {anim, movementDirection, position, endPosition, stepsize};
+	return {anim, name, movementDirection, endPosition, stepsize};
 }
 
 GameState::~GameState() = default;
 
 void GameState::update(const float& dt) {
+	std::cout << dt << std::endl;
 	updateKeybinds(dt);
 	if(clock.getElapsedTime().asSeconds() > .05f) {
 		clock.restart();

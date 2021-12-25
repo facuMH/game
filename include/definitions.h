@@ -12,19 +12,17 @@ constexpr int TILESIZE = 16;
 enum class StateAction { NONE, START_SETTING, START_GAME, START_COMBAT, EXIT_COMBAT, EXIT_GAME, EXIT_SETTING };
 enum class KeyAction { UP, DOWN, RIGHT, LEFT, SELECT, BACK, INTERACT };
 enum class MovementType { VERTICAL, HORIZONTAL };
-enum class Direction { UP, DOWN, RIGHT, LEFT };
-enum class CharacterType { PLAYER, VILLAGER };
 
 using Position = sf::Vector2f;
 using Position_i = sf::Vector2i;
-using Interval = sf::Vector2f;
 using Name = std::string;
 using Buttons = std::vector<Button>;
 using KeyList = std::unordered_map<KeyAction, sf::Keyboard::Key>;
 
-class Character;
-using Enemies = std::vector<Character>;
-using Party = std::vector<Character>;
+class Player;
+class Enemy;
+using Enemies = std::vector<Enemy>;
+using Party = std::vector<Player>;
 using CombatText = std::unordered_map<Name, Button>;
 
 class MapBackground : public sf::Texture {};
