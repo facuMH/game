@@ -52,7 +52,6 @@ Villager GameState::createVillager(
 GameState::~GameState() = default;
 
 void GameState::update(const float& dt) {
-	std::cout << dt << std::endl;
 	updateKeybinds(dt);
 	if(clock.getElapsedTime().asSeconds() > .05f) {
 		clock.restart();
