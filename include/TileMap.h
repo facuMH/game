@@ -4,7 +4,7 @@
 #include "Tile.h"
 #include "definitions.h"
 
-#include "../libs/tileson.hpp"
+#include "tileson.hpp"
 
 class TileMap {
   private:

@@ -28,8 +28,7 @@ set(SOURCES src/main.cpp
         src/Tile.cpp
         src/TileMap.cpp)
 
-set(HEADERS libs/tileson.hpp
-        include/Animation.h
+set(HEADERS include/Animation.h
         include/AssetsManager.h
         include/AssetsPaths.h
         include/Button.h
@@ -47,6 +46,8 @@ set(HEADERS libs/tileson.hpp
         include/TileMap.h
         include/Villager.h)
 
+set(DEPENDENCIES libs/tileson.hpp)
+
 #------------- DEPENDENCIES
 
 
@@ -54,10 +55,11 @@ set(HEADERS libs/tileson.hpp
 find_package(SFML 2.5 COMPONENTS system window graphics audio REQUIRED)
 
 #------------- COMPILE
-add_executable(rpg ${SOURCES} ${HEADERS})
+add_executable(rpg ${SOURCES} ${HEADERS} ${DEPENDENCIES})
 
 #------------- LINK
 target_include_directories(rpg PUBLIC include/ ${SFML_INCLUDE_DIR})
+target_include_directories(rpg PUBLIC libs/ ${SFML_INCLUDE_DIR})
 target_link_libraries(rpg sfml-graphics sfml-audio  ${SFML_DEPENDENCIES})
 
 

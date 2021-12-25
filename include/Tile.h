@@ -4,7 +4,7 @@
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 
-#include "../libs/tileson.hpp"
+#include "tileson.hpp"
 #include "definitions.h"
 #include <fstream>
 #include <sstream>
