@@ -6,6 +6,7 @@
 #include "Entity.h"
 #include "definitions.h"
 
+/// Class for non-playable characters, who don't engage in combat
 class Villager : public Entity {
   private:
   public:

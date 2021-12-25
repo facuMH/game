@@ -3,6 +3,7 @@
 #include "Entity.h"
 #include "Inanimated.h"
 
+/// Class for non-playable characters who engage in combat
 class Enemy : public Entity {
   public:
 	Enemy(Name _name, Stats _stats, Animation _animation) : maxStats(_stats), currentStats(_stats) {

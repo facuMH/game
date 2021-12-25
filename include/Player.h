@@ -3,6 +3,7 @@
 #include "Entity.h"
 #include "Inanimated.h"
 
+/// Class for playable characters
 class Player : public Entity {
   public:
 	Stats currentStats;
