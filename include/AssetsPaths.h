@@ -57,7 +57,7 @@ constexpr char CONFIG[] = "../config/";
 constexpr auto KEYS = cat(CONFIG, "keysbind.ini");
 constexpr auto KEYBIND = cat(CONFIG, "gamestate_Keysbind.ini");
 constexpr auto MENUKEYBIND = cat(CONFIG, "mainmenustate_keysbind.ini");
-constexpr auto WINDOW= cat(CONFIG, "window.ini");
+constexpr auto WINDOW = cat(CONFIG, "window.ini");
 
 // --- FONTS
 constexpr auto FONTS = cat(ASSETS, "fonts/");

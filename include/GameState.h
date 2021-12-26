@@ -1,6 +1,7 @@
 #pragma once
 
 #include "AssetsManager.h"
+#include "Enemy.h"
 #include "Player.h"
 #include "State.h"
 #include "TileMap.h"
@@ -11,7 +12,8 @@ class GameState : public State {
   private:
 	TileMap map;
 	Player player;
-	std::vector<Villager> villagers;
+	Villagers villagers;
+	Enemies enemies;
 
 	sf::View view;
 	AssetsManager* am;
@@ -26,7 +28,7 @@ class GameState : public State {
   public:
 	// Constructor
 	GameState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets,
-	    JSONFilePath& path, KeyList* gameSupportedKeys);
+	    JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player, Villagers& _villagers, Enemies& _enemies, MusicPath& musicPath);
 	// Destructor
 	~GameState() override;
 
@@ -40,7 +42,6 @@ class GameState : public State {
 	sf::View getView() override { return view; };
 	void drawPlayer(sf::RenderWindow* window) override;
 	Player* getPlayer() { return &player; };
-	Villager createVillager(const std::string& textureName, Name name, Position position, MovementType movementDirection, float stepsize);
 	StateAction shouldAct() override;
 	void stopMusic() override;
 	void resumeMusic() override;

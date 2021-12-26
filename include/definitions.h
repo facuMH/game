@@ -20,9 +20,11 @@ using Buttons = std::vector<Button>;
 using KeyList = std::unordered_map<KeyAction, sf::Keyboard::Key>;
 
 class Player;
+using Party = std::vector<Player>;
 class Enemy;
 using Enemies = std::vector<Enemy>;
-using Party = std::vector<Player>;
+class Villager;
+using Villagers = std::vector<Villager>;
 using CombatText = std::unordered_map<Name, Button>;
 
 class MapBackground : public sf::Texture {};

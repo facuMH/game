@@ -38,6 +38,8 @@ class Game {
 	Position_i mousePos;
 	sf::Text mousePosText;
 
+	Player player;
+
 	// Stack of states - the top entry is the active state, i.e. [main menu,
 	// map-layer, fight-layer]: If the fight layer is left, the next active state
 	// is the map-layer. If the map-layer is left, we're at the main menu. Must be
@@ -46,8 +48,11 @@ class Game {
 	std::stack<State*> states;
 
 	void makeNewCombat(int numberOfEnemies);
+	void makeMainMapGame();
+	Villager createVillager(
+	    const std::string& textureName, Name name, Position position, MovementType movementDirection, float stepsize);
 
-  public:
+	    public:
 	// Constructor
 	Game();
 
