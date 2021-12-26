@@ -19,9 +19,13 @@ void CombatState::addCombatString(const Player& player, AssetsManager& am, const
 CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets,
     JSONFilePath& path, const Party& p, const Enemies& e, KeyList* gameSupportedKeys)
     : State(window), map(am, textureSheets, path) {
+	auto size = sf::Vector2f{720.0, 480.0};
 	view = window->getDefaultView();
+	view.setSize(size);
+	view.setCenter({size.x / 2.f, size.y / 2.f});
+
 	keybinds = gameSupportedKeys;
-	view = window->getDefaultView();
+
 	party = p;
 	enemies = e;
 	std::cout << "New Combat\n";
