@@ -1,21 +1,24 @@
 #pragma once
 
 #include "AssetsManager.h"
-#include "Characters.h"
+#include "Player.h"
 #include "State.h"
 #include "TileMap.h"
 #include "definitions.h"
+#include "Villager.h"
 
 class GameState : public State {
   private:
 	TileMap map;
-	Character player;
+	Player player;
+	std::vector<Villager> villagers;
+
 	sf::View view;
 	AssetsManager* am;
 	KeyList* keybinds;
 	sf::Clock clock;
 	sf::SoundBuffer soundBuffer;
-	sf::Sound sound;
+	sf::Sound gaspSound;
 	sf::Music music;
 	// just for demonstration purposes
 	sf::Keyboard::Key previousKey;
@@ -36,7 +39,8 @@ class GameState : public State {
 	StateAction handleKeys(sf::Keyboard::Key key) override;
 	sf::View getView() override { return view; };
 	void drawPlayer(sf::RenderWindow* window) override;
-	Character* getPlayer() { return &player; };
+	Player* getPlayer() { return &player; };
+	Villager createVillager(const std::string& textureName, Name name, Position position, MovementType movementDirection, float stepsize);
 	StateAction shouldAct() override;
 	void stopMusic() override;
 	void resumeMusic() override;

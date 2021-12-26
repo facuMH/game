@@ -114,20 +114,18 @@ bool Game::isRunning() const {
 
 void Game::makeNewCombat(const int numberOfEnemies) {
 	Texture* alien_texture = assetsManager.getTexture(ALIEN.c);
-	Animation alien_animation(alien_texture, sf::IntRect(50, 25, 105, 145), Interval(210, 0), Position(100, 100));
-	Character alien("Alien", Stats(15, 25, 50, 30), alien_animation);
+	Animation alien_animation(alien_texture, sf::IntRect(50, 25, 105, 145), Position(100, 100));
+	Enemy alien("Alien", Stats(15, 25, 50, 30), alien_animation);
 	Enemies enemies{};
 	for(int i = 0; i < numberOfEnemies; i++) {
 		alien.animation.move({50, 0});
 		enemies.push_back(alien);
 	}
-	auto mapTexture = {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c),
-	    assetsManager.getMap(TILESHEET_HOUSES.c)};
+	auto mapTexture = {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c)};
 	JSONFilePath* design = assetsManager.getMapDesign(COMBAT_LEVEL1.c);
 	Party party{*dynamic_cast<GameState*>(states.top())->getPlayer()};
 	turnOffMusic();
 	states.push(new CombatState(window, assetsManager, mapTexture, *design, party, enemies, &keyBindings));
-	in_combat = true;
 }
 
 // Functions
@@ -150,9 +148,15 @@ void Game::pollEvents() {
 				}
 				if(action == StateAction::START_GAME) {
 					turnOffMusic();
+					// Optional TODO: find bug in Tileson.
+					// Comment: There's a bug in Tileson. Tile attributes, such as isBlocked are connected with the tile ID.
+					// However, the tile ID differs of tiles in the 2nd, 3rd, ... tile sheet from the original ID, because it's
+					// counted with an offset. My theory is that, internally, this ID is used to get the attributes, but returns
+					// NULL for all sheets but the first one. Therefore, all collisions are noted in the first sheet, which
+					// has to be passed twice now for the collisions to be loaded at all.
 					states.push(new GameState(window, assetsManager,
-					    {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c),
-					        assetsManager.getMap(TILESHEET_HOUSES.c)},
+					    {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_FLOOR.c),
+					        assetsManager.getMap(TILESHEET_HOUSES.c), assetsManager.getMap(TILESHEET_NATURE.c)},
 					    *assetsManager.getMapDesign(MAP_LEVEL1.c), &keyBindings));
 				}
 				if(action == StateAction::START_SETTING) {
@@ -173,7 +177,6 @@ void Game::pollEvents() {
 				if(action == StateAction::EXIT_COMBAT) {
 					// calling quitStateActions here is only for debug reasons
 					states.top()->quitStateActions();
-					in_combat = false;
 				}
 				break;
 			}

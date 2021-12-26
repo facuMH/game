@@ -1,23 +1,19 @@
 #pragma once
 
-#include <string>
-#include <utility>
-
-#include <SFML/Audio/Sound.hpp>
-
+#include "Entity.h"
 #include "Inanimated.h"
 
-class Character : public Entity {
+/// Class for playable characters
+class Player : public Entity {
   public:
 	Stats currentStats;
 	Stats maxStats;
 	Weapon* weapon = nullptr;
 
-	Name name;
-	Character() : name(""), maxStats(0, 0, 0, 0), currentStats(0, 0, 0, 0) {}
-	Character(Name new_name, Stats new_stats, Animation new_anim)
-	    : name(new_name), maxStats(new_stats), currentStats(new_stats) {
-		animation = std::move(new_anim);
+	Player() : maxStats(0, 0, 0, 0), currentStats(0, 0, 0, 0) {}
+	Player(Name _name, Stats _stats, Animation _animation) : maxStats(_stats), currentStats(_stats) {
+		name = _name;
+		animation = std::move(_animation);
 		is_solid = true;
 		can_interact = true;
 	}
@@ -36,7 +32,5 @@ class Character : public Entity {
 	void recover_mana(const int recover) { currentStats.mana += recover; }
 
 	void equip(Weapon* arms);
-	void move(KeyAction key, sf::View* view);
-
-	// TODO: multiple animations (idle, run, attack) perhaps on Entity.
+	void move(KeyAction key, TileMap* map);
 };

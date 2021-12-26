@@ -4,8 +4,8 @@
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 
-#include "definitions.h"
 #include "tileson.hpp"
+#include "definitions.h"
 #include <fstream>
 #include <sstream>
 #include <stack>
@@ -13,17 +13,15 @@
 
 class Tile {
   private:
-  protected:
 	sf::RectangleShape shape;
 
   public:
-	Tile();
+	bool is_solid;
+	bool is_occupied;
 
 	Tile(tson::TileObject* tileObject, MapBackground* textureSheet);
-
 	virtual ~Tile();
 
 	void update();
-
 	void render(sf::RenderWindow& window);
 };

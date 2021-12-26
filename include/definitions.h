@@ -7,10 +7,26 @@
 
 #include "Button.h"
 
+constexpr int TILESIZE = 16;
+
+enum class StateAction { NONE, START_SETTING, START_GAME, START_COMBAT, EXIT_COMBAT, EXIT_GAME, EXIT_SETTING };
+enum class KeyAction { UP, DOWN, RIGHT, LEFT, SELECT, BACK, INTERACT };
+enum class MovementType { VERTICAL, HORIZONTAL };
+
 using Position = sf::Vector2f;
 using Position_i = sf::Vector2i;
-using Interval = sf::Vector2f;
 using Name = std::string;
+using Buttons = std::vector<Button>;
+using KeyList = std::unordered_map<KeyAction, sf::Keyboard::Key>;
+
+class Player;
+class Enemy;
+using Enemies = std::vector<Enemy>;
+using Party = std::vector<Player>;
+using CombatText = std::unordered_map<Name, Button>;
+
+class MapBackground : public sf::Texture {};
+class Texture : public sf::Texture {};
 
 class JSONFilePath : public std::string {
   public:
@@ -28,11 +44,6 @@ class MusicPath : public std::string {
 	}
 };
 
-class MapBackground : public sf::Texture {};
-class Texture : public sf::Texture {};
-
-using Buttons = std::vector<Button>;
-
 struct Stats {
 	int str = 0;  // Strength
 	int dex = 0;  // Dexterity
@@ -43,27 +54,16 @@ struct Stats {
 
 const sf::Color GREY = sf::Color(70, 70, 70, 200);
 const sf::Color LIGHTGREY = sf::Color(150, 150, 150, 255);
-const sf::Color BLACK = sf::Color(0, 0, 0, 255);
 
-enum class StateAction { NONE, START_SETTING, START_GAME, START_COMBAT, EXIT_COMBAT, EXIT_GAME, EXIT_SETTING };
+const Position COMBAT_FIRST_PLAYER_POSITION{150.f, 150.f};
+const Position COMBAT_FIRST_ENEMY_POSITION{500.f, 150.f};
 
-enum class KeyAction { UP, DOWN, RIGHT, LEFT, SELECT, BACK, INTERACT };
 
 namespace std {
 template <> struct hash<KeyAction> {
 	size_t operator()(const KeyAction& k) const { return hash<int>()(static_cast<int>(k)); }
 };
 }; // namespace std
-
-using KeyList = std::unordered_map<KeyAction, sf::Keyboard::Key>;
-
-class Character;
-using Enemies = std::vector<Character>;
-using Party = std::vector<Character>;
-using CombatText = std::unordered_map<Name, Button>;
-
-const Position COMBAT_FIRST_PLAYER_POSITION{150.f, 150.f};
-const Position COMBAT_FIRST_ENEMY_POSITION{500.f, 150.f};
 
 inline Position_i getDesktopCenter(const sf::RenderWindow& window) {
 	auto desktop = sf::VideoMode::getDesktopMode();

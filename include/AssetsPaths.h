@@ -30,7 +30,14 @@ constexpr auto SETTING_BACKGROUND = cat(MAINMENU.c, "RPG_projects.jpg");
 // ---- CHARACTER
 constexpr auto CHARACTER = cat(ASSETS, "characters/");
 constexpr auto NINJA = cat(CHARACTER.c, "green_ninja/");
-constexpr auto NINJA_RUN = cat(NINJA.c, "Walk.png");
+constexpr auto NINJA_WALK = cat(NINJA.c, "Walk.png");
+constexpr auto EGG_GIRL = cat(CHARACTER.c, "egg_girl/");
+constexpr auto EGG_GIRL_WALK = cat(EGG_GIRL.c, "Walk.png");
+constexpr auto OLD_MAN = cat(CHARACTER.c, "old_man/");
+constexpr auto OLD_MAN_WALK = cat(OLD_MAN.c, "Walk.png");
+constexpr auto PRINCESS = cat(CHARACTER.c, "princess/");
+constexpr auto PRINCESS_WALK = cat(PRINCESS.c, "Walk.png");
+
 
 // ---- ENEMIES
 constexpr auto ENEMIES = cat(ASSETS, "enemies/");

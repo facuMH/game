@@ -1,6 +1,6 @@
 #include "TileMap.h"
 #include "AssetsPaths.h"
-#include "tileson.hpp"
+
 
 // Constructor
 TileMap::TileMap(AssetsManager& am, std::vector<MapBackground*> textureSheets, const JSONFilePath& designPath) {
@@ -8,15 +8,20 @@ TileMap::TileMap(AssetsManager& am, std::vector<MapBackground*> textureSheets, c
 	loadFromJson(designPath, textureSheets);
 }
 
+// Destructor
+TileMap::~TileMap() {
+	for(int z = 0; z < nLayers; z++) {
+		for(int y = 0; y < maxSize.y; y++) {
+			for(int x = 0; x < maxSize.x; x++) {
+				delete tiles[z][y][x];
+			}
+		}
+	}
+}
+
 void TileMap::initializeVariables(AssetsManager& am) {
 	maxSize.x = 50;
 	maxSize.y = 50;
-
-	// bounds for rendering only those tiles that are in visible range
-	visibleFrom.x = 0;
-	visibleTo.y = 0;
-	visibleTo.x = 32;
-	visibleTo.y = 24;
 }
 
 void TileMap::loadFromJson(const std::string& path, std::vector<MapBackground*> textureSheets) {
@@ -37,20 +42,26 @@ void TileMap::loadFromJson(const std::string& path, std::vector<MapBackground*> 
 				for(int x = 0; x < size.x; x++) {
 					tson::TileObject* tileObj = layers[z].getTileObject(y, x);
 					tiles[z][y].push_back(new Tile(tileObj, textureSheets[z]));
+					tson::Property* prp = tileObj->getTile()->getProp("isBlocked");
+					if(prp != nullptr && prp->getValue<bool>()) {
+						tiles[0][y][x]->is_solid = true;
+					}
 				}
 			}
 		}
 	}
 }
 
-TileMap::~TileMap() {
-	for(int z = 0; z < nLayers; z++) {
-		for(int y = 0; y < maxSize.y; y++) {
-			for(int x = 0; x < maxSize.x; x++) {
-				delete tiles[z][y][x];
-			}
-		}
-	}
+bool TileMap::hasNoCollision(Position position) {
+	int tilePosX = std::ceil(position.x / TILESIZE);
+	int tilePosY = std::ceil(position.y / TILESIZE);
+	return !tiles[0][tilePosX][tilePosY]->is_solid && !tiles[0][tilePosX][tilePosY]->is_occupied;
+}
+
+void TileMap::setTileOccupation(Position position, bool isOccupied) {
+	int tilePosX = std::ceil(position.x / TILESIZE);
+	int tilePosY = std::ceil(position.y / TILESIZE);
+	tiles[0][tilePosX][tilePosY]->is_occupied = isOccupied;
 }
 
 void TileMap::render(sf::RenderWindow& window) {

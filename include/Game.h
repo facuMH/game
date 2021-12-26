@@ -9,7 +9,6 @@
 #include <SFML/Window.hpp>
 
 #include "AssetsManager.h"
-#include "Characters.h"
 #include "GameState.h"
 #include "MainMenuState.h"
 #include "definitions.h"
@@ -35,7 +34,6 @@ class Game {
 	KeyList keyBindings;
 	std::unordered_map<std::string, KeyAction> keyActionString;
 	AssetsManager assetsManager;
-	bool in_combat = false;
 	float dt{}; // time delta
 	Position_i mousePos;
 	sf::Text mousePosText;

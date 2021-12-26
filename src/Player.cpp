@@ -1,10 +1,10 @@
 #include <SFML/Window.hpp>
 
-#include "Characters.h"
+#include "Player.h"
 
 // if a weapon is already equipped it is swapped with the new one
 // otherwise simply equips the new one
-void Character::equip(Weapon* arms) {
+void Player::equip(Weapon* arms) {
 	if(weapon != nullptr) {
 		std::swap(weapon, arms);
 		Position pos = animation.get_position();
@@ -17,6 +17,8 @@ void Character::equip(Weapon* arms) {
 	}
 }
 
-void Character::move(const KeyAction key, sf::View* view) {
-	animation.next(key, view, 6.0f);
+void Player::move(const KeyAction key, TileMap* map) {
+	setTileOccupation(map, false);
+	animation.next(key, map, 5.0f, animation.get_position());
+	setTileOccupation(map, true);
 }

@@ -16,7 +16,7 @@ class MainMenuState : public State {
 	sf::RectangleShape background;
 	sf::Font font;
 	sf::SoundBuffer soundBuffer;
-	sf::Sound sound;
+	sf::Sound blipSound;
 	sf::Music music;
 
 	Buttons buttons;

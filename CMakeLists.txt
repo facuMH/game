@@ -18,11 +18,11 @@ ENDIF()
 
 set(SOURCES src/main.cpp
         src/Button.cpp
-        src/Characters.cpp
         src/CombatState.cpp
         src/Game.cpp
         src/GameState.cpp
         src/MainMenuState.cpp
+        src/Player.cpp
         src/SettingsState.cpp
         src/State.cpp
         src/Tile.cpp
@@ -32,19 +32,22 @@ set(HEADERS include/Animation.h
         include/AssetsManager.h
         include/AssetsPaths.h
         include/Button.h
-        include/Characters.h
         include/CombatState.h
         include/definitions.h
+        include/Enemy.h
         include/Entity.h
         include/Game.h
         include/GameState.h
         include/Inanimated.h
         include/MainMenuState.h
+        include/Player.h
         include/State.h
         include/SettingsState.h
         include/Tile.h
         include/TileMap.h
-        include/tileson.hpp)
+        include/Villager.h)
+
+set(DEPENDENCIES libs/tileson.hpp)
 
 #------------- DEPENDENCIES
 
@@ -53,10 +56,11 @@ set(HEADERS include/Animation.h
 find_package(SFML 2.5 COMPONENTS system window graphics audio REQUIRED)
 
 #------------- COMPILE
-add_executable(rpg ${SOURCES} ${HEADERS})
+add_executable(rpg ${SOURCES} ${HEADERS} ${DEPENDENCIES})
 
 #------------- LINK
 target_include_directories(rpg PUBLIC include/ ${SFML_INCLUDE_DIR})
+target_include_directories(rpg PUBLIC libs/ ${SFML_INCLUDE_DIR})
 target_link_libraries(rpg sfml-graphics sfml-audio  ${SFML_DEPENDENCIES})
 
 
