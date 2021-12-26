@@ -36,7 +36,7 @@ class Villager : public Entity {
 	void move(TileMap* map) {
 		setTileOccupation(map, false);
 		currentDirection = nextDirection();
-		animation.next(currentDirection, map, stepsize, animation.get_position(), nullptr);
+		animation.next(currentDirection, map, stepsize, animation.get_position());
 		setTileOccupation(map, true);
 	};
 

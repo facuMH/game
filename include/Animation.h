@@ -25,37 +25,34 @@ class Animation {
 	void set_texture(const sf::Texture* new_texture) { sprite.setTexture(*new_texture); }
 
 	// Helper function for moving the player, getting the new animation texture and moving the view accordingly
-	void moveCharacterAndView(const Position& offset, int newTextureRect, sf::View* view, TileMap* map) {
+	void moveCharacterAndView(const Position& offset, int newTextureRect, TileMap* map) {
 		auto nextPosition = sprite.getPosition() + offset;
 		if(map->hasNoCollision(nextPosition)) {
 			sprite.move(offset);
-			if(view != nullptr) {
-				view->setCenter(sprite.getPosition());
-			}
 		}
 		texture_rectangle.left = newTextureRect;
 		texture_rectangle.top = int(texture_rectangle.top + texture_rectangle.height) % 64; // num of bits
 		sprite.setTextureRect(texture_rectangle);
 	}
 
-	Position next(KeyAction nextDirection, TileMap* map, float stepsize, Position position, sf::View* view) {
+	Position next(KeyAction nextDirection, TileMap* map, float stepsize, Position position) {
 		Position offset;
 		switch(nextDirection) {
 		case KeyAction::UP:
 			offset = {0.0f, -stepsize};
-			moveCharacterAndView(offset, texture_rectangle.width, view, map);
+			moveCharacterAndView(offset, texture_rectangle.width, map);
 			break;
 		case KeyAction::DOWN:
 			offset = {0.0f, stepsize};
-			moveCharacterAndView(offset, 0, view, map);
+			moveCharacterAndView(offset, 0, map);
 			break;
 		case KeyAction::RIGHT:
 			offset = {stepsize, 0.0f};
-			moveCharacterAndView({stepsize, 0.0f}, 3 * texture_rectangle.width, view, map);
+			moveCharacterAndView({stepsize, 0.0f}, 3 * texture_rectangle.width, map);
 			break;
 		case KeyAction::LEFT:
 			offset = {-stepsize, 0.0f};
-			moveCharacterAndView({-stepsize, 0.0f}, 2 * texture_rectangle.width, view, map);
+			moveCharacterAndView({-stepsize, 0.0f}, 2 * texture_rectangle.width, map);
 			break;
 		}
 		return position + offset;

@@ -17,8 +17,8 @@ void Player::equip(Weapon* arms) {
 	}
 }
 
-void Player::move(const KeyAction key, sf::View* view, TileMap* map) {
+void Player::move(const KeyAction key, TileMap* map) {
 	setTileOccupation(map, false);
-	animation.next(key, map, 5.0f, animation.get_position(), view);
+	animation.next(key, map, 5.0f, animation.get_position());
 	setTileOccupation(map, true);
 }

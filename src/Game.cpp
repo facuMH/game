@@ -126,7 +126,6 @@ void Game::makeNewCombat(const int numberOfEnemies) {
 	Party party{*dynamic_cast<GameState*>(states.top())->getPlayer()};
 	turnOffMusic();
 	states.push(new CombatState(window, assetsManager, mapTexture, *design, party, enemies, &keyBindings));
-	in_combat = true;
 }
 
 // Functions
@@ -178,7 +177,6 @@ void Game::pollEvents() {
 				if(action == StateAction::EXIT_COMBAT) {
 					// calling quitStateActions here is only for debug reasons
 					states.top()->quitStateActions();
-					in_combat = false;
 				}
 				break;
 			}
