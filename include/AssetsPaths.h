@@ -48,9 +48,17 @@ constexpr auto MOLE = cat(ENEMIES.c, "Mole.png");
 constexpr auto TILES = cat(ASSETS, "tiles/");
 constexpr auto MAP_LEVEL1 = cat(TILES.c, "map1.json");
 constexpr auto COMBAT_LEVEL1 = cat(TILES.c, "combatArena.json");
+constexpr auto HOUSE1 = cat(TILES.c, "house1.json");
+constexpr auto HOUSE2 = cat(TILES.c, "house2.json");
+constexpr auto HOUSE3 = cat(TILES.c, "house3.json");
+constexpr auto HOUSE4 = cat(TILES.c, "house4.json");
+
 constexpr auto TILESHEET_FLOOR = cat(TILES.c, "TilesetFloor.png");
 constexpr auto TILESHEET_NATURE = cat(TILES.c, "TilesetNature.png");
 constexpr auto TILESHEET_HOUSES = cat(TILES.c, "TilesetHouse.png");
+constexpr auto TILESHEET_FURNITURE = cat(TILES.c, "TilesetFurniture.png");
+constexpr auto TILESHEET_INTERIOR_FLOOR = cat(TILES.c, "TilesetInteriorFloor.png");
+
 
 // ---- CONFIG
 constexpr char CONFIG[] = "../config/";

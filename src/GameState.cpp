@@ -8,13 +8,15 @@
 #include "GameState.h"
 
 GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vector<MapBackground*> textureSheets,
-    JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player, Villagers& _villagers, Enemies& _enemies, MusicPath& _musicPath)
+    JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player, Villagers& _villagers, Enemies& _enemies,
+    MusicPath& _musicPath, bool _isHouse)
     : State(window), map(gameAM, textureSheets, path) {
 	am = &gameAM;
 	keybinds = gameSupportedKeys;
 	player = _player;
 	villagers = _villagers;
 	enemies = _enemies;
+	isHouse = _isHouse;
 	soundBuffer = am->getSoundBuffer(GASP.c);
 	gaspSound.setBuffer(soundBuffer);
 	previousKey = sf::Keyboard::Unknown;
@@ -58,6 +60,18 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 			if(previousKey != key) {
 				// play gasping gaspSound each time the player changes direction
 				gaspSound.play();
+			}
+			if(player.playerOnDoor(&map) != 0) {
+				if(!isHouse) {
+					switch(player.playerOnDoor(&map)) {
+					case 1: result = StateAction::START_HOUSE1; break;
+					case 2: result = StateAction::START_HOUSE2; break;
+					case 3: result = StateAction::START_HOUSE3; break;
+					case 4: result = StateAction::START_HOUSE4; break;
+					}
+				} else {
+					result = StateAction::EXIT_HOUSE;
+				}
 			}
 			previousKey = key;
 		default: break;

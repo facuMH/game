@@ -14,6 +14,8 @@ void Game::initVariables() {
 	Texture* play_text = assetsManager.getTexture(NINJA_WALK.c);
 	Animation player_animation(play_text, sf::IntRect(0, 0, TILESIZE, TILESIZE), Position(50, 50));
 	player = Player("Adventurer", Stats(15, 20, 50, 30), player_animation);
+
+	houseManager.initHouses(assetsManager);
 }
 
 void Game::closeWindow() {
@@ -147,7 +149,7 @@ void Game::makeMainMapGame() {
 	    {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_FLOOR.c),
 	        assetsManager.getMap(TILESHEET_HOUSES.c), assetsManager.getMap(TILESHEET_NATURE.c)},
 	    *assetsManager.getMapDesign(MAP_LEVEL1.c), &keyBindings, player, villagers, enemies,
-	    *assetsManager.getMusic(VILLAGE_MUSIC.c)));
+	    *assetsManager.getMusic(VILLAGE_MUSIC.c), false));
 }
 
 Villager Game::createVillager(
@@ -161,6 +163,15 @@ Villager Game::createVillager(
 		endPosition = {position.x, position.y + 60};
 	}
 	return {anim, name, movementDirection, endPosition, stepsize};
+}
+
+void Game::makeNewHouseState(int doorNum) {
+	House house = houseManager.getHouse(doorNum);
+	Villagers villagers;
+	Enemies enemies;
+	enemies.push_back(house.enemy);
+	states.push(new GameState(window, assetsManager, house.tileSheets, house.houseDesignPath, &keyBindings, player,
+	    villagers, enemies, *assetsManager.getMusic(VILLAGE_MUSIC.c), true));
 }
 
 
@@ -202,6 +213,22 @@ void Game::pollEvents() {
 				break;
 			default:
 				action = states.top()->handleKeys(event.key.code);
+				if(action == StateAction::START_HOUSE1) {
+					turnOffMusic();
+					makeNewHouseState(1);
+				}
+				if (action == StateAction::START_HOUSE2) {
+					turnOffMusic();
+					makeNewHouseState(2);
+				}
+				if (action == StateAction::START_HOUSE3) {
+					turnOffMusic();
+					makeNewHouseState(3);
+				}
+				if (action == StateAction::START_HOUSE4) {
+					turnOffMusic();
+					makeNewHouseState(4);
+				}
 				if(action == StateAction::START_COMBAT) {
 					makeNewCombat(1);
 				}

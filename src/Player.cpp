@@ -22,3 +22,7 @@ void Player::move(const KeyAction key, TileMap* map) {
 	animation.next(key, map, 5.0f, animation.get_position());
 	setTileOccupation(map, true);
 }
+
+int Player::playerOnDoor(TileMap* map) {
+	return map->getTileDoorNumber(animation.get_position());
+}

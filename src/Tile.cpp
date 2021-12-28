@@ -11,6 +11,7 @@ Tile::Tile(tson::TileObject* tileObject, MapBackground* textureSheet) {
 	shape.setTexture(textureSheet);
 	shape.setTextureRect(intRect);
 	is_solid = false;
+	doorNum = 0;
 }
 
 Tile::~Tile() = default;

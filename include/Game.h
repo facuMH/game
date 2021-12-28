@@ -12,6 +12,7 @@
 #include "GameState.h"
 #include "MainMenuState.h"
 #include "definitions.h"
+#include "HouseManager.h"
 
 /*
  * Wrapper class acting as game engine.
@@ -39,6 +40,7 @@ class Game {
 	sf::Text mousePosText;
 
 	Player player;
+	HouseManager houseManager;
 
 	// Stack of states - the top entry is the active state, i.e. [main menu,
 	// map-layer, fight-layer]: If the fight layer is left, the next active state
@@ -49,6 +51,7 @@ class Game {
 
 	void makeNewCombat(int numberOfEnemies);
 	void makeMainMapGame();
+	void makeNewHouseState(int doorNum);
 	Villager createVillager(
 	    const std::string& textureName, Name name, Position position, MovementType movementDirection, float stepsize);
 

@@ -14,6 +14,7 @@ class GameState : public State {
 	Player player;
 	Villagers villagers;
 	Enemies enemies;
+	bool isHouse;
 
 	sf::View view;
 	AssetsManager* am;
@@ -28,7 +29,7 @@ class GameState : public State {
   public:
 	// Constructor
 	GameState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets,
-	    JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player, Villagers& _villagers, Enemies& _enemies, MusicPath& musicPath);
+	    JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player, Villagers& _villagers, Enemies& _enemies, MusicPath& musicPath, bool isHouse);
 	// Destructor
 	~GameState() override;
 
