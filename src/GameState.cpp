@@ -62,9 +62,9 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 				// play gasping gaspSound each time the player changes direction
 				gaspSound.play();
 			}
-			if(player.playerOnDoor(&map) != 0) {
+			if(player.getDoorNumberOfTile(&map) != 0) {
 				if(!isHouse) {
-					switch(player.playerOnDoor(&map)) {
+					switch(player.getDoorNumberOfTile(&map)) {
 					case 1: result = StateAction::START_HOUSE1; break;
 					case 2: result = StateAction::START_HOUSE2; break;
 					case 3: result = StateAction::START_HOUSE3; break;
