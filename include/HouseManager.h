@@ -11,5 +11,5 @@ class HouseManager {
 
   private:
 	std::unordered_map<int, House> houses;
-
+	Enemy makeEnemy(Name name, Texture* texture, Position position);
 };

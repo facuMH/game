@@ -20,7 +20,8 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 	soundBuffer = am->getSoundBuffer(GASP.c);
 	gaspSound.setBuffer(soundBuffer);
 	previousKey = sf::Keyboard::Unknown;
-	view = sf::View(player.get_position(), {float(window->getSize().x), float(window->getSize().y)});
+	//view = sf::View(player.get_position(), {float(window->getSize().x), float(window->getSize().y)});
+	view = sf::View(player.get_position(), {720.0, 480.0});
 	MusicPath* musicPath = gameAM.getMusic(_musicPath);
 	music.openFromFile(*musicPath);
 	music.setLoop(true);
@@ -68,6 +69,9 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 					case 2: result = StateAction::START_HOUSE2; break;
 					case 3: result = StateAction::START_HOUSE3; break;
 					case 4: result = StateAction::START_HOUSE4; break;
+					case 5: result = StateAction::START_HOUSE5; break;
+					case 6: result = StateAction::START_HOUSE6; break;
+
 					}
 				} else {
 					result = StateAction::EXIT_HOUSE;

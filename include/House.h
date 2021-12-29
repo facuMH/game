@@ -6,16 +6,12 @@
 
 class House {
   public:
-	int doorNum;
-	Enemy enemy;
-	std::vector<MapBackground*> tileSheets;
+	EnemyData enemyData;
 	JSONFilePath houseDesignPath;
 	Position enterPosition;
 
-	House(int _doorNum, Enemy _enemy, std::vector<MapBackground*> _tileSheets, JSONFilePath& _houseDesignPath, Position _enterPosition) {
-		doorNum = _doorNum;
-		enemy = _enemy;
-		tileSheets = _tileSheets;
+	House(EnemyData _enemyData, JSONFilePath& _houseDesignPath, Position _enterPosition) {
+		enemyData = _enemyData;
 		houseDesignPath = _houseDesignPath;
 		enterPosition = _enterPosition;
 	};

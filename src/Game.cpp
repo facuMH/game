@@ -166,12 +166,19 @@ Villager Game::createVillager(
 }
 
 void Game::makeNewHouseState(int doorNum) {
+	std::vector<MapBackground*> tileSheets = {assetsManager.getMap(TILESHEET_INTERIOR_FLOOR.c),
+	    assetsManager.getMap(TILESHEET_INTERIOR_FLOOR.c), assetsManager.getMap(TILESHEET_FURNITURE.c)};
 	House house = houseManager.getHouse(doorNum);
 	Villagers villagers;
 	Enemies enemies;
-	enemies.push_back(house.enemy);
-	states.push(new GameState(window, assetsManager, house.tileSheets, house.houseDesignPath, &keyBindings, player,
-	    villagers, enemies, *assetsManager.getMusic(VILLAGE_MUSIC.c), true));
+
+	Texture* enemy_texture = assetsManager.getTexture(house.enemyData.texturePath);
+	Animation enemy_animation(enemy_texture, sf::IntRect(0, 0, TILESIZE, TILESIZE), house.enemyData.position);
+	Enemy enemy(house.enemyData.name, Stats(15, 25, 50, 30), enemy_animation);
+	enemies.push_back(enemy);
+
+	states.push(new GameState(window, assetsManager, tileSheets, house.houseDesignPath, &keyBindings, player,
+	    villagers, enemies, *assetsManager.getMusic(HOUSE_MUSIC.c), true));
 }
 
 
@@ -228,6 +235,19 @@ void Game::pollEvents() {
 				if (action == StateAction::START_HOUSE4) {
 					turnOffMusic();
 					makeNewHouseState(4);
+				}
+				if (action == StateAction::START_HOUSE5) {
+					turnOffMusic();
+					makeNewHouseState(5);
+				}
+				if (action == StateAction::START_HOUSE6) {
+					turnOffMusic();
+					makeNewHouseState(6);
+				}
+				if (action == StateAction::EXIT_HOUSE) {
+					turnOffMusic();
+					states.pop();
+					states.top()->resumeMusic();
 				}
 				if(action == StateAction::START_COMBAT) {
 					makeNewCombat(1);

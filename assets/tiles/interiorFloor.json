@@ -309,7 +309,7 @@
                 {
                  "name":"door",
                  "type":"int",
-                 "value":0
+                 "value":4
                 }, 
                 {
                  "name":"isBlocked",
@@ -3221,7 +3221,7 @@
                 {
                  "name":"door",
                  "type":"int",
-                 "value":0
+                 "value":3
                 }, 
                 {
                  "name":"isBlocked",
@@ -3403,7 +3403,7 @@
                 {
                  "name":"door",
                  "type":"int",
-                 "value":0
+                 "value":5
                 }, 
                 {
                  "name":"isBlocked",
@@ -3557,7 +3557,7 @@
                 {
                  "name":"door",
                  "type":"int",
-                 "value":0
+                 "value":2
                 }, 
                 {
                  "name":"isBlocked",
@@ -4943,7 +4943,7 @@
                 {
                  "name":"door",
                  "type":"int",
-                 "value":0
+                 "value":3
                 }, 
                 {
                  "name":"isBlocked",

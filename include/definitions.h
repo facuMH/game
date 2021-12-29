@@ -18,6 +18,8 @@ enum class StateAction {
 	START_HOUSE2,
 	START_HOUSE3,
 	START_HOUSE4,
+	START_HOUSE5,
+	START_HOUSE6,
 	EXIT_COMBAT,
 	EXIT_GAME,
 	EXIT_SETTING,
@@ -65,6 +67,12 @@ struct Stats {
 	int hp = 0;   // Health Points - Life
 	int mana = 0; // Magic Energy
 	Stats(const int s, const int d, const int h, const int m) : str(s), dex(d), hp(h), mana(m) {}
+};
+
+struct EnemyData {
+	Name name;
+	std::string texturePath;
+	Position position;
 };
 
 const sf::Color GREY = sf::Color(70, 70, 70, 200);
