@@ -21,7 +21,6 @@ set(SOURCES src/main.cpp
         src/CombatState.cpp
         src/Game.cpp
         src/GameState.cpp
-        src/House.cpp
         src/HouseManager.cpp
         src/MainMenuState.cpp
         src/Player.cpp
