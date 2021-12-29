@@ -10,23 +10,34 @@
 class CombatState : public State {
   private:
 	sf::View view;
+
+	sf::SoundBuffer soundBuffer;
+	sf::Sound sound;
+	sf::Music music;
+	sf::Font font;
+
 	Party party;
 	Enemies enemies;
 	TileMap map;
-	CombatText lifeCounters;
+
 	KeyList* keybinds;
+
+	CombatText lifeCounters;
 	void addCombatString(const Player& player, AssetsManager& am, const int i);
-	sf::SoundBuffer soundBuffer;
-	sf::Sound sound;
 	Position initialText{50.f, 300.f};
 	float textIntervalHeight = 50;
-	sf::Music music;
+
 	std::vector<Entity*> turnList;
 	int currentCharacterTurn;
+	bool nextTurn;
+
 	Animation cursor;
 	int curosrOrientation;
 	sf::Clock cursorClock;
-	bool nextTurn;
+
+	void addActionMenu(const sf::RenderWindow* window);
+	Buttons actionButtons;
+	int actionButtonActive;
 
   public:
 	// Constructor

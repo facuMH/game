@@ -11,11 +11,31 @@ void CombatState::addCombatString(const Player& player, AssetsManager& am, const
 
 	characterInfo.setOutlineColor(sf::Color::Black);
 	characterInfo.setFillColor(sf::Color::Black);
-	characterInfo.setFont(*am.getFont(ALEX.c));
+	characterInfo.setFont(font);
 	characterInfo.setString(player.name + std::string(" HP:") + std::to_string(player.currentStats.hp) + "/"
 	                        + std::to_string(player.maxStats.hp));
 	lifeCounters.emplace(
 	    player.name, Button(initialText.x + i * textIntervalHeight, initialText.y, 200, 50, characterInfo));
+}
+
+void CombatState::addActionMenu(const sf::RenderWindow* window) {
+	auto center = Position{320, 300};
+	center.y = center.y * 0.75f;
+	unsigned int bWidth = 150;
+	unsigned int bHeight = 40;
+	actionButtons.push_back(
+	    Button(center.x, center.y, bWidth, bHeight, &font, "Attack", DARKBLUE, LIGHTGREY, sf::Color::Black));
+	center.y += bHeight;
+	actionButtons.push_back(
+	    Button(center.x, center.y, bWidth, bHeight, &font, "Special", DARKBLUE, LIGHTGREY, sf::Color::Black));
+	center.y += bHeight;
+	actionButtons.push_back(
+	    Button(center.x, center.y, bWidth, bHeight, &font, "Item", DARKBLUE, LIGHTGREY, sf::Color::Black));
+	center.y += bHeight;
+	actionButtons.push_back(
+	    Button(center.x, center.y, bWidth, bHeight, &font, "Skip", DARKBLUE, LIGHTGREY, sf::Color::Black));
+	actionButtonActive = 0;
+	actionButtons[actionButtonActive].setActive();
 }
 
 CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets,
@@ -25,6 +45,8 @@ CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, std::vecto
 	view = window->getDefaultView();
 	view.setSize(size);
 	view.setCenter({size.x / 2.f, size.y / 2.f});
+
+	initialText.y = window->getSize().y / 2;
 
 	keybinds = gameSupportedKeys;
 	std::map<int, Entity*> turnMap;
@@ -54,15 +76,17 @@ CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, std::vecto
 	music.openFromFile(*musicPath);
 	music.setLoop(true);
 	music.play();
+
 	// hand poiting at first character
 	auto cursorPosition = turnList[0]->animation.get_position();
-	// cursorPosition.x -= 30; // width
-	// cursorPosition.y *= 0.5; // height
 	cursor = Animation(am.getTexture(HAND.c), {40, 30, 40, 65}, cursorPosition);
 	cursor.sprite.setScale({0.7, 0.7});
 	cursor.sprite.setRotation(90.f);
 	curosrOrientation = -1;
 	nextTurn = false;
+
+	font = *am.getFont(ALEX.c);
+	addActionMenu(window);
 }
 
 CombatState::~CombatState() = default;
@@ -74,7 +98,7 @@ void CombatState::update(const float& dt) {
 		cursorClock.restart();
 	}
 	if(nextTurn) {
-		currentCharacterTurn = (currentCharacterTurn + 1) % turnList.size();
+		currentCharacterTurn = ((int)currentCharacterTurn + 1) % turnList.size();
 		cursor.set_position(turnList[currentCharacterTurn]->animation.get_position());
 		nextTurn = false;
 	}
@@ -89,6 +113,9 @@ void CombatState::render(sf::RenderWindow* window) {
 		character.second.render(window);
 	}
 	window->draw(cursor.sprite);
+	for(auto b : actionButtons) {
+		b.render(window);
+	}
 }
 
 void CombatState::updateKeybinds(const float& dt) {}
@@ -113,27 +140,22 @@ StateAction CombatState::handleKeys(const sf::Keyboard::Key key) {
 	if(action != keybinds->end()) {
 		switch(action->first) {
 		case KeyAction::UP:
-			/* buttons[activeButton].setInactive();
-			if(activeButton == 0) {
-			    activeButton = MAX_BUTTONS - 1;
+			actionButtons[actionButtonActive].setInactive();
+			if(actionButtonActive == 0) {
+				actionButtonActive = actionButtons.size() - 1;
 			} else {
-			    activeButton--;
+				actionButtonActive--;
 			}
-			buttons[activeButton].setActive();*/
+			actionButtons[actionButtonActive].setActive();
 			break;
 		case KeyAction::DOWN:
-			/* buttons[activeButton].setInactive();
-			if(activeButton == MAX_BUTTONS - 1) {
-			    activeButton = 0;
+			actionButtons[actionButtonActive].setInactive();
+			if(actionButtonActive == actionButtons.size() - 1) {
+				actionButtonActive = 0;
 			} else {
-			    activeButton++;
+				actionButtonActive++;
 			}
-			buttons[activeButton].setActive();
-			break;*/
-		case KeyAction::SELECT:
-			// select action - if possible
-			// maybe start combat animation or something
-			nextTurn = true;
+			actionButtons[actionButtonActive].setActive();
 			break;
 		default: break;
 		}
@@ -157,6 +179,9 @@ StateAction CombatState::handleKeys(const sf::Keyboard::Key key) {
 
 StateAction CombatState::shouldAct() {
 	// depending on selected action this should trigger attack animation, use item animation, etc.
+	if(actionButtonActive == 0) {
+		nextTurn = true;
+	}
 	return StateAction::NONE;
 }
 
