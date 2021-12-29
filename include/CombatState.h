@@ -21,6 +21,12 @@ class CombatState : public State {
 	Position initialText{50.f, 300.f};
 	float textIntervalHeight = 50;
 	sf::Music music;
+	std::vector<Entity*> turnList;
+	int currentCharacterTurn;
+	Animation cursor;
+	int curosrOrientation;
+	sf::Clock cursorClock;
+	bool nextTurn;
 
   public:
 	// Constructor

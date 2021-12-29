@@ -16,5 +16,4 @@ class Enemy : public Entity {
 
 	Stats currentStats;
 	Stats maxStats;
-	Weapon* weapon = nullptr;
 };

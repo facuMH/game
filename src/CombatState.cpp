@@ -1,8 +1,10 @@
-#include "CombatState.h"
+#include <map>
+
 #include "AssetsPaths.h"
 #include "Button.h"
+#include "CombatState.h"
+#include "Player.h"
 #include "definitions.h"
-#include <Player.h>
 
 void CombatState::addCombatString(const Player& player, AssetsManager& am, const int i) {
 	sf::Text characterInfo{};
@@ -25,7 +27,7 @@ CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, std::vecto
 	view.setCenter({size.x / 2.f, size.y / 2.f});
 
 	keybinds = gameSupportedKeys;
-
+	std::map<int, Entity*> turnMap;
 	party = p;
 	enemies = e;
 	std::cout << "New Combat\n";
@@ -35,22 +37,47 @@ CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, std::vecto
 		party[i].animation.set_position(pPos);
 		pPos.y += i * 50;
 		party[i].animation.sprite.setScale({3.f, 3.f});
+		turnMap.insert({party[i].currentStats.dex, (Entity*)(&party[i])});
 	}
 	for(int i = 0; i < enemies.size(); i++) {
 		auto ePos = COMBAT_FIRST_ENEMY_POSITION;
 		enemies[i].animation.set_position(ePos);
 		ePos.y += i * 50;
+		turnMap.insert({enemies[i].currentStats.dex, (Entity*)(&enemies[i])});
+	}
+	for(auto c : turnMap) {
+		turnList.push_back(c.second);
 	}
 
+	currentCharacterTurn = 0;
 	MusicPath* musicPath = am.getMusic(COMBAT_MUSIC.c);
 	music.openFromFile(*musicPath);
 	music.setLoop(true);
 	music.play();
+	// hand poiting at first character
+	auto cursorPosition = turnList[0]->animation.get_position();
+	// cursorPosition.x -= 30; // width
+	// cursorPosition.y *= 0.5; // height
+	cursor = Animation(am.getTexture(HAND.c), {40, 30, 40, 65}, cursorPosition);
+	cursor.sprite.setScale({0.7, 0.7});
+	cursor.sprite.setRotation(90.f);
+	curosrOrientation = -1;
+	nextTurn = false;
 }
 
 CombatState::~CombatState() = default;
 
 void CombatState::update(const float& dt) {
+	if(cursorClock.getElapsedTime().asSeconds() > 0.5f) {
+		cursor.move({(curosrOrientation)*15.f, 0});
+		curosrOrientation = curosrOrientation > 0 ? -1 : 1;
+		cursorClock.restart();
+	}
+	if(nextTurn) {
+		currentCharacterTurn = (currentCharacterTurn + 1) % turnList.size();
+		cursor.set_position(turnList[currentCharacterTurn]->animation.get_position());
+		nextTurn = false;
+	}
 	updateKeybinds(dt);
 }
 
@@ -61,6 +88,7 @@ void CombatState::render(sf::RenderWindow* window) {
 	for(auto character : lifeCounters) {
 		character.second.render(window);
 	}
+	window->draw(cursor.sprite);
 }
 
 void CombatState::updateKeybinds(const float& dt) {}
@@ -104,6 +132,8 @@ StateAction CombatState::handleKeys(const sf::Keyboard::Key key) {
 			break;*/
 		case KeyAction::SELECT:
 			// select action - if possible
+			// maybe start combat animation or something
+			nextTurn = true;
 			break;
 		default: break;
 		}

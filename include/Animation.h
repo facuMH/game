@@ -58,6 +58,12 @@ class Animation {
 		return position + offset;
 	}
 
+	void next(const Position offset) {
+		texture_rectangle.left = int(offset.x + texture_rectangle.left) % texture->getSize().x;
+		texture_rectangle.height = int(offset.y + texture_rectangle.height) % texture->getSize().y;
+		sprite.setTextureRect(texture_rectangle);
+	}
+
 	void move(const Position& offset) { sprite.move(offset); }
 
 	Position get_position() const { return sprite.getPosition(); }
