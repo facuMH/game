@@ -50,8 +50,8 @@ class Game {
 	std::stack<State*> states;
 
 	void makeNewCombat(int numberOfEnemies);
-	void makeMainMapGame();
-	void makeNewHouseState(int doorNum);
+	void makeMainGameState();
+	void makeNewHouseState(DoorNumber doorNumber);
 	Villager createVillager(
 	    const std::string& textureName, Name name, Position position, MovementType movementDirection, float stepsize);
 

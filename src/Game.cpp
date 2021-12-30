@@ -134,22 +134,17 @@ void Game::makeNewCombat(const int numberOfEnemies) {
 	states.push(new CombatState(window, assetsManager, mapTexture, *design, party, enemies, &keyBindings));
 }
 
-void Game::makeMainMapGame() {
+void Game::makeMainGameState() {
 	Villagers villagers;
-	Villager girl = createVillager(EGG_GIRL_WALK.c, "Egg Girl", Position(300, 50), MovementType::VERTICAL, 0.3f);
-	villagers.push_back(girl);
-	Villager old_man = createVillager(OLD_MAN_WALK.c, "Old Man", Position(50, 150), MovementType::HORIZONTAL, 0.4f);
-	villagers.push_back(old_man);
-	Villager princess = createVillager(PRINCESS_WALK.c, "Princess", Position(230, 150), MovementType::VERTICAL, 0.2f);
-	villagers.push_back(princess);
-
-	Enemies enemies;
+	villagers.push_back(createVillager(EGG_GIRL_WALK.c, "Egg Girl", Position(300, 50), MovementType::VERTICAL, 0.3f));
+	villagers.push_back(createVillager(OLD_MAN_WALK.c, "Old Man", Position(50, 150), MovementType::HORIZONTAL, 0.4f));
+	villagers.push_back(createVillager(PRINCESS_WALK.c, "Princess", Position(230, 150), MovementType::VERTICAL, 0.2f));
 
 	states.push(new GameState(window, assetsManager,
 	    {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_FLOOR.c),
 	        assetsManager.getMap(TILESHEET_HOUSES.c), assetsManager.getMap(TILESHEET_NATURE.c)},
-	    *assetsManager.getMapDesign(MAP_LEVEL1.c), &keyBindings, player, villagers, enemies,
-	    *assetsManager.getMusic(VILLAGE_MUSIC.c), false));
+	    *assetsManager.getMapDesign(MAP_LEVEL1.c), &keyBindings, player, villagers,
+	    *assetsManager.getMusic(VILLAGE_MUSIC.c)));
 }
 
 Villager Game::createVillager(
@@ -165,11 +160,11 @@ Villager Game::createVillager(
 	return {anim, name, movementDirection, endPosition, stepsize};
 }
 
-void Game::makeNewHouseState(int doorNum) {
+void Game::makeNewHouseState(DoorNumber doorNumber) {
+
 	std::vector<MapBackground*> tileSheets = {assetsManager.getMap(TILESHEET_INTERIOR_FLOOR.c),
 	    assetsManager.getMap(TILESHEET_INTERIOR_FLOOR.c), assetsManager.getMap(TILESHEET_FURNITURE.c)};
-	House house = houseManager.getHouse(doorNum);
-	Villagers villagers;
+	House house = houseManager.getHouse(doorNumber);
 	Enemies enemies;
 
 	Texture* enemy_texture = assetsManager.getTexture(house.enemyData.texturePath);
@@ -178,7 +173,7 @@ void Game::makeNewHouseState(int doorNum) {
 	enemies.push_back(enemy);
 
 	states.push(new GameState(window, assetsManager, tileSheets, house.houseDesignPath, &keyBindings, player,
-	    villagers, enemies, *assetsManager.getMusic(HOUSE_MUSIC.c), true));
+	    enemies, *assetsManager.getMusic(HOUSE_MUSIC.c)));
 }
 
 
@@ -209,7 +204,7 @@ void Game::pollEvents() {
 					// attributes, but returns NULL for all sheets but the first one. Therefore, all collisions are
 					// noted in the first sheet, which has to be passed twice now for the collisions to be loaded at
 					// all.
-					makeMainMapGame();
+					makeMainGameState();
 				}
 				if(action == StateAction::START_SETTING) {
 					states.push(new SettingsState(window, assetsManager, &keyBindings));

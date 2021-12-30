@@ -8,11 +8,11 @@ class House {
   public:
 	EnemyData enemyData;
 	JSONFilePath houseDesignPath;
-	Position enterPosition;
+	Position doorPosition;
 
-	House(EnemyData _enemyData, JSONFilePath& _houseDesignPath, Position _enterPosition) {
+	House(EnemyData _enemyData, JSONFilePath& _houseDesignPath, Position _doorPosition) {
 		enemyData = _enemyData;
 		houseDesignPath = _houseDesignPath;
-		enterPosition = _enterPosition;
+		doorPosition = _doorPosition;
 	};
 };

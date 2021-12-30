@@ -3,7 +3,6 @@
 
 
 void HouseManager::initHouses(AssetsManager assetsManager) {
-
 	EnemyData enemyData1 = {"Mole", MOLE.c, {30, 30}};
 	House house1 = House(enemyData1, *assetsManager.getMapDesign(HOUSE1.c), {60, 68});
 	houses.emplace(1, house1);

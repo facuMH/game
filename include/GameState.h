@@ -27,9 +27,12 @@ class GameState : public State {
 	sf::Keyboard::Key previousKey;
 
   public:
-	// Constructor
+	// Constructors
 	GameState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets,
-	    JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player, Villagers& _villagers, Enemies& _enemies, MusicPath& musicPath, bool isHouse);
+	    JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player, Villagers& _villagers, MusicPath& musicPath);
+
+	GameState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets,
+	    JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player, Enemies& _enemies, MusicPath& musicPath);
 	// Destructor
 	~GameState() override;
 

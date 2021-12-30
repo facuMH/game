@@ -7,16 +7,37 @@
 #include "AssetsPaths.h"
 #include "GameState.h"
 
+/// Constructor for village GameState: There are several villagers, but no enemies, as they hide in the housees
 GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vector<MapBackground*> textureSheets,
-    JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player, Villagers& _villagers, Enemies& _enemies,
-    MusicPath& _musicPath, bool _isHouse)
+    JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player, Villagers& _villagers,
+    MusicPath& _musicPath)
     : State(window), map(gameAM, textureSheets, path) {
 	am = &gameAM;
 	keybinds = gameSupportedKeys;
 	player = _player;
 	villagers = _villagers;
+	isHouse = false;
+	soundBuffer = am->getSoundBuffer(GASP.c);
+	gaspSound.setBuffer(soundBuffer);
+	previousKey = sf::Keyboard::Unknown;
+	//view = sf::View(player.get_position(), {float(window->getSize().x), float(window->getSize().y)});
+	view = sf::View(player.get_position(), {720.0, 480.0});
+	MusicPath* musicPath = gameAM.getMusic(_musicPath);
+	music.openFromFile(*musicPath);
+	music.setLoop(true);
+	music.play();
+}
+
+/// Constructor for house GameState: No villagers here, but monsters
+GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vector<MapBackground*> textureSheets,
+    JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player, Enemies& _enemies,
+    MusicPath& _musicPath)
+    : State(window), map(gameAM, textureSheets, path) {
+	am = &gameAM;
+	keybinds = gameSupportedKeys;
+	player = _player;
 	enemies = _enemies;
-	isHouse = _isHouse;
+	isHouse = true;
 	soundBuffer = am->getSoundBuffer(GASP.c);
 	gaspSound.setBuffer(soundBuffer);
 	previousKey = sf::Keyboard::Unknown;
@@ -57,7 +78,7 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 		case KeyAction::LEFT:
 			player.animation.set_texture(am->getTexture(NINJA_WALK.c));
 			player.move(action->first, &map);
-			view.setCenter(player.animation.get_position());
+			view.setCenter(player.get_position());
 			if(previousKey != key) {
 				// play gasping gaspSound each time the player changes direction
 				gaspSound.play();
@@ -78,6 +99,7 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 			}
 			previousKey = key;
 		default:
+			std::cout << player.animation.get_position().x << " " << player.animation.get_position().y << std::endl;
 			break;
 		}
 	}
