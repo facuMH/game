@@ -6,7 +6,7 @@
 #include "SettingsState.h"
 #include "definitions.h"
 
-constexpr int MAX_BUTTONS = 3;
+constexpr int MAX_BUTTONS = 4;
 
 class MainMenuState : public State {
   private:

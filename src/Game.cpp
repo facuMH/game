@@ -6,6 +6,7 @@
 #include "CombatState.h"
 #include "Game.h"
 #include "SettingsState.h"
+#include "PauseGameState.h"
 
 // Private functions
 void Game::initVariables() {
@@ -162,6 +163,11 @@ void Game::pollEvents() {
 				if(action == StateAction::START_SETTING) {
 					states.push(new SettingsState(window, assetsManager, &keyBindings));
 				}
+				if(action == StateAction::LOAD_GAME) {
+					std::cout << "File:" << __FILE__ << ", Line:" << __LINE__ << std::endl;
+					//states.push(new LoadGameState(window, assetsManager, &keyBindings));
+					std::cout << "File:" << __FILE__ << ", Line:" << __LINE__ << std::endl;
+				}
 				if(action == StateAction::EXIT_SETTING) {
 					states.pop();
 				}
@@ -170,6 +176,16 @@ void Game::pollEvents() {
 				action = states.top()->handleKeys(event.key.code);
 				if(action == StateAction::START_COMBAT) {
 					makeNewCombat(1);
+				}
+				if(action == StateAction::PAUSE_GAME) {
+					std::cout << "File:" << __FILE__ << ", Line:" << __LINE__ << std::endl;
+					states.push(new PauseGameState(window, assetsManager, &keyBindings));
+					std::cout << "File:" << __FILE__ << ", Line:" << __LINE__ << std::endl;
+				}
+				if(action == StateAction::RESUME_GAME) {
+					std::cout << "File:" << __FILE__ << ", Line:" << __LINE__ << std::endl;
+					//states.push(new LoadGameState(window, assetsManager, &keyBindings));
+					std::cout << "File:" << __FILE__ << ", Line:" << __LINE__ << std::endl;
 				}
 				if(action == StateAction::EXIT_GAME) {
 					closeWindow();
@@ -248,6 +264,7 @@ void Game::initKeys() {
 	keyActionString.emplace("SELECT", KeyAction::SELECT);
 	keyActionString.emplace("BACK", KeyAction::BACK);
 	keyActionString.emplace("INTERACT", KeyAction::INTERACT);
+	keyActionString.emplace("PAUSE", KeyAction::PAUSE);
 
 	std::ifstream ifs(KEYS.c);
 	std::string key;

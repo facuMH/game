@@ -71,6 +71,7 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 	    [key](const std::pair<KeyAction, sf::Keyboard::Key>& v) { return key == v.second; });
 	if(action != keybinds->end()) {
 		switch(action->first) {
+		case KeyAction::PAUSE: result = StateAction::PAUSE_GAME; std::cout << "File:" << __FILE__ << ", Line:" << __LINE__ << std::endl; break;
 		case KeyAction::BACK: result = StateAction::EXIT_GAME; break;
 		case KeyAction::UP:
 		case KeyAction::DOWN:

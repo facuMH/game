@@ -22,6 +22,7 @@ set(SOURCES src/main.cpp
         src/Game.cpp
         src/GameState.cpp
         src/MainMenuState.cpp
+        src/PauseGameState.cpp
         src/Player.cpp
         src/SettingsState.cpp
         src/State.cpp
@@ -40,6 +41,7 @@ set(HEADERS include/Animation.h
         include/GameState.h
         include/Inanimated.h
         include/MainMenuState.h
+        include/PauseGameState.h
         include/Player.h
         include/State.h
         include/SettingsState.h
