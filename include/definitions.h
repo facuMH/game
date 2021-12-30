@@ -33,6 +33,7 @@ using Position_i = sf::Vector2i;
 using Name = std::string;
 using Buttons = std::vector<Button>;
 using KeyList = std::unordered_map<KeyAction, sf::Keyboard::Key>;
+using DoorNumber = int;
 
 class Player;
 using Party = std::vector<Player>;

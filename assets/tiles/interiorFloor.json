@@ -155,7 +155,7 @@
                 {
                  "name":"door",
                  "type":"int",
-                 "value":0
+                 "value":3
                 }, 
                 {
                  "name":"isBlocked",
@@ -3291,7 +3291,7 @@
                 {
                  "name":"door",
                  "type":"int",
-                 "value":0
+                 "value":6
                 }, 
                 {
                  "name":"isBlocked",

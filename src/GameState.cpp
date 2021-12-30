@@ -62,23 +62,23 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 				// play gasping gaspSound each time the player changes direction
 				gaspSound.play();
 			}
-			if(player.getDoorNumberOfTile(&map) != 0) {
+			if(getCurrentDoorNumber(player.get_position()) != 0) {
 				if(!isHouse) {
-					switch(player.getDoorNumberOfTile(&map)) {
+					switch(getCurrentDoorNumber(player.get_position())) {
 					case 1: result = StateAction::START_HOUSE1; break;
 					case 2: result = StateAction::START_HOUSE2; break;
 					case 3: result = StateAction::START_HOUSE3; break;
 					case 4: result = StateAction::START_HOUSE4; break;
 					case 5: result = StateAction::START_HOUSE5; break;
 					case 6: result = StateAction::START_HOUSE6; break;
-
 					}
 				} else {
 					result = StateAction::EXIT_HOUSE;
 				}
 			}
 			previousKey = key;
-		default: break;
+		default:
+			break;
 		}
 	}
 	if(key == sf::Keyboard::C) result = StateAction::START_COMBAT;
@@ -109,9 +109,15 @@ void GameState::drawPlayer(sf::RenderWindow* window) {
 bool GameState::shouldQuit() {
 	return isQuit();
 }
+
 void GameState::stopMusic() {
 	music.stop();
 }
+
 void GameState::resumeMusic() {
 	music.play();
+}
+
+DoorNumber GameState::getCurrentDoorNumber(Position position) {
+	return map.getTileDoorNumber(position);
 }

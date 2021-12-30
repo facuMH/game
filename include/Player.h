@@ -33,5 +33,4 @@ class Player : public Entity {
 
 	void equip(Weapon* arms);
 	void move(KeyAction key, TileMap* map);
-	int getDoorNumberOfTile(TileMap* map);
 };

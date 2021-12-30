@@ -41,6 +41,7 @@ class GameState : public State {
 	void quitStateActions() override;
 	StateAction handleKeys(sf::Keyboard::Key key) override;
 	sf::View getView() override { return view; };
+	DoorNumber getCurrentDoorNumber(Position position);
 	void drawPlayer(sf::RenderWindow* window) override;
 	Player* getPlayer() { return &player; };
 	StateAction shouldAct() override;
