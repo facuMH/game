@@ -172,7 +172,7 @@ Villager Game::createVillager(
 	return {anim, name, movementDirection, endPosition, stepsize};
 }
 
-bool approximatelyEqual(sf::Vector2f a, sf::Vector2f b, float epsilon = 4.0f) {
+bool approximatelyEqual(sf::Vector2f a, sf::Vector2f b, float epsilon = 8.0f) {
 	return std::fabs(a.x - b.x) < epsilon && std::fabs(a.y - b.y) < epsilon;
 }
 
