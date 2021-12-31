@@ -92,7 +92,6 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 			}
 			previousKey = key;
 		default:
-			// std::cout << player.animation.get_position().x << " " << player.animation.get_position().y << std::endl;
 			break;
 		}
 	}
