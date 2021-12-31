@@ -34,6 +34,7 @@ class Game {
 
 	KeyList keyBindings;
 	std::unordered_map<std::string, KeyAction> keyActionString;
+	std::vector<std::pair<DoorNumber, Position>> housePositions;
 	AssetsManager assetsManager;
 	float dt{}; // time delta
 	Position_i mousePos;
@@ -49,9 +50,10 @@ class Game {
 	// Only instances of its child classes could be put on the stack directly.
 	std::stack<State*> states;
 
+
 	void makeNewCombat(int numberOfEnemies);
 	void makeMainGameState();
-	void makeNewHouseState(DoorNumber doorNumber);
+	void makeNewHouseState(Position playerPosition);
 	Villager createVillager(
 	    const std::string& textureName, Name name, Position position, MovementType movementDirection, float stepsize);
 

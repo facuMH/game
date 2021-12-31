@@ -18,11 +18,11 @@ class Tile {
   public:
 	bool is_solid;
 	bool is_occupied;
-	int doorNum;
+	DoorNumber doorNum;
 
 	Tile(tson::TileObject* tileObject, MapBackground* textureSheet);
 	virtual ~Tile();
-
+	Position get_position();
 	void update();
 	void render(sf::RenderWindow& window);
 };

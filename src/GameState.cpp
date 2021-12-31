@@ -7,7 +7,7 @@
 #include "AssetsPaths.h"
 #include "GameState.h"
 
-/// Constructor for village GameState: There are several villagers, but no enemies, as they hide in the housees
+/// Constructor for village GameState: There are several villagers, but no enemies, as they hide in the houses
 GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vector<MapBackground*> textureSheets,
     JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player, Villagers& _villagers,
     MusicPath& _musicPath)
@@ -85,21 +85,14 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 			}
 			if(getCurrentDoorNumber(player.get_position()) != 0) {
 				if(!isHouse) {
-					switch(getCurrentDoorNumber(player.get_position())) {
-					case 1: result = StateAction::START_HOUSE1; break;
-					case 2: result = StateAction::START_HOUSE2; break;
-					case 3: result = StateAction::START_HOUSE3; break;
-					case 4: result = StateAction::START_HOUSE4; break;
-					case 5: result = StateAction::START_HOUSE5; break;
-					case 6: result = StateAction::START_HOUSE6; break;
-					}
+					result = StateAction::START_HOUSE;
 				} else {
 					result = StateAction::EXIT_HOUSE;
 				}
 			}
 			previousKey = key;
 		default:
-			std::cout << player.animation.get_position().x << " " << player.animation.get_position().y << std::endl;
+			// std::cout << player.animation.get_position().x << " " << player.animation.get_position().y << std::endl;
 			break;
 		}
 	}
@@ -142,4 +135,12 @@ void GameState::resumeMusic() {
 
 DoorNumber GameState::getCurrentDoorNumber(Position position) {
 	return map.getTileDoorNumber(position);
+}
+
+std::vector<std::pair<DoorNumber, Position>> GameState::listHousePositions() {
+	return map.getHousePositions();
+}
+
+Position GameState::getCurrentPlayerPosition() {
+	return player.get_position();
 }

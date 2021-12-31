@@ -19,10 +19,10 @@ class TileMap {
 	TileMap(AssetsManager& am, std::vector<MapBackground*> textureSheets, const JSONFilePath& designPath);
 	virtual ~TileMap();
 
-	void initializeVariables(AssetsManager& am);
 	void loadFromJson(const std::string& path, std::vector<MapBackground*> textureSheets);
 	bool hasNoCollision(Position position);
-	int getTileDoorNumber(Position position);
+	DoorNumber getTileDoorNumber(Position position);
+	std::vector<std::pair<DoorNumber, Position>> getHousePositions();
 	void setTileOccupation(Position position, bool isOccupied);
 	void render(sf::RenderWindow& window);
 };

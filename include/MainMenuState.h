@@ -55,6 +55,7 @@ class MainMenuState : public State {
 	void updateKeybinds(const float& dt) override;
 	void quitStateActions() override;
 	bool shouldQuit() override;
+	Position getCurrentPlayerPosition() override { return {0, 0}; };
 	void drawPlayer(sf::RenderWindow* window) override{};
 	StateAction shouldAct() override;
 	sf::View getView() override { return view; };

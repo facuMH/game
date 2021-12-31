@@ -4,7 +4,6 @@
 
 // Constructor
 TileMap::TileMap(AssetsManager& am, std::vector<MapBackground*> textureSheets, const JSONFilePath& designPath) {
-	initializeVariables(am);
 	loadFromJson(designPath, textureSheets);
 }
 
@@ -17,9 +16,6 @@ TileMap::~TileMap() {
 			}
 		}
 	}
-}
-
-void TileMap::initializeVariables(AssetsManager& am) {
 }
 
 void TileMap::loadFromJson(const std::string& path, std::vector<MapBackground*> textureSheets) {
@@ -69,7 +65,7 @@ void TileMap::setTileOccupation(Position position, bool isOccupied) {
 	tiles[0][tilePosX][tilePosY]->is_occupied = isOccupied;
 }
 
-int TileMap::getTileDoorNumber(Position position) {
+DoorNumber TileMap::getTileDoorNumber(Position position) {
 	int tilePosX = std::ceil(position.x / TILESIZE);
 	int tilePosY = std::ceil(position.y / TILESIZE);
 	return tiles[0][tilePosX][tilePosY]->doorNum;
@@ -83,4 +79,15 @@ void TileMap::render(sf::RenderWindow& window) {
 			}
 		}
 	}
+}
+std::vector<std::pair<DoorNumber, Position>> TileMap::getHousePositions() {
+	std::vector<std::pair<DoorNumber, Position>> positionDoorNumberVector;
+	for(int y = 0; y < mapSize.y; y++) {
+		for(int x = 0; x < mapSize.x; x++) {
+			if (tiles[0][y][x]->doorNum != 0) {
+				positionDoorNumberVector.emplace_back(tiles[0][y][x]->doorNum, tiles[0][y][x]->get_position());
+			}
+		}
+	}
+	return positionDoorNumberVector;
 }

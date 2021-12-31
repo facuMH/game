@@ -4,12 +4,11 @@
 #include "definitions.h"
 class HouseManager {
   public:
-	House getHouse(int doorNum) {
+	House getHouse(DoorNumber doorNum) {
 	    return houses.find(doorNum)->second;
 	};
 	void initHouses(AssetsManager assetsManager);
 
   private:
-	std::unordered_map<int, House> houses;
-	Enemy makeEnemy(Name name, Texture* texture, Position position);
+	std::unordered_map<DoorNumber, House> houses;
 };

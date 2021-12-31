@@ -1,3 +1,4 @@
+#include <cmath>
 #include <iostream>
 
 #include <SFML/Graphics.hpp>
@@ -140,11 +141,22 @@ void Game::makeMainGameState() {
 	villagers.push_back(createVillager(OLD_MAN_WALK.c, "Old Man", Position(50, 150), MovementType::HORIZONTAL, 0.4f));
 	villagers.push_back(createVillager(PRINCESS_WALK.c, "Princess", Position(230, 150), MovementType::VERTICAL, 0.2f));
 
-	states.push(new GameState(window, assetsManager,
+	// Optional TODO: find bug in Tileson.
+	// Comment: There's a bug in Tileson. Tile attributes, such as isBlocked are connected with the tile
+	// ID. However, the tile ID differs of tiles in the 2nd, 3rd, ... tile sheet from the original ID,
+	// because it's counted with an offset. My theory is that, internally, this ID is used to get the
+	// attributes, but returns NULL for all sheets but the first one. Therefore, all collisions are
+	// noted in the first sheet, which has to be passed twice now for the collisions to be loaded at
+	// all.
+
+	auto* mainGame = new GameState(window, assetsManager,
 	    {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_FLOOR.c),
 	        assetsManager.getMap(TILESHEET_HOUSES.c), assetsManager.getMap(TILESHEET_NATURE.c)},
 	    *assetsManager.getMapDesign(MAP_LEVEL1.c), &keyBindings, player, villagers,
-	    *assetsManager.getMusic(VILLAGE_MUSIC.c)));
+	    *assetsManager.getMusic(VILLAGE_MUSIC.c));
+
+	states.push(mainGame);
+	housePositions = mainGame->listHousePositions();
 }
 
 Villager Game::createVillager(
@@ -160,8 +172,18 @@ Villager Game::createVillager(
 	return {anim, name, movementDirection, endPosition, stepsize};
 }
 
-void Game::makeNewHouseState(DoorNumber doorNumber) {
+bool approximatelyEqual(float a, float b, float epsilon = 4.0f) {
+	return std::fabs(a - b) < epsilon;
+}
 
+void Game::makeNewHouseState(Position playerPosition) {
+	DoorNumber doorNumber = 0;
+	for(auto& hp : housePositions) {
+		auto doorPosition = hp.second;
+		if(approximatelyEqual(playerPosition.x, doorPosition.x) && approximatelyEqual(playerPosition.y, doorPosition.y)) {
+			doorNumber = hp.first;
+		}
+	}
 	std::vector<MapBackground*> tileSheets = {assetsManager.getMap(TILESHEET_INTERIOR_FLOOR.c),
 	    assetsManager.getMap(TILESHEET_INTERIOR_FLOOR.c), assetsManager.getMap(TILESHEET_FURNITURE.c)};
 	House house = houseManager.getHouse(doorNumber);
@@ -172,12 +194,9 @@ void Game::makeNewHouseState(DoorNumber doorNumber) {
 	Enemy enemy(house.enemyData.name, Stats(15, 25, 50, 30), enemy_animation);
 	enemies.push_back(enemy);
 
-	states.push(new GameState(window, assetsManager, tileSheets, house.houseDesignPath, &keyBindings, player,
-	    enemies, *assetsManager.getMusic(HOUSE_MUSIC.c)));
+	states.push(new GameState(window, assetsManager, tileSheets, house.houseDesignPath, &keyBindings, player, enemies,
+	    *assetsManager.getMusic(HOUSE_MUSIC.c)));
 }
-
-
-// Functions
 
 void Game::pollEvents() {
 	// Event polling
@@ -197,13 +216,6 @@ void Game::pollEvents() {
 				}
 				if(action == StateAction::START_GAME) {
 					turnOffMusic();
-					// Optional TODO: find bug in Tileson.
-					// Comment: There's a bug in Tileson. Tile attributes, such as isBlocked are connected with the tile
-					// ID. However, the tile ID differs of tiles in the 2nd, 3rd, ... tile sheet from the original ID,
-					// because it's counted with an offset. My theory is that, internally, this ID is used to get the
-					// attributes, but returns NULL for all sheets but the first one. Therefore, all collisions are
-					// noted in the first sheet, which has to be passed twice now for the collisions to be loaded at
-					// all.
 					makeMainGameState();
 				}
 				if(action == StateAction::START_SETTING) {
@@ -215,31 +227,11 @@ void Game::pollEvents() {
 				break;
 			default:
 				action = states.top()->handleKeys(event.key.code);
-				if(action == StateAction::START_HOUSE1) {
+				if(action == StateAction::START_HOUSE) {
 					turnOffMusic();
-					makeNewHouseState(1);
+					makeNewHouseState(states.top()->getCurrentPlayerPosition());
 				}
-				if (action == StateAction::START_HOUSE2) {
-					turnOffMusic();
-					makeNewHouseState(2);
-				}
-				if (action == StateAction::START_HOUSE3) {
-					turnOffMusic();
-					makeNewHouseState(3);
-				}
-				if (action == StateAction::START_HOUSE4) {
-					turnOffMusic();
-					makeNewHouseState(4);
-				}
-				if (action == StateAction::START_HOUSE5) {
-					turnOffMusic();
-					makeNewHouseState(5);
-				}
-				if (action == StateAction::START_HOUSE6) {
-					turnOffMusic();
-					makeNewHouseState(6);
-				}
-				if (action == StateAction::EXIT_HOUSE) {
+				if(action == StateAction::EXIT_HOUSE) {
 					turnOffMusic();
 					states.pop();
 					states.top()->resumeMusic();

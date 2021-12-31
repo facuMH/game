@@ -15,6 +15,7 @@ class GameState : public State {
 	Villagers villagers;
 	Enemies enemies;
 	bool isHouse;
+	std::unordered_map<DoorNumber, Position> housePositions;
 
 	sf::View view;
 	AssetsManager* am;
@@ -45,6 +46,8 @@ class GameState : public State {
 	StateAction handleKeys(sf::Keyboard::Key key) override;
 	sf::View getView() override { return view; };
 	DoorNumber getCurrentDoorNumber(Position position);
+	std::vector<std::pair<DoorNumber, Position>> listHousePositions();
+	Position getCurrentPlayerPosition();
 	void drawPlayer(sf::RenderWindow* window) override;
 	Player* getPlayer() { return &player; };
 	StateAction shouldAct() override;
