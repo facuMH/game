@@ -172,15 +172,15 @@ Villager Game::createVillager(
 	return {anim, name, movementDirection, endPosition, stepsize};
 }
 
-bool approximatelyEqual(float a, float b, float epsilon = 4.0f) {
-	return std::fabs(a - b) < epsilon;
+bool approximatelyEqual(sf::Vector2f a, sf::Vector2f b, float epsilon = 4.0f) {
+	return std::fabs(a.x - b.x) < epsilon && std::fabs(a.y - b.y) < epsilon;
 }
 
 void Game::makeNewHouseState(Position playerPosition) {
 	DoorNumber doorNumber = 0;
 	for(auto& hp : housePositions) {
 		auto doorPosition = hp.second;
-		if(approximatelyEqual(playerPosition.x, doorPosition.x) && approximatelyEqual(playerPosition.y, doorPosition.y)) {
+		if(approximatelyEqual(playerPosition, doorPosition)) {
 			doorNumber = hp.first;
 		}
 	}
