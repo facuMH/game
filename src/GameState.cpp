@@ -15,7 +15,7 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 
 	Texture* play_text = am->getTexture(NINJA_WALK.c);
 	Animation player_animation(play_text, sf::IntRect(0, 0, TILESIZE, TILESIZE), Position(50, 50));
-	player = Player("Adventurer", Stats(15, 20, 50, 30), player_animation);
+	player = Player("Adventurer", Stats(15, 20, 50, 30, 15, 1), player_animation);
 
 	Villager girl = createVillager(EGG_GIRL_WALK.c, "Egg Girl", Position(300, 50), MovementType::VERTICAL, 0.3f);
 	villagers.push_back(girl);

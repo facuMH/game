@@ -38,6 +38,8 @@ class CombatState : public State {
 	void addActionMenu(const sf::RenderWindow* window);
 	Buttons actionButtons;
 	int actionButtonActive;
+	bool selectingEnemy;
+	bool selectingItem;
 
   public:
 	// Constructor

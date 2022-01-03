@@ -17,3 +17,5 @@ class Enemy : public Entity {
 	Stats currentStats;
 	Stats maxStats;
 };
+
+Enemy createAlien(AssetsManager& am);

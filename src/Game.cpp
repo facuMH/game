@@ -113,9 +113,7 @@ bool Game::isRunning() const {
 }
 
 void Game::makeNewCombat(const int numberOfEnemies) {
-	Texture* alien_texture = assetsManager.getTexture(ALIEN.c);
-	Animation alien_animation(alien_texture, sf::IntRect(50, 25, 105, 145), Position(100, 100));
-	Enemy alien("Alien", Stats(15, 25, 50, 30), alien_animation);
+	Enemy alien = createAlien(assetsManager);
 	Enemies enemies{};
 	for(int i = 0; i < numberOfEnemies; i++) {
 		alien.animation.move({50, 0});
@@ -132,7 +130,7 @@ void Game::makeNewCombat(const int numberOfEnemies) {
 
 void Game::pollEvents() {
 	// Event polling
-	StateAction action;
+	StateAction action = StateAction::NONE;
 	while(window->pollEvent(event)) {
 		switch(event.type) {
 		// Event that is called when the close button is clicked
@@ -141,45 +139,34 @@ void Game::pollEvents() {
 			// Event that is called when the Escape button is pressed
 			switch(event.key.code) {
 			case sf::Keyboard::Escape: closeWindow(); break;
-			case sf::Keyboard::Enter:
-				action = states.top()->shouldAct();
-				if(action == StateAction::EXIT_GAME) {
-					closeWindow();
-				}
-				if(action == StateAction::START_GAME) {
-					turnOffMusic();
-					// Optional TODO: find bug in Tileson.
-					// Comment: There's a bug in Tileson. Tile attributes, such as isBlocked are connected with the tile
-					// ID. However, the tile ID differs of tiles in the 2nd, 3rd, ... tile sheet from the original ID,
-					// because it's counted with an offset. My theory is that, internally, this ID is used to get the
-					// attributes, but returns NULL for all sheets but the first one. Therefore, all collisions are
-					// noted in the first sheet, which has to be passed twice now for the collisions to be loaded at
-					// all.
-					states.push(new GameState(window, assetsManager,
-					    {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_FLOOR.c),
-					        assetsManager.getMap(TILESHEET_HOUSES.c), assetsManager.getMap(TILESHEET_NATURE.c)},
-					    *assetsManager.getMapDesign(MAP_LEVEL1.c), &keyBindings));
-				}
-				if(action == StateAction::START_SETTING) {
-					states.push(new SettingsState(window, assetsManager, &keyBindings));
-				}
-				if(action == StateAction::EXIT_SETTING) {
-					states.pop();
-				}
+			case sf::Keyboard::Enter: action = states.top()->shouldAct(); break;
+			default: action = states.top()->handleKeys(event.key.code); break;
+			}
+			switch(action) {
+			case StateAction::EXIT_GAME: closeWindow(); break;
+			case StateAction::START_GAME:
+				turnOffMusic();
+				// Optional TODO: find bug in Tileson.
+				// Comment: There's a bug in Tileson. Tile attributes, such as isBlocked are connected with the
+				// tile ID. However, the tile ID differs of tiles in the 2nd, 3rd, ... tile sheet from the
+				// original ID, because it's counted with an offset. My theory is that, internally, this ID is
+				// used to get the attributes, but returns NULL for all sheets but the first one. Therefore, all
+				// collisions are noted in the first sheet, which has to be passed twice now for the collisions
+				// to be loaded at all.
+				states.push(new GameState(window, assetsManager,
+				    {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_FLOOR.c),
+				        assetsManager.getMap(TILESHEET_HOUSES.c), assetsManager.getMap(TILESHEET_NATURE.c)},
+				    *assetsManager.getMapDesign(MAP_LEVEL1.c), &keyBindings));
 				break;
-			default:
-				action = states.top()->handleKeys(event.key.code);
-				if(action == StateAction::START_COMBAT) {
-					makeNewCombat(1);
-				}
-				if(action == StateAction::EXIT_GAME) {
-					closeWindow();
-				}
-				if(action == StateAction::EXIT_COMBAT) {
-					// calling quitStateActions here is only for debug reasons
-					states.top()->quitStateActions();
-				}
+			case StateAction::START_SETTING: states.push(new SettingsState(window, assetsManager, &keyBindings)); break;
+			case StateAction::EXIT_SETTING: states.pop(); break;
+
+			case StateAction::START_COMBAT: makeNewCombat(1); break;
+			case StateAction::EXIT_COMBAT:
+				// calling quitStateActions here is only for debug reasons
+				states.top()->quitStateActions();
 				break;
+			default: break;
 			}
 			break;
 		case sf::Event::MouseMoved: break;

@@ -10,7 +10,7 @@ class Player : public Entity {
 	Stats maxStats;
 	Weapon* weapon = nullptr;
 
-	Player() : maxStats(0, 0, 0, 0), currentStats(0, 0, 0, 0) {}
+	Player() {}
 	Player(Name _name, Stats _stats, Animation _animation) : maxStats(_stats), currentStats(_stats) {
 		name = _name;
 		animation = std::move(_animation);
@@ -33,4 +33,8 @@ class Player : public Entity {
 
 	void equip(Weapon* arms);
 	void move(KeyAction key, TileMap* map);
+
+	int attack() { return currentStats.str + currentStats.baseAtk; }
+	int defend() { return currentStats.dex + currentStats.armor; }
+	int atkDamage() {return currentStats.str+ weapon->getStats().str;}
 };

@@ -160,19 +160,6 @@ StateAction CombatState::handleKeys(const sf::Keyboard::Key key) {
 		default: break;
 		}
 	}
-	// this is here just as a guide for future implementation
-	/* case sf::Keyboard::Escape:
-	   // open pause menu
-	   break;
-	case sf::Keyboard::Up: // Up arrow
-	                      // switch action up
-	   break;
-	case sf::Keyboard::Down: // Down arrow
-	                        // switch action down
-	   break;
-	case sf::Keyboard::Space:
-	   // select combat action
-	   break;*/
 	if(key == sf::Keyboard::X) return StateAction::EXIT_COMBAT;
 	return StateAction::NONE;
 }
@@ -180,6 +167,15 @@ StateAction CombatState::handleKeys(const sf::Keyboard::Key key) {
 StateAction CombatState::shouldAct() {
 	// depending on selected action this should trigger attack animation, use item animation, etc.
 	if(actionButtonActive == 0) {
+		// normal attack with current weapon
+		// TODO: attack(turnList[currentCharacterTurn]);
+	} else if(actionButtonActive == 1) {
+		// special attack - consumes Magical Energy
+		// TODO: specialAttack(turnList[currentCharacterTurn]);
+	} else if(actionButtonActive == 2) {
+		// select an item to be used
+		// TODO: openUsableItemInventory(turnList[currentCharacterTurn]);
+	} else { // skip
 		nextTurn = true;
 	}
 	return StateAction::NONE;
