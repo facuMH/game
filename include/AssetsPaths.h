@@ -45,7 +45,7 @@ constexpr auto ALIEN = cat(ENEMIES.c, "alien.png");
 constexpr auto MOLE = cat(ENEMIES.c, "Mole.png");
 constexpr auto REPTILE = cat(ENEMIES.c, "Reptile.png");
 constexpr auto SKULL = cat(ENEMIES.c, "Skull.png");
-constexpr auto SLIME = cat(ENEMIES.c, "Slime.png");
+constexpr auto LIZARD = cat(ENEMIES.c, "Lizard.png");
 constexpr auto AXOLOTL = cat(ENEMIES.c, "Axolotl.png");
 constexpr auto BAMBOO = cat(ENEMIES.c, "Bamboo.png");
 

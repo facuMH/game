@@ -10,12 +10,12 @@ struct EnemyData {
 
 const EnemyData MOLE_DATA = {"Mole", MOLE.c, {30, 30}};
 const EnemyData REPTILE_DATA = {"Reptile", REPTILE.c, {30, 30}};
-const EnemyData SLIME_DATA = {"Slime", SLIME.c, {30, 30}};
+const EnemyData LIZARD_DATA = {"Lizard", LIZARD.c, {30, 30}};
 const EnemyData SKULL_DATA = {"Skull", SKULL.c, {30, 30}};
 const EnemyData BAMBOO_DATA = {"Bamboo", BAMBOO.c, {30, 30}};
 const EnemyData AXOLOTL_DATA = {"Axolotl", AXOLOTL.c, {30, 30}};
 
-const std::vector<EnemyData> ENEMYDATA {MOLE_DATA, REPTILE_DATA, SLIME_DATA, SKULL_DATA, BAMBOO_DATA, AXOLOTL_DATA};
+const std::vector<EnemyData> ENEMYDATA {MOLE_DATA, REPTILE_DATA, LIZARD_DATA, SKULL_DATA, BAMBOO_DATA, AXOLOTL_DATA};
 
 struct HouseData {
 	DoorNumber doorNumber;
