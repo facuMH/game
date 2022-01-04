@@ -19,7 +19,6 @@ ENDIF()
 set(SOURCES src/main.cpp
         src/Button.cpp
         src/CombatState.cpp
-        src/Enemy.cpp
         src/Game.cpp
         src/GameState.cpp
         src/HouseManager.cpp

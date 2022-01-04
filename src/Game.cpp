@@ -140,14 +140,12 @@ void Game::makeMainGameState() {
 	villagers.push_back(createVillager(OLD_MAN_WALK.c, "Old Man", Position(50, 150), MovementType::HORIZONTAL, 0.4f));
 	villagers.push_back(createVillager(PRINCESS_WALK.c, "Princess", Position(230, 150), MovementType::VERTICAL, 0.2f));
 
-	// Optional TODO: find bug in Tileson.
 	// Comment: There's a bug in Tileson. Tile attributes, such as isBlocked are connected with the tile
 	// ID. However, the tile ID differs of tiles in the 2nd, 3rd, ... tile sheet from the original ID,
 	// because it's counted with an offset. My theory is that, internally, this ID is used to get the
 	// attributes, but returns NULL for all sheets but the first one. Therefore, all collisions are
 	// noted in the first sheet, which has to be passed twice now for the collisions to be loaded at
 	// all.
-
 	auto* mainGame = new GameState(window, assetsManager,
 	    {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_FLOOR.c),
 	        assetsManager.getMap(TILESHEET_HOUSES.c), assetsManager.getMap(TILESHEET_NATURE.c)},

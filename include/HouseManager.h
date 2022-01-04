@@ -4,5 +4,5 @@
 #include "definitions.h"
 class HouseManager {
   public:
-	House getHouse(DoorNumber doorNum);
+	static House getHouse(DoorNumber doorNum);
 };
