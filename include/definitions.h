@@ -65,12 +65,6 @@ struct Stats {
 	Stats(const int s, const int d, const int h, const int m) : str(s), dex(d), hp(h), mana(m) {}
 };
 
-struct EnemyData {
-	Name name;
-	std::string texturePath;
-	Position position;
-};
-
 const sf::Color GREY = sf::Color(70, 70, 70, 200);
 const sf::Color LIGHTGREY = sf::Color(150, 150, 150, 255);
 

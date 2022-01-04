@@ -6,12 +6,10 @@
 
 class House {
   public:
-	EnemyData enemyData;
 	JSONFilePath houseDesignPath;
 	Position doorPosition;
 
-	House(EnemyData _enemyData, JSONFilePath& _houseDesignPath, Position _doorPosition) {
-		enemyData = _enemyData;
+	House(JSONFilePath& _houseDesignPath, Position _doorPosition) {
 		houseDesignPath = _houseDesignPath;
 		doorPosition = _doorPosition;
 	};

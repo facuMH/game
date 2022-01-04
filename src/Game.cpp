@@ -7,6 +7,7 @@
 #include "CombatState.h"
 #include "Game.h"
 #include "SettingsState.h"
+#include "asset_data.h"
 
 // Private functions
 void Game::initVariables() {
@@ -15,8 +16,6 @@ void Game::initVariables() {
 	Texture* play_text = assetsManager.getTexture(NINJA_WALK.c);
 	Animation player_animation(play_text, sf::IntRect(0, 0, TILESIZE, TILESIZE), Position(50, 50));
 	player = Player("Adventurer", Stats(15, 20, 50, 30), player_animation);
-
-	houseManager.initHouses(assetsManager);
 }
 
 void Game::closeWindow() {
@@ -189,9 +188,10 @@ void Game::makeNewHouseState(Position playerPosition) {
 	House house = houseManager.getHouse(doorNumber);
 	Enemies enemies;
 
-	Texture* enemy_texture = assetsManager.getTexture(house.enemyData.texturePath);
-	Animation enemy_animation(enemy_texture, sf::IntRect(0, 0, TILESIZE, TILESIZE), house.enemyData.position);
-	Enemy enemy(house.enemyData.name, Stats(15, 25, 50, 30), enemy_animation);
+	EnemyData enemyData = ENEMYDATA[doorNumber - 1];
+	Texture* texture = assetsManager.getTexture(enemyData.texturePath);
+	Animation animation(texture, sf::IntRect(0, 0, TILESIZE, TILESIZE), enemyData.position);
+	Enemy enemy(enemyData.name, Stats(15, 15, 15, 15), animation);
 	enemies.push_back(enemy);
 
 	states.push(new GameState(window, assetsManager, tileSheets, house.houseDesignPath, &keyBindings, player, enemies,
