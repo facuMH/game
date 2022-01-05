@@ -7,6 +7,7 @@ House HouseManager::getHouse(DoorNumber doorNum) {
 	for (auto &H : HOUSEDATA) {
 		if (H.doorNumber == doorNum) {
 			houseData = H;
+			break;
 		}
 	}
 	return {houseData.mapDesignPath, houseData.doorPosition};

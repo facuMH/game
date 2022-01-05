@@ -157,7 +157,7 @@ void Game::makeMainGameState() {
 }
 
 Villager Game::createVillager(
-    const std::string& textureName, Name name, Position position, MovementType movementDirection, float stepsize) {
+    const std::string& textureName, const Name name, const Position position, const MovementType movementDirection, const float stepsize) {
 	Texture* tex = assetsManager.getTexture(textureName);
 	Animation anim(tex, sf::IntRect(0, 0, TILESIZE, TILESIZE), position);
 	Position endPosition;
@@ -169,21 +169,22 @@ Villager Game::createVillager(
 	return {anim, name, movementDirection, endPosition, stepsize};
 }
 
-bool approximatelyEqual(sf::Vector2f a, sf::Vector2f b, float epsilon = 8.0f) {
+bool approximatelyEqual(const sf::Vector2f &a, const sf::Vector2f &b, float epsilon = 8.0f) {
 	return std::fabs(a.x - b.x) < epsilon && std::fabs(a.y - b.y) < epsilon;
 }
 
-void Game::makeNewHouseState(Position playerPosition) {
+void Game::makeNewHouseState(const Position playerPosition) {
 	DoorNumber doorNumber = 0;
 	for(auto& hp : housePositions) {
 		auto doorPosition = hp.second;
 		if(approximatelyEqual(playerPosition, doorPosition)) {
 			doorNumber = hp.first;
+			break;
 		}
 	}
 	std::vector<MapBackground*> tileSheets = {assetsManager.getMap(TILESHEET_INTERIOR_FLOOR.c),
 	    assetsManager.getMap(TILESHEET_INTERIOR_FLOOR.c), assetsManager.getMap(TILESHEET_FURNITURE.c)};
-	House house = houseManager.getHouse(doorNumber);
+	House house = HouseManager::getHouse(doorNumber);
 	Enemies enemies;
 
 	EnemyData enemyData = ENEMYDATA[doorNumber - 1];
