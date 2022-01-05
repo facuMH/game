@@ -1,6 +1,7 @@
 #pragma once
 
 #include "AssetsManager.h"
+#include "Enemy.h"
 #include "Player.h"
 #include "State.h"
 #include "TileMap.h"
@@ -11,7 +12,10 @@ class GameState : public State {
   private:
 	TileMap map;
 	Player player;
-	std::vector<Villager> villagers;
+	Villagers villagers;
+	Enemies enemies;
+	bool isHouse;
+	std::unordered_map<DoorNumber, Position> housePositions;
 
 	sf::View view;
 	AssetsManager* am;
@@ -24,9 +28,12 @@ class GameState : public State {
 	sf::Keyboard::Key previousKey;
 
   public:
-	// Constructor
+	// Constructors
 	GameState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets,
-	    JSONFilePath& path, KeyList* gameSupportedKeys);
+	    JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player, Villagers& _villagers, MusicPath& musicPath);
+
+	GameState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets,
+	    JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player, Enemies& _enemies, MusicPath& musicPath);
 	// Destructor
 	~GameState() override;
 
@@ -38,9 +45,11 @@ class GameState : public State {
 	void quitStateActions() override;
 	StateAction handleKeys(sf::Keyboard::Key key) override;
 	sf::View getView() override { return view; };
+	DoorNumber getCurrentDoorNumber(Position position);
+	std::vector<std::pair<Position, DoorNumber>> listHousePositions();
+	Position getCurrentPlayerPosition();
 	void drawPlayer(sf::RenderWindow* window) override;
 	Player* getPlayer() { return &player; };
-	Villager createVillager(const std::string& textureName, Name name, Position position, MovementType movementDirection, float stepsize);
 	StateAction shouldAct() override;
 	void stopMusic() override;
 	void resumeMusic() override;

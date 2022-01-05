@@ -1,3 +1,4 @@
+#include <cmath>
 #include <iostream>
 
 #include <SFML/Graphics.hpp>
@@ -6,10 +7,15 @@
 #include "CombatState.h"
 #include "Game.h"
 #include "SettingsState.h"
+#include "asset_data.h"
 
 // Private functions
 void Game::initVariables() {
 	window = nullptr;
+
+	Texture* play_text = assetsManager.getTexture(NINJA_WALK.c);
+	Animation player_animation(play_text, sf::IntRect(0, 0, TILESIZE, TILESIZE), Position(50, 50));
+	player = Player("Adventurer", Stats(15, 20, 50, 30), player_animation);
 }
 
 void Game::closeWindow() {
@@ -128,7 +134,68 @@ void Game::makeNewCombat(const int numberOfEnemies) {
 	states.push(new CombatState(window, assetsManager, mapTexture, *design, party, enemies, &keyBindings));
 }
 
-// Functions
+void Game::makeMainGameState() {
+	Villagers villagers;
+	villagers.push_back(createVillager(EGG_GIRL_WALK.c, "Egg Girl", Position(300, 50), MovementType::VERTICAL, 0.3f));
+	villagers.push_back(createVillager(OLD_MAN_WALK.c, "Old Man", Position(50, 150), MovementType::HORIZONTAL, 0.4f));
+	villagers.push_back(createVillager(PRINCESS_WALK.c, "Princess", Position(230, 150), MovementType::VERTICAL, 0.2f));
+
+	// Comment: There's a bug in Tileson. Tile attributes, such as isBlocked are connected with the tile
+	// ID. However, the tile ID differs of tiles in the 2nd, 3rd, ... tile sheet from the original ID,
+	// because it's counted with an offset. My theory is that, internally, this ID is used to get the
+	// attributes, but returns NULL for all sheets but the first one. Therefore, all collisions are
+	// noted in the first sheet, which has to be passed twice now for the collisions to be loaded at
+	// all.
+	auto* mainGame = new GameState(window, assetsManager,
+	    {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_FLOOR.c),
+	        assetsManager.getMap(TILESHEET_HOUSES.c), assetsManager.getMap(TILESHEET_NATURE.c)},
+	    *assetsManager.getMapDesign(MAP_LEVEL1.c), &keyBindings, player, villagers,
+	    *assetsManager.getMusic(VILLAGE_MUSIC.c));
+
+	states.push(mainGame);
+	housePositions = mainGame->listHousePositions();
+}
+
+Villager Game::createVillager(
+    const std::string& textureName, const Name name, const Position position, const MovementType movementDirection, const float stepsize) {
+	Texture* tex = assetsManager.getTexture(textureName);
+	Animation anim(tex, sf::IntRect(0, 0, TILESIZE, TILESIZE), position);
+	Position endPosition;
+	if(movementDirection == MovementType::HORIZONTAL) {
+		endPosition = {position.x + 50, position.y};
+	} else {
+		endPosition = {position.x, position.y + 60};
+	}
+	return {anim, name, movementDirection, endPosition, stepsize};
+}
+
+bool approximatelyEqual(const sf::Vector2f &a, const sf::Vector2f &b, float epsilon = 8.0f) {
+	return std::fabs(a.x - b.x) < epsilon && std::fabs(a.y - b.y) < epsilon;
+}
+
+void Game::makeNewHouseState(const Position playerPosition) {
+	DoorNumber doorNumber = 0;
+	for(auto& hp : housePositions) {
+		auto doorPosition = hp.first;
+		if(approximatelyEqual(playerPosition, doorPosition)) {
+			doorNumber = hp.second;
+			break;
+		}
+	}
+	std::vector<MapBackground*> tileSheets = {assetsManager.getMap(TILESHEET_INTERIOR_FLOOR.c),
+	    assetsManager.getMap(TILESHEET_INTERIOR_FLOOR.c), assetsManager.getMap(TILESHEET_FURNITURE.c)};
+	House house = HouseManager::getHouse(doorNumber);
+	Enemies enemies;
+
+	EnemyData enemyData = ENEMYDATA[doorNumber - 1];
+	Texture* texture = assetsManager.getTexture(enemyData.texturePath);
+	Animation animation(texture, sf::IntRect(0, 0, TILESIZE, TILESIZE), enemyData.position);
+	Enemy enemy(enemyData.name, Stats(15, 15, 15, 15), animation);
+	enemies.push_back(enemy);
+
+	states.push(new GameState(window, assetsManager, tileSheets, house.houseDesignPath, &keyBindings, player, enemies,
+	    *assetsManager.getMusic(HOUSE_MUSIC.c)));
+}
 
 void Game::pollEvents() {
 	// Event polling
@@ -148,16 +215,7 @@ void Game::pollEvents() {
 				}
 				if(action == StateAction::START_GAME) {
 					turnOffMusic();
-					// Optional TODO: find bug in Tileson.
-					// Comment: There's a bug in Tileson. Tile attributes, such as isBlocked are connected with the tile ID.
-					// However, the tile ID differs of tiles in the 2nd, 3rd, ... tile sheet from the original ID, because it's
-					// counted with an offset. My theory is that, internally, this ID is used to get the attributes, but returns
-					// NULL for all sheets but the first one. Therefore, all collisions are noted in the first sheet, which
-					// has to be passed twice now for the collisions to be loaded at all.
-					states.push(new GameState(window, assetsManager,
-					    {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_FLOOR.c),
-					        assetsManager.getMap(TILESHEET_HOUSES.c), assetsManager.getMap(TILESHEET_NATURE.c)},
-					    *assetsManager.getMapDesign(MAP_LEVEL1.c), &keyBindings));
+					makeMainGameState();
 				}
 				if(action == StateAction::START_SETTING) {
 					states.push(new SettingsState(window, assetsManager, &keyBindings));
@@ -168,6 +226,15 @@ void Game::pollEvents() {
 				break;
 			default:
 				action = states.top()->handleKeys(event.key.code);
+				if(action == StateAction::START_HOUSE) {
+					turnOffMusic();
+					makeNewHouseState(states.top()->getCurrentPlayerPosition());
+				}
+				if(action == StateAction::EXIT_HOUSE) {
+					turnOffMusic();
+					states.pop();
+					states.top()->resumeMusic();
+				}
 				if(action == StateAction::START_COMBAT) {
 					makeNewCombat(1);
 				}
