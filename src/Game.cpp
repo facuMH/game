@@ -287,7 +287,7 @@ void Game::render() {
 	window->setView(states.top()->getView());
 	if(!states.empty()) states.top()->drawPlayer(window);
 	// Window is done drawing --> display result
-	// window->draw(mousePosText);
+	window->draw(mousePosText);
 	window->display();
 }
 

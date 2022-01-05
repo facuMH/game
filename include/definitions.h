@@ -29,6 +29,7 @@ using Name = std::string;
 using Buttons = std::vector<Button>;
 using KeyList = std::unordered_map<KeyAction, sf::Keyboard::Key>;
 using DoorNumber = int;
+using DialogueArray = std::vector<std::string>;
 
 class Enemy;
 using Enemies = std::vector<Enemy>;

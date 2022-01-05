@@ -87,7 +87,6 @@ constexpr auto DIALOGUE_FONT = cat(FONTS.c, "DialogueFont.ttf");
 constexpr auto DIALOGUE = cat(ASSETS, "dialogue/");
 constexpr auto DIALOGUE_BOX = cat(DIALOGUE.c, "DialogBox.png");
 constexpr auto DIALOGUE_BOX_FACE = cat(DIALOGUE.c, "DialogBoxFaceset.png");
-
 constexpr auto DIALOGUE_ARROW = cat(DIALOGUE.c, "Arrow.png");
 
 // ---- SOUND FX
