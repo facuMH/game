@@ -176,9 +176,9 @@ bool approximatelyEqual(const sf::Vector2f &a, const sf::Vector2f &b, float epsi
 void Game::makeNewHouseState(const Position playerPosition) {
 	DoorNumber doorNumber = 0;
 	for(auto& hp : housePositions) {
-		auto doorPosition = hp.second;
+		auto doorPosition = hp.first;
 		if(approximatelyEqual(playerPosition, doorPosition)) {
-			doorNumber = hp.first;
+			doorNumber = hp.second;
 			break;
 		}
 	}

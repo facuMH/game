@@ -80,12 +80,12 @@ void TileMap::render(sf::RenderWindow& window) {
 		}
 	}
 }
-std::vector<std::pair<DoorNumber, Position>> TileMap::getHousePositions() {
-	std::vector<std::pair<DoorNumber, Position>> positionDoorNumberVector;
+std::vector<std::pair<Position, DoorNumber>> TileMap::getHousePositions() {
+	std::vector<std::pair<Position, DoorNumber>> positionDoorNumberVector;
 	for(int y = 0; y < mapSize.y; y++) {
 		for(int x = 0; x < mapSize.x; x++) {
 			if (tiles[0][y][x]->doorNum != 0) {
-				positionDoorNumberVector.emplace_back(tiles[0][y][x]->doorNum, tiles[0][y][x]->get_position());
+				positionDoorNumberVector.emplace_back(tiles[0][y][x]->get_position(), tiles[0][y][x]->doorNum);
 			}
 		}
 	}

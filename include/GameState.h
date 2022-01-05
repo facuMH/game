@@ -46,7 +46,7 @@ class GameState : public State {
 	StateAction handleKeys(sf::Keyboard::Key key) override;
 	sf::View getView() override { return view; };
 	DoorNumber getCurrentDoorNumber(Position position);
-	std::vector<std::pair<DoorNumber, Position>> listHousePositions();
+	std::vector<std::pair<Position, DoorNumber>> listHousePositions();
 	Position getCurrentPlayerPosition();
 	void drawPlayer(sf::RenderWindow* window) override;
 	Player* getPlayer() { return &player; };

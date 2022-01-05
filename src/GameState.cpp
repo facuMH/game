@@ -136,7 +136,7 @@ DoorNumber GameState::getCurrentDoorNumber(Position position) {
 	return map.getTileDoorNumber(position);
 }
 
-std::vector<std::pair<DoorNumber, Position>> GameState::listHousePositions() {
+std::vector<std::pair<Position, DoorNumber>> GameState::listHousePositions() {
 	return map.getHousePositions();
 }
 

@@ -22,7 +22,7 @@ class TileMap {
 	void loadFromJson(const std::string& path, std::vector<MapBackground*> textureSheets);
 	bool hasNoCollision(Position position);
 	DoorNumber getTileDoorNumber(Position position);
-	std::vector<std::pair<DoorNumber, Position>> getHousePositions();
+	std::vector<std::pair<Position, DoorNumber>> getHousePositions();
 	void setTileOccupation(Position position, bool isOccupied);
 	void render(sf::RenderWindow& window);
 };

@@ -34,7 +34,7 @@ class Game {
 
 	KeyList keyBindings;
 	std::unordered_map<std::string, KeyAction> keyActionString;
-	std::vector<std::pair<DoorNumber, Position>> housePositions;
+	std::vector<std::pair<Position, DoorNumber>> housePositions;
 	AssetsManager assetsManager;
 	float dt{}; // time delta
 	Position_i mousePos;
