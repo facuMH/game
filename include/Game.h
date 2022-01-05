@@ -11,6 +11,7 @@
 #include "AssetsManager.h"
 #include "GameState.h"
 #include "HouseManager.h"
+#include "InteractionManager.h"
 #include "MainMenuState.h"
 #include "definitions.h"
 
@@ -41,6 +42,7 @@ class Game {
 	sf::Text mousePosText;
 
 	Player player;
+	InteractionManager interactionManager;
 	HouseManager houseManager;
 
 	// Stack of states - the top entry is the active state, i.e. [main menu,
@@ -57,6 +59,7 @@ class Game {
 	void makeNewHouseState(Position playerPosition);
 	Villager createVillager(
 	    const std::string& textureName, Name name, Position position, MovementType movementDirection, float stepsize);
+	void interact(Name name);
 
   public:
 	// Constructor

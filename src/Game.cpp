@@ -208,6 +208,8 @@ void Game::pollEvents() {
 			switch(event.key.code) {
 			case sf::Keyboard::Escape: closeWindow(); break;
 			case sf::Keyboard::Enter: action = states.top()->shouldAct(); break;
+			case sf::Keyboard::P:
+				interact("Old Man");
 			default: action = states.top()->handleKeys(event.key.code); break;
 			}
 			switch(action) {
@@ -242,7 +244,8 @@ void Game::pollEvents() {
 			}
 			break;
 		case sf::Event::MouseMoved: break;
-		default: break;
+		default:
+			break;
 		}
 	}
 }
@@ -319,4 +322,15 @@ void Game::initKeys() {
 		}
 	}
 	ifs.close();
+}
+
+void Game::interact(Name name) {
+
+	DialogueArray dialogueArray = interactionManager.getDialogues(name);
+	sf::Text text;
+	text.setString(dialogueArray[0]);
+	text.setOutlineColor(sf::Color::Black);
+	text.setFillColor(sf::Color::Black);
+	text.setPosition(100.0f, 100.f);
+	states.top()->drawDialogue(window, assetsManager, text);
 }

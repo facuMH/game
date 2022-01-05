@@ -39,7 +39,6 @@ constexpr auto OLD_MAN_WALK = cat(OLD_MAN.c, "Walk.png");
 constexpr auto PRINCESS = cat(CHARACTER.c, "princess/");
 constexpr auto PRINCESS_WALK = cat(PRINCESS.c, "Walk.png");
 
-
 // ---- ENEMIES
 constexpr auto ENEMIES = cat(ASSETS, "enemies/");
 constexpr auto ALIEN = cat(ENEMIES.c, "alien.png");
@@ -49,8 +48,6 @@ constexpr auto SKULL = cat(ENEMIES.c, "Skull.png");
 constexpr auto LIZARD = cat(ENEMIES.c, "Lizard.png");
 constexpr auto AXOLOTL = cat(ENEMIES.c, "Axolotl.png");
 constexpr auto BAMBOO = cat(ENEMIES.c, "Bamboo.png");
-
-
 
 // ---- TILES
 constexpr auto TILES = cat(ASSETS, "tiles/");
@@ -69,7 +66,6 @@ constexpr auto TILESHEET_HOUSES = cat(TILES.c, "TilesetHouse.png");
 constexpr auto TILESHEET_FURNITURE = cat(TILES.c, "TilesetFurniture.png");
 constexpr auto TILESHEET_INTERIOR_FLOOR = cat(TILES.c, "TilesetInteriorFloor.png");
 
-
 // ---- CONFIG
 constexpr char CONFIG[] = "../config/";
 constexpr auto KEYS = cat(CONFIG, "keysbind.ini");
@@ -81,6 +77,10 @@ constexpr auto WINDOW = cat(CONFIG, "window.ini");
 constexpr auto FONTS = cat(ASSETS, "fonts/");
 constexpr auto DOSIS = cat(FONTS.c, "Dosis-Light.ttf");
 constexpr auto ALEX = cat(FONTS.c, "AlexandriaFLF.ttf");
+
+// --- DIALOGUE
+constexpr auto DIALOGUE = cat(ASSETS, "dialogue/");
+constexpr auto DIALOGUE_BOX = cat(DIALOGUE.c, "DialogBox.png");
 
 // ---- SOUND FX
 constexpr auto SOUNDS = cat(ASSETS, "sounds/");
