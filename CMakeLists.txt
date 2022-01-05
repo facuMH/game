@@ -22,6 +22,7 @@ set(SOURCES src/main.cpp
         src/Enemy.cpp
         src/Game.cpp
         src/GameState.cpp
+        src/HouseManager.cpp
         src/MainMenuState.cpp
         src/Player.cpp
         src/SettingsState.cpp
@@ -30,6 +31,7 @@ set(SOURCES src/main.cpp
         src/TileMap.cpp)
 
 set(HEADERS include/Animation.h
+        include/asset_data.h
         include/AssetsManager.h
         include/AssetsPaths.h
         include/Button.h
@@ -40,6 +42,8 @@ set(HEADERS include/Animation.h
         include/Entity.h
         include/Game.h
         include/GameState.h
+        include/House.h
+        include/HouseManager.h
         include/Inanimated.h
         include/MainMenuState.h
         include/Player.h

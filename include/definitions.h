@@ -9,7 +9,17 @@
 
 constexpr int TILESIZE = 16;
 
-enum class StateAction { NONE, START_SETTING, START_GAME, START_COMBAT, EXIT_COMBAT, EXIT_GAME, EXIT_SETTING };
+enum class StateAction {
+	NONE,
+	START_SETTING,
+	START_GAME,
+	START_COMBAT,
+	START_HOUSE,
+	EXIT_COMBAT,
+	EXIT_GAME,
+	EXIT_SETTING,
+	EXIT_HOUSE
+};
 enum class KeyAction { UP, DOWN, RIGHT, LEFT, SELECT, BACK, INTERACT };
 enum class MovementType { VERTICAL, HORIZONTAL };
 
@@ -18,11 +28,14 @@ using Position_i = sf::Vector2i;
 using Name = std::string;
 using Buttons = std::vector<Button>;
 using KeyList = std::unordered_map<KeyAction, sf::Keyboard::Key>;
+using DoorNumber = int;
 
 class Player;
+using Party = std::vector<Player>;
 class Enemy;
 using Enemies = std::vector<Enemy>;
-using Party = std::vector<Player>;
+class Villager;
+using Villagers = std::vector<Villager>;
 using CombatText = std::unordered_map<Name, Button>;
 
 class MapBackground : public sf::Texture {};
