@@ -1,6 +1,7 @@
 #pragma once
 
 #include "AssetsManager.h"
+#include "PauseMenu.h"
 #include "Player.h"
 #include "State.h"
 #include "TileMap.h"
@@ -22,6 +23,7 @@ class GameState : public State {
 	sf::Music music;
 	// just for demonstration purposes
 	sf::Keyboard::Key previousKey;
+	PauseMenu* pmenu;
 
   public:
 	// Constructor
@@ -31,6 +33,10 @@ class GameState : public State {
 	~GameState() override;
 
 	// Functions
+	void updatePauseMenuButtons();
+	void initPauseMenu();
+	void updateInput(const float & dt);
+
 	void update(const float& dt) override;
 	void render(sf::RenderWindow* window) override;
 	void updateKeybinds(const float& dt) override;

@@ -13,6 +13,8 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 	am = &gameAM;
 	keybinds = gameSupportedKeys;
 
+	initPauseMenu();
+
 	Texture* play_text = am->getTexture(NINJA_WALK.c);
 	Animation player_animation(play_text, sf::IntRect(0, 0, TILESIZE, TILESIZE), Position(50, 50));
 	player = Player("Adventurer", Stats(15, 20, 50, 30), player_animation);
@@ -49,18 +51,58 @@ Villager GameState::createVillager(
 	return {anim, name, movementDirection, endPosition, stepsize};
 }
 
-GameState::~GameState() = default;
+GameState::~GameState()
+{
+	delete pmenu;
+}
+
+void GameState::updatePauseMenuButtons()
+{
+	if (pmenu->isButtonPressed("QUIT"))
+		endState();
+}
+
+void GameState::updateInput(const float & dt)
+{
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(sf::Keyboard::T)))
+	{
+		if (!paused)
+			pauseState();
+		else
+			unpauseState();
+	}
+}
+
+void GameState::initPauseMenu()
+{
+	pmenu = new PauseMenu(getWindow(), *am);
+	sf::VideoMode vm = sf::VideoMode::getDesktopMode();
+	pmenu->addButton("QUIT", p2pY(74.f, vm), p2pX(13.f, vm), p2pY(6.f, vm), calcCharSize(vm), "Quit");
+}
 
 void GameState::update(const float& dt) {
 	updateKeybinds(dt);
+	updateInput(dt);
 	if(clock.getElapsedTime().asSeconds() > .05f) {
 		clock.restart();
+	}
+
+	if (paused) //paused update
+	{
+		pmenu->update(getWindow());
+		updatePauseMenuButtons();
 	}
 }
 
 void GameState::render(sf::RenderWindow* window) {
 	window->setView(view);
 	map.render(*window);
+
+	if (paused) //Pause menu render
+	{
+		//renderTexture.setView(renderTexture.getDefaultView());
+		pmenu->render(window);
+	}
 }
 
 void GameState::updateKeybinds(const float& dt) {}

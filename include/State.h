@@ -21,8 +21,9 @@ class State {
 	std::vector<sf::Texture> textures;
 	sf::RenderWindow* window;
 	bool isQuitting = false;
-
+	
   public:
+  bool paused = false;
 	// Constructor
 	explicit State(sf::RenderWindow* window);
 	// Destructor
@@ -46,4 +47,7 @@ class State {
 	virtual void stopMusic() = 0;
 	virtual void resumeMusic() = 0;
 	sf::RenderWindow* getWindow() { return window; }
+
+	void pauseState(){	paused = true; }
+	void unpauseState() {	paused = false; }
 };
