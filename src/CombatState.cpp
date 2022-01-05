@@ -1,4 +1,6 @@
+#include <algorithm>
 #include <map>
+#include <memory>
 
 #include "AssetsPaths.h"
 #include "Button.h"
@@ -6,16 +8,16 @@
 #include "Player.h"
 #include "definitions.h"
 
-void CombatState::addCombatString(const Player& player, AssetsManager& am, const int i) {
+void CombatState::addCombatString(const Player& player, AssetsManager& am) {
 	sf::Text characterInfo{};
 
 	characterInfo.setOutlineColor(sf::Color::Black);
 	characterInfo.setFillColor(sf::Color::Black);
 	characterInfo.setFont(font);
-	characterInfo.setString(player.name + std::string(" HP:") + std::to_string(player.currentStats.hp) + "/"
-	                        + std::to_string(player.maxStats.hp));
-	lifeCounters.emplace(
-	    player.name, Button(initialText.x + i * textIntervalHeight, initialText.y, 200, 50, characterInfo));
+	characterInfo.setString(player.name + std::string(" HP:") + std::to_string(player.get_hp()) + "/"
+	                        + std::to_string(player.maxStats.hp) + " MP:" + std::to_string(player.get_mana()) + "/"
+	                        + std::to_string(player.maxStats.mana));
+	lifeCounters.emplace(player.name, Button(initialText.x, initialText.y, 280, 40, characterInfo));
 }
 
 void CombatState::addActionMenu(const sf::RenderWindow* window) {
@@ -39,34 +41,33 @@ void CombatState::addActionMenu(const sf::RenderWindow* window) {
 }
 
 CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets,
-    JSONFilePath& path, const Party& p, const Enemies& e, KeyList* gameSupportedKeys)
+    JSONFilePath& path, const Player& p, const Enemy& e, KeyList* gameSupportedKeys)
     : State(window), map(am, textureSheets, path) {
 	auto size = sf::Vector2f{720.0, 480.0};
 	view = window->getDefaultView();
 	view.setSize(size);
 	view.setCenter({size.x / 2.f, size.y / 2.f});
 
-	initialText.y = window->getSize().y / 2;
+	// initialText.y = 300; // window->getSize().y / 2;
 
 	keybinds = gameSupportedKeys;
-	std::map<int, Entity*> turnMap;
-	party = p;
-	enemies = e;
+	std::map<int, Combatant*> turnMap;
+	player = p;
+	enemy = e;
 	std::cout << "New Combat\n";
-	for(int i = 0; i < party.size(); i++) {
-		auto pPos = COMBAT_FIRST_PLAYER_POSITION;
-		addCombatString(party[i], am, i);
-		party[i].animation.set_position(pPos);
-		pPos.y += i * 50;
-		party[i].animation.sprite.setScale({3.f, 3.f});
-		turnMap.insert({party[i].currentStats.dex, (Entity*)(&party[i])});
-	}
-	for(int i = 0; i < enemies.size(); i++) {
-		auto ePos = COMBAT_FIRST_ENEMY_POSITION;
-		enemies[i].animation.set_position(ePos);
-		ePos.y += i * 50;
-		turnMap.insert({enemies[i].currentStats.dex, (Entity*)(&enemies[i])});
-	}
+
+	auto pPos = COMBAT_FIRST_PLAYER_POSITION;
+	addCombatString(player, am);
+	player.animation.set_position(pPos);
+	player.animation.sprite.setScale({3.f, 3.f});
+	turnMap.insert({player.currentStats.dex, &player});
+
+
+	auto ePos = COMBAT_FIRST_ENEMY_POSITION;
+	enemy.animation.set_position(ePos);
+	ePos.y += 50;
+	turnMap.insert({enemy.currentStats.dex, &enemy});
+
 	for(auto c : turnMap) {
 		turnList.push_back(c.second);
 	}
@@ -78,7 +79,7 @@ CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, std::vecto
 	music.play();
 
 	// hand poiting at first character
-	auto cursorPosition = turnList[0]->animation.get_position();
+	auto cursorPosition = turnList.at(0)->animation.get_position();
 	cursor = Animation(am.getTexture(HAND.c), {40, 30, 40, 65}, cursorPosition);
 	cursor.sprite.setScale({0.7, 0.7});
 	cursor.sprite.setRotation(90.f);
@@ -87,6 +88,9 @@ CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, std::vecto
 
 	font = *am.getFont(ALEX.c);
 	addActionMenu(window);
+	selectingEnemy = false;
+	selectingItem = false;
+	isSpecialAtk = false;
 }
 
 CombatState::~CombatState() = default;
@@ -98,11 +102,23 @@ void CombatState::update(const float& dt) {
 		cursorClock.restart();
 	}
 	if(nextTurn) {
-		currentCharacterTurn = ((int)currentCharacterTurn + 1) % turnList.size();
+		currentCharacterTurn = (int(currentCharacterTurn + 1)) % turnList.size();
 		cursor.set_position(turnList[currentCharacterTurn]->animation.get_position());
 		nextTurn = false;
 	}
 	updateKeybinds(dt);
+	auto e = dynamic_cast<Enemy*>(turnList[currentCharacterTurn]);
+	if(turnList[currentCharacterTurn]->isEnemy()) {
+		if(player.defend() > e->attack()) {
+			player.apply_damage(e->atkDamage());
+			nextTurn = true;
+		}
+	}
+
+	lifeCounters.at(player.name)
+	    .setText(player.name + std::string(" HP:") + std::to_string(player.get_hp()) + "/"
+	             + std::to_string(player.maxStats.hp) + " MP:" + std::to_string(player.get_mana()) + "/"
+	             + std::to_string(player.maxStats.mana));
 }
 
 void CombatState::render(sf::RenderWindow* window) {
@@ -113,8 +129,10 @@ void CombatState::render(sf::RenderWindow* window) {
 		character.second.render(window);
 	}
 	window->draw(cursor.sprite);
-	for(auto b : actionButtons) {
-		b.render(window);
+	if(!turnList.at(currentCharacterTurn)->isEnemy()) {
+		for(auto b : actionButtons) {
+			b.render(window);
+		}
 	}
 }
 
@@ -122,7 +140,7 @@ void CombatState::updateKeybinds(const float& dt) {}
 
 bool CombatState::shouldQuit() {
 	bool quit = isQuit();
-	if(enemies.empty() || party.empty()) {
+	if(enemy.get_hp() < 0 || player.get_hp() < 0) {
 		quit = true;
 	}
 	return quit;
@@ -130,7 +148,7 @@ bool CombatState::shouldQuit() {
 
 void CombatState::quitStateActions() {
 	// emptying enemies list here is purely for debug
-	enemies = {};
+	enemy.apply_damage(enemy.get_hp());
 	std::cout << "Ending current game state" << std::endl;
 }
 
@@ -166,28 +184,43 @@ StateAction CombatState::handleKeys(const sf::Keyboard::Key key) {
 
 StateAction CombatState::shouldAct() {
 	// depending on selected action this should trigger attack animation, use item animation, etc.
-	if(actionButtonActive == 0) {
-		// normal attack with current weapon
-		// TODO: attack(turnList[currentCharacterTurn]);
-	} else if(actionButtonActive == 1) {
-		// special attack - consumes Magical Energy
-		// TODO: specialAttack(turnList[currentCharacterTurn]);
-	} else if(actionButtonActive == 2) {
-		// select an item to be used
+	if(!selectingItem) {
+		// combat action menu
+		if(actionButtonActive == 0) {
+			// normal attack with current weapon
+			if(player.attack() < enemy.defend()) {
+				enemy.apply_damage(player.atkDamage());
+			}
+			nextTurn = true;
+		} else if(actionButtonActive == 1) {
+			// special attack with current weapon
+			if(player.currentStats.mana >= 5) {
+				if(player.attack() < enemy.defend()) {
+					enemy.apply_damage(player.atkDamage() * 2);
+				}
+				player.spend_mana(5);
+				nextTurn = true;
+			} else {
+				actionButtons[actionButtonActive].setColor(sf::Color::Red);
+			}
+		} else if(actionButtonActive == 2) {
+			// select an item to be used
+			selectingItem = true;
+		} else {
+			// skip turn
+			nextTurn = true;
+		}
+	} else {
 		// TODO: openUsableItemInventory(turnList[currentCharacterTurn]);
-	} else { // skip
+		selectingItem = false;
 		nextTurn = true;
 	}
 	return StateAction::NONE;
 }
 
 void CombatState::drawPlayer(sf::RenderWindow* window) {
-	for(const auto& e : enemies) {
-		window->draw(e.animation.sprite);
-	}
-	for(const auto& p : party) {
-		window->draw(p.animation.sprite);
-	}
+	window->draw(enemy.animation.sprite);
+	window->draw(player.animation.sprite);
 }
 void CombatState::stopMusic() {
 	music.stop();

@@ -19,6 +19,7 @@ ENDIF()
 set(SOURCES src/main.cpp
         src/Button.cpp
         src/CombatState.cpp
+        src/Enemy.cpp
         src/Game.cpp
         src/GameState.cpp
         src/MainMenuState.cpp
@@ -32,6 +33,7 @@ set(HEADERS include/Animation.h
         include/AssetsManager.h
         include/AssetsPaths.h
         include/Button.h
+        include/Combatant.h
         include/CombatState.h
         include/definitions.h
         include/Enemy.h

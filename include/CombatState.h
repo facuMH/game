@@ -16,18 +16,18 @@ class CombatState : public State {
 	sf::Music music;
 	sf::Font font;
 
-	Party party;
-	Enemies enemies;
+	Player player;
+	Enemy enemy;
 	TileMap map;
 
 	KeyList* keybinds;
 
 	CombatText lifeCounters;
-	void addCombatString(const Player& player, AssetsManager& am, const int i);
-	Position initialText{50.f, 300.f};
+	void addCombatString(const Player& player, AssetsManager& am);
+	Position initialText{10.f, 300.f};
 	float textIntervalHeight = 50;
 
-	std::vector<Entity*> turnList;
+	std::vector<Combatant*> turnList;
 	int currentCharacterTurn;
 	bool nextTurn;
 
@@ -40,11 +40,12 @@ class CombatState : public State {
 	int actionButtonActive;
 	bool selectingEnemy;
 	bool selectingItem;
+	bool isSpecialAtk;
 
   public:
 	// Constructor
 	CombatState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets,
-	    JSONFilePath& path, const std::vector<Player>& p, const std::vector<Enemy>& e, KeyList* gameSupportedKeys);
+	    JSONFilePath& path, const Player& p, const Enemy& e, KeyList* gameSupportedKeys);
 
 	// Destructor
 	~CombatState() override;

@@ -114,20 +114,14 @@ bool Game::isRunning() const {
 
 void Game::makeNewCombat(const int numberOfEnemies) {
 	Enemy alien = createAlien(assetsManager);
-	Enemies enemies{};
-	for(int i = 0; i < numberOfEnemies; i++) {
-		alien.animation.move({50, 0});
-		enemies.push_back(alien);
-	}
 	auto mapTexture = {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c)};
 	JSONFilePath* design = assetsManager.getMapDesign(COMBAT_LEVEL1.c);
-	Party party{*dynamic_cast<GameState*>(states.top())->getPlayer()};
 	turnOffMusic();
-	states.push(new CombatState(window, assetsManager, mapTexture, *design, party, enemies, &keyBindings));
+	states.push(new CombatState(window, assetsManager, mapTexture, *design,
+	    *dynamic_cast<GameState*>(states.top())->getPlayer(), alien, &keyBindings));
 }
 
 // Functions
-
 void Game::pollEvents() {
 	// Event polling
 	StateAction action = StateAction::NONE;
