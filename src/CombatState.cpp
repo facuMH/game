@@ -96,6 +96,9 @@ CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, std::vecto
 CombatState::~CombatState() = default;
 
 void CombatState::update(const float& dt) {
+	if(turnList[currentCharacterTurn]->isEnemy()) {
+		sf ::sleep(sf::milliseconds(1000));
+	}
 	if(cursorClock.getElapsedTime().asSeconds() > 0.5f) {
 		cursor.move({(curosrOrientation)*15.f, 0});
 		curosrOrientation = curosrOrientation > 0 ? -1 : 1;
@@ -109,6 +112,7 @@ void CombatState::update(const float& dt) {
 	updateKeybinds(dt);
 	auto e = dynamic_cast<Enemy*>(turnList[currentCharacterTurn]);
 	if(turnList[currentCharacterTurn]->isEnemy()) {
+		cursor.set_position(turnList[currentCharacterTurn]->animation.get_position());
 		if(player.defend() > e->attack()) {
 			player.apply_damage(e->atkDamage());
 			nextTurn = true;

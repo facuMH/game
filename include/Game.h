@@ -10,9 +10,9 @@
 
 #include "AssetsManager.h"
 #include "GameState.h"
+#include "HouseManager.h"
 #include "MainMenuState.h"
 #include "definitions.h"
-#include "HouseManager.h"
 
 /*
  * Wrapper class acting as game engine.
@@ -51,13 +51,14 @@ class Game {
 	std::stack<State*> states;
 
 
-	void makeNewCombat(int numberOfEnemies);
+	void makeNewCombat();
+	void makeNewCombat(const Enemy* enemy);
 	void makeMainGameState();
 	void makeNewHouseState(Position playerPosition);
 	Villager createVillager(
 	    const std::string& textureName, Name name, Position position, MovementType movementDirection, float stepsize);
 
-	    public:
+  public:
 	// Constructor
 	Game();
 

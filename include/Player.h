@@ -18,5 +18,5 @@ class Player : public Combatant {
 
 	void equip(Weapon* arms);
 	void move(KeyAction key, TileMap* map);
-	bool isEnemy() { return false; }
+	bool isEnemy() override { return false; }
 };

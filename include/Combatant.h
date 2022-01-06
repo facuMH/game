@@ -24,8 +24,8 @@ class Combatant : public Entity {
 	void spend_mana(const int use) { currentStats.mana -= use; }
 	void recover_mana(const int recover) { currentStats.mana += recover; }
 
-	int attack() { return currentStats.str + currentStats.baseAtk; }
-	int defend() { return currentStats.dex + currentStats.armor; }
-	int atkDamage() { return currentStats.str; }
+	int attack() const { return currentStats.str + currentStats.baseAtk; }
+	int defend() const { return currentStats.dex + currentStats.armor; }
+	int atkDamage() const { return currentStats.str; }
 	virtual bool isEnemy() = 0;
 };

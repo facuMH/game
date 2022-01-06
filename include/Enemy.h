@@ -14,7 +14,7 @@ class Enemy : public Combatant {
 		can_interact = true;
 		currentStats = _stats;
 	};
-	bool isEnemy() { return true; }
+	bool isEnemy() override { return true; }
 };
 
 Enemy createAlien(AssetsManager& am);

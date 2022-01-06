@@ -118,12 +118,19 @@ bool Game::isRunning() const {
 	return window->isOpen();
 }
 
-void Game::makeNewCombat(const int numberOfEnemies) {
+void Game::makeNewCombat() {
 	Enemy alien = createAlien(assetsManager);
 	auto mapTexture = {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c)};
 	JSONFilePath* design = assetsManager.getMapDesign(COMBAT_LEVEL1.c);
 	turnOffMusic();
 	states.push(new CombatState(window, assetsManager, mapTexture, *design, player, alien, &keyBindings));
+}
+
+void Game::makeNewCombat(const Enemy* enemy) {
+	auto mapTexture = {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c)};
+	JSONFilePath* design = assetsManager.getMapDesign(COMBAT_LEVEL1.c);
+	turnOffMusic();
+	states.push(new CombatState(window, assetsManager, mapTexture, *design, player, *enemy, &keyBindings));
 }
 
 void Game::makeMainGameState() {
@@ -179,7 +186,7 @@ void Game::makeNewHouseState(const Position playerPosition) {
 	House house = HouseManager::getHouse(doorNumber);
 	Enemies enemies;
 
-	EnemyData enemyData = ENEMYDATA[int(doorNumber) - 1];
+	EnemyData enemyData = ENEMYDATA[int(doorNumber - 1)];
 	Texture* texture = assetsManager.getTexture(enemyData.texturePath);
 	Animation animation(texture, sf::IntRect(0, 0, TILESIZE, TILESIZE), enemyData.position);
 	Enemy enemy(enemyData.name, Stats(15, 15, 15, 15, 15, 15), animation);
@@ -211,7 +218,13 @@ void Game::pollEvents() {
 				break;
 			case StateAction::START_SETTING: states.push(new SettingsState(window, assetsManager, &keyBindings)); break;
 			case StateAction::EXIT_SETTING: states.pop(); break;
-			case StateAction::START_COMBAT: makeNewCombat(1); break;
+			case StateAction::START_COMBAT:
+				if(auto* house = dynamic_cast<GameState*>(states.top()); house->isHouse) {
+					makeNewCombat(house->getEnemy());
+				} else {
+					makeNewCombat();
+				}
+				break;
 			case StateAction::EXIT_COMBAT:
 				// calling quitStateActions here is only for debug reasons
 				states.top()->quitStateActions();
