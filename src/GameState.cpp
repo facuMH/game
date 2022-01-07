@@ -113,7 +113,7 @@ void GameState::drawPlayer(sf::RenderWindow* window) {
 	}
 	for(auto& e : enemies) {
 		window->draw(e.animation.sprite);
-		// e.move; once it's implemented
+		e.move(&map);
 	}
 }
 

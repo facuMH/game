@@ -46,6 +46,7 @@ set(HEADERS include/Animation.h
         include/HouseManager.h
         include/Inanimated.h
         include/MainMenuState.h
+        include/NPC.h
         include/Player.h
         include/State.h
         include/SettingsState.h

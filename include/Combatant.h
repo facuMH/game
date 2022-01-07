@@ -3,12 +3,12 @@
 #include "Entity.h"
 #include "definitions.h"
 
-class Combatant : public Entity {
+class Combatant : public virtual Entity {
   public:
 	Stats currentStats;
 	Stats maxStats;
 
-	Combatant(){};
+	Combatant() = default;
 	Combatant(Stats max, Stats current) : maxStats(max), currentStats(current){};
 
 	int get_str() const { return currentStats.str; }
