@@ -5,6 +5,7 @@
 
 #include "Animation.h"
 #include "AssetsPaths.h"
+#include "DialogueBox.h"
 #include "GameState.h"
 
 /// Constructor for village GameState: There are several villagers, but no enemies, as they hide in the houses
@@ -59,6 +60,7 @@ void GameState::update(const float& dt) {
 void GameState::render(sf::RenderWindow* window) {
 	window->setView(view);
 	map.render(*window);
+	renderDialogue(window);
 }
 
 void GameState::updateKeybinds(const float& dt) {}
@@ -94,6 +96,7 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 	}
 	if(key == sf::Keyboard::C) result = StateAction::START_COMBAT;
 	if(key == sf::Keyboard::Q) result = StateAction::EXIT_GAME;
+	if(key == sf::Keyboard::P) startDialogue("Old Man");
 	return result;
 }
 
@@ -139,4 +142,13 @@ std::vector<std::pair<Position, DoorNumber>> GameState::listHousePositions() {
 
 Position GameState::getCurrentPlayerPosition() {
 	return player.get_position();
+}
+
+void GameState::startDialogue(Name characterName) {
+	DialogueArray dialogueArray = interactionManager.getDialogues(characterName);
+	dialogueBox = DialogueBox({100, 100}, am->getFont(ALEX.c), dialogueArray[0]);
+}
+
+void GameState::renderDialogue(sf::RenderWindow* window) {
+	dialogueBox.render(window);
 }
