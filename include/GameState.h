@@ -5,8 +5,8 @@
 #include "Player.h"
 #include "State.h"
 #include "TileMap.h"
-#include "definitions.h"
 #include "Villager.h"
+#include "definitions.h"
 
 class GameState : public State {
   private:
@@ -14,7 +14,6 @@ class GameState : public State {
 	Player player;
 	Villagers villagers;
 	Enemies enemies;
-	bool isHouse;
 	std::unordered_map<DoorNumber, Position> housePositions;
 
 	sf::View view;
@@ -28,6 +27,7 @@ class GameState : public State {
 	sf::Keyboard::Key previousKey;
 
   public:
+	bool isHouse;
 	// Constructors
 	GameState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets,
 	    JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player, Villagers& _villagers, MusicPath& musicPath);
@@ -50,6 +50,7 @@ class GameState : public State {
 	Position getCurrentPlayerPosition();
 	void drawPlayer(sf::RenderWindow* window) override;
 	Player* getPlayer() { return &player; };
+	Enemy* getEnemy() { return &enemies[0]; }
 	StateAction shouldAct() override;
 	void stopMusic() override;
 	void resumeMusic() override;

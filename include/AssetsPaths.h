@@ -26,6 +26,7 @@ constexpr char ASSETS[] = "../assets/";
 constexpr auto MAINMENU = cat(ASSETS, "menuBackgrounds/");
 constexpr auto BACKGROUND = cat(MAINMENU.c, "Background.jpeg");
 constexpr auto SETTING_BACKGROUND = cat(MAINMENU.c, "RPG_projects.jpg");
+constexpr auto HAND = cat(MAINMENU.c, "hand.png");
 
 // ---- CHARACTER
 constexpr auto CHARACTER = cat(ASSETS, "characters/");

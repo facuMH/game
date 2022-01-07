@@ -15,7 +15,7 @@ void Game::initVariables() {
 
 	Texture* play_text = assetsManager.getTexture(NINJA_WALK.c);
 	Animation player_animation(play_text, sf::IntRect(0, 0, TILESIZE, TILESIZE), Position(50, 50));
-	player = Player("Adventurer", Stats(15, 20, 50, 30), player_animation);
+	player = Player("Adventurer", Stats(15, 20, 50, 30, 15, 1), player_animation);
 }
 
 void Game::closeWindow() {
@@ -118,20 +118,19 @@ bool Game::isRunning() const {
 	return window->isOpen();
 }
 
-void Game::makeNewCombat(const int numberOfEnemies) {
-	Texture* alien_texture = assetsManager.getTexture(ALIEN.c);
-	Animation alien_animation(alien_texture, sf::IntRect(50, 25, 105, 145), Position(100, 100));
-	Enemy alien("Alien", Stats(15, 25, 50, 30), alien_animation);
-	Enemies enemies{};
-	for(int i = 0; i < numberOfEnemies; i++) {
-		alien.animation.move({50, 0});
-		enemies.push_back(alien);
-	}
+void Game::makeNewCombat() {
+	Enemy alien = createAlien(assetsManager);
 	auto mapTexture = {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c)};
 	JSONFilePath* design = assetsManager.getMapDesign(COMBAT_LEVEL1.c);
-	Party party{*dynamic_cast<GameState*>(states.top())->getPlayer()};
 	turnOffMusic();
-	states.push(new CombatState(window, assetsManager, mapTexture, *design, party, enemies, &keyBindings));
+	states.push(new CombatState(window, assetsManager, mapTexture, *design, player, alien, &keyBindings));
+}
+
+void Game::makeNewCombat(const Enemy* enemy) {
+	auto mapTexture = {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c)};
+	JSONFilePath* design = assetsManager.getMapDesign(COMBAT_LEVEL1.c);
+	turnOffMusic();
+	states.push(new CombatState(window, assetsManager, mapTexture, *design, player, *enemy, &keyBindings));
 }
 
 void Game::makeMainGameState() {
@@ -156,8 +155,8 @@ void Game::makeMainGameState() {
 	housePositions = mainGame->listHousePositions();
 }
 
-Villager Game::createVillager(
-    const std::string& textureName, const Name name, const Position position, const MovementType movementDirection, const float stepsize) {
+Villager Game::createVillager(const std::string& textureName, const Name name, const Position position,
+    const MovementType movementDirection, const float stepsize) {
 	Texture* tex = assetsManager.getTexture(textureName);
 	Animation anim(tex, sf::IntRect(0, 0, TILESIZE, TILESIZE), position);
 	Position endPosition;
@@ -169,7 +168,7 @@ Villager Game::createVillager(
 	return {anim, name, movementDirection, endPosition, stepsize};
 }
 
-bool approximatelyEqual(const sf::Vector2f &a, const sf::Vector2f &b, float epsilon = 8.0f) {
+bool approximatelyEqual(const sf::Vector2f& a, const sf::Vector2f& b, float epsilon = 8.0f) {
 	return std::fabs(a.x - b.x) < epsilon && std::fabs(a.y - b.y) < epsilon;
 }
 
@@ -187,10 +186,10 @@ void Game::makeNewHouseState(const Position playerPosition) {
 	House house = HouseManager::getHouse(doorNumber);
 	Enemies enemies;
 
-	EnemyData enemyData = ENEMYDATA[doorNumber - 1];
+	EnemyData enemyData = ENEMYDATA[int(doorNumber - 1)];
 	Texture* texture = assetsManager.getTexture(enemyData.texturePath);
 	Animation animation(texture, sf::IntRect(0, 0, TILESIZE, TILESIZE), enemyData.position);
-	Enemy enemy(enemyData.name, Stats(15, 15, 15, 15), animation);
+	Enemy enemy(enemyData.name, Stats(15, 15, 15, 15, 15, 15), animation);
 	enemies.push_back(enemy);
 
 	states.push(new GameState(window, assetsManager, tileSheets, house.houseDesignPath, &keyBindings, player, enemies,
@@ -199,7 +198,7 @@ void Game::makeNewHouseState(const Position playerPosition) {
 
 void Game::pollEvents() {
 	// Event polling
-	StateAction action;
+	StateAction action = StateAction::NONE;
 	while(window->pollEvent(event)) {
 		switch(event.type) {
 		// Event that is called when the close button is clicked
@@ -208,44 +207,38 @@ void Game::pollEvents() {
 			// Event that is called when the Escape button is pressed
 			switch(event.key.code) {
 			case sf::Keyboard::Escape: closeWindow(); break;
-			case sf::Keyboard::Enter:
-				action = states.top()->shouldAct();
-				if(action == StateAction::EXIT_GAME) {
-					closeWindow();
-				}
-				if(action == StateAction::START_GAME) {
-					turnOffMusic();
-					makeMainGameState();
-				}
-				if(action == StateAction::START_SETTING) {
-					states.push(new SettingsState(window, assetsManager, &keyBindings));
-				}
-				if(action == StateAction::EXIT_SETTING) {
-					states.pop();
+			case sf::Keyboard::Enter: action = states.top()->shouldAct(); break;
+			default: action = states.top()->handleKeys(event.key.code); break;
+			}
+			switch(action) {
+			case StateAction::EXIT_GAME: closeWindow(); break;
+			case StateAction::START_GAME:
+				turnOffMusic();
+				makeMainGameState();
+				break;
+			case StateAction::START_SETTING: states.push(new SettingsState(window, assetsManager, &keyBindings)); break;
+			case StateAction::EXIT_SETTING: states.pop(); break;
+			case StateAction::START_COMBAT:
+				if(auto* house = dynamic_cast<GameState*>(states.top()); house->isHouse) {
+					makeNewCombat(house->getEnemy());
+				} else {
+					makeNewCombat();
 				}
 				break;
-			default:
-				action = states.top()->handleKeys(event.key.code);
-				if(action == StateAction::START_HOUSE) {
-					turnOffMusic();
-					makeNewHouseState(states.top()->getCurrentPlayerPosition());
-				}
-				if(action == StateAction::EXIT_HOUSE) {
-					turnOffMusic();
-					states.pop();
-					states.top()->resumeMusic();
-				}
-				if(action == StateAction::START_COMBAT) {
-					makeNewCombat(1);
-				}
-				if(action == StateAction::EXIT_GAME) {
-					closeWindow();
-				}
-				if(action == StateAction::EXIT_COMBAT) {
-					// calling quitStateActions here is only for debug reasons
-					states.top()->quitStateActions();
-				}
+			case StateAction::EXIT_COMBAT:
+				// calling quitStateActions here is only for debug reasons
+				states.top()->quitStateActions();
 				break;
+			case StateAction::START_HOUSE:
+				turnOffMusic();
+				makeNewHouseState(states.top()->getCurrentPlayerPosition());
+				break;
+			case StateAction::EXIT_HOUSE:
+				turnOffMusic();
+				states.pop();
+				states.top()->resumeMusic();
+				break;
+			default: break;
 			}
 			break;
 		case sf::Event::MouseMoved: break;
