@@ -1,12 +1,14 @@
 #pragma once
 
 #include "AssetsManager.h"
+#include "DialogueBox.h"
 #include "Enemy.h"
 #include "Player.h"
 #include "State.h"
 #include "TileMap.h"
 #include "Villager.h"
 #include "definitions.h"
+#include "InteractionManager.h"
 
 class GameState : public State {
   private:
@@ -15,6 +17,8 @@ class GameState : public State {
 	Villagers villagers;
 	Enemies enemies;
 	std::unordered_map<DoorNumber, Position> housePositions;
+	InteractionManager interactionManager;
+	DialogueBox dialogueBox;
 
 	sf::View view;
 	AssetsManager* am;
@@ -47,8 +51,10 @@ class GameState : public State {
 	sf::View getView() override { return view; };
 	DoorNumber getCurrentDoorNumber(Position position);
 	std::vector<std::pair<Position, DoorNumber>> listHousePositions();
-	Position getCurrentPlayerPosition();
+	Position getCurrentPlayerPosition() override;
 	void drawPlayer(sf::RenderWindow* window) override;
+	void startDialogue(Name characterName);
+	void renderDialogue(sf::RenderWindow* window);
 	Player* getPlayer() { return &player; };
 	Enemy* getEnemy() { return &enemies[0]; }
 	StateAction shouldAct() override;
