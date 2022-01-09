@@ -1,6 +1,8 @@
 #include <cmath>
 #include <iostream>
 
+#include <House.h>
+#include <HouseManager.h>
 #include <SFML/Graphics.hpp>
 
 #include "AssetsPaths.h"
