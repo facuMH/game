@@ -26,6 +26,7 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 	music.openFromFile(*musicPath);
 	music.setLoop(true);
 	music.play();
+	windowHeight =view.getSize().y;
 }
 
 /// Constructor for house GameState: No villagers here, but monsters
@@ -60,13 +61,14 @@ void GameState::update(const float& dt) {
 void GameState::render(sf::RenderWindow* window) {
 	window->setView(view);
 	map.render(*window);
-	renderDialogue(window);
+	dialogueBox.render(window);
 }
 
 void GameState::updateKeybinds(const float& dt) {}
 
 StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 	StateAction result = StateAction::NONE;
+	Name interactWith = "";
 	auto action = std::find_if(keybinds->begin(), keybinds->end(),
 	    [key](const std::pair<KeyAction, sf::Keyboard::Key>& v) { return key == v.second; });
 	if(action != keybinds->end()) {
@@ -96,7 +98,10 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 	}
 	if(key == sf::Keyboard::C) result = StateAction::START_COMBAT;
 	if(key == sf::Keyboard::Q) result = StateAction::EXIT_GAME;
-	if(key == sf::Keyboard::P) startDialogue("Old Man");
+	if(key == sf::Keyboard::P) {
+		interactWith = "Old Man";
+		startDialogue(interactWith, windowHeight);
+	}
 	return result;
 }
 
@@ -144,11 +149,7 @@ Position GameState::getCurrentPlayerPosition() {
 	return player.get_position();
 }
 
-void GameState::startDialogue(Name characterName) {
-	DialogueArray dialogueArray = interactionManager.getDialogues(characterName);
-	dialogueBox = DialogueBox({100, 100}, am->getFont(ALEX.c), dialogueArray[0]);
-}
-
-void GameState::renderDialogue(sf::RenderWindow* window) {
-	dialogueBox.render(window);
+void GameState::startDialogue(Name& characterName, float windowHeight) {
+	dialogueBox = DialogueBox(characterName, windowHeight);
+	dialogueBox.setText(characterName, interactionManager.getDialogue(characterName));
 }
