@@ -34,7 +34,7 @@ DialogueBox::DialogueBox(const Name& characterName, float dialogueYPosition) {
 
 	characterFaceTexture = assetsManager.getTexture(getFaceTexturePath(characterName));
 	characterFaceSprite.setTexture(*characterFaceTexture);
-	characterFaceSprite.setTextureRect(sf::IntRect(0, 0, characterFaceTexture->getSize().x, characterFaceTexture->getSize().y));
+	characterFaceSprite.setTextureRect(sf::IntRect(0, 0, int(characterFaceTexture->getSize().x), int(characterFaceTexture->getSize().y)));
 	characterFaceSprite.setPosition(dialogueBoxSprite.getPosition().x + FACE_OFFSET.x, dialogueBoxSprite.getPosition().y + FACE_OFFSET.y);
 	setText(characterName, interactionManager.getDialogue(characterName));
 }
