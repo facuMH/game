@@ -9,10 +9,9 @@
 
 GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vector<MapBackground*> textureSheets,
     JSONFilePath& path, KeyList* gameSupportedKeys)
-    : State(window), map(gameAM, textureSheets, path), pausemenu(window, gameAM) {
+    : State(window), map(gameAM, textureSheets, path){
 	am = &gameAM;
 	keybinds = gameSupportedKeys;
-	paused = false;
 
 	Texture* play_text = am->getTexture(NINJA_WALK.c);
 	Animation player_animation(play_text, sf::IntRect(0, 0, TILESIZE, TILESIZE), Position(50, 50));
@@ -54,45 +53,17 @@ Villager GameState::createVillager(
 
 GameState::~GameState() = default;
 
-void GameState::updatePauseMenuCloseButtons()
-{
-	if (pausemenu.isCloseButtonPressed())
-		endState();
-}
-
-void GameState::isPaused()
-{
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(sf::Keyboard::T)))
-	{
-		if (!paused)
-			paused = true;
-		else
-			paused = false;
-	}
-}
-
 void GameState::update(const float& dt) {
 	updateKeybinds(dt);
 
 	if(clock.getElapsedTime().asSeconds() > .05f) {
 		clock.restart();
 	}
-
-	if (paused) //paused update
-	{
-		pausemenu.update(getWindow());
-		updatePauseMenuCloseButtons();
-	}
 }
 
 void GameState::render(sf::RenderWindow* window) {
 	window->setView(view);
 	map.render(*window);
-
-	if (paused) //Pause menu render
-	{
-		pausemenu.render(window);
-	}
 }
 
 void GameState::updateKeybinds(const float& dt) {}
@@ -120,7 +91,7 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 		default: break;
 		}
 	}
-	if(key == sf::Keyboard::T) { isPaused();};
+	
 	if(key == sf::Keyboard::C) result = StateAction::START_COMBAT;
 	if(key == sf::Keyboard::Q) result = StateAction::EXIT_GAME;
 	return result;

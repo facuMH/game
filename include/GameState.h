@@ -1,7 +1,6 @@
 #pragma once
 
 #include "AssetsManager.h"
-#include "PauseMenu.h"
 #include "Player.h"
 #include "State.h"
 #include "TileMap.h"
@@ -23,8 +22,6 @@ class GameState : public State {
 	sf::Music music;
 	// just for demonstration purposes
 	sf::Keyboard::Key previousKey;
-	PauseMenu pausemenu;
-	bool paused;
 	
 
   public:
@@ -33,10 +30,6 @@ class GameState : public State {
 	    JSONFilePath& path, KeyList* gameSupportedKeys);
 	// Destructor
 	~GameState() override;
-
-	// Functions
-	void updatePauseMenuCloseButtons();
-	void isPaused();
 
 	void update(const float& dt) override;
 	void render(sf::RenderWindow* window) override;
