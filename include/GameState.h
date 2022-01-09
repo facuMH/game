@@ -19,7 +19,7 @@ class GameState : public State {
 	std::unordered_map<DoorNumber, Position> housePositions;
 	InteractionManager interactionManager;
 	DialogueBox dialogueBox;
-
+	bool inDialogue;
 	sf::View view;
 	AssetsManager* am;
 	KeyList* keybinds;

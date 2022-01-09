@@ -25,7 +25,7 @@ class DialogueBox {
 	sf::Vector2f TEXT_POS_OFFSET;
 	int MAX_TEXT_LINES;
 	float TIME_UNTIL_NEXT_CHAR; // after this time the next char of the text is drawn
-	sf::Vector2f NAME_TEXT_POS_OFFSET;
+	sf::Vector2f CHARACTER_NAME_OFFSET;
 	sf::Vector2f ARROW_POS_OFFSET;
 
 	// text animation
@@ -34,7 +34,7 @@ class DialogueBox {
 	int text_pointer_start;
 	float text_animation_timer;
 	int drawn_line_counter;
-	bool stop_typing_text;
+	bool max_display_lines_reached;
 	int arrow_motion_counter;
 	bool arrow_up;
 	sf::Vector2f arrow_motion_direction;
