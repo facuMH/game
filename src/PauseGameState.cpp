@@ -166,7 +166,6 @@ StateAction PauseGameState::shouldAct() {
 	} else {
 		return StateAction::NONE;
 	}
-	std::cout << "activebutton:" << activeButton << std::endl;
 }
 
 void PauseGameState::stopMusic() { }
