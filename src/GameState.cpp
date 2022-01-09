@@ -27,7 +27,7 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 	music.openFromFile(*musicPath);
 	music.setLoop(true);
 	music.play();
-	windowHeight = view.getSize().y;
+	windowHeight = view.getCenter().y;
 }
 
 /// Constructor for house GameState: No villagers here, but monsters
@@ -69,7 +69,7 @@ void GameState::update(const float& dt) {
 void GameState::render(sf::RenderWindow* window) {
 	window->setView(view);
 	map.render(*window);
-	if (inDialogue) {
+	if(inDialogue) {
 		dialogueBox.render(window);
 	}
 }
