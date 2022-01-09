@@ -139,7 +139,7 @@ StateAction PauseGameState::handleKeys(sf::Keyboard::Key key) {
 			}
 			buttons[activeButton].setActive();
 			break;
-		case KeyAction::PAUSE: result = StateAction::RESUME_GAME; std::cout << "File:" << __FILE__ << ", Line:" << __LINE__ << std::endl; break;
+		case KeyAction::PAUSE: result = StateAction::RESUME_GAME; break;
 		default: break;
 		}
 	}
