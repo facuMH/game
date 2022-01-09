@@ -10,8 +10,6 @@
 
 #include "AssetsManager.h"
 #include "GameState.h"
-#include "HouseManager.h"
-#include "InteractionManager.h"
 #include "MainMenuState.h"
 #include "definitions.h"
 
@@ -42,8 +40,6 @@ class Game {
 	sf::Text mousePosText;
 
 	Player player;
-	InteractionManager interactionManager;
-	HouseManager houseManager;
 
 	// Stack of states - the top entry is the active state, i.e. [main menu,
 	// map-layer, fight-layer]: If the fight layer is left, the next active state
