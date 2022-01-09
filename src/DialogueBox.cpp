@@ -164,4 +164,5 @@ std::string DialogueBox::getFaceTexturePath(const Name& characterName) {
 	} else if (characterName == "Princess") {
 		return PRINCESS_FACE.c;
 	}
+	else return "";
 }
