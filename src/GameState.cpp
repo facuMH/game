@@ -179,21 +179,16 @@ void GameState::startDialogue(Name& characterName) {
 	dialogueBox = DialogueBox(characterName, dialogueYPosition);
 }
 
-bool inInteractionRange(Position playerPosition, Position otherPosition) {
-	return std::fabs(playerPosition.x - otherPosition.x) < 20.0f
-	       && std::fabs(playerPosition.y - otherPosition.y) < 20.0f;
-}
-
 Name GameState::getEntityInInteractionRange(Position position) {
 	// if entity is a villager
 	for(auto& v : villagers) {
-		if(inInteractionRange(position, v.animation.get_position())) {
+		if(positionsInRange(position, v.animation.get_position(), 20.f)) {
 			return v.name;
 		}
 	}
 	// if entity is an enemy
 	for(auto& e : enemies) {
-		if(inInteractionRange(position, e.animation.get_position())) {
+		if(positionsInRange(position, e.animation.get_position(), 20.f)) {
 			return e.name;
 		}
 	}
