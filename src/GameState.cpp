@@ -3,6 +3,7 @@
 
 #include <SFML/Window.hpp>
 
+#include "Animation.h"
 #include "AssetsPaths.h"
 #include "DialogueBox.h"
 #include "GameState.h"
@@ -17,16 +18,8 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 	villagers = _villagers;
 	isHouse = false;
 	inDialogue = false;
-
-	soundBuffers.emplace("gasp", am->getSoundBuffer(GASP.c));
-	soundBuffers.emplace("interaction bling", am->getSoundBuffer(INTERACTION_BLING.c));
-
-	for(auto& sb : soundBuffers) {
-		sf::Sound sound;
-		sound.setBuffer(sb.second);
-		sounds.emplace(sb.first, sound);
-	}
-
+	soundBuffer = am->getSoundBuffer(GASP.c);
+	gaspSound.setBuffer(soundBuffer);
 	previousKey = sf::Keyboard::Unknown;
 	// view = sf::View(player.get_position(), {float(window->getSize().x), float(window->getSize().y)});
 	view = sf::View(player.get_position(), {720.0, 480.0});
@@ -34,7 +27,7 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 	music.openFromFile(*musicPath);
 	music.setLoop(true);
 	music.play();
-	dialogueYPosition = view.getCenter().y;
+	windowHeight = view.getSize().y;
 }
 
 /// Constructor for house GameState: No villagers here, but monsters
@@ -47,7 +40,10 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 	enemies = _enemies;
 	isHouse = true;
 	inDialogue = false;
-
+	soundBuffer = am->getSoundBuffer(GASP.c);
+	gaspSound.setBuffer(soundBuffer);
+	previousKey = sf::Keyboard::Unknown;
+	// view = sf::View(player.get_position(), {float(window->getSize().x), float(window->getSize().y)});
 	view = sf::View(player.get_position(), {720.0, 480.0});
 	MusicPath* musicPath = gameAM.getMusic(_musicPath);
 	music.openFromFile(*musicPath);
@@ -73,7 +69,7 @@ void GameState::update(const float& dt) {
 void GameState::render(sf::RenderWindow* window) {
 	window->setView(view);
 	map.render(*window);
-	if(inDialogue) {
+	if (inDialogue) {
 		dialogueBox.render(window);
 	}
 }
@@ -82,7 +78,7 @@ void GameState::updateKeybinds(const float& dt) {}
 
 StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 	StateAction result = StateAction::NONE;
-	Name interactWith;
+	Name interactWith = "";
 	auto action = std::find_if(keybinds->begin(), keybinds->end(),
 	    [key](const std::pair<KeyAction, sf::Keyboard::Key>& v) { return key == v.second; });
 	if(action != keybinds->end()) {
@@ -92,10 +88,12 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 		case KeyAction::DOWN:
 		case KeyAction::RIGHT:
 		case KeyAction::LEFT:
+			player.animation.set_texture(am->getTexture(NINJA_WALK.c));
 			player.move(action->first, &map);
-			view.setCenter(player.animation.get_position());
-			if(previousKey != key && !isHouse) {
-				sounds.find("gasp")->second.play();
+			view.setCenter(player.get_position());
+			if(previousKey != key) {
+				// play gasping gaspSound each time the player changes direction
+				gaspSound.play();
 			}
 			if(getCurrentDoorNumber(player.get_position()) != 0) {
 				if(!isHouse) {
@@ -105,23 +103,15 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 				}
 			}
 			previousKey = key;
-			break;
-		case KeyAction::INTERACT:
-			if(!isHouse) {
-				interactWith = getEntityInInteractionRange(player.animation.get_position());
-				if(!interactWith.empty()) {
-					startDialogue(interactWith);
-				}
-			}
-			else {
-				interactWith = getEntityInInteractionRange(player.animation.get_position());
-				result = StateAction::START_COMBAT;
-			}
 		default: break;
 		}
 	}
 	if(key == sf::Keyboard::C) result = StateAction::START_COMBAT;
 	if(key == sf::Keyboard::Q) result = StateAction::EXIT_GAME;
+	if(key == sf::Keyboard::P) {
+		interactWith = "Old Man";
+		startDialogue(interactWith, windowHeight);
+	}
 	return result;
 }
 
@@ -137,9 +127,7 @@ void GameState::drawPlayer(sf::RenderWindow* window) {
 	window->draw(player.animation.sprite);
 	for(auto& v : villagers) {
 		window->draw(v.animation.sprite);
-		if(!inDialogue) {
-			v.move(&map);
-		}
+		v.move(&map);
 	}
 	for(auto& e : enemies) {
 		window->draw(e.animation.sprite);
@@ -168,27 +156,10 @@ std::vector<std::pair<Position, DoorNumber>> GameState::listHousePositions() {
 }
 
 Position GameState::getCurrentPlayerPosition() {
-	return player.animation.get_position();
+	return player.get_position();
 }
 
-void GameState::startDialogue(Name& characterName) {
+void GameState::startDialogue(Name& characterName, float windowHeight) {
 	inDialogue = true;
-	sounds.find("interaction bling")->second.play();
-	dialogueBox = DialogueBox(characterName, dialogueYPosition);
-}
-
-Name GameState::getEntityInInteractionRange(Position position) {
-	// if entity is a villager
-	for(auto& v : villagers) {
-		if(positionsInRange(position, v.animation.get_position(), 20.f)) {
-			return v.name;
-		}
-	}
-	// if entity is an enemy
-	for(auto& e : enemies) {
-		if(positionsInRange(position, e.animation.get_position(), 20.f)) {
-			return e.name;
-		}
-	}
-	return "";
+	dialogueBox = DialogueBox(characterName, windowHeight);
 }
