@@ -77,10 +77,12 @@ constexpr auto WINDOW = cat(CONFIG, "window.ini");
 constexpr auto FONTS = cat(ASSETS, "fonts/");
 constexpr auto DOSIS = cat(FONTS.c, "Dosis-Light.ttf");
 constexpr auto ALEX = cat(FONTS.c, "AlexandriaFLF.ttf");
+constexpr auto DIALOGUE_FONT = cat(FONTS.c, "DialogueFont.ttf");
 
 // --- DIALOGUE
 constexpr auto DIALOGUE = cat(ASSETS, "dialogue/");
 constexpr auto DIALOGUE_BOX = cat(DIALOGUE.c, "DialogBox.png");
+constexpr auto DIALOGUE_ARROW = cat(DIALOGUE.c, "Arrow.png");
 
 // ---- SOUND FX
 constexpr auto SOUNDS = cat(ASSETS, "sounds/");

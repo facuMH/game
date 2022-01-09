@@ -29,6 +29,7 @@ class GameState : public State {
 	sf::Music music;
 	// just for demonstration purposes
 	sf::Keyboard::Key previousKey;
+	float windowHeight;
 
   public:
 	bool isHouse;
@@ -53,8 +54,7 @@ class GameState : public State {
 	std::vector<std::pair<Position, DoorNumber>> listHousePositions();
 	Position getCurrentPlayerPosition() override;
 	void drawPlayer(sf::RenderWindow* window) override;
-	void startDialogue(Name characterName);
-	void renderDialogue(sf::RenderWindow* window);
+	void startDialogue(Name &characterName, float windowHeight);
 	Player* getPlayer() { return &player; };
 	Enemy* getEnemy() { return &enemies[0]; }
 	StateAction shouldAct() override;

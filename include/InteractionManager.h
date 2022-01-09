@@ -5,14 +5,14 @@
 
 class InteractionManager {
   public:
-	DialogueArray getDialogues(const Name &name) {
+	std::string getDialogue(const Name &name) {
 		initDialogue(name);
 		return dialogues.find(name)->second;
 	}
-	void initDialogue(Name name);
+	void initDialogue(const Name& name);
   private:
 	// For each character, a dialogue array is saved
-	std::unordered_map<Name, DialogueArray> dialogues;
+	std::unordered_map<Name, std::string> dialogues;
 };
 
 

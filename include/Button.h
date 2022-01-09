@@ -34,7 +34,7 @@ class Button {
 
 	// Accessors
 	bool isPressed() const;
-	const std::string getText() const;
+	std::string getText() const;
 	const short unsigned& getId() const;
 
 	// Modifiers

@@ -57,7 +57,7 @@ bool Button::isPressed() const {
 	return (buttonState == ButtonStates::BTN_ACTIVE);
 }
 
-const std::string Button::getText() const {
+std::string Button::getText() const {
 	return text.getString();
 }
 
