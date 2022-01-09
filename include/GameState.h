@@ -28,6 +28,7 @@ class GameState : public State {
 	sf::Keyboard::Key previousKey; // for gasping sound effect
 	float dialogueYPosition;       // position depends on current view
 
+
   public:
 	bool isHouse;
 	// Constructors
