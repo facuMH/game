@@ -21,8 +21,7 @@ class GameState : public State {
 	sf::Sound gaspSound;
 	sf::Music music;
 	// just for demonstration purposes
-	sf::Keyboard::Key previousKey;
-	
+	sf::Keyboard::Key previousKey;	
 
   public:
 	// Constructor
@@ -31,6 +30,7 @@ class GameState : public State {
 	// Destructor
 	~GameState() override;
 
+	// Functions
 	void update(const float& dt) override;
 	void render(sf::RenderWindow* window) override;
 	void updateKeybinds(const float& dt) override;

@@ -9,7 +9,7 @@
 
 GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vector<MapBackground*> textureSheets,
     JSONFilePath& path, KeyList* gameSupportedKeys)
-    : State(window), map(gameAM, textureSheets, path){
+    : State(window), map(gameAM, textureSheets, path) {
 	am = &gameAM;
 	keybinds = gameSupportedKeys;
 
@@ -74,7 +74,7 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 	    [key](const std::pair<KeyAction, sf::Keyboard::Key>& v) { return key == v.second; });
 	if(action != keybinds->end()) {
 		switch(action->first) {
-		case KeyAction::PAUSE: result = StateAction::PAUSE_GAME; std::cout << "File:" << __FILE__ << ", Line:" << __LINE__ << std::endl; break;
+		case KeyAction::PAUSE: result = StateAction::PAUSE_GAME; break;
 		case KeyAction::BACK: result = StateAction::EXIT_GAME; break;
 		case KeyAction::UP:
 		case KeyAction::DOWN:
@@ -91,7 +91,6 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 		default: break;
 		}
 	}
-	
 	if(key == sf::Keyboard::C) result = StateAction::START_COMBAT;
 	if(key == sf::Keyboard::Q) result = StateAction::EXIT_GAME;
 	return result;

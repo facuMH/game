@@ -21,7 +21,7 @@ class State {
 	std::vector<sf::Texture> textures;
 	sf::RenderWindow* window;
 	bool isQuitting = false;
-	
+
   public:
 	// Constructor
 	explicit State(sf::RenderWindow* window);

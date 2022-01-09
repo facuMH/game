@@ -1,6 +1,5 @@
 #pragma once
 
-#include <cmath>
 #include <unordered_map>
 
 #include <SFML/Graphics.hpp>
@@ -79,33 +78,4 @@ inline Position getWindowCenter(const sf::RenderWindow& window) {
 	auto x = center.x / 2.f;
 	auto y = center.y / 2.f;
 	return {x, y};
-}
-
-
-inline const float p2pX(const float perc, const sf::VideoMode& vm)
-{
-	/*
-	 * Converts a percentage value to pixels relative to the current resolution in the x-axis.
-	 *
-	 * @param		float perc				The percentage value.
-	 * @param		sf::VideoMode& vm		The current videomode of the window (resolution).
-	 *
-	 * @return		float					The calculated pixel value.
-	 */
-
-	return std::floor(static_cast<float>(vm.width) * (perc / 100.f));
-}
-
-inline const float p2pY(const float perc, const sf::VideoMode& vm)
-{
-	/*
-	 * Converts a percentage value to pixels relative to the current resolution in the y-axis.
-	 *
-	 * @param		float perc				The percentage value.
-	 * @param		sf::VideoMode& vm		The current videomode of the window (resolution).
-	 *
-	 * @return		float					The calculated pixel value.
-	 */
-
-	return std::floor(static_cast<float>(vm.height) * (perc / 100.f));
 }
