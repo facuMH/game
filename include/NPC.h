@@ -2,9 +2,6 @@
 
 class NPC : public virtual Entity {
   public:
-
-	virtual ~NPC() = default;
-
 	// Define an area in which the villager can move
 	Position startPosition;
 	Position endPosition;
@@ -24,6 +21,8 @@ class NPC : public virtual Entity {
 		endPosition = _endPosition;
 		stepsize = _stepsize;
 	};
+
+	virtual ~NPC() = default;
 
 	void move(TileMap* map) {
 		setTileOccupation(map, false);
