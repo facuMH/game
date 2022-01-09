@@ -8,7 +8,6 @@ PauseMenu::PauseMenu(sf::RenderWindow* window, AssetsManager& am)
     initFonts(am);
 
     sf::Vector2u currentSize = window->getSize();
-    sf::VideoMode vm = sf::VideoMode::getDesktopMode();
 	//Init background
 	background.setSize(sf::Vector2f(static_cast<float>(currentSize.x),	static_cast<float>(currentSize.y)));
 	background.setFillColor(sf::Color(200, 200, 200, 255));

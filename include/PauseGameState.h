@@ -12,17 +12,27 @@ class PauseGameState : public State {
   private:
 	sf::View view;
 	sf::RectangleShape background;
+	sf::RectangleShape container;
 	sf::Font font;
 	sf::Text text;
 
 	KeyList* supportedKeys;
 
-	bool quit{};
+	int activeButton;
+	Buttons buttons;
+	Position_i mousePosScreen;
+	Position_i mousePoseWindow;
+	Position mousePosView;
 
 	// Functions
-	void initBackground(sf::RenderWindow* window);
+	void initBackground(sf::RenderWindow* window, AssetsManager& am);
 	void initFonts(AssetsManager& am);
 	void initText(sf::RenderWindow* window);
+	void initButtons(sf::RenderWindow* window);
+	void updateButtons();
+	void renderButtons(sf::RenderWindow* window);
+	void updateMousePositions();
+
   public:
 	PauseGameState(sf::RenderWindow* window, AssetsManager& am, KeyList* supportedKeys);
 	virtual ~PauseGameState() override;

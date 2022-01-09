@@ -36,7 +36,7 @@ class GameState : public State {
 
 	// Functions
 	void updatePauseMenuCloseButtons();
-	void handlePause();
+	void isPaused();
 
 	void update(const float& dt) override;
 	void render(sf::RenderWindow* window) override;

@@ -168,7 +168,7 @@ void Game::pollEvents() {
 					//states.push(new LoadGameState(window, assetsManager, &keyBindings));
 					std::cout << "File:" << __FILE__ << ", Line:" << __LINE__ << std::endl;
 				}
-				if(action == StateAction::EXIT_SETTING) {
+				if(action == StateAction::EXIT_SETTING || action == StateAction::RESUME_GAME) {
 					states.pop();
 				}
 				break;
@@ -177,17 +177,16 @@ void Game::pollEvents() {
 				if(action == StateAction::START_COMBAT) {
 					makeNewCombat(1);
 				}
+				if(action == StateAction::RESUME_GAME) {
+					states.pop();
+				}
 				if(action == StateAction::PAUSE_GAME) {
 					std::cout << "File:" << __FILE__ << ", Line:" << __LINE__ << std::endl;
 					states.push(new PauseGameState(window, assetsManager, &keyBindings));
 					std::cout << "File:" << __FILE__ << ", Line:" << __LINE__ << std::endl;
 				}
-				if(action == StateAction::RESUME_GAME) {
-					std::cout << "File:" << __FILE__ << ", Line:" << __LINE__ << std::endl;
-					//states.push(new LoadGameState(window, assetsManager, &keyBindings));
-					std::cout << "File:" << __FILE__ << ", Line:" << __LINE__ << std::endl;
-				}
 				if(action == StateAction::EXIT_GAME) {
+					std::cout << "File:" << __FILE__ << ", Line:" << __LINE__ << std::endl;
 					closeWindow();
 				}
 				if(action == StateAction::EXIT_COMBAT) {

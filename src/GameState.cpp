@@ -30,7 +30,9 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 	soundBuffer = am->getSoundBuffer(GASP.c);
 	gaspSound.setBuffer(soundBuffer);
 	previousKey = sf::Keyboard::Unknown;
-	view = sf::View(player.get_position(), {720.0, 480.0});
+
+	sf::Vector2u currentSize = window->getSize();
+	view = sf::View(player.get_position(), sf::Vector2f(currentSize.x, currentSize.y));
 	MusicPath* musicPath = gameAM.getMusic(VILLAGE_MUSIC.c);
 	music.openFromFile(*musicPath);
 	music.setLoop(true);
@@ -58,7 +60,7 @@ void GameState::updatePauseMenuCloseButtons()
 		endState();
 }
 
-void GameState::handlePause()
+void GameState::isPaused()
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(sf::Keyboard::T)))
 	{
@@ -118,7 +120,7 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 		default: break;
 		}
 	}
-	if(key == sf::Keyboard::T) { handlePause();};
+	if(key == sf::Keyboard::T) { isPaused();};
 	if(key == sf::Keyboard::C) result = StateAction::START_COMBAT;
 	if(key == sf::Keyboard::Q) result = StateAction::EXIT_GAME;
 	return result;
