@@ -41,7 +41,7 @@ class DialogueBox {
 
   public:
 	DialogueBox() = default;
-	DialogueBox(const std::string& characterName, float windowHeight);
+	DialogueBox(const std::string& characterName, float dialogueYPosition);
 
 	bool textDone() const;
 	void setText(const std::string& characterName, std::string dialogueString);

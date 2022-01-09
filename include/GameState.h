@@ -3,12 +3,12 @@
 #include "AssetsManager.h"
 #include "DialogueBox.h"
 #include "Enemy.h"
-#include "InteractionManager.h"
 #include "Player.h"
 #include "State.h"
 #include "TileMap.h"
 #include "Villager.h"
 #include "definitions.h"
+#include "InteractionManager.h"
 
 class GameState : public State {
   private:
@@ -25,9 +25,9 @@ class GameState : public State {
 	std::unordered_map<std::string, sf::SoundBuffer> soundBuffers;
 	std::unordered_map<std::string, sf::Sound> sounds;
 	sf::Music music;
-	sf::Keyboard::Key previousKey; // for gasping sound effect
-	float dialogueYPosition;       // position depends on current view
-
+	// just for demonstration purposes
+	sf::Keyboard::Key previousKey;
+	float dialogueYPosition;
 
   public:
 	bool isHouse;
@@ -53,7 +53,7 @@ class GameState : public State {
 	Position getCurrentPlayerPosition() override;
 	void drawPlayer(sf::RenderWindow* window) override;
 	Name getEntityInInteractionRange(Position position);
-	void startDialogue(Name& characterName);
+	void startDialogue(Name &characterName);
 	Player* getPlayer() { return &player; };
 	Enemy* getEnemy() { return &enemies[0]; }
 	StateAction shouldAct() override;
