@@ -3,7 +3,6 @@
 
 #include <SFML/Window.hpp>
 
-#include "Animation.h"
 #include "AssetsPaths.h"
 #include "DialogueBox.h"
 #include "GameState.h"
@@ -49,7 +48,6 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 	isHouse = true;
 	inDialogue = false;
 
-	previousKey = sf::Keyboard::Unknown;
 	view = sf::View(player.get_position(), {720.0, 480.0});
 	MusicPath* musicPath = gameAM.getMusic(_musicPath);
 	music.openFromFile(*musicPath);
