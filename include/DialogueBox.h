@@ -11,6 +11,8 @@ class DialogueBox {
 	sf::Sprite dialogueBoxSprite;
 	Texture* arrowTexture;
 	sf::Sprite arrowSprite;
+	Texture* characterFaceTexture;
+	sf::Sprite characterFaceSprite;
 	sf::Font* font;
 	sf::Text characterNameText;
 	sf::Text dialogueText;
@@ -29,10 +31,11 @@ class DialogueBox {
 	bool text_is_finished = false;
 
 	void cropTextToBox(std::string& new_text);
+	std::string getFaceTexturePath(const Name& characterName);
 
   public:
 	DialogueBox() = default;
-	DialogueBox(const std::string& characterName, float dialogueYPosition);
+	DialogueBox(const Name& characterName, float dialogueYPosition);
 
 	bool textDone() const;
 	void setText(const std::string& characterName, std::string dialogueString);
