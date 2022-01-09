@@ -16,20 +16,18 @@ class GameState : public State {
 	Player player;
 	Villagers villagers;
 	Enemies enemies;
-	std::unordered_map<DoorNumber, Position> housePositions;
-	InteractionManager interactionManager;
 	DialogueBox dialogueBox;
 	bool inDialogue;
 	sf::View view;
 	AssetsManager* am;
 	KeyList* keybinds;
 	sf::Clock clock;
-	sf::SoundBuffer soundBuffer;
-	sf::Sound gaspSound;
+	std::unordered_map<std::string, sf::SoundBuffer> soundBuffers;
+	std::unordered_map<std::string, sf::Sound> sounds;
 	sf::Music music;
 	// just for demonstration purposes
 	sf::Keyboard::Key previousKey;
-	float windowHeight;
+	float dialogueYPosition;
 
   public:
 	bool isHouse;
@@ -54,7 +52,8 @@ class GameState : public State {
 	std::vector<std::pair<Position, DoorNumber>> listHousePositions();
 	Position getCurrentPlayerPosition() override;
 	void drawPlayer(sf::RenderWindow* window) override;
-	void startDialogue(Name &characterName, float windowHeight);
+	Name getEntityInInteractionRange(Position position);
+	void startDialogue(Name &characterName);
 	Player* getPlayer() { return &player; };
 	Enemy* getEnemy() { return &enemies[0]; }
 	StateAction shouldAct() override;
