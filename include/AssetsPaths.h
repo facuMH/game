@@ -32,12 +32,16 @@ constexpr auto HAND = cat(MAINMENU.c, "hand.png");
 constexpr auto CHARACTER = cat(ASSETS, "characters/");
 constexpr auto NINJA = cat(CHARACTER.c, "green_ninja/");
 constexpr auto NINJA_WALK = cat(NINJA.c, "Walk.png");
+constexpr auto NINJA_FACE = cat(NINJA.c, "Face.png");
 constexpr auto EGG_GIRL = cat(CHARACTER.c, "egg_girl/");
 constexpr auto EGG_GIRL_WALK = cat(EGG_GIRL.c, "Walk.png");
+constexpr auto EGG_GIRL_FACE = cat(EGG_GIRL.c, "Face.png");
 constexpr auto OLD_MAN = cat(CHARACTER.c, "old_man/");
 constexpr auto OLD_MAN_WALK = cat(OLD_MAN.c, "Walk.png");
+constexpr auto OLD_MAN_FACE = cat(OLD_MAN.c, "Face.png");
 constexpr auto PRINCESS = cat(CHARACTER.c, "princess/");
 constexpr auto PRINCESS_WALK = cat(PRINCESS.c, "Walk.png");
+constexpr auto PRINCESS_FACE = cat(PRINCESS.c, "Face.png");
 
 // ---- ENEMIES
 constexpr auto ENEMIES = cat(ASSETS, "enemies/");
@@ -82,6 +86,8 @@ constexpr auto DIALOGUE_FONT = cat(FONTS.c, "DialogueFont.ttf");
 // --- DIALOGUE
 constexpr auto DIALOGUE = cat(ASSETS, "dialogue/");
 constexpr auto DIALOGUE_BOX = cat(DIALOGUE.c, "DialogBox.png");
+constexpr auto DIALOGUE_BOX_FACE = cat(DIALOGUE.c, "DialogBoxFaceset.png");
+
 constexpr auto DIALOGUE_ARROW = cat(DIALOGUE.c, "Arrow.png");
 
 // ---- SOUND FX

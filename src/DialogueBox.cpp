@@ -3,9 +3,9 @@
 #include "definitions.h"
 #include <sstream>
 
-DialogueBox::DialogueBox(const std::string& characterName, float dialogueYPosition) {
+DialogueBox::DialogueBox(const Name& characterName, float dialogueYPosition) {
 
-	dialogueBoxTexture = assetsManager.getTexture(DIALOGUE_BOX.c);
+	dialogueBoxTexture = assetsManager.getTexture(DIALOGUE_BOX_FACE.c);
 
 	dialogueBoxSprite.setTexture(*dialogueBoxTexture);
 	dialogueBoxSprite.setTextureRect(sf::IntRect(0, 0, int(dialogueBoxTexture->getSize().x), int(dialogueBoxTexture->getSize().y)));
@@ -32,6 +32,10 @@ DialogueBox::DialogueBox(const std::string& characterName, float dialogueYPositi
 	dialogueText.setFillColor(sf::Color::Black);
 	dialogueText.setPosition(dialogueBoxSprite.getPosition().x + TEXT_POS_OFFSET.x, dialogueBoxSprite.getPosition().y + TEXT_POS_OFFSET.y);
 
+	characterFaceTexture = assetsManager.getTexture(getFaceTexturePath(characterName));
+	characterFaceSprite.setTexture(*characterFaceTexture);
+	characterFaceSprite.setTextureRect(sf::IntRect(0, 0, characterFaceTexture->getSize().x, characterFaceTexture->getSize().y));
+	characterFaceSprite.setPosition(dialogueBoxSprite.getPosition().x + FACE_OFFSET.x, dialogueBoxSprite.getPosition().y + FACE_OFFSET.y);
 	setText(characterName, interactionManager.getDialogue(characterName));
 }
 
@@ -85,6 +89,8 @@ void DialogueBox::render(sf::RenderWindow* window) {
 	window->draw(dialogueBoxSprite);
 	window->draw(dialogueText);
 	window->draw(characterNameText);
+	window->draw(characterFaceSprite);
+
 	if(max_display_lines_reached) {
 		window->draw(arrowSprite);
 	}
@@ -117,7 +123,7 @@ void DialogueBox::cropTextToBox(std::string& new_text) {
 				tmp_text << " " << t;
 				dialogueText.setString(tmp_text.str());
 				// true if text is bouncing out of the box
-				if(dialogueText.getLocalBounds().width < float(dialogueBoxTexture->getSize().x) - TEXT_POS_OFFSET.y * 2) {
+				if(dialogueText.getLocalBounds().width < float(dialogueBoxTexture->getSize().x - TEXT_POS_OFFSET.x + POSITION_OFFSET) - TEXT_POS_OFFSET.y * 2) {
 					processed_text.str(std::string(""));
 					processed_text << tmp_text.str();
 				} else {
@@ -149,4 +155,13 @@ void DialogueBox::setText(const std::string& characterName, std::string dialogue
 
 bool DialogueBox::textDone() const {
 	return text_is_finished;
+}
+std::string DialogueBox::getFaceTexturePath(const Name& characterName) {
+	if (characterName == "Old Man") {
+		return OLD_MAN_FACE.c;
+	} else if (characterName == "Egg Girl") {
+		return EGG_GIRL_FACE.c;
+	} else if (characterName == "Princess") {
+		return PRINCESS_FACE.c;
+	}
 }
