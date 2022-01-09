@@ -7,7 +7,6 @@
 
 #include "AssetsPaths.h"
 #include "CombatState.h"
-#include "DialogueBox.h"
 #include "Game.h"
 #include "SettingsState.h"
 #include "asset_data.h"

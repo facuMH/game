@@ -29,7 +29,6 @@ using Name = std::string;
 using Buttons = std::vector<Button>;
 using KeyList = std::unordered_map<KeyAction, sf::Keyboard::Key>;
 using DoorNumber = int;
-using DialogueArray = std::vector<std::string>;
 
 class Enemy;
 using Enemies = std::vector<Enemy>;
@@ -103,9 +102,8 @@ inline bool positionsInRange(Position one, Position other, float epsilon) {
 
 // DEFINITIONS/CONSTANTS FOR DIALOGUE BOX
 const int POSITION_OFFSET = 10;
-const Position TEXT_POS_OFFSET = {55, 20};
+const Position TEXT_POS_OFFSET = {10, 20};
 const int MAX_TEXT_LINES = 2;
 const float TIME_UNTIL_NEXT_CHAR = 0.05; // after this time the next character of the text is drawn
 const Position CHARACTER_NAME_OFFSET = {10, -2};
 const Position ARROW_POS_OFFSET = {10, 10};
-const Position FACE_OFFSET = {6, 15};
