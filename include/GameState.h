@@ -23,7 +23,9 @@ class GameState : public State {
 	sf::Music music;
 	// just for demonstration purposes
 	sf::Keyboard::Key previousKey;
-	PauseMenu* pmenu;
+	PauseMenu pausemenu;
+	bool paused;
+	
 
   public:
 	// Constructor
@@ -33,9 +35,8 @@ class GameState : public State {
 	~GameState() override;
 
 	// Functions
-	void updatePauseMenuButtons();
-	void initPauseMenu();
-	void updateInput(const float & dt);
+	void updatePauseMenuCloseButtons();
+	void handlePause();
 
 	void update(const float& dt) override;
 	void render(sf::RenderWindow* window) override;

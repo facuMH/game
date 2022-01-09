@@ -9,11 +9,10 @@
 
 GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vector<MapBackground*> textureSheets,
     JSONFilePath& path, KeyList* gameSupportedKeys)
-    : State(window), map(gameAM, textureSheets, path) {
+    : State(window), map(gameAM, textureSheets, path), pausemenu(window, gameAM) {
 	am = &gameAM;
 	keybinds = gameSupportedKeys;
-
-	initPauseMenu();
+	paused = false;
 
 	Texture* play_text = am->getTexture(NINJA_WALK.c);
 	Animation player_animation(play_text, sf::IntRect(0, 0, TILESIZE, TILESIZE), Position(50, 50));
@@ -51,46 +50,36 @@ Villager GameState::createVillager(
 	return {anim, name, movementDirection, endPosition, stepsize};
 }
 
-GameState::~GameState()
-{
-	delete pmenu;
-}
+GameState::~GameState() = default;
 
-void GameState::updatePauseMenuButtons()
+void GameState::updatePauseMenuCloseButtons()
 {
-	if (pmenu->isButtonPressed("QUIT"))
+	if (pausemenu.isCloseButtonPressed())
 		endState();
 }
 
-void GameState::updateInput(const float & dt)
+void GameState::handlePause()
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(sf::Keyboard::T)))
 	{
 		if (!paused)
-			pauseState();
+			paused = true;
 		else
-			unpauseState();
+			paused = false;
 	}
-}
-
-void GameState::initPauseMenu()
-{
-	pmenu = new PauseMenu(getWindow(), *am);
-	sf::VideoMode vm = sf::VideoMode::getDesktopMode();
-	pmenu->addButton("QUIT", p2pY(74.f, vm), p2pX(13.f, vm), p2pY(6.f, vm), calcCharSize(vm), "Quit");
 }
 
 void GameState::update(const float& dt) {
 	updateKeybinds(dt);
-	updateInput(dt);
+
 	if(clock.getElapsedTime().asSeconds() > .05f) {
 		clock.restart();
 	}
 
 	if (paused) //paused update
 	{
-		pmenu->update(getWindow());
-		updatePauseMenuButtons();
+		pausemenu.update(getWindow());
+		updatePauseMenuCloseButtons();
 	}
 }
 
@@ -100,8 +89,7 @@ void GameState::render(sf::RenderWindow* window) {
 
 	if (paused) //Pause menu render
 	{
-		//renderTexture.setView(renderTexture.getDefaultView());
-		pmenu->render(window);
+		pausemenu.render(window);
 	}
 }
 
@@ -130,6 +118,7 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 		default: break;
 		}
 	}
+	if(key == sf::Keyboard::T) { handlePause();};
 	if(key == sf::Keyboard::C) result = StateAction::START_COMBAT;
 	if(key == sf::Keyboard::Q) result = StateAction::EXIT_GAME;
 	return result;

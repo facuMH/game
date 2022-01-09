@@ -11,56 +11,36 @@ PauseMenu::PauseMenu(sf::RenderWindow* window, AssetsManager& am)
     sf::VideoMode vm = sf::VideoMode::getDesktopMode();
 	//Init background
 	background.setSize(sf::Vector2f(static_cast<float>(currentSize.x),	static_cast<float>(currentSize.y)));
-	background.setFillColor(sf::Color(20, 20, 20, 100));
+	background.setFillColor(sf::Color(200, 200, 200, 255));
 
 	//Init container
-	container.setSize(sf::Vector2f(static_cast<float>(currentSize.x) / 4.f,	static_cast<float>(currentSize.y) - p2pY(9.3f, vm)));
-	container.setFillColor(sf::Color(20, 20, 20, 200));
-	container.setPosition(static_cast<float>(currentSize.x) / 2.f - container.getSize().x / 2.f,	30.f);
+	container.setSize(sf::Vector2f(static_cast<float>(currentSize.x) / 4.f,	static_cast<float>(currentSize.y) / 2.f));
+	container.setFillColor(sf::Color(120, 120, 120, 255));
+	container.setPosition(static_cast<float>(currentSize.x) / 2.f - container.getSize().x / 2.f, 30.f);
 
 	//Init text
 	menuText.setFont(font);
-	menuText.setFillColor(sf::Color(255, 255, 255, 200));
-	menuText.setCharacterSize(calcCharSize(vm));
+	menuText.setFillColor(sf::Color(255, 255, 255, 255));
+	menuText.setCharacterSize(20);
 	menuText.setString("PAUSED");
-	menuText.setPosition(	container.getPosition().x + container.getSize().x / 2.f - menuText.getGlobalBounds().width / 2.f,
-    	container.getPosition().y + p2pY(4.f, vm)	);
+	menuText.setPosition(container.getPosition().x + container.getSize().x / 2.f - menuText.getGlobalBounds().width / 2.f, container.getPosition().y);
+
+	//Button(400, 100, 150, 50, &font, "QUIT", GREY, LIGHTGREY, sf::Color::Black)
+	float x = container.getPosition().x + container.getSize().x / 2.f - 50.f;
+	buttons.push_back(Button(x, 100, 150, 50, &font, "QUIT", GREY, LIGHTGREY, sf::Color::Black));
+	
 }
 
-PauseMenu::~PauseMenu()
-{
-	auto it = buttons.begin();
-	for (it = buttons.begin(); it != buttons.end(); ++it)
-	{
-		delete it->second;
-	}
-}
+PauseMenu::~PauseMenu() { }
 
 void PauseMenu::initFonts(AssetsManager& am) {
 	font = *am.getFont(DOSIS.c);
 }
 
-std::map<std::string, Button*>& PauseMenu::getButtons()
-{
-	return buttons;
-}
-
 //Functions
-const bool PauseMenu::isButtonPressed(const std::string key)
+const bool PauseMenu::isCloseButtonPressed()
 {
-	return buttons[key]->isPressed();
-}
-
-void PauseMenu::addButton( const std::string key, const float y, const float width, const float height, const unsigned char_size, const std::string text)
-{
-	float x = container.getPosition().x + container.getSize().x / 2.f - width / 2.f;
-
-	buttons[key] = new Button(
-		x, y, width, height,
-		&font, text,
-		sf::Color(70, 70, 70, 200), sf::Color(250, 250, 250, 250), sf::Color(20, 20, 20, 50),
-		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0)
-	);
+	return buttons[0].isPressed();
 }
 
 void PauseMenu::updateMousePositions(sf::RenderWindow * window)
@@ -75,7 +55,7 @@ void PauseMenu::update(sf::RenderWindow * target)
     updateMousePositions(target);
 	for (auto &i : buttons)
 	{
-		i.second->update(mousePosView);
+		i.update(mousePosView);
 	}
 }
 
@@ -86,7 +66,7 @@ void PauseMenu::render(sf::RenderWindow * target)
 
 	for (auto &i : buttons)
 	{
-		i.second->render(target);
+		i.render(target);
 	}
 
 	target->draw(menuText);

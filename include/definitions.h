@@ -109,17 +109,3 @@ inline const float p2pY(const float perc, const sf::VideoMode& vm)
 
 	return std::floor(static_cast<float>(vm.height) * (perc / 100.f));
 }
-
-inline const unsigned calcCharSize(const sf::VideoMode& vm, const unsigned modifier = 60)
-{
-	/*
-	 * Calculates the character size for text using the current resolution and a constant.
-	 *
-	 * @param		sf::VideoMode& vm		The current videomode of the window (resolution).
-	 * @param		unsigned modifier		Used to modify the character size in a more custom way.
-	 *
-	 * @return		unsigned				The calculated character size value.
-	 */
-
-	return static_cast<unsigned>((vm.width + vm.height) / modifier);
-}
