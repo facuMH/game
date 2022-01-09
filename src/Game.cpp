@@ -1,3 +1,4 @@
+#include <cmath>
 #include <iostream>
 
 #include <SFML/Graphics.hpp>
@@ -7,10 +8,15 @@
 #include "Game.h"
 #include "SettingsState.h"
 #include "PauseGameState.h"
+#include "asset_data.h"
 
 // Private functions
 void Game::initVariables() {
 	window = nullptr;
+
+	Texture* play_text = assetsManager.getTexture(NINJA_WALK.c);
+	Animation player_animation(play_text, sf::IntRect(0, 0, TILESIZE, TILESIZE), Position(50, 50));
+	player = Player("Adventurer", Stats(15, 20, 50, 30, 15, 1), player_animation);
 }
 
 void Game::closeWindow() {
@@ -113,27 +119,87 @@ bool Game::isRunning() const {
 	return window->isOpen();
 }
 
-void Game::makeNewCombat(const int numberOfEnemies) {
-	Texture* alien_texture = assetsManager.getTexture(ALIEN.c);
-	Animation alien_animation(alien_texture, sf::IntRect(50, 25, 105, 145), Position(100, 100));
-	Enemy alien("Alien", Stats(15, 25, 50, 30), alien_animation);
-	Enemies enemies{};
-	for(int i = 0; i < numberOfEnemies; i++) {
-		alien.animation.move({50, 0});
-		enemies.push_back(alien);
-	}
+void Game::makeNewCombat() {
+	Enemy alien = createAlien(assetsManager);
 	auto mapTexture = {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c)};
 	JSONFilePath* design = assetsManager.getMapDesign(COMBAT_LEVEL1.c);
-	Party party{*dynamic_cast<GameState*>(states.top())->getPlayer()};
 	turnOffMusic();
-	states.push(new CombatState(window, assetsManager, mapTexture, *design, party, enemies, &keyBindings));
+	states.push(new CombatState(window, assetsManager, mapTexture, *design, player, alien, &keyBindings));
 }
 
-// Functions
+void Game::makeNewCombat(const Enemy* enemy) {
+	auto mapTexture = {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c)};
+	JSONFilePath* design = assetsManager.getMapDesign(COMBAT_LEVEL1.c);
+	turnOffMusic();
+	states.push(new CombatState(window, assetsManager, mapTexture, *design, player, *enemy, &keyBindings));
+}
+
+void Game::makeMainGameState() {
+	Villagers villagers;
+	villagers.push_back(createVillager(EGG_GIRL_WALK.c, "Egg Girl", Position(300, 50), MovementType::VERTICAL, 0.3f));
+	villagers.push_back(createVillager(OLD_MAN_WALK.c, "Old Man", Position(50, 150), MovementType::HORIZONTAL, 0.4f));
+	villagers.push_back(createVillager(PRINCESS_WALK.c, "Princess", Position(230, 150), MovementType::VERTICAL, 0.2f));
+
+	// Comment: There's a bug in Tileson. Tile attributes, such as isBlocked are connected with the tile
+	// ID. However, the tile ID differs of tiles in the 2nd, 3rd, ... tile sheet from the original ID,
+	// because it's counted with an offset. My theory is that, internally, this ID is used to get the
+	// attributes, but returns NULL for all sheets but the first one. Therefore, all collisions are
+	// noted in the first sheet, which has to be passed twice now for the collisions to be loaded at
+	// all.
+	auto* mainGame = new GameState(window, assetsManager,
+	    {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_FLOOR.c),
+	        assetsManager.getMap(TILESHEET_HOUSES.c), assetsManager.getMap(TILESHEET_NATURE.c)},
+	    *assetsManager.getMapDesign(MAP_LEVEL1.c), &keyBindings, player, villagers,
+	    *assetsManager.getMusic(VILLAGE_MUSIC.c));
+
+	states.push(mainGame);
+	housePositions = mainGame->listHousePositions();
+}
+
+Villager Game::createVillager(const std::string& textureName, const Name name, const Position position,
+    const MovementType movementDirection, const float stepsize) {
+	Texture* tex = assetsManager.getTexture(textureName);
+	Animation anim(tex, sf::IntRect(0, 0, TILESIZE, TILESIZE), position);
+	Position endPosition;
+	if(movementDirection == MovementType::HORIZONTAL) {
+		endPosition = {position.x + 50, position.y};
+	} else {
+		endPosition = {position.x, position.y + 60};
+	}
+	return {anim, name, movementDirection, endPosition, stepsize};
+}
+
+bool approximatelyEqual(const sf::Vector2f& a, const sf::Vector2f& b, float epsilon = 8.0f) {
+	return std::fabs(a.x - b.x) < epsilon && std::fabs(a.y - b.y) < epsilon;
+}
+
+void Game::makeNewHouseState(const Position playerPosition) {
+	DoorNumber doorNumber = 0;
+	for(auto& hp : housePositions) {
+		auto doorPosition = hp.first;
+		if(approximatelyEqual(playerPosition, doorPosition)) {
+			doorNumber = hp.second;
+			break;
+		}
+	}
+	std::vector<MapBackground*> tileSheets = {assetsManager.getMap(TILESHEET_INTERIOR_FLOOR.c),
+	    assetsManager.getMap(TILESHEET_INTERIOR_FLOOR.c), assetsManager.getMap(TILESHEET_FURNITURE.c)};
+	House house = HouseManager::getHouse(doorNumber);
+	Enemies enemies;
+
+	EnemyData enemyData = ENEMYDATA[int(doorNumber - 1)];
+	Texture* texture = assetsManager.getTexture(enemyData.texturePath);
+	Animation animation(texture, sf::IntRect(0, 0, TILESIZE, TILESIZE), enemyData.position);
+	Enemy enemy(enemyData.name, Stats(15, 15, 15, 15, 15, 15), animation);
+	enemies.push_back(enemy);
+
+	states.push(new GameState(window, assetsManager, tileSheets, house.houseDesignPath, &keyBindings, player, enemies,
+	    *assetsManager.getMusic(HOUSE_MUSIC.c)));
+}
 
 void Game::pollEvents() {
 	// Event polling
-	StateAction action;
+	StateAction action = StateAction::NONE;
 	while(window->pollEvent(event)) {
 		switch(event.type) {
 		// Event that is called when the close button is clicked
@@ -142,53 +208,41 @@ void Game::pollEvents() {
 			// Event that is called when the Escape button is pressed
 			switch(event.key.code) {
 			case sf::Keyboard::Escape: closeWindow(); break;
-			case sf::Keyboard::Enter:
-				action = states.top()->shouldAct();
-				if(action == StateAction::EXIT_GAME) {
-					closeWindow();
-				}
-				if(action == StateAction::START_GAME) {
-					turnOffMusic();
-					// Optional TODO: find bug in Tileson.
-					// Comment: There's a bug in Tileson. Tile attributes, such as isBlocked are connected with the tile ID.
-					// However, the tile ID differs of tiles in the 2nd, 3rd, ... tile sheet from the original ID, because it's
-					// counted with an offset. My theory is that, internally, this ID is used to get the attributes, but returns
-					// NULL for all sheets but the first one. Therefore, all collisions are noted in the first sheet, which
-					// has to be passed twice now for the collisions to be loaded at all.
-					states.push(new GameState(window, assetsManager,
-					    {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_FLOOR.c),
-					        assetsManager.getMap(TILESHEET_HOUSES.c), assetsManager.getMap(TILESHEET_NATURE.c)},
-					    *assetsManager.getMapDesign(MAP_LEVEL1.c), &keyBindings));
-				}
-				if(action == StateAction::START_SETTING) {
-					states.push(new SettingsState(window, assetsManager, &keyBindings));
-				}
-				if(action == StateAction::LOAD_GAME) {
-					// To Do
-				}
-				if(action == StateAction::EXIT_SETTING || action == StateAction::RESUME_GAME) {
-					states.pop();
+			case sf::Keyboard::Enter: action = states.top()->shouldAct(); break;
+			default: action = states.top()->handleKeys(event.key.code); break;
+			}
+			switch(action) {
+			case StateAction::EXIT_GAME: closeWindow(); break;
+			case StateAction::START_GAME:
+				turnOffMusic();
+				makeMainGameState();
+				break;
+			case StateAction::START_SETTING: states.push(new SettingsState(window, assetsManager, &keyBindings)); break;
+			case StateAction::PAUSE_GAME: states.push(new PauseGameState(window, assetsManager, &keyBindings)); break;
+			case StateAction::GAME_LOADING: /* To Do */;  break;
+			case StateAction::EXIT_SETTING: states.pop(); break;
+			case StateAction::RESUME_GAME: states.pop(); break;
+			case StateAction::START_COMBAT:
+				if(auto* house = dynamic_cast<GameState*>(states.top()); house->isHouse) {
+					makeNewCombat(house->getEnemy());
+				} else {
+					makeNewCombat();
 				}
 				break;
-			default:
-				action = states.top()->handleKeys(event.key.code);
-				if(action == StateAction::START_COMBAT) {
-					makeNewCombat(1);
-				}
-				if(action == StateAction::RESUME_GAME) {
-					states.pop();
-				}
-				if(action == StateAction::PAUSE_GAME) {
-					states.push(new PauseGameState(window, assetsManager, &keyBindings));
-				}
-				if(action == StateAction::EXIT_GAME) {
-					closeWindow();
-				}
-				if(action == StateAction::EXIT_COMBAT) {
-					// calling quitStateActions here is only for debug reasons
-					states.top()->quitStateActions();
-				}
+			case StateAction::EXIT_COMBAT:
+				// calling quitStateActions here is only for debug reasons
+				states.top()->quitStateActions();
 				break;
+			case StateAction::START_HOUSE:
+				turnOffMusic();
+				makeNewHouseState(states.top()->getCurrentPlayerPosition());
+				break;
+			case StateAction::EXIT_HOUSE:
+				turnOffMusic();
+				states.pop();
+				states.top()->resumeMusic();
+				break;
+			default: break;
 			}
 			break;
 		case sf::Event::MouseMoved: break;

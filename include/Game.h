@@ -10,6 +10,7 @@
 
 #include "AssetsManager.h"
 #include "GameState.h"
+#include "HouseManager.h"
 #include "MainMenuState.h"
 #include "definitions.h"
 
@@ -33,10 +34,14 @@ class Game {
 
 	KeyList keyBindings;
 	std::unordered_map<std::string, KeyAction> keyActionString;
+	std::vector<std::pair<Position, DoorNumber>> housePositions;
 	AssetsManager assetsManager;
 	float dt{}; // time delta
 	Position_i mousePos;
 	sf::Text mousePosText;
+
+	Player player;
+	HouseManager houseManager;
 
 	// Stack of states - the top entry is the active state, i.e. [main menu,
 	// map-layer, fight-layer]: If the fight layer is left, the next active state
@@ -45,7 +50,13 @@ class Game {
 	// Only instances of its child classes could be put on the stack directly.
 	std::stack<State*> states;
 
-	void makeNewCombat(int numberOfEnemies);
+
+	void makeNewCombat();
+	void makeNewCombat(const Enemy* enemy);
+	void makeMainGameState();
+	void makeNewHouseState(Position playerPosition);
+	Villager createVillager(
+	    const std::string& textureName, Name name, Position position, MovementType movementDirection, float stepsize);
 
   public:
 	// Constructor

@@ -19,8 +19,10 @@ ENDIF()
 set(SOURCES src/main.cpp
         src/Button.cpp
         src/CombatState.cpp
+        src/Enemy.cpp
         src/Game.cpp
         src/GameState.cpp
+        src/HouseManager.cpp
         src/MainMenuState.cpp
         src/PauseGameState.cpp
         src/Player.cpp
@@ -30,15 +32,19 @@ set(SOURCES src/main.cpp
         src/TileMap.cpp)
 
 set(HEADERS include/Animation.h
+        include/asset_data.h
         include/AssetsManager.h
         include/AssetsPaths.h
         include/Button.h
+        include/Combatant.h
         include/CombatState.h
         include/definitions.h
         include/Enemy.h
         include/Entity.h
         include/Game.h
         include/GameState.h
+        include/House.h
+        include/HouseManager.h
         include/Inanimated.h
         include/MainMenuState.h
         include/PauseGameState.h

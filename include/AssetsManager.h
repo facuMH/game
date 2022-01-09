@@ -58,4 +58,5 @@ class AssetsManager {
 		}
 		return true;
 	}
+
 };

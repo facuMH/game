@@ -15,4 +15,6 @@ class Object : public Entity {
 class Weapon : public Object {
 	Name name;
 	Stats stats;
+  public:
+	const Stats& getStats() { return stats; }
 };

@@ -46,4 +46,5 @@ class Button {
 	void render(sf::RenderWindow* window);
 	void setActive();
 	void setInactive();
+	void setColor(sf::Color color);
 };
