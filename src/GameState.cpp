@@ -125,6 +125,7 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 	return result;
 }
 
+
 StateAction GameState::shouldAct() {
 	return StateAction::NONE;
 }
