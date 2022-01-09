@@ -2,7 +2,7 @@
 #include "AssetsPaths.h"
 #include <sstream>
 
-DialogueBox::DialogueBox(const std::string& characterName, float windowHeight) {
+DialogueBox::DialogueBox(const std::string& characterName, float dialogueYPosition) {
 
 	POSITION_OFFSET = 10;
 	TEXT_POS_OFFSET = {10, 20};
@@ -13,7 +13,7 @@ DialogueBox::DialogueBox(const std::string& characterName, float windowHeight) {
 
 	dialogueBoxTexture = assetsManager.getTexture(DIALOGUE_BOX.c);
 	shape.setTextureRect(sf::IntRect(0, 0, int(dialogueBoxTexture->getSize().x), int(dialogueBoxTexture->getSize().y)));
-	shape.setPosition(sf::Vector2f(float(POSITION_OFFSET), float(windowHeight - dialogueBoxTexture->getSize().y - POSITION_OFFSET)));
+	shape.setPosition(sf::Vector2f(float(POSITION_OFFSET), float(dialogueYPosition - dialogueBoxTexture->getSize().y + POSITION_OFFSET)));
 	dialogueBoxSprite.setTexture(*dialogueBoxTexture);
 	dialogueBoxSprite.setTextureRect(shape.getTextureRect());
 	dialogueBoxSprite.setPosition(shape.getPosition());
@@ -22,7 +22,7 @@ DialogueBox::DialogueBox(const std::string& characterName, float windowHeight) {
 	arrowSprite.setTexture(*arrowTexture);
 	arrowSprite.setTextureRect(sf::IntRect(0, 0, int(arrowTexture->getSize().x), int(arrowTexture->getSize().y)));
 	arrowSprite.setPosition(
-	    dialogueBoxTexture->getSize().x - ARROW_POS_OFFSET.x, windowHeight - ARROW_POS_OFFSET.y);
+	    dialogueBoxTexture->getSize().x - ARROW_POS_OFFSET.x, dialogueYPosition - ARROW_POS_OFFSET.y);
 
 	font = assetsManager.getFont(DIALOGUE_FONT.c);
 
