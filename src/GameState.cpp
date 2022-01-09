@@ -50,7 +50,6 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 	inDialogue = false;
 
 	previousKey = sf::Keyboard::Unknown;
-	// view = sf::View(player.get_position(), {float(window->getSize().x), float(window->getSize().y)});
 	view = sf::View(player.get_position(), {720.0, 480.0});
 	MusicPath* musicPath = gameAM.getMusic(_musicPath);
 	music.openFromFile(*musicPath);
@@ -110,9 +109,15 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 			previousKey = key;
 			break;
 		case KeyAction::INTERACT:
-			interactWith = getEntityInInteractionRange(player.animation.get_position());
-			if(!interactWith.empty()) {
-				startDialogue(interactWith);
+			if(!isHouse) {
+				interactWith = getEntityInInteractionRange(player.animation.get_position());
+				if(!interactWith.empty()) {
+					startDialogue(interactWith);
+				}
+			}
+			else {
+				interactWith = getEntityInInteractionRange(player.animation.get_position());
+				result = StateAction::START_COMBAT;
 			}
 		default: break;
 		}
@@ -180,9 +185,16 @@ bool inInteractionRange(Position playerPosition, Position otherPosition) {
 }
 
 Name GameState::getEntityInInteractionRange(Position position) {
+	// if entity is a villager
 	for(auto& v : villagers) {
 		if(inInteractionRange(position, v.animation.get_position())) {
 			return v.name;
+		}
+	}
+	// if entity is an enemy
+	for(auto& e : enemies) {
+		if(inInteractionRange(position, e.animation.get_position())) {
+			return e.name;
 		}
 	}
 	return "";
