@@ -5,7 +5,6 @@
 
 #include "AssetsPaths.h"
 #include "CombatState.h"
-#include "DialogueBox.h"
 #include "Game.h"
 #include "SettingsState.h"
 #include "asset_data.h"
@@ -169,15 +168,11 @@ Villager Game::createVillager(const std::string& textureName, const Name name, c
 	return {anim, name, movementDirection, endPosition, stepsize};
 }
 
-bool approximatelyEqual(const sf::Vector2f& a, const sf::Vector2f& b, float epsilon = 8.0f) {
-	return std::fabs(a.x - b.x) < epsilon && std::fabs(a.y - b.y) < epsilon;
-}
-
 void Game::makeNewHouseState(const Position playerPosition) {
 	DoorNumber doorNumber = 0;
 	for(auto& hp : housePositions) {
 		auto doorPosition = hp.first;
-		if(approximatelyEqual(playerPosition, doorPosition)) {
+		if(positionsInRange(playerPosition, doorPosition, 8.0f)) {
 			doorNumber = hp.second;
 			break;
 		}
