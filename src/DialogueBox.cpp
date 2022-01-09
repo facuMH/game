@@ -5,11 +5,11 @@
 DialogueBox::DialogueBox(const std::string& characterName, float windowHeight) {
 
 	POSITION_OFFSET = 10;
-	TEXT_POS_OFFSET = {30, 60};
-	MAX_TEXT_LINES = 5;
+	TEXT_POS_OFFSET = {10, 20};
+	MAX_TEXT_LINES = 2;
 	TIME_UNTIL_NEXT_CHAR = 0.05; // after this time the next character of the text is drawn
-	NAME_TEXT_POS_OFFSET = {10, -2};
-	ARROW_POS_OFFSET = {30, 30};
+	CHARACTER_NAME_OFFSET = {10, -2};
+	ARROW_POS_OFFSET = {10, 30};
 
 	dialogueBoxTexture = assetsManager.getTexture(DIALOGUE_BOX.c);
 	shape.setTextureRect(sf::IntRect(0, 0, int(dialogueBoxTexture->getSize().x), int(dialogueBoxTexture->getSize().y)));
@@ -22,7 +22,7 @@ DialogueBox::DialogueBox(const std::string& characterName, float windowHeight) {
 	arrowSprite.setTexture(*arrowTexture);
 	arrowSprite.setTextureRect(sf::IntRect(0, 0, int(arrowTexture->getSize().x), int(arrowTexture->getSize().y)));
 	arrowSprite.setPosition(
-	    POSITION_OFFSET + shape.getSize().x - ARROW_POS_OFFSET.x, windowHeight - POSITION_OFFSET - ARROW_POS_OFFSET.y);
+	    dialogueBoxTexture->getSize().x - ARROW_POS_OFFSET.x, windowHeight - ARROW_POS_OFFSET.y);
 
 	font = assetsManager.getFont(DIALOGUE_FONT.c);
 
@@ -30,14 +30,14 @@ DialogueBox::DialogueBox(const std::string& characterName, float windowHeight) {
 	characterNameText.setCharacterSize(12);
 	characterNameText.setFillColor(sf::Color::White);
 	characterNameText.setPosition(
-	    shape.getPosition().x + NAME_TEXT_POS_OFFSET.x, shape.getPosition().y + NAME_TEXT_POS_OFFSET.y);
+	    shape.getPosition().x + CHARACTER_NAME_OFFSET.x, shape.getPosition().y + CHARACTER_NAME_OFFSET.y);
 
 	dialogueText.setFont(*font);
-	dialogueText.setCharacterSize(14);
+	dialogueText.setCharacterSize(12);
 	dialogueText.setFillColor(sf::Color::Black);
 	dialogueText.setPosition(shape.getPosition().x + TEXT_POS_OFFSET.x, shape.getPosition().y + TEXT_POS_OFFSET.y);
 
-	setText(characterName, "");
+	setText(characterName, interactionManager.getDialogue(characterName));
 }
 
 void DialogueBox::update(const float& dt) {
@@ -47,19 +47,18 @@ void DialogueBox::update(const float& dt) {
 		dialogueText.setString(text.substr(text_pointer_start, text_pointer_length + 1));
 
 		// update text animation
-		if(!stop_typing_text) {
-			// consider max line limit
+		if(!max_display_lines_reached) {
 			if(text.at(text_pointer_start + text_pointer_length) == '\n') {
 				if(++drawn_line_counter >= MAX_TEXT_LINES) {
-					stop_typing_text = true;
+					max_display_lines_reached = true;
 					arrow_motion_counter = 0;
 					arrow_motion_direction = {0, -1};
 				}
 			}
-			if(text_pointer_start + text_pointer_length < text.size() - 1 && !stop_typing_text) {
+			if(text_pointer_start + text_pointer_length < text.size() - 1 && !max_display_lines_reached) {
 				text_pointer_length++;
 			} else {
-				stop_typing_text = true;
+				max_display_lines_reached = true;
 			}
 		} else {
 			if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
@@ -72,7 +71,7 @@ void DialogueBox::update(const float& dt) {
 					drawn_line_counter = 0;
 					text_pointer_start += text_pointer_length + 1; // +1 to skip one newline
 					text_pointer_length = 0;
-					stop_typing_text = false;
+					max_display_lines_reached = false;
 				}
 			} else {
 				// show blinking arrow
@@ -92,7 +91,7 @@ void DialogueBox::render(sf::RenderWindow* window) {
 	window->draw(dialogueBoxSprite);
 	window->draw(dialogueText);
 	window->draw(characterNameText);
-	if(stop_typing_text) {
+	if(max_display_lines_reached) {
 		window->draw(arrowSprite);
 	}
 }
@@ -123,7 +122,7 @@ void DialogueBox::cropTextToTextbox(std::string& new_text) {
 				tmp_text << " " << t << std::flush;
 				dialogueText.setString(tmp_text.str());
 				// true if text is bouncing out of the box
-				if(dialogueText.getLocalBounds().width < shape.getSize().x - TEXT_POS_OFFSET.y * 2) {
+				if(dialogueText.getLocalBounds().width < dialogueBoxTexture->getSize().x - TEXT_POS_OFFSET.y * 2) {
 					processed_text.str(std::string(""));
 					processed_text << tmp_text.str();
 				} else {
@@ -145,7 +144,7 @@ void DialogueBox::setText(const std::string& characterName, std::string dialogue
 	drawn_line_counter = 0;
 	text_pointer_length = 0;
 	text_pointer_start = 0;
-	stop_typing_text = false;
+	max_display_lines_reached = false;
 	arrow_motion_counter = 0;
 	arrow_motion_direction = {0, -1};
 	text_is_finished = false;
@@ -154,5 +153,5 @@ void DialogueBox::setText(const std::string& characterName, std::string dialogue
 }
 
 bool DialogueBox::textDone() const {
-	return stop_typing_text;
+	return text_is_finished;
 }

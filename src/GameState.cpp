@@ -17,6 +17,7 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 	player = _player;
 	villagers = _villagers;
 	isHouse = false;
+	inDialogue = false;
 	soundBuffer = am->getSoundBuffer(GASP.c);
 	gaspSound.setBuffer(soundBuffer);
 	previousKey = sf::Keyboard::Unknown;
@@ -26,7 +27,7 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 	music.openFromFile(*musicPath);
 	music.setLoop(true);
 	music.play();
-	windowHeight =view.getSize().y;
+	windowHeight = view.getSize().y;
 }
 
 /// Constructor for house GameState: No villagers here, but monsters
@@ -38,6 +39,7 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 	player = _player;
 	enemies = _enemies;
 	isHouse = true;
+	inDialogue = false;
 	soundBuffer = am->getSoundBuffer(GASP.c);
 	gaspSound.setBuffer(soundBuffer);
 	previousKey = sf::Keyboard::Unknown;
@@ -56,12 +58,20 @@ void GameState::update(const float& dt) {
 	if(clock.getElapsedTime().asSeconds() > .05f) {
 		clock.restart();
 	}
+	if(inDialogue) {
+		dialogueBox.update(dt);
+		if(dialogueBox.textDone()) {
+			inDialogue = false;
+		}
+	}
 }
 
 void GameState::render(sf::RenderWindow* window) {
 	window->setView(view);
 	map.render(*window);
-	dialogueBox.render(window);
+	if (inDialogue) {
+		dialogueBox.render(window);
+	}
 }
 
 void GameState::updateKeybinds(const float& dt) {}
@@ -150,6 +160,6 @@ Position GameState::getCurrentPlayerPosition() {
 }
 
 void GameState::startDialogue(Name& characterName, float windowHeight) {
+	inDialogue = true;
 	dialogueBox = DialogueBox(characterName, windowHeight);
-	dialogueBox.setText(characterName, interactionManager.getDialogue(characterName));
 }
