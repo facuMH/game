@@ -20,7 +20,7 @@ class DialogueBox {
 
 	void cropTextToTextbox(std::string& new_text);
 
-	// *** constants ***
+	// constants
 	int POSITION_OFFSET;
 	sf::Vector2f TEXT_POS_OFFSET;
 	int MAX_TEXT_LINES;
@@ -36,7 +36,6 @@ class DialogueBox {
 	int drawn_line_counter;
 	bool max_display_lines_reached;
 	int arrow_motion_counter;
-	bool arrow_up;
 	sf::Vector2f arrow_motion_direction;
 	bool text_is_finished = false;
 
