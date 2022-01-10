@@ -7,28 +7,24 @@
 class DialogueBox {
   private:
 	Position position;
-	Texture* dialogueBoxTexture;
 	sf::Sprite dialogueBoxSprite;
-	Texture* arrowTexture;
 	sf::Sprite arrowSprite;
-	Texture* characterFaceTexture;
 	sf::Sprite characterFaceSprite;
-	sf::Font* font;
 	sf::Text characterNameText;
 	sf::Text dialogueText;
 	AssetsManager assetsManager;
 	InteractionManager interactionManager;
 
 	// text animation
-	std::string text;        // the text to draw (substring of the actual text since not all text is drawn at once)
-	int text_pointer_length; // pointer to the position of the text to be drawn
-	int text_pointer_start;
-	float text_animation_timer;
-	int drawn_line_counter;
-	int arrow_motion_counter;
-	sf::Vector2f arrow_motion_direction;
-	bool max_display_lines_reached;
-	bool text_is_finished = false;
+	std::string textToDraw; // substring of the actual textToDraw since not all textToDraw is drawn at once
+	int drawFrom;           // pointer to the position of the textToDraw to be drawn
+	int drawTo;             // pointer to the first sign to be drawn
+	float textAnimationTimer;
+	int textLinesCounter;
+	int arrowMotionCounter;
+	sf::Vector2f arrowMotionDirection;
+	bool maxDisplayLinesReached;
+	bool textIsFinished = false;
 
 	void cropTextToBox(std::string& new_text);
 
