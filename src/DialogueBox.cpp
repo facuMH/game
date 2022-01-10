@@ -3,7 +3,7 @@
 #include "definitions.h"
 #include <sstream>
 
-DialogueBox::DialogueBox(const Name& characterName, float dialogueYPosition) {
+DialogueBox::DialogueBox(const Name& characterName, const std::string& faceTexturePath, float dialogueYPosition) {
 
 	dialogueBoxTexture = assetsManager.getTexture(DIALOGUE_BOX_FACE.c);
 
@@ -32,7 +32,7 @@ DialogueBox::DialogueBox(const Name& characterName, float dialogueYPosition) {
 	dialogueText.setFillColor(sf::Color::Black);
 	dialogueText.setPosition(dialogueBoxSprite.getPosition().x + TEXT_POS_OFFSET.x, dialogueBoxSprite.getPosition().y + TEXT_POS_OFFSET.y);
 
-	characterFaceTexture = assetsManager.getTexture(getFaceTexturePath(characterName));
+	characterFaceTexture = assetsManager.getTexture(faceTexturePath);
 	characterFaceSprite.setTexture(*characterFaceTexture);
 	characterFaceSprite.setTextureRect(sf::IntRect(0, 0, int(characterFaceTexture->getSize().x), int(characterFaceTexture->getSize().y)));
 	characterFaceSprite.setPosition(dialogueBoxSprite.getPosition().x + FACE_OFFSET.x, dialogueBoxSprite.getPosition().y + FACE_OFFSET.y);
@@ -155,13 +155,4 @@ void DialogueBox::setText(const std::string& characterName, std::string dialogue
 
 bool DialogueBox::textDone() const {
 	return text_is_finished;
-}
-std::string DialogueBox::getFaceTexturePath(const Name& characterName) {
-	if (characterName == "Old Man") {
-		return OLD_MAN_FACE.c;
-	} else if (characterName == "Egg Girl") {
-		return EGG_GIRL_FACE.c;
-	} else if (characterName == "Princess") {
-		return PRINCESS_FACE.c;
-	}
 }
