@@ -53,8 +53,8 @@ class Game {
 	void makeNewCombat(const Enemy* enemy);
 	void makeMainGameState();
 	void makeNewHouseState(Position playerPosition);
-	Villager createVillager(
-	    const std::string& textureName, Name name, Position position, MovementType movementDirection, float stepsize);
+	Villager createVillager(const Name& name, const std::string& faceTextureName, const std::string& textureName,
+	    Position position, MovementType movementDirection, float stepsize);
 
   public:
 	// Constructor

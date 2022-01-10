@@ -31,11 +31,10 @@ class DialogueBox {
 	bool text_is_finished = false;
 
 	void cropTextToBox(std::string& new_text);
-	static std::string getFaceTexturePath(const Name& characterName);
 
   public:
 	DialogueBox() = default;
-	DialogueBox(const Name& characterName, float dialogueYPosition);
+	DialogueBox(const Name& characterName, const std::string& faceTexturePath, float dialogueYPosition);
 
 	bool textDone() const;
 	void setText(const std::string& characterName, std::string dialogueString);

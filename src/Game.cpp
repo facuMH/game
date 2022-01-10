@@ -137,9 +137,12 @@ void Game::makeNewCombat(const Enemy* enemy) {
 
 void Game::makeMainGameState() {
 	Villagers villagers;
-	villagers.push_back(createVillager(EGG_GIRL_WALK.c, "Egg Girl", Position(300, 50), MovementType::VERTICAL, 0.3f));
-	villagers.push_back(createVillager(OLD_MAN_WALK.c, "Old Man", Position(50, 150), MovementType::HORIZONTAL, 0.4f));
-	villagers.push_back(createVillager(PRINCESS_WALK.c, "Princess", Position(230, 150), MovementType::VERTICAL, 0.2f));
+	villagers.push_back(
+	    createVillager("Egg Girl", EGG_GIRL_FACE.c, EGG_GIRL_WALK.c, Position(300, 50), MovementType::VERTICAL, 0.3f));
+	villagers.push_back(
+	    createVillager("Old Man", OLD_MAN_FACE.c, OLD_MAN_WALK.c, Position(50, 150), MovementType::HORIZONTAL, 0.1f));
+	villagers.push_back(createVillager(
+	    "Princess", PRINCESS_FACE.c, PRINCESS_WALK.c, Position(230, 150), MovementType::VERTICAL, 0.25f));
 
 	// Comment: There's a bug in Tileson. Tile attributes, such as isBlocked are connected with the tile
 	// ID. However, the tile ID differs of tiles in the 2nd, 3rd, ... tile sheet from the original ID,
@@ -157,8 +160,8 @@ void Game::makeMainGameState() {
 	housePositions = mainGame->listHousePositions();
 }
 
-Villager Game::createVillager(const std::string& textureName, const Name name, const Position position,
-    const MovementType movementDirection, const float stepsize) {
+Villager Game::createVillager(const Name& name, const std::string& faceTextureName, const std::string& textureName,
+    const Position position, const MovementType movementDirection, const float stepsize) {
 	Texture* tex = assetsManager.getTexture(textureName);
 	Animation anim(tex, sf::IntRect(0, 0, TILESIZE, TILESIZE), position);
 	Position endPosition;
@@ -167,7 +170,7 @@ Villager Game::createVillager(const std::string& textureName, const Name name, c
 	} else {
 		endPosition = {position.x, position.y + 60};
 	}
-	return {anim, name, movementDirection, endPosition, stepsize};
+	return {anim, name, movementDirection, endPosition, stepsize, faceTextureName};
 }
 
 void Game::makeNewHouseState(const Position playerPosition) {
@@ -240,8 +243,7 @@ void Game::pollEvents() {
 			}
 			break;
 		case sf::Event::MouseMoved: break;
-		default:
-			break;
+		default: break;
 		}
 	}
 }

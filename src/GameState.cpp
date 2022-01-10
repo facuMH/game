@@ -112,8 +112,7 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 				if(!interactWith.empty()) {
 					startDialogue(interactWith);
 				}
-			}
-			else {
+			} else {
 				interactWith = getEntityInInteractionRange(player.animation.get_position());
 				result = StateAction::START_COMBAT;
 			}
@@ -175,7 +174,14 @@ Position GameState::getCurrentPlayerPosition() {
 void GameState::startDialogue(Name& characterName) {
 	inDialogue = true;
 	sounds.find("interaction bling")->second.play();
-	dialogueBox = DialogueBox(characterName, dialogueYPosition);
+	std::string faceTextureName;
+	for(auto& v : villagers) {
+		if(v.name == characterName) {
+			faceTextureName = v.faceTexturePath;
+			break;
+		}
+	}
+	dialogueBox = DialogueBox(characterName, faceTextureName, dialogueYPosition);
 }
 
 Name GameState::getEntityInInteractionRange(Position position) {
