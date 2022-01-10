@@ -92,19 +92,21 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 		case KeyAction::DOWN:
 		case KeyAction::RIGHT:
 		case KeyAction::LEFT:
-			player.move(action->first, &map);
-			view.setCenter(player.animation.get_position());
-			if(previousKey != key && !isHouse) {
-				sounds.find("gasp")->second.play();
-			}
-			if(getCurrentDoorNumber(player.get_position()) != 0) {
-				if(!isHouse) {
-					result = StateAction::START_HOUSE;
-				} else {
-					result = StateAction::EXIT_HOUSE;
+			if(!inDialogue) { // Player cannot move while in dialogue
+				player.move(action->first, &map);
+				view.setCenter(player.animation.get_position());
+				if(previousKey != key && !isHouse) {
+					sounds.find("gasp")->second.play();
 				}
+				if(getCurrentDoorNumber(player.get_position()) != 0) {
+					if(!isHouse) {
+						result = StateAction::START_HOUSE;
+					} else {
+						result = StateAction::EXIT_HOUSE;
+					}
+				}
+				previousKey = key;
 			}
-			previousKey = key;
 			break;
 		case KeyAction::INTERACT:
 			if(!isHouse) {
