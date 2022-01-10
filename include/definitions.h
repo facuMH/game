@@ -1,9 +1,9 @@
 #pragma once
 
-#include <unordered_map>
-
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
+#include <cmath>
+#include <unordered_map>
 
 #include "Button.h"
 
@@ -30,8 +30,6 @@ using Buttons = std::vector<Button>;
 using KeyList = std::unordered_map<KeyAction, sf::Keyboard::Key>;
 using DoorNumber = int;
 
-class Player;
-using Party = std::vector<Player>;
 class Enemy;
 using Enemies = std::vector<Enemy>;
 class Villager;
@@ -97,3 +95,16 @@ inline Position getWindowCenter(const sf::RenderWindow& window) {
 	auto y = center.y / 2.f;
 	return {x, y};
 }
+
+inline bool positionsInRange(Position one, Position other, float epsilon) {
+	return std::fabs(one.x - other.x) < epsilon && std::fabs(one.y - other.y) < epsilon;
+}
+
+// DEFINITIONS/CONSTANTS FOR DIALOGUE BOX
+const int POSITION_OFFSET = 10;
+const Position TEXT_POS_OFFSET = {55, 20};
+const int MAX_TEXT_LINES = 2;
+const float TIME_UNTIL_NEXT_CHAR = 0.05; // after this time the next character of the text is drawn
+const Position CHARACTER_NAME_OFFSET = {10, -2};
+const Position ARROW_POS_OFFSET = {10, 10};
+const Position FACE_OFFSET = {6, 15};

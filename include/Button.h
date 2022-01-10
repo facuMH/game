@@ -28,21 +28,21 @@ class Button {
 	    sf::Color _outlineHoverColor = sf::Color::Transparent, sf::Color _outlineActiveColor = sf::Color::Transparent,
 	    short unsigned _id = 0);
 
-	Button(float x, float y, float width, float height, const sf::Text newText);
+	Button(float x, float y, float width, float height, sf::Text newText);
 
 	~Button();
 
 	// Accessors
 	bool isPressed() const;
-	const std::string getText() const;
+	std::string getText() const;
 	const short unsigned& getId() const;
 
 	// Modifiers
 	void setText(const std::string& text);
-	void setId(const short unsigned id);
+	void setId(short unsigned id);
 
 	// Functions
-	void update(const sf::Vector2f mousePos);
+	void update(sf::Vector2f mousePos);
 	void render(sf::RenderWindow* window);
 	void setActive();
 	void setInactive();
