@@ -20,7 +20,7 @@ class PauseGameState : public State {
 
 	int activeButton;
 	Buttons buttons;
-	Position_i mousePosScreen;
+
 	Position_i mousePoseWindow;
 	Position mousePosView;
 
@@ -35,10 +35,10 @@ class PauseGameState : public State {
 
   public:
 	PauseGameState(sf::RenderWindow* window, AssetsManager& am, KeyList* supportedKeys);
-	virtual ~PauseGameState() override;
+	~PauseGameState() override;
 
 	// Functions
-	void endState();
+	void endState() override;
 	void updateInput(const float& dt);
 	void update(const float& dt) override;
 	void render(sf::RenderWindow* window) override;

@@ -18,10 +18,7 @@ PauseGameState::PauseGameState(sf::RenderWindow* window, AssetsManager& am, KeyL
 	initFonts(am);
 	initText(window);
 	initButtons(window);
-	// Settings should keep on playing music from Menu
-
 	supportedKeys = gameSupportedKeys;	
-
 }
 
 PauseGameState::~PauseGameState() = default;
@@ -32,7 +29,6 @@ void PauseGameState::initBackground(sf::RenderWindow* window, AssetsManager& am)
 
 	sf::Vector2u currentSize = window->getSize();
 	container.setSize(sf::Vector2f(currentSize));
-	//container.setPosition(0,0);
 	container.setFillColor(sf::Color(0,0,0,180));
 
 }
@@ -53,9 +49,6 @@ void PauseGameState::initText(sf::RenderWindow* window) {
 }
 
 void PauseGameState::initButtons(sf::RenderWindow* window){
-
-	// get the size of the window
-	sf::Vector2u currentSize = window->getSize();
 
 	// button size
 	unsigned int bWidth = 150;
@@ -88,7 +81,6 @@ void PauseGameState::renderButtons(sf::RenderWindow* window) {
 }
 
 void PauseGameState::updateMousePositions() {
-	mousePosScreen = sf::Mouse::getPosition();
 	mousePoseWindow = State::getMouse();
 	mousePosView = getPos(mousePoseWindow);
 }

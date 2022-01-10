@@ -23,7 +23,7 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 	// view = sf::View(player.get_position(), {float(window->getSize().x), float(window->getSize().y)});
 	sf::Vector2u currentSize = window->getSize();
 	view = sf::View(player.get_position(), sf::Vector2f(currentSize.x, currentSize.y));
-	MusicPath* musicPath = gameAM.getMusic(VILLAGE_MUSIC.c);
+	MusicPath* musicPath = gameAM.getMusic(_musicPath);
 	music.openFromFile(*musicPath);
 	music.setLoop(true);
 	music.play();
