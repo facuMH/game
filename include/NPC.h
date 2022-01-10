@@ -11,7 +11,7 @@ class NPC : public virtual Entity {
 
 	NPC() = default;
 	NPC(MovementType _movementType, Position _endPosition, float _stepsize) {
-	    movementType = _movementType;
+		movementType = _movementType;
 		if(movementType == MovementType::HORIZONTAL) {
 			currentDirection = KeyAction::LEFT;
 		} else {
@@ -34,13 +34,14 @@ class NPC : public virtual Entity {
 	KeyAction nextDirection() const {
 		Position currentPosition = animation.get_position();
 		if(movementType == MovementType::VERTICAL) {
-			if(currentDirection == KeyAction::DOWN) {
+			switch(currentDirection) {
+			case KeyAction::DOWN:
 				if(currentPosition.y < endPosition.y) {
 					return KeyAction::DOWN;
 				} else {
 					return KeyAction::UP;
 				}
-			} else {
+			case KeyAction::UP:
 				if(currentPosition.y >= startPosition.y) {
 					return KeyAction::UP;
 				} else {
@@ -48,13 +49,14 @@ class NPC : public virtual Entity {
 				}
 			}
 		} else {
-			if(currentDirection == KeyAction::RIGHT) {
+			switch(currentDirection) {
+			case KeyAction::RIGHT:
 				if(currentPosition.x < endPosition.x) {
 					return KeyAction::RIGHT;
 				} else {
 					return KeyAction::LEFT;
 				}
-			} else {
+			case KeyAction::LEFT:
 				if(currentPosition.x > startPosition.x) {
 					return KeyAction::LEFT;
 				} else {
