@@ -32,13 +32,16 @@ constexpr auto HAND = cat(MAINMENU.c, "hand.png");
 constexpr auto CHARACTER = cat(ASSETS, "characters/");
 constexpr auto NINJA = cat(CHARACTER.c, "green_ninja/");
 constexpr auto NINJA_WALK = cat(NINJA.c, "Walk.png");
+constexpr auto NINJA_FACE = cat(NINJA.c, "Face.png");
 constexpr auto EGG_GIRL = cat(CHARACTER.c, "egg_girl/");
 constexpr auto EGG_GIRL_WALK = cat(EGG_GIRL.c, "Walk.png");
+constexpr auto EGG_GIRL_FACE = cat(EGG_GIRL.c, "Face.png");
 constexpr auto OLD_MAN = cat(CHARACTER.c, "old_man/");
 constexpr auto OLD_MAN_WALK = cat(OLD_MAN.c, "Walk.png");
+constexpr auto OLD_MAN_FACE = cat(OLD_MAN.c, "Face.png");
 constexpr auto PRINCESS = cat(CHARACTER.c, "princess/");
 constexpr auto PRINCESS_WALK = cat(PRINCESS.c, "Walk.png");
-
+constexpr auto PRINCESS_FACE = cat(PRINCESS.c, "Face.png");
 
 // ---- ENEMIES
 constexpr auto ENEMIES = cat(ASSETS, "enemies/");
@@ -49,8 +52,6 @@ constexpr auto SKULL = cat(ENEMIES.c, "Skull.png");
 constexpr auto LIZARD = cat(ENEMIES.c, "Lizard.png");
 constexpr auto AXOLOTL = cat(ENEMIES.c, "Axolotl.png");
 constexpr auto BAMBOO = cat(ENEMIES.c, "Bamboo.png");
-
-
 
 // ---- TILES
 constexpr auto TILES = cat(ASSETS, "tiles/");
@@ -69,7 +70,6 @@ constexpr auto TILESHEET_HOUSES = cat(TILES.c, "TilesetHouse.png");
 constexpr auto TILESHEET_FURNITURE = cat(TILES.c, "TilesetFurniture.png");
 constexpr auto TILESHEET_INTERIOR_FLOOR = cat(TILES.c, "TilesetInteriorFloor.png");
 
-
 // ---- CONFIG
 constexpr char CONFIG[] = "../config/";
 constexpr auto KEYS = cat(CONFIG, "keysbind.ini");
@@ -81,11 +81,20 @@ constexpr auto WINDOW = cat(CONFIG, "window.ini");
 constexpr auto FONTS = cat(ASSETS, "fonts/");
 constexpr auto DOSIS = cat(FONTS.c, "Dosis-Light.ttf");
 constexpr auto ALEX = cat(FONTS.c, "AlexandriaFLF.ttf");
+constexpr auto DIALOGUE_FONT = cat(FONTS.c, "DialogueFont.ttf");
+
+// --- DIALOGUE
+constexpr auto DIALOGUE = cat(ASSETS, "dialogue/");
+constexpr auto DIALOGUE_BOX = cat(DIALOGUE.c, "DialogBox.png");
+constexpr auto DIALOGUE_BOX_FACE = cat(DIALOGUE.c, "DialogBoxFaceset.png");
+
+constexpr auto DIALOGUE_ARROW = cat(DIALOGUE.c, "Arrow.png");
 
 // ---- SOUND FX
 constexpr auto SOUNDS = cat(ASSETS, "sounds/");
 constexpr auto GASP = cat(SOUNDS.c, "gasp.wav");
 constexpr auto MENU_BLIP = cat(SOUNDS.c, "menu.wav");
+constexpr auto INTERACTION_BLING = cat(SOUNDS.c, "interaction.wav");
 
 // ---- MUSIC
 constexpr auto MUSIC = cat(ASSETS, "music/");

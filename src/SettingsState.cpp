@@ -6,7 +6,6 @@
 
 #include "AssetsPaths.h"
 #include "Button.h"
-#include "MainMenuState.h"
 #include "SettingsState.h"
 
 #include "definitions.h"
@@ -22,7 +21,6 @@ SettingsState::SettingsState(sf::RenderWindow* window, AssetsManager& am, KeyLis
 	blipSound.setBuffer(soundBuffer);
 
 	// Settings should keep on playing music from Menu
-
 	supportedKeys = gameSupportedKeys;
 	initButtons(window);
 }

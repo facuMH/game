@@ -11,6 +11,7 @@
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 
+#include "AssetsManager.h"
 #include "definitions.h"
 
 /**
@@ -18,7 +19,6 @@
  */
 class State {
   private:
-	std::vector<sf::Texture> textures;
 	sf::RenderWindow* window;
 	bool isQuitting = false;
 
@@ -35,7 +35,6 @@ class State {
 	virtual void updateKeybinds(const float& dt) = 0;
 	virtual bool shouldQuit() = 0;
 	const bool& isQuit() const { return isQuitting; }
-	virtual void endState() { isQuitting = true; }
 	virtual void quitStateActions() = 0;
 	virtual StateAction handleKeys(sf::Keyboard::Key key) = 0;
 	virtual StateAction shouldAct() = 0;

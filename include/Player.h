@@ -9,9 +9,7 @@ class Player : public Combatant {
 	Weapon* weapon = nullptr;
 
 	Player() {}
-	Player(Name _name, Stats _stats, Animation _animation) : Combatant(_stats, _stats) {
-		name = _name;
-		animation = std::move(_animation);
+	Player(Name _name, Stats _stats, Animation _animation) : Entity(_name, _animation), Combatant(_stats, _stats) {
 		is_solid = true;
 		can_interact = true;
 	}

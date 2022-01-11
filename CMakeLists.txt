@@ -19,10 +19,12 @@ ENDIF()
 set(SOURCES src/main.cpp
         src/Button.cpp
         src/CombatState.cpp
+        src/DialogueBox.cpp
         src/Enemy.cpp
         src/Game.cpp
         src/GameState.cpp
         src/HouseManager.cpp
+        src/InteractionManager.cpp
         src/MainMenuState.cpp
         src/PauseGameState.cpp
         src/Player.cpp
@@ -39,6 +41,7 @@ set(HEADERS include/Animation.h
         include/Combatant.h
         include/CombatState.h
         include/definitions.h
+        include/DialogueBox.h
         include/Enemy.h
         include/Entity.h
         include/Game.h
@@ -46,7 +49,9 @@ set(HEADERS include/Animation.h
         include/House.h
         include/HouseManager.h
         include/Inanimated.h
+        include/InteractionManager.h
         include/MainMenuState.h
+        include/NPC.h
         include/PauseGameState.h
         include/Player.h
         include/State.h

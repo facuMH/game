@@ -1,6 +1,8 @@
 #include <cmath>
 #include <iostream>
 
+#include <House.h>
+#include <HouseManager.h>
 #include <SFML/Graphics.hpp>
 
 #include "AssetsPaths.h"
@@ -136,9 +138,12 @@ void Game::makeNewCombat(const Enemy* enemy) {
 
 void Game::makeMainGameState() {
 	Villagers villagers;
-	villagers.push_back(createVillager(EGG_GIRL_WALK.c, "Egg Girl", Position(300, 50), MovementType::VERTICAL, 0.3f));
-	villagers.push_back(createVillager(OLD_MAN_WALK.c, "Old Man", Position(50, 150), MovementType::HORIZONTAL, 0.4f));
-	villagers.push_back(createVillager(PRINCESS_WALK.c, "Princess", Position(230, 150), MovementType::VERTICAL, 0.2f));
+	villagers.push_back(
+	    createVillager("Egg Girl", EGG_GIRL_FACE.c, EGG_GIRL_WALK.c, Position(300, 50), MovementType::VERTICAL, 0.3f));
+	villagers.push_back(
+	    createVillager("Old Man", OLD_MAN_FACE.c, OLD_MAN_WALK.c, Position(50, 150), MovementType::HORIZONTAL, 0.1f));
+	villagers.push_back(createVillager(
+	    "Princess", PRINCESS_FACE.c, PRINCESS_WALK.c, Position(230, 150), MovementType::VERTICAL, 0.25f));
 
 	// Comment: There's a bug in Tileson. Tile attributes, such as isBlocked are connected with the tile
 	// ID. However, the tile ID differs of tiles in the 2nd, 3rd, ... tile sheet from the original ID,
@@ -156,8 +161,8 @@ void Game::makeMainGameState() {
 	housePositions = mainGame->listHousePositions();
 }
 
-Villager Game::createVillager(const std::string& textureName, const Name name, const Position position,
-    const MovementType movementDirection, const float stepsize) {
+Villager Game::createVillager(const Name& name, const std::string& faceTextureName, const std::string& textureName,
+    const Position position, const MovementType movementDirection, const float stepsize) {
 	Texture* tex = assetsManager.getTexture(textureName);
 	Animation anim(tex, sf::IntRect(0, 0, TILESIZE, TILESIZE), position);
 	Position endPosition;
@@ -166,18 +171,14 @@ Villager Game::createVillager(const std::string& textureName, const Name name, c
 	} else {
 		endPosition = {position.x, position.y + 60};
 	}
-	return {anim, name, movementDirection, endPosition, stepsize};
-}
-
-bool approximatelyEqual(const sf::Vector2f& a, const sf::Vector2f& b, float epsilon = 8.0f) {
-	return std::fabs(a.x - b.x) < epsilon && std::fabs(a.y - b.y) < epsilon;
+	return {anim, name, movementDirection, endPosition, stepsize, faceTextureName};
 }
 
 void Game::makeNewHouseState(const Position playerPosition) {
 	DoorNumber doorNumber = 0;
 	for(auto& hp : housePositions) {
 		auto doorPosition = hp.first;
-		if(approximatelyEqual(playerPosition, doorPosition)) {
+		if(positionsInRange(playerPosition, doorPosition, 8.0f)) {
 			doorNumber = hp.second;
 			break;
 		}
@@ -190,7 +191,7 @@ void Game::makeNewHouseState(const Position playerPosition) {
 	EnemyData enemyData = ENEMYDATA[int(doorNumber - 1)];
 	Texture* texture = assetsManager.getTexture(enemyData.texturePath);
 	Animation animation(texture, sf::IntRect(0, 0, TILESIZE, TILESIZE), enemyData.position);
-	Enemy enemy(enemyData.name, Stats(15, 15, 15, 15, 15, 15), animation);
+	Enemy enemy(enemyData.name, Stats(15, 15, 15, 15, 15, 15), animation, MovementType::HORIZONTAL, {30, 30}, 2.0f);
 	enemies.push_back(enemy);
 
 	states.push(new GameState(window, assetsManager, tileSheets, house.houseDesignPath, &keyBindings, player, enemies,
@@ -292,7 +293,7 @@ void Game::render() {
 	window->setView(states.top()->getView());
 	if(!states.empty()) states.top()->drawPlayer(window);
 	// Window is done drawing --> display result
-	window->draw(mousePosText);
+	// window->draw(mousePosText);
 	window->display();
 }
 

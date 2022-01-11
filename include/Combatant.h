@@ -1,15 +1,20 @@
 #pragma once
 
-#include "Entity.h"
 #include "definitions.h"
+#include "Entity.h"
 
-class Combatant : public Entity {
+class Combatant : public virtual Entity {
   public:
 	Stats currentStats;
 	Stats maxStats;
 
-	Combatant(){};
-	Combatant(Stats max, Stats current) : maxStats(max), currentStats(current){};
+	Combatant() = default;
+	Combatant(Stats max, Stats current) {
+	    maxStats = max;
+		currentStats = current;
+	};
+
+	~Combatant() = default;
 
 	int get_str() const { return currentStats.str; }
 	int get_dex() const { return currentStats.dex; }

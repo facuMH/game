@@ -10,7 +10,6 @@
 
 #include "AssetsManager.h"
 #include "GameState.h"
-#include "HouseManager.h"
 #include "MainMenuState.h"
 #include "definitions.h"
 
@@ -41,7 +40,6 @@ class Game {
 	sf::Text mousePosText;
 
 	Player player;
-	HouseManager houseManager;
 
 	// Stack of states - the top entry is the active state, i.e. [main menu,
 	// map-layer, fight-layer]: If the fight layer is left, the next active state
@@ -55,8 +53,8 @@ class Game {
 	void makeNewCombat(const Enemy* enemy);
 	void makeMainGameState();
 	void makeNewHouseState(Position playerPosition);
-	Villager createVillager(
-	    const std::string& textureName, Name name, Position position, MovementType movementDirection, float stepsize);
+	Villager createVillager(const Name& name, const std::string& faceTextureName, const std::string& textureName,
+	    Position position, MovementType movementDirection, float stepsize);
 
   public:
 	// Constructor

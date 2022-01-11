@@ -44,8 +44,8 @@ Button::Button(float x, float y, float width, float height, const sf::Text newTe
 	text = newText;
 	text.setFillColor(sf::Color::White);
 	text.setCharacterSize(20);
-	// auto Xs = shape.getPosition().x + (shape.getGlobalBounds().width / 2.f) - text.getGlobalBounds().width / 2.f;
-	// auto Ys = shape.getPosition().y + (shape.getGlobalBounds().height / 2.f) - text.getGlobalBounds().height / 2.f;
+	// auto Xs = shape.getPosition().x + (shape.getGlobalBounds().width / 2.f) - textToDraw.getGlobalBounds().width / 2.f;
+	// auto Ys = shape.getPosition().y + (shape.getGlobalBounds().height / 2.f) - textToDraw.getGlobalBounds().height / 2.f;
 	text.setPosition(x + 5.f, y + 5.f);
 	shape.setFillColor(sf::Color::Black);
 }
@@ -57,7 +57,7 @@ bool Button::isPressed() const {
 	return (buttonState == ButtonStates::BTN_ACTIVE);
 }
 
-const std::string Button::getText() const {
+std::string Button::getText() const {
 	return text.getString();
 }
 

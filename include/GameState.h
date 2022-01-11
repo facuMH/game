@@ -1,7 +1,9 @@
 #pragma once
 
 #include "AssetsManager.h"
+#include "DialogueBox.h"
 #include "Enemy.h"
+#include "InteractionManager.h"
 #include "Player.h"
 #include "State.h"
 #include "TileMap.h"
@@ -14,17 +16,18 @@ class GameState : public State {
 	Player player;
 	Villagers villagers;
 	Enemies enemies;
-	std::unordered_map<DoorNumber, Position> housePositions;
-
+	DialogueBox dialogueBox;
+	bool inDialogue;
 	sf::View view;
 	AssetsManager* am;
 	KeyList* keybinds;
 	sf::Clock clock;
-	sf::SoundBuffer soundBuffer;
-	sf::Sound gaspSound;
+	std::unordered_map<std::string, sf::SoundBuffer> soundBuffers;
+	std::unordered_map<std::string, sf::Sound> sounds;
 	sf::Music music;
-	// just for demonstration purposes
-	sf::Keyboard::Key previousKey;
+	sf::Keyboard::Key previousKey; // for gasping sound effect
+	float dialogueYPosition;       // position depends on current view
+
 
   public:
 	bool isHouse;
@@ -47,8 +50,10 @@ class GameState : public State {
 	sf::View getView() override { return view; };
 	DoorNumber getCurrentDoorNumber(Position position);
 	std::vector<std::pair<Position, DoorNumber>> listHousePositions();
-	Position getCurrentPlayerPosition();
+	Position getCurrentPlayerPosition() override;
 	void drawPlayer(sf::RenderWindow* window) override;
+	Name getEntityInInteractionRange(Position position);
+	void startDialogue(Name& characterName);
 	Player* getPlayer() { return &player; };
 	Enemy* getEnemy() { return &enemies[0]; }
 	StateAction shouldAct() override;
