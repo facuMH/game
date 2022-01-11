@@ -24,7 +24,7 @@ class GameState : public State {
 	sf::Sound gaspSound;
 	sf::Music music;
 	// just for demonstration purposes
-	sf::Keyboard::Key previousKey;	
+	sf::Keyboard::Key previousKey;
 
   public:
 	bool isHouse;

@@ -19,7 +19,7 @@ enum class StateAction {
 	EXIT_GAME,
 	EXIT_SETTING,
 	EXIT_HOUSE,
-	GAME_LOADING,
+	LOAD_GAME,
 	PAUSE_GAME,
 	RESUME_GAME
 };
@@ -75,6 +75,7 @@ struct Stats {
 const sf::Color GREY = sf::Color(70, 70, 70, 200);
 const sf::Color LIGHTGREY = sf::Color(150, 150, 150, 255);
 const sf::Color DARKBLUE = sf::Color(0, 0, 255, 255);
+const sf::Color TRANSPARENT_BLACK = sf::Color(0, 0, 0, 180);
 
 const Position COMBAT_FIRST_PLAYER_POSITION{150.f, 150.f};
 const Position COMBAT_FIRST_ENEMY_POSITION{500.f, 150.f};

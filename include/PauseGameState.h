@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include <SFML/Graphics/Text.hpp>
+#include <SFML/Graphics.hpp>
 #include <SFML/Window/VideoMode.hpp>
 
 #include "AssetsManager.h"

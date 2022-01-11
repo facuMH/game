@@ -29,7 +29,7 @@ void PauseGameState::initBackground(sf::RenderWindow* window, AssetsManager& am)
 
 	sf::Vector2u currentSize = window->getSize();
 	container.setSize(sf::Vector2f(currentSize));
-	container.setFillColor(sf::Color(0,0,0,180));
+	container.setFillColor(TRANSPARENT_BLACK);
 
 }
 

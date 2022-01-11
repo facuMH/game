@@ -219,7 +219,7 @@ void Game::pollEvents() {
 				break;
 			case StateAction::START_SETTING: states.push(new SettingsState(window, assetsManager, &keyBindings)); break;
 			case StateAction::PAUSE_GAME: states.push(new PauseGameState(window, assetsManager, &keyBindings)); break;
-			case StateAction::GAME_LOADING: /* To Do */;  break;
+			case StateAction::LOAD_GAME: /* To Do */;  break;
 			case StateAction::EXIT_SETTING:
 			case StateAction::RESUME_GAME: states.pop(); break;
 			case StateAction::START_COMBAT:
