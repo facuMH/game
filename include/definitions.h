@@ -20,7 +20,7 @@ enum class StateAction {
 	EXIT_SETTING,
 	EXIT_HOUSE
 };
-enum class KeyAction { UP, DOWN, RIGHT, LEFT, SELECT, BACK, INTERACT };
+enum class KeyAction { UP, DOWN, RIGHT, LEFT, SELECT, BACK, INTERACT, NONE };
 enum class MovementType { VERTICAL, HORIZONTAL };
 
 using Position = sf::Vector2f;
