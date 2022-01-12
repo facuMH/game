@@ -1,13 +1,13 @@
 #include <cmath>
 #include <iostream>
 
-#include <House.h>
-#include <HouseManager.h>
 #include <SFML/Graphics.hpp>
 
 #include "AssetsPaths.h"
 #include "CombatState.h"
 #include "Game.h"
+#include "House.h"
+#include "HouseManager.h"
 #include "SettingsState.h"
 #include "asset_data.h"
 
