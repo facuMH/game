@@ -141,7 +141,7 @@ StateAction PauseGameState::handleKeys(sf::Keyboard::Key key) {
 void PauseGameState::updateKeybinds(const float& dt) {}
 
 void PauseGameState::quitStateActions() {
-	std::cout << "Ending current game state" << std::endl;
+	std::cout << "Ending pause game state" << std::endl;
 }
 
 bool PauseGameState::shouldQuit() {
