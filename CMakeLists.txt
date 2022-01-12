@@ -12,6 +12,7 @@ set(CMAKE_VERBOSE_MAKEFILE ON CACHE BOOL "ON")
 
 IF(WIN32)
     set(CMAKE_PREFIX_PATH "C:\\dev\\SFML\\lib\\cmake\\SFML")
+    set(CMAKE_CXX_FLAGS "/MP")
 ENDIF()
 
 #------------- CONFIGURATIONS
