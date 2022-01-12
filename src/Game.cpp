@@ -89,7 +89,7 @@ void Game::initStates() {
 }
 
 // Constructor
-Game::Game() {
+Game::Game() : im(&assetsManager) {
 	initKeys();
 	initVariables();
 	initWindow();
