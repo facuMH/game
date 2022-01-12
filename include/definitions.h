@@ -23,7 +23,7 @@ enum class StateAction {
 	PAUSE_GAME,
 	RESUME_GAME
 };
-enum class KeyAction { UP, DOWN, RIGHT, LEFT, SELECT, BACK, INTERACT, PAUSE };
+enum class KeyAction { UP, DOWN, RIGHT, LEFT, SELECT, BACK, INTERACT, NONE, PAUSE };
 enum class MovementType { VERTICAL, HORIZONTAL };
 
 using Position = sf::Vector2f;
