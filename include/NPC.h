@@ -33,36 +33,44 @@ class NPC : public virtual Entity {
 
 	KeyAction nextDirection() const {
 		Position currentPosition = animation.get_position();
+		KeyAction nextDirection = KeyAction::NONE;
 		if(movementType == MovementType::VERTICAL) {
 			switch(currentDirection) {
 			case KeyAction::DOWN:
 				if(currentPosition.y < endPosition.y) {
-					return KeyAction::DOWN;
+					nextDirection = KeyAction::DOWN;
 				} else {
-					return KeyAction::UP;
+					nextDirection = KeyAction::UP;
 				}
+				break;
 			case KeyAction::UP:
 				if(currentPosition.y >= startPosition.y) {
-					return KeyAction::UP;
+					nextDirection = KeyAction::UP;
 				} else {
-					return KeyAction::DOWN;
+					nextDirection = KeyAction::DOWN;
 				}
+				break;
+			default: break;
 			}
 		} else {
 			switch(currentDirection) {
 			case KeyAction::RIGHT:
 				if(currentPosition.x < endPosition.x) {
-					return KeyAction::RIGHT;
+					nextDirection = KeyAction::RIGHT;
 				} else {
-					return KeyAction::LEFT;
+					nextDirection = KeyAction::LEFT;
 				}
+				break;
 			case KeyAction::LEFT:
 				if(currentPosition.x > startPosition.x) {
-					return KeyAction::LEFT;
+					nextDirection = KeyAction::LEFT;
 				} else {
-					return KeyAction::RIGHT;
+					nextDirection = KeyAction::RIGHT;
 				}
+				break;
+			default: break;
 			}
 		}
+		return nextDirection;
 	}
 };
