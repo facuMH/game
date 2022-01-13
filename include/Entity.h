@@ -13,7 +13,7 @@ class Entity {
 	sf::Vector2f size; // size in pixels (X offset, Y offset)
 
 	Entity() = default;
-	Entity(Name _name, Animation _animation) {
+	Entity(const Name& _name, const Animation& _animation) {
 	    name = _name;
 		animation = _animation;
 	};

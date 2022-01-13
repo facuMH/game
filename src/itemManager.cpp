@@ -4,16 +4,25 @@
 #include "AssetsPaths.h"
 #include "itemManager.h"
 
-Weapon ItemManager::make(const Name& name) {
-	return Weapon{};
+Weapon ItemManager::make(const Name& name, const Position pos) {
+	Texture* t = am->getTexture(name);
+	sf::IntRect ir{{0, 0}, sf::Vector2i(t->getSize())};
+	Animation a{t, ir, pos};
+	Stats s{itemStats.at(name)};
+	Weapon ret{name, a, s};
+	return ret;
 }
 
-Potion ItemManager::make(const Name& name, const int n) {
-	return Potion{};
+Potion ItemManager::make(const Name& name, const Position pos, const int n) {
+	Texture* t = am->getTexture(name);
+	sf::IntRect ir{{0, 0}, sf::Vector2i(t->getSize())};
+	Animation a{t, ir, pos};
+	Stats s{itemStats.at(name)};
+	Potion ret{name, a, n, s.hp};
+	return ret;
 }
 
-ItemManager::ItemManager(AssetsManager* am) {
-	// itemStats
+ItemManager::ItemManager(AssetsManager* _am) : am(_am) {
 	std::ifstream ifs(ITEMSLIST.c);
 	std::string line;
 	std::string name;
@@ -27,13 +36,14 @@ ItemManager::ItemManager(AssetsManager* am) {
 	ifs.close();
 }
 
-Weapon ItemManager::get(const Name& name) {
+Weapon ItemManager::get(const Name& name, const Position pos) {
 	auto found = weapons.find(name);
 	Weapon weapon;
 	if(found != weapons.end()) {
 		weapon = found->second;
 	} else {
-		weapon = make(name);
+		weapon = make(name, pos);
+		weapons.emplace(weapon.getName(), weapon);
 	}
 	return weapon;
 }

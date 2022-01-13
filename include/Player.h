@@ -9,7 +9,7 @@ class Player : public Combatant {
 	Weapon* weapon = nullptr;
 
 	Player() {}
-	Player(Name _name, Stats _stats, Animation _animation) : Entity(_name, _animation), Combatant(_stats, _stats) {
+	Player(const Name& _name, const Stats& _stats, const Animation& _animation) : Entity(_name, _animation), Combatant(_stats, _stats) {
 		is_solid = true;
 		can_interact = true;
 	}

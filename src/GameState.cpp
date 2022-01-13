@@ -6,6 +6,7 @@
 #include "AssetsPaths.h"
 #include "DialogueBox.h"
 #include "GameState.h"
+#include "asset_data.h"
 
 /// Constructor for village GameState: There are several villagers, but no enemies, as they hide in the houses
 GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vector<MapBackground*> textureSheets,

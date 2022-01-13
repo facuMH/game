@@ -1,11 +1,11 @@
+#include "HouseManager.h"
 #include "AssetsPaths.h"
-#include <HouseManager.h>
 #include "asset_data.h"
 
 House HouseManager::getHouse(DoorNumber doorNum) {
 	HouseData houseData;
-	for (auto &H : HOUSEDATA) {
-		if (H.doorNumber == doorNum) {
+	for(auto& H : HOUSEDATA) {
+		if(H.doorNumber == doorNum) {
 			houseData = H;
 			break;
 		}

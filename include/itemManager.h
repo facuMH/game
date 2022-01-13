@@ -16,10 +16,10 @@ class ItemManager {
 	std::unordered_map<Name, Stats> itemStats;
 	AssetsManager* am;
 
-	Weapon make(const Name& name);
-	Potion make(const Name& name, const int n);
+	Weapon make(const Name& name, const Position pos);
+	Potion make(const Name& name, const Position pos, const int n);
 
   public:
 	ItemManager(AssetsManager* am);
-	Weapon get(const Name& name);
+	Weapon get(const Name& name, const Position pos);
 };

@@ -187,6 +187,7 @@ void Game::makeNewHouseState(const Position playerPosition) {
 	House house = HouseManager::getHouse(doorNumber);
 	Enemies enemies;
 
+
 	EnemyData enemyData = ENEMYDATA[int(doorNumber - 1)];
 	Texture* texture = assetsManager.getTexture(enemyData.texturePath);
 	Animation animation(texture, sf::IntRect(0, 0, TILESIZE, TILESIZE), enemyData.position);
