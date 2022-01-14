@@ -30,8 +30,7 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 	previousKey = sf::Keyboard::Unknown;
 
 	// view = sf::View(player.get_position(), {float(window->getSize().x), float(window->getSize().y)});
-	sf::Vector2u currentSize = window->getSize();
-	view = sf::View(player.get_position(), sf::Vector2f(currentSize.x, currentSize.y));
+	view = sf::View(player.get_position(), {720.0, 480.0});
 	MusicPath* musicPath = gameAM.getMusic(_musicPath);
 	music.openFromFile(*musicPath);
 	music.setLoop(true);
