@@ -1,3 +1,5 @@
+#pragma once
+
 #include <string>
 
 // constexpr string concat from https://stackoverflow.com/a/65440575

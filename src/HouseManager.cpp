@@ -1,5 +1,4 @@
 #include "HouseManager.h"
-#include "AssetsPaths.h"
 #include "asset_data.h"
 
 House HouseManager::getHouse(DoorNumber doorNum) {

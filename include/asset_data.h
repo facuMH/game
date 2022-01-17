@@ -1,5 +1,6 @@
 #pragma once
 
+#include "AssetsPaths.h"
 #include "definitions.h"
 
 struct EnemyData {
@@ -33,3 +34,12 @@ const HouseData HOUSE5_DATA = {5, HOUSE5.c, {40, 30}, "LifePot", {30, 20}};
 const HouseData HOUSE6_DATA = {6, HOUSE6.c, {30, 30}, "MediPack", {20, 20}};
 
 const std::vector<HouseData> HOUSEDATA{HOUSE1_DATA, HOUSE2_DATA, HOUSE3_DATA, HOUSE4_DATA, HOUSE5_DATA, HOUSE6_DATA};
+
+const std::unordered_map<Name, std::string> itemsPaths{
+    {"Club", CLUB.c},
+    {"Fork", FORK.c},
+    {"Sword", SWORD.c},
+    {"Wand", WAND.c},
+    {"LifePot", LIFEPOT.c},
+    {"MediPack", MEDIPACK.c},
+};

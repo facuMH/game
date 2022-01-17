@@ -185,17 +185,22 @@ void Game::makeNewHouseState(const Position playerPosition) {
 	std::vector<MapBackground*> tileSheets = {assetsManager.getMap(TILESHEET_INTERIOR_FLOOR.c),
 	    assetsManager.getMap(TILESHEET_INTERIOR_FLOOR.c), assetsManager.getMap(TILESHEET_FURNITURE.c)};
 	House house = HouseManager::getHouse(doorNumber);
+
 	Enemies enemies;
-
-
-	EnemyData enemyData = ENEMYDATA[int(doorNumber - 1)];
+	EnemyData enemyData = ENEMYDATA[doorNumber - 1];
 	Texture* texture = assetsManager.getTexture(enemyData.texturePath);
 	Animation animation(texture, sf::IntRect(0, 0, TILESIZE, TILESIZE), enemyData.position);
 	Enemy enemy(enemyData.name, Stats(15, 15, 15, 15, 15, 15), animation, MovementType::HORIZONTAL, {30, 30}, 2.0f);
 	enemies.push_back(enemy);
 
+	Object* item = nullptr;
+	Name itemName = HOUSEDATA.at(doorNumber - 1).itemName;
+	if(!im.hasBeenPickedUp(itemName)) {
+		item = im.get(itemName, HOUSEDATA.at(doorNumber - 1).itemPosition);
+	}
+
 	states.push(new GameState(window, assetsManager, tileSheets, house.houseDesignPath, &keyBindings, player, enemies,
-	    *assetsManager.getMusic(HOUSE_MUSIC.c)));
+	    *assetsManager.getMusic(HOUSE_MUSIC.c), item));
 }
 
 void Game::pollEvents() {

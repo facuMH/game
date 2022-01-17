@@ -38,9 +38,10 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 	dialogueYPosition = view.getCenter().y;
 }
 
-/// Constructor for house GameState: No villagers here, but monsters
+/// Constructor for house GameState: No villagers here, but monsters and item
 GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vector<MapBackground*> textureSheets,
-    JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player, Enemies& _enemies, MusicPath& _musicPath)
+    JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player, Enemies& _enemies, MusicPath& _musicPath,
+    Object* _item)
     : State(window), map(gameAM, textureSheets, path) {
 	am = &gameAM;
 	keybinds = gameSupportedKeys;
@@ -48,6 +49,7 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 	enemies = _enemies;
 	isHouse = true;
 	inDialogue = false;
+	item = _item;
 
 	view = sf::View(player.get_position(), {720.0, 480.0});
 	MusicPath* musicPath = gameAM.getMusic(_musicPath);
@@ -77,6 +79,7 @@ void GameState::render(sf::RenderWindow* window) {
 	if(inDialogue) {
 		dialogueBox.render(window);
 	}
+	if(item != nullptr) window->draw(item->animation.sprite);
 }
 
 void GameState::updateKeybinds(const float& dt) {}
