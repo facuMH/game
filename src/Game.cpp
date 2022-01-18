@@ -9,6 +9,7 @@
 #include "House.h"
 #include "HouseManager.h"
 #include "SettingsState.h"
+#include "PauseGameState.h"
 #include "asset_data.h"
 
 // Private functions
@@ -218,7 +219,10 @@ void Game::pollEvents() {
 				makeMainGameState();
 				break;
 			case StateAction::START_SETTING: states.push(new SettingsState(window, assetsManager, &keyBindings)); break;
-			case StateAction::EXIT_SETTING: states.pop(); break;
+			case StateAction::PAUSE_GAME: states.push(new PauseGameState(window, assetsManager, &keyBindings)); break;
+			case StateAction::LOAD_GAME: /* To Do */;  break;
+			case StateAction::EXIT_SETTING:
+			case StateAction::RESUME_GAME: states.pop(); break;
 			case StateAction::START_COMBAT:
 				if(auto* house = dynamic_cast<GameState*>(states.top()); house->isHouse) {
 					makeNewCombat(house->getEnemy());
@@ -309,6 +313,7 @@ void Game::initKeys() {
 	keyActionString.emplace("SELECT", KeyAction::SELECT);
 	keyActionString.emplace("BACK", KeyAction::BACK);
 	keyActionString.emplace("INTERACT", KeyAction::INTERACT);
+	keyActionString.emplace("PAUSE", KeyAction::PAUSE);
 
 	std::ifstream ifs(KEYS.c);
 	std::string key;

@@ -18,7 +18,6 @@ class SettingsState : public State {
 	sf::Sound blipSound;
 	sf::Music music;
 
-	Position_i mousePosScreen;
 	Position_i mousePoseWindow;
 	Position mousePosView;
 
@@ -40,7 +39,7 @@ class SettingsState : public State {
 
   public:
 	SettingsState(sf::RenderWindow* window, AssetsManager& am, KeyList* supportedKeys);
-	virtual ~SettingsState() override;
+	~SettingsState() override;
 
 	// Functions
 	void endState();

@@ -28,6 +28,7 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 	}
 
 	previousKey = sf::Keyboard::Unknown;
+
 	// view = sf::View(player.get_position(), {float(window->getSize().x), float(window->getSize().y)});
 	view = sf::View(player.get_position(), {720.0, 480.0});
 	MusicPath* musicPath = gameAM.getMusic(_musicPath);
@@ -59,6 +60,7 @@ GameState::~GameState() = default;
 
 void GameState::update(const float& dt) {
 	updateKeybinds(dt);
+
 	if(clock.getElapsedTime().asSeconds() > .05f) {
 		clock.restart();
 	}
@@ -87,6 +89,7 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 	    [key](const std::pair<KeyAction, sf::Keyboard::Key>& v) { return key == v.second; });
 	if(action != keybinds->end()) {
 		switch(action->first) {
+		case KeyAction::PAUSE: result = StateAction::PAUSE_GAME; break;
 		case KeyAction::BACK: result = StateAction::EXIT_GAME; break;
 		case KeyAction::UP:
 		case KeyAction::DOWN:

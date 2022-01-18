@@ -27,6 +27,7 @@ set(SOURCES src/main.cpp
         src/HouseManager.cpp
         src/InteractionManager.cpp
         src/MainMenuState.cpp
+        src/PauseGameState.cpp
         src/Player.cpp
         src/SettingsState.cpp
         src/State.cpp
@@ -52,6 +53,7 @@ set(HEADERS include/Animation.h
         include/InteractionManager.h
         include/MainMenuState.h
         include/NPC.h
+        include/PauseGameState.h
         include/Player.h
         include/State.h
         include/SettingsState.h
