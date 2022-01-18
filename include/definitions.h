@@ -7,6 +7,10 @@
 
 #include "Button.h"
 
+#include <cereal/archives/json.hpp>
+#include <cereal/cereal.hpp>
+#include <cereal/types/vector.hpp>
+
 constexpr int TILESIZE = 16;
 
 enum class StateAction {
@@ -68,6 +72,12 @@ struct Stats {
 	Stats(const int s, const int d, const int h, const int m, const int a, const int b)
 	    : str(s), dex(d), hp(h), mana(m), armor(a), baseAtk(b) {}
 	Stats() : str(0), dex(0), hp(0), mana(0), armor(0), baseAtk(0) {}
+
+	template <class Archive>
+	void serialize(Archive &archive)
+	{
+		archive(CEREAL_NVP(str), CEREAL_NVP(dex), CEREAL_NVP(hp), CEREAL_NVP(mana), CEREAL_NVP(armor), CEREAL_NVP(baseAtk));
+	}
 };
 
 const sf::Color GREY = sf::Color(70, 70, 70, 200);

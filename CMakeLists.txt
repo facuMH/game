@@ -10,6 +10,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
 set(CMAKE_VERBOSE_MAKEFILE ON CACHE BOOL "ON")
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
+
 IF(WIN32)
     set(CMAKE_PREFIX_PATH "C:\\dev\\SFML\\lib\\cmake\\SFML")
     set(CMAKE_CXX_FLAGS "/MP")
@@ -26,9 +28,11 @@ set(SOURCES src/main.cpp
         src/GameState.cpp
         src/HouseManager.cpp
         src/InteractionManager.cpp
+        src/LoadGameState.cpp
         src/MainMenuState.cpp
         src/PauseGameState.cpp
         src/Player.cpp
+        src/SaveGame.cpp
         src/SettingsState.cpp
         src/State.cpp
         src/Tile.cpp
@@ -51,10 +55,12 @@ set(HEADERS include/Animation.h
         include/HouseManager.h
         include/Inanimated.h
         include/InteractionManager.h
+        include/LoadGameState.h
         include/MainMenuState.h
         include/NPC.h
         include/PauseGameState.h
         include/Player.h
+        include/SaveGame.h
         include/State.h
         include/SettingsState.h
         include/Tile.h
