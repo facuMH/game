@@ -11,3 +11,4 @@
 - C: start combat
 - X: end combat
 - Esc and Q: Quit application
+- P: Pause the game

@@ -112,7 +112,6 @@ void SettingsState::renderButtons(sf::RenderWindow* window) {
 }
 
 void SettingsState::updateMousePositions() {
-	mousePosScreen = sf::Mouse::getPosition();
 	mousePoseWindow = State::getMouse();
 	mousePosView = getPos(mousePoseWindow);
 }
