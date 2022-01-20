@@ -8,8 +8,8 @@
 #include "Game.h"
 #include "House.h"
 #include "HouseManager.h"
-#include "SettingsState.h"
 #include "PauseGameState.h"
+#include "SettingsState.h"
 #include "asset_data.h"
 
 // Private functions
@@ -18,7 +18,7 @@ void Game::initVariables() {
 
 	Texture* play_text = assetsManager.getTexture(NINJA_WALK.c);
 	Animation player_animation(play_text, sf::IntRect(0, 0, TILESIZE, TILESIZE), Position(50, 50));
-	player = Player("Adventurer", Stats(15, 20, 50, 30, 15, 1), player_animation);
+	player = Player("Adventurer", Stats(15, 20, 50, 30, 15, 1), player_animation, 5.0f);
 }
 
 void Game::closeWindow() {
@@ -141,7 +141,7 @@ void Game::makeMainGameState() {
 	villagers.push_back(
 	    createVillager("Egg Girl", EGG_GIRL_FACE.c, EGG_GIRL_WALK.c, Position(300, 50), MovementType::VERTICAL, 0.3f));
 	villagers.push_back(
-	    createVillager("Old Man", OLD_MAN_FACE.c, OLD_MAN_WALK.c, Position(50, 150), MovementType::HORIZONTAL, 0.1f));
+	    createVillager("Old Man", OLD_MAN_FACE.c, OLD_MAN_WALK.c, Position(50, 150), MovementType::HORIZONTAL, 0.2f));
 	villagers.push_back(createVillager(
 	    "Princess", PRINCESS_FACE.c, PRINCESS_WALK.c, Position(230, 150), MovementType::VERTICAL, 0.25f));
 
@@ -220,7 +220,7 @@ void Game::pollEvents() {
 				break;
 			case StateAction::START_SETTING: states.push(new SettingsState(window, assetsManager, &keyBindings)); break;
 			case StateAction::PAUSE_GAME: states.push(new PauseGameState(window, assetsManager, &keyBindings)); break;
-			case StateAction::LOAD_GAME: /* To Do */;  break;
+			case StateAction::LOAD_GAME: /* To Do */; break;
 			case StateAction::EXIT_SETTING:
 			case StateAction::RESUME_GAME: states.pop(); break;
 			case StateAction::START_COMBAT:

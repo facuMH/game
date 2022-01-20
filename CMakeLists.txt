@@ -39,12 +39,11 @@ set(HEADERS include/Animation.h
         include/AssetsManager.h
         include/AssetsPaths.h
         include/Button.h
-        include/Combatant.h
         include/CombatState.h
         include/definitions.h
         include/DialogueBox.h
         include/Enemy.h
-        include/Entity.h
+
         include/Game.h
         include/GameState.h
         include/House.h
@@ -52,14 +51,18 @@ set(HEADERS include/Animation.h
         include/Inanimated.h
         include/InteractionManager.h
         include/MainMenuState.h
-        include/NPC.h
         include/PauseGameState.h
         include/Player.h
         include/State.h
         include/SettingsState.h
         include/Tile.h
         include/TileMap.h
-        include/Villager.h)
+        include/Villager.h
+        include/characterSuperclasses/Entity.h
+        include/characterSuperclasses/Combatant.h
+        include/characterSuperclasses/Movement.h
+        include/characterSuperclasses/SteeredMovement.h
+        include/characterSuperclasses/IdleMovement.h)
 
 set(DEPENDENCIES libs/tileson.hpp)
 

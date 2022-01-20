@@ -6,6 +6,7 @@
 #include "State.h"
 #include "TileMap.h"
 #include "definitions.h"
+#include "characters/Combatant.h"
 
 class CombatState : public State {
   private:
@@ -32,7 +33,7 @@ class CombatState : public State {
 	bool nextTurn;
 
 	Animation cursor;
-	int curosrOrientation;
+	int cursorOrientation;
 	sf::Clock cursorClock;
 
 	void addActionMenu(const sf::RenderWindow* window);

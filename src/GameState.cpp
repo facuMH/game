@@ -95,8 +95,8 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 		case KeyAction::DOWN:
 		case KeyAction::RIGHT:
 		case KeyAction::LEFT:
-			if(!inDialogue) { // Player cannot move while in dialogue
-				player.move(action->first, &map);
+			if(!inDialogue) { // Player cannot moveCharacter while in dialogue
+				player.move(action->first, &map, player.animation.get_position());
 				view.setCenter(player.animation.get_position());
 				if(previousKey != key && !isHouse) {
 					sounds.find("gasp")->second.play();
@@ -119,7 +119,9 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 				}
 			} else {
 				interactWith = getEntityInInteractionRange(player.animation.get_position());
-				result = StateAction::START_COMBAT;
+				if(!interactWith.empty()) {
+					result = StateAction::START_COMBAT;
+				}
 			}
 		default: break;
 		}
@@ -143,12 +145,12 @@ void GameState::drawPlayer(sf::RenderWindow* window) {
 	for(auto& v : villagers) {
 		window->draw(v.animation.sprite);
 		if(!inDialogue) {
-			v.move(&map);
+			v.move(&v.animation, &map);
 		}
 	}
 	for(auto& e : enemies) {
 		window->draw(e.animation.sprite);
-		e.move(&map);
+		e.move(&e.animation, &map);
 	}
 }
 

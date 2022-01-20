@@ -3,20 +3,20 @@
 #include <utility>
 
 #include "Animation.h"
-#include "Entity.h"
-#include "NPC.h"
+#include "characterSuperclasses/Entity.h"
+#include "characterSuperclasses/IdleMovement.h"
 #include "definitions.h"
 
 /// Class for non-playable characters, who don't engage in combat
-class Villager : public NPC {
+class Villager : public Entity, public IdleMovement {
   private:
   public:
 	std::string faceTexturePath; // for dialogue boxes
+	Villager() = default;
 	Villager(Animation _animation, Name _name, MovementType _movementType, Position _endPosition, float _stepsize,
 	    std::string _faceTexturePath)
-	    : Entity(std::move(_name), std::move(_animation)), NPC(_movementType, _endPosition, _stepsize) {
+	    : Entity(std::move(_name), std::move(_animation)),
+	      IdleMovement(_movementType, _animation.get_position(), _endPosition, _stepsize) {
 		faceTexturePath = std::move(_faceTexturePath);
-		is_solid = true;
-		can_interact = true;
 	}
 };

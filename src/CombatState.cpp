@@ -78,12 +78,18 @@ CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, std::vecto
 	music.setLoop(true);
 	music.play();
 
-	// hand poiting at first character
-	auto cursorPosition = turnList.at(0)->animation.get_position();
+	// hand pointing at first character
+	Position cursorPosition;
+	auto next = turnList.at(0);
+	if (next->isEnemy()) {
+		cursorPosition = dynamic_cast<Enemy*>(next)->animation.get_position();
+	} else {
+		cursorPosition = dynamic_cast<Player*>(next)->animation.get_position();
+	}
 	cursor = Animation(am.getTexture(HAND.c), {40, 30, 40, 65}, cursorPosition);
 	cursor.sprite.setScale({0.7, 0.7});
 	cursor.sprite.setRotation(90.f);
-	curosrOrientation = -1;
+	cursorOrientation = -1;
 	nextTurn = false;
 
 	font = *am.getFont(ALEX.c);
@@ -100,19 +106,30 @@ void CombatState::update(const float& dt) {
 		sf ::sleep(sf::milliseconds(1000));
 	}
 	if(cursorClock.getElapsedTime().asSeconds() > 0.5f) {
-		cursor.move({(curosrOrientation)*15.f, 0});
-		curosrOrientation = curosrOrientation > 0 ? -1 : 1;
+		cursor.move({(cursorOrientation)*15.f, 0});
+		cursorOrientation = cursorOrientation > 0 ? -1 : 1;
 		cursorClock.restart();
 	}
 	if(nextTurn) {
 		currentCharacterTurn = (int(currentCharacterTurn + 1)) % turnList.size();
-		cursor.set_position(turnList[currentCharacterTurn]->animation.get_position());
+		auto next = turnList[currentCharacterTurn];
+		if (next->isEnemy()) {
+			cursor.set_position(dynamic_cast<Enemy*>(next)->animation.get_position());
+		} else {
+			cursor.set_position(dynamic_cast<Player*>(next)->animation.get_position());
+		}
 		nextTurn = false;
 	}
 	updateKeybinds(dt);
 	auto e = dynamic_cast<Enemy*>(turnList[currentCharacterTurn]);
 	if(turnList[currentCharacterTurn]->isEnemy()) {
-		cursor.set_position(turnList[currentCharacterTurn]->animation.get_position());
+		auto next = turnList[currentCharacterTurn];
+		if (next->isEnemy()) {
+			cursor.set_position(dynamic_cast<Enemy*>(next)->animation.get_position());
+		} else {
+			cursor.set_position(dynamic_cast<Player*>(next)->animation.get_position());
+		}
+
 		if(player.defend() > e->attack()) {
 			player.apply_damage(e->atkDamage());
 			nextTurn = true;

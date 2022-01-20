@@ -8,8 +8,6 @@ class Entity {
   public:
 	Name name;
 	Animation animation;
-	bool is_solid{};
-	bool can_interact{};
 	sf::Vector2f size; // size in pixels (X offset, Y offset)
 
 	Entity() = default;
@@ -19,8 +17,6 @@ class Entity {
 	};
 
 	virtual Position get_position() const { return animation.get_position(); }
-	virtual void setTileOccupation(TileMap* map, bool isOccupied) const {
-		map->setTileOccupation(animation.get_position(), isOccupied);
-	}
+
 };
 

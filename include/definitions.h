@@ -101,7 +101,8 @@ inline Position getWindowCenter(const sf::RenderWindow& window) {
 }
 
 inline bool positionsInRange(Position one, Position other, float epsilon) {
-	return std::fabs(one.x - other.x) < epsilon && std::fabs(one.y - other.y) < epsilon;
+	bool what = std::fabs(one.x - other.x) < epsilon && std::fabs(one.y - other.y) < epsilon;
+	return what;
 }
 
 // DEFINITIONS/CONSTANTS FOR DIALOGUE BOX
