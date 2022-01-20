@@ -43,7 +43,6 @@ set(HEADERS include/Animation.h
         include/definitions.h
         include/DialogueBox.h
         include/Enemy.h
-
         include/Game.h
         include/GameState.h
         include/House.h
@@ -58,11 +57,11 @@ set(HEADERS include/Animation.h
         include/Tile.h
         include/TileMap.h
         include/Villager.h
-        include/characterSuperclasses/Entity.h
-        include/characterSuperclasses/Combatant.h
-        include/characterSuperclasses/Movement.h
-        include/characterSuperclasses/SteeredMovement.h
-        include/characterSuperclasses/IdleMovement.h)
+        include/object_attributes/Entity.h
+        include/object_attributes/Combatant.h
+        include/object_attributes/Movement.h
+        include/object_attributes/SteeredMovement.h
+        include/object_attributes/IdleMovement.h)
 
 set(DEPENDENCIES libs/tileson.hpp)
 
