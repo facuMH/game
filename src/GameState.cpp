@@ -95,8 +95,8 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 		case KeyAction::DOWN:
 		case KeyAction::RIGHT:
 		case KeyAction::LEFT:
-			if(!inDialogue) { // Player cannot moveCharacter while in dialogue
-				player.move(action->first, &map, player.animation.get_position());
+			if(!inDialogue) { // Player cannot move while in dialogue
+				player.move(action->first, &map);
 				view.setCenter(player.animation.get_position());
 				if(previousKey != key && !isHouse) {
 					sounds.find("gasp")->second.play();

@@ -6,9 +6,7 @@ class Movement {
 
 	Movement() = default;
 
-	explicit Movement(float _stepsize) {
-		stepsize = _stepsize;
-	}
+	explicit Movement(float _stepsize) { stepsize = _stepsize; }
 	static void setTileOccupation(TileMap* map, Position position, bool isOccupied) {
 		map->setTileOccupation(position, isOccupied);
 	}
@@ -16,18 +14,10 @@ class Movement {
 	Position moveCharacter(KeyAction nextDirection, sf::Sprite* sprite, TileMap* map, Position position) const {
 		Position offset;
 		switch(nextDirection) {
-		case KeyAction::DOWN:
-			offset = {0.0f, stepsize};
-			break;
-		case KeyAction::UP:
-			offset = {0.0f, -stepsize};
-			break;
-		case KeyAction::LEFT:
-			offset = {-stepsize, 0.0f};
-			break;
-		case KeyAction::RIGHT:
-			offset = {stepsize, 0.0f};
-			break;
+		case KeyAction::DOWN: offset = {0.0f, stepsize}; break;
+		case KeyAction::UP: offset = {0.0f, -stepsize}; break;
+		case KeyAction::LEFT: offset = {-stepsize, 0.0f}; break;
+		case KeyAction::RIGHT: offset = {stepsize, 0.0f}; break;
 		}
 
 		auto nextPosition = position + offset;

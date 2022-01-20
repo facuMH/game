@@ -1,7 +1,7 @@
 #pragma once
 
-#include "definitions.h"
 #include "Entity.h"
+#include "definitions.h"
 
 class Combatant {
   public:

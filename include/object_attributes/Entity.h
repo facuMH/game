@@ -12,11 +12,9 @@ class Entity {
 
 	Entity() = default;
 	Entity(Name _name, Animation _animation) {
-	    name = _name;
+		name = _name;
 		animation = _animation;
 	};
 
 	virtual Position get_position() const { return animation.get_position(); }
-
 };
-

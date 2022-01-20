@@ -4,7 +4,7 @@
 
 class IdleMovement : public Movement {
   public:
-	// Define an area in which the villager can moveCharacter
+	// Define an area in which the NPC can move
 	Position startPosition;
 	Position endPosition;
 	Position currentPosition;
@@ -12,7 +12,8 @@ class IdleMovement : public Movement {
 	KeyAction currentDirection;
 
 	IdleMovement() = default;
-	IdleMovement(MovementType _movementType, Position _startPosition, Position _endPosition, float _stepsize) : Movement(_stepsize){
+	IdleMovement(MovementType _movementType, Position _startPosition, Position _endPosition, float _stepsize)
+	    : Movement(_stepsize) {
 		movementType = _movementType;
 		if(movementType == MovementType::HORIZONTAL) {
 			currentDirection = KeyAction::LEFT;

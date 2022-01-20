@@ -28,18 +28,10 @@ class Animation {
 	void next(KeyAction nextDirection) {
 		int newLeft = 0;
 		switch(nextDirection) {
-		case KeyAction::DOWN:
-			newLeft = 0;
-			break;
-		case KeyAction::UP:
-			newLeft = texture_rectangle.width;
-			break;
-		case KeyAction::LEFT:
-			newLeft = 2 * texture_rectangle.width;
-			break;
-		case KeyAction::RIGHT:
-			newLeft = 3 * texture_rectangle.width;
-			break;
+		case KeyAction::DOWN: newLeft = 0; break;
+		case KeyAction::UP: newLeft = texture_rectangle.width; break;
+		case KeyAction::LEFT: newLeft = 2 * texture_rectangle.width; break;
+		case KeyAction::RIGHT: newLeft = 3 * texture_rectangle.width; break;
 		}
 		texture_rectangle.left = newLeft;
 		texture_rectangle.top = int(texture_rectangle.top + texture_rectangle.height) % 64; // num of bits
