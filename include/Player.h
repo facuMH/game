@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Inanimated.h"
-#include "characterSuperclasses/Combatant.h"
-#include "characterSuperclasses/SteeredMovement.h"
+#include "object_attributes/Combatant.h"
+#include "object_attributes/SteeredMovement.h"
 
 /// Class for playable characters
 class Player : public Entity, public Combatant, public SteeredMovement {

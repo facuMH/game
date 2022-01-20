@@ -3,8 +3,8 @@
 #include <utility>
 
 #include "Animation.h"
-#include "characterSuperclasses/Entity.h"
-#include "characterSuperclasses/IdleMovement.h"
+#include "object_attributes/Entity.h"
+#include "object_attributes/IdleMovement.h"
 #include "definitions.h"
 
 /// Class for non-playable characters, who don't engage in combat

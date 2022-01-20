@@ -6,7 +6,7 @@
 #include "State.h"
 #include "TileMap.h"
 #include "definitions.h"
-#include "characters/Combatant.h"
+#include "object_attributes/Combatant.h"
 
 class CombatState : public State {
   private:

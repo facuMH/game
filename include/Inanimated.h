@@ -1,6 +1,6 @@
 #pragma once
 
-#include "characterSuperclasses/Entity.h"
+#include "object_attributes//Entity.h"
 
 class Object : public Entity {
 	bool can_pick_up;
