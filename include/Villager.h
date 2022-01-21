@@ -3,9 +3,9 @@
 #include <utility>
 
 #include "Animation.h"
-#include "object_attributes/Entity.h"
-#include "object_attributes/IdleMovement.h"
+#include "Entity.h"
 #include "definitions.h"
+#include "entity_attributes/IdleMovement.h"
 
 /// Class for non-playable characters, who don't engage in combat
 class Villager : public Entity, public IdleMovement {

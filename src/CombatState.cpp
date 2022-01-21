@@ -1,6 +1,5 @@
 #include <algorithm>
 #include <map>
-#include <memory>
 
 #include "AssetsPaths.h"
 #include "Button.h"
@@ -81,11 +80,7 @@ CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, std::vecto
 	// hand pointing at first character
 	Position cursorPosition;
 	auto next = turnList.at(0);
-	if (next->isEnemy()) {
-		cursorPosition = dynamic_cast<Enemy*>(next)->animation.get_position();
-	} else {
-		cursorPosition = dynamic_cast<Player*>(next)->animation.get_position();
-	}
+	cursorPosition = dynamic_cast<Entity*>(next)->animation.get_position();
 	cursor = Animation(am.getTexture(HAND.c), {40, 30, 40, 65}, cursorPosition);
 	cursor.sprite.setScale({0.7, 0.7});
 	cursor.sprite.setRotation(90.f);
@@ -113,23 +108,14 @@ void CombatState::update(const float& dt) {
 	if(nextTurn) {
 		currentCharacterTurn = (int(currentCharacterTurn + 1)) % turnList.size();
 		auto next = turnList[currentCharacterTurn];
-		if (next->isEnemy()) {
-			cursor.set_position(dynamic_cast<Enemy*>(next)->animation.get_position());
-		} else {
-			cursor.set_position(dynamic_cast<Player*>(next)->animation.get_position());
-		}
+		cursor.set_position(dynamic_cast<Entity*>(next)->animation.get_position());
 		nextTurn = false;
 	}
 	updateKeybinds(dt);
 	auto e = dynamic_cast<Enemy*>(turnList[currentCharacterTurn]);
 	if(turnList[currentCharacterTurn]->isEnemy()) {
 		auto next = turnList[currentCharacterTurn];
-		if (next->isEnemy()) {
-			cursor.set_position(dynamic_cast<Enemy*>(next)->animation.get_position());
-		} else {
-			cursor.set_position(dynamic_cast<Player*>(next)->animation.get_position());
-		}
-
+		cursor.set_position(dynamic_cast<Entity*>(next)->animation.get_position());
 		if(player.defend() > e->attack()) {
 			player.apply_damage(e->atkDamage());
 			nextTurn = true;

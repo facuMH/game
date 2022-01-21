@@ -57,11 +57,11 @@ set(HEADERS include/Animation.h
         include/Tile.h
         include/TileMap.h
         include/Villager.h
-        include/object_attributes/Entity.h
-        include/object_attributes/Combatant.h
-        include/object_attributes/Movement.h
-        include/object_attributes/SteeredMovement.h
-        include/object_attributes/IdleMovement.h)
+        include/Entity.h
+        include/entity_attributes/Combatant.h
+        include/entity_attributes/Movement.h
+        include/entity_attributes/SteeredMovement.h
+        include/entity_attributes/IdleMovement.h)
 
 set(DEPENDENCIES libs/tileson.hpp)
 

@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Inanimated.h"
-#include "object_attributes/Combatant.h"
-#include "object_attributes/IdleMovement.h"
+#include "entity_attributes/Combatant.h"
+#include "entity_attributes/IdleMovement.h"
 
 
 /// Class for non-playable characters who engage in combat
