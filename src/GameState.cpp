@@ -119,7 +119,9 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 				}
 			} else {
 				interactWith = getEntityInInteractionRange(player.animation.get_position());
-				result = StateAction::START_COMBAT;
+				if(!interactWith.empty()) {
+					result = StateAction::START_COMBAT;
+				}
 			}
 		default: break;
 		}
@@ -143,12 +145,12 @@ void GameState::drawPlayer(sf::RenderWindow* window) {
 	for(auto& v : villagers) {
 		window->draw(v.animation.sprite);
 		if(!inDialogue) {
-			v.move(&map);
+			v.move(&v.animation, &map);
 		}
 	}
 	for(auto& e : enemies) {
 		window->draw(e.animation.sprite);
-		e.move(&map);
+		e.move(&e.animation, &map);
 	}
 }
 

@@ -1,38 +1,41 @@
 #pragma once
 
-class NPC : public virtual Entity {
+#include "Movement.h"
+
+class IdleMovement : public Movement {
   public:
-	// Define an area in which the villager can move
+	// Define an area in which the NPC can move
 	Position startPosition;
 	Position endPosition;
+	Position currentPosition;
 	MovementType movementType;
 	KeyAction currentDirection;
-	float stepsize;
 
-	NPC() = default;
-	NPC(MovementType _movementType, Position _endPosition, float _stepsize) {
+	IdleMovement() = default;
+	IdleMovement(MovementType _movementType, Position _startPosition, Position _endPosition, float _stepsize)
+	    : Movement(_stepsize) {
 		movementType = _movementType;
 		if(movementType == MovementType::HORIZONTAL) {
 			currentDirection = KeyAction::LEFT;
 		} else {
 			currentDirection = KeyAction::DOWN;
 		}
-		startPosition = animation.get_position();
+		startPosition = _startPosition;
 		endPosition = _endPosition;
-		stepsize = _stepsize;
+		currentPosition = _startPosition;
 	};
 
-	virtual ~NPC() = default;
+	virtual ~IdleMovement() = default;
 
-	void move(TileMap* map) {
-		setTileOccupation(map, false);
+	void move(Animation* animation, TileMap* map) {
+		setTileOccupation(map, animation->get_position(), false);
+		animation->next(nextDirection());
 		currentDirection = nextDirection();
-		animation.next(currentDirection, map, stepsize, animation.get_position());
-		setTileOccupation(map, true);
-	};
+		currentPosition = moveCharacter(currentDirection, &animation->sprite, map, animation->get_position());
+		setTileOccupation(map, animation->get_position(), true);
+	}
 
 	KeyAction nextDirection() const {
-		Position currentPosition = animation.get_position();
 		KeyAction nextDirection = KeyAction::NONE;
 		if(movementType == MovementType::VERTICAL) {
 			switch(currentDirection) {
