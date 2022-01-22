@@ -28,7 +28,7 @@ class CombatState : public State {
 	Position initialText{10.f, 300.f};
 	float textIntervalHeight = 50;
 
-	std::vector<Combatant*> turnList;
+	std::vector<Entity*> turnList;
 	int currentCharacterTurn;
 	bool nextTurn;
 

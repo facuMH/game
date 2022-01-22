@@ -50,7 +50,7 @@ CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, std::vecto
 	// initialText.y = 300; // window->getSize().y / 2;
 
 	keybinds = gameSupportedKeys;
-	std::map<int, Combatant*> turnMap;
+	std::map<int, Entity*> turnMap;
 	player = p;
 	enemy = e;
 	std::cout << "New Combat\n";
@@ -80,7 +80,7 @@ CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, std::vecto
 	// hand pointing at first character
 	Position cursorPosition;
 	auto next = turnList.at(0);
-	cursorPosition = dynamic_cast<Entity*>(next)->animation.get_position();
+	cursorPosition = next->animation.get_position();
 	cursor = Animation(am.getTexture(HAND.c), {40, 30, 40, 65}, cursorPosition);
 	cursor.sprite.setScale({0.7, 0.7});
 	cursor.sprite.setRotation(90.f);
@@ -97,7 +97,7 @@ CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, std::vecto
 CombatState::~CombatState() = default;
 
 void CombatState::update(const float& dt) {
-	if(turnList[currentCharacterTurn]->isEnemy()) {
+	if(dynamic_cast<Combatant*>(turnList[currentCharacterTurn])->isEnemy()) {
 		sf ::sleep(sf::milliseconds(1000));
 	}
 	if(cursorClock.getElapsedTime().asSeconds() > 0.5f) {
@@ -108,14 +108,14 @@ void CombatState::update(const float& dt) {
 	if(nextTurn) {
 		currentCharacterTurn = (int(currentCharacterTurn + 1)) % turnList.size();
 		auto next = turnList[currentCharacterTurn];
-		cursor.set_position(dynamic_cast<Entity*>(next)->animation.get_position());
+		cursor.set_position(next->animation.get_position());
 		nextTurn = false;
 	}
 	updateKeybinds(dt);
-	auto e = dynamic_cast<Enemy*>(turnList[currentCharacterTurn]);
-	if(turnList[currentCharacterTurn]->isEnemy()) {
+	auto e = dynamic_cast<Combatant*>(turnList[currentCharacterTurn]);
+	if(e->isEnemy()) {
 		auto next = turnList[currentCharacterTurn];
-		cursor.set_position(dynamic_cast<Entity*>(next)->animation.get_position());
+		cursor.set_position(next->animation.get_position());
 		if(player.defend() > e->attack()) {
 			player.apply_damage(e->atkDamage());
 			nextTurn = true;
@@ -136,7 +136,7 @@ void CombatState::render(sf::RenderWindow* window) {
 		character.second.render(window);
 	}
 	window->draw(cursor.sprite);
-	if(!turnList.at(currentCharacterTurn)->isEnemy()) {
+	if(!dynamic_cast<Combatant*>(turnList.at(currentCharacterTurn))->isEnemy()) {
 		for(auto b : actionButtons) {
 			b.render(window);
 		}
