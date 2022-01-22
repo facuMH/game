@@ -124,15 +124,10 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 					startDialogue(interactWith);
 				}
 			} else {
-				auto playerTile = map.getTileFromPos(player.animation.get_position());
-				auto itemTile = map.getTileFromPos(item->get_position());
-				// using enemies[0] because there should be just one enemy, but that change should be another PR
-				auto enemyTile = map.getTileFromPos(enemies[0].get_position());
-				if(playerTile == enemyTile)
+				if(interactWith == enemies[0].name)
 					result = StateAction::START_COMBAT;
-				else if(playerTile == itemTile) {
-					if(item->can_equip)
-						player.equip(item);
+				else if(interactWith == item->getName()) {
+					if(item->can_equip) player.equip(item);
 					itemPicked = true;
 					result = StateAction::PICK_ITEM;
 				}
@@ -159,12 +154,12 @@ void GameState::drawPlayer(sf::RenderWindow* window) {
 	for(auto& v : villagers) {
 		window->draw(v.animation.sprite);
 		if(!inDialogue) {
-			v.move(&map);
+			v.move(&v.animation, &map);
 		}
 	}
 	for(auto& e : enemies) {
 		window->draw(e.animation.sprite);
-		e.move(&map);
+		e.move(&e.animation, &map);
 	}
 }
 
@@ -206,17 +201,22 @@ void GameState::startDialogue(Name& characterName) {
 }
 
 Name GameState::getEntityInInteractionRange(Position position) {
+	Name n = "";
 	// if entity is a villager
 	for(auto& v : villagers) {
-		if(positionsInRange(position, v.animation.get_position(), 20.f)) {
-			return v.name;
+		if(positionsInRange(position, v.animation.get_position(), 15.f)) {
+			n = v.name;
 		}
 	}
 	// if entity is an enemy
 	for(auto& e : enemies) {
-		if(positionsInRange(position, e.animation.get_position(), 20.f)) {
-			return e.name;
+		if(positionsInRange(position, e.animation.get_position(), 15.f)) {
+			n = e.name;
 		}
 	}
-	return "";
+	// if entity is an item
+	if(positionsInRange(position, item->animation.get_position(), 15.f)) {
+		n = item->getName();
+	}
+	return n;
 }
