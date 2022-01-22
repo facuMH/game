@@ -6,7 +6,7 @@
 /// Class for playable characters
 class Player : public Combatant {
   public:
-	Weapon* weapon = nullptr;
+	Object* weapon = nullptr;
 
 	Player() {}
 	Player(const Name& _name, const Stats& _stats, const Animation& _animation) : Entity(_name, _animation), Combatant(_stats, _stats) {
@@ -14,7 +14,7 @@ class Player : public Combatant {
 		can_interact = true;
 	}
 
-	void equip(Weapon* arms);
+	void equip(Object* arms);
 	void move(KeyAction key, TileMap* map);
 	bool isEnemy() override { return false; }
 };

@@ -27,7 +27,8 @@ class GameState : public State {
 	sf::Music music;
 	sf::Keyboard::Key previousKey; // for gasping sound effect
 	float dialogueYPosition;       // position depends on current view
-	Object* item = nullptr;                  // if in a house there will be an item, if not previously picked up
+	Object* item = nullptr;        // if in a house there will be an item, if not previously picked up
+	bool itemPicked = false;
 
 
   public:
@@ -61,4 +62,5 @@ class GameState : public State {
 	StateAction shouldAct() override;
 	void stopMusic() override;
 	void resumeMusic() override;
+	Name getItemName() const { return item->getName(); }
 };

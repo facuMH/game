@@ -10,9 +10,9 @@
 
 #include "AssetsManager.h"
 #include "GameState.h"
-#include "itemManager.h"
 #include "MainMenuState.h"
 #include "definitions.h"
+#include "itemManager.h"
 
 /*
  * Wrapper class acting as game engine.

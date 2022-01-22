@@ -4,24 +4,6 @@
 #include "asset_data.h"
 #include "itemManager.h"
 
-Weapon ItemManager::make(const Name& name, const Position pos) {
-	Texture* t = am->getTexture(itemsPaths.at(name));
-	sf::IntRect ir{{0, 0}, sf::Vector2i(t->getSize())};
-	Animation a{t, ir, pos};
-	Stats s{itemStats.at(name)};
-	Weapon ret{name, a, s};
-	return ret;
-}
-
-Potion ItemManager::make(const Name& name, const Position pos, const int n) {
-	Texture* t = am->getTexture(itemsPaths.at(name));
-	sf::IntRect ir{{0, 0}, sf::Vector2i(t->getSize())};
-	Animation a{t, ir, pos};
-	Stats s{itemStats.at(name)};
-	Potion ret{name, a, n, s.hp};
-	return ret;
-}
-
 ItemManager::ItemManager(AssetsManager* _am) : am(_am) {
 	std::ifstream ifs(ITEMSLIST.c);
 	std::string line;
@@ -36,13 +18,26 @@ ItemManager::ItemManager(AssetsManager* _am) : am(_am) {
 	ifs.close();
 }
 
-Weapon* ItemManager::get(const Name& name, const Position pos) {
-	auto found = weapons.find(name);
-	Weapon* weapon;
-	if(found != weapons.end()) {
-		weapon = &found->second;
+Object ItemManager::make(const Name& name, const Position pos) {
+	Texture* t = am->getTexture(itemsPaths.at(name));
+	sf::IntRect ir{{0, 0}, sf::Vector2i(t->getSize())};
+	Animation a{t, ir, pos};
+	Stats s{itemStats.at(name)};
+	Object ret{name, a, s};
+	return ret;
+}
+
+Object* ItemManager::get(const Name& name, const Position pos) {
+	auto found = items.find(name);
+	Object* item;
+	if(found != items.end()) {
+		item = &found->second;
 	} else {
-		weapon = &(weapons.emplace(name, make(name, pos))).first->second;
+		item = &(items.emplace(name, make(name, pos))).first->second;
 	}
-	return weapon;
+	return item;
+}
+
+Object* ItemManager::get(const Name& name) {
+	return &items.at(name);
 }

@@ -51,6 +51,7 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 	isHouse = true;
 	inDialogue = false;
 	item = _item;
+	item->animation.set_position({player.get_position().x + 2, player.get_position().y});
 
 	view = sf::View(player.get_position(), {720.0, 480.0});
 	MusicPath* musicPath = gameAM.getMusic(_musicPath);
@@ -81,7 +82,8 @@ void GameState::render(sf::RenderWindow* window) {
 	if(inDialogue) {
 		dialogueBox.render(window);
 	}
-	if(item != nullptr) window->draw(item->animation.sprite);
+
+	if(!itemPicked && item != nullptr) window->draw(item->animation.sprite);
 }
 
 void GameState::updateKeybinds(const float& dt) {}
@@ -116,14 +118,24 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 			}
 			break;
 		case KeyAction::INTERACT:
+			interactWith = getEntityInInteractionRange(player.animation.get_position());
 			if(!isHouse) {
-				interactWith = getEntityInInteractionRange(player.animation.get_position());
 				if(!interactWith.empty()) {
 					startDialogue(interactWith);
 				}
 			} else {
-				interactWith = getEntityInInteractionRange(player.animation.get_position());
-				result = StateAction::START_COMBAT;
+				auto playerTile = map.getTileFromPos(player.animation.get_position());
+				auto itemTile = map.getTileFromPos(item->get_position());
+				// using enemies[0] because there should be just one enemy, but that change should be another PR
+				auto enemyTile = map.getTileFromPos(enemies[0].get_position());
+				if(playerTile == enemyTile)
+					result = StateAction::START_COMBAT;
+				else if(playerTile == itemTile) {
+					if(item->can_equip)
+						player.equip(item);
+					itemPicked = true;
+					result = StateAction::PICK_ITEM;
+				}
 			}
 		default: break;
 		}

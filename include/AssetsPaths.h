@@ -61,7 +61,7 @@ constexpr auto ITEMSLIST = cat(ITEMS.c, "itemList.txt");
 constexpr auto CLUB = cat(ITEMS.c, "Club.png");
 constexpr auto FORK = cat(ITEMS.c, "Fork.png");
 constexpr auto LIFEPOT = cat(ITEMS.c, "LifePot.png");
-constexpr auto WAND = cat(ITEMS.c, "MagicWand.png");
+constexpr auto WAND = cat(ITEMS.c, "Wand.png");
 constexpr auto MEDIPACK = cat(ITEMS.c, "Medipack.png");
 constexpr auto SWORD = cat(ITEMS.c, "Sword.png");
 

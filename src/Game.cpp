@@ -8,8 +8,8 @@
 #include "Game.h"
 #include "House.h"
 #include "HouseManager.h"
-#include "SettingsState.h"
 #include "PauseGameState.h"
+#include "SettingsState.h"
 #include "asset_data.h"
 
 // Private functions
@@ -179,7 +179,7 @@ void Game::makeNewHouseState(const Position playerPosition) {
 	for(auto& hp : housePositions) {
 		auto doorPosition = hp.first;
 		if(positionsInRange(playerPosition, doorPosition, 8.0f)) {
-			doorNumber = hp.second;
+			doorNumber = hp.second - 1;
 			break;
 		}
 	}
@@ -188,16 +188,16 @@ void Game::makeNewHouseState(const Position playerPosition) {
 	House house = HouseManager::getHouse(doorNumber);
 
 	Enemies enemies;
-	EnemyData enemyData = ENEMYDATA[doorNumber - 1];
+	EnemyData enemyData = ENEMYDATA[doorNumber];
 	Texture* texture = assetsManager.getTexture(enemyData.texturePath);
 	Animation animation(texture, sf::IntRect(0, 0, TILESIZE, TILESIZE), enemyData.position);
 	Enemy enemy(enemyData.name, Stats(15, 15, 15, 15, 15, 15), animation, MovementType::HORIZONTAL, {30, 30}, 2.0f);
 	enemies.push_back(enemy);
 
 	Object* item = nullptr;
-	Name itemName = HOUSEDATA.at(doorNumber - 1).itemName;
+	Name itemName = HOUSEDATA.at(doorNumber).itemName;
 	if(!im.hasBeenPickedUp(itemName)) {
-		item = im.get(itemName, HOUSEDATA.at(doorNumber - 1).itemPosition);
+		item = im.get(itemName, HOUSEDATA.at(doorNumber).itemPosition);
 	}
 
 	states.push(new GameState(window, assetsManager, tileSheets, house.houseDesignPath, &keyBindings, player, enemies,
@@ -216,6 +216,10 @@ void Game::pollEvents() {
 			switch(event.key.code) {
 			case sf::Keyboard::Escape: closeWindow(); break;
 			case sf::Keyboard::Enter: action = states.top()->shouldAct(); break;
+			case sf::Keyboard::K:
+				turnOffMusic();
+				makeNewHouseState(housePositions.back().first);
+				break;
 			default: action = states.top()->handleKeys(event.key.code); break;
 			}
 			switch(action) {
@@ -226,7 +230,7 @@ void Game::pollEvents() {
 				break;
 			case StateAction::START_SETTING: states.push(new SettingsState(window, assetsManager, &keyBindings)); break;
 			case StateAction::PAUSE_GAME: states.push(new PauseGameState(window, assetsManager, &keyBindings)); break;
-			case StateAction::LOAD_GAME: /* To Do */;  break;
+			case StateAction::LOAD_GAME: /* To Do */; break;
 			case StateAction::EXIT_SETTING:
 			case StateAction::RESUME_GAME: states.pop(); break;
 			case StateAction::START_COMBAT:
@@ -249,6 +253,15 @@ void Game::pollEvents() {
 				states.pop();
 				states.top()->resumeMusic();
 				break;
+			case StateAction::PICK_ITEM: {
+				Name itemName = dynamic_cast<GameState*>(states.top())->getItemName();
+				im.pickUp(itemName);
+				auto item = im.get(itemName);
+				if(item->can_equip) {
+					player.equip(item);
+				}
+			}
+
 			default: break;
 			}
 			break;

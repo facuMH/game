@@ -11,18 +11,18 @@
 
 class ItemManager {
   private:
-	std::unordered_map<std::string, Weapon> weapons;
-	std::unordered_map<std::string, Potion> potions;
+	std::unordered_map<std::string, Object> items;
 	std::unordered_map<Name, Stats> itemStats;
-	std::unordered_set<Name> pickedUp;
+	std::unordered_set<Name> playerInventory;
 	AssetsManager* am;
 
-	Weapon make(const Name& name, const Position pos);
-	Potion make(const Name& name, const Position pos, const int n);
+	Object make(const Name& name, const Position pos);
 
   public:
 	ItemManager(AssetsManager* am);
-	Weapon* get(const Name& name, const Position pos);
-	void pickUp(const Name& name) { pickedUp.emplace(name); }
-	bool hasBeenPickedUp(const Name& name) { return pickedUp.find(name) != pickedUp.end(); }
+	Object* get(const Name& name, const Position pos);
+	// WARNING only you the overload that doesn't require position, if you are sure the weeapon already exists.
+	Object* get(const Name& name);
+	void pickUp(const Name& name) { playerInventory.emplace(name); }
+	bool hasBeenPickedUp(const Name& name) { return playerInventory.find(name) != playerInventory.end(); }
 };
