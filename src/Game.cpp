@@ -90,7 +90,7 @@ void Game::initStates() {
 }
 
 // Constructor
-Game::Game() : im(&assetsManager) {
+Game::Game() : itemManager(&assetsManager) {
 	initKeys();
 	initVariables();
 	initWindow();
@@ -185,7 +185,7 @@ void Game::makeNewHouseState(const Position playerPosition) {
 	}
 	std::vector<MapBackground*> tileSheets = {assetsManager.getMap(TILESHEET_INTERIOR_FLOOR.c),
 	    assetsManager.getMap(TILESHEET_INTERIOR_FLOOR.c), assetsManager.getMap(TILESHEET_FURNITURE.c)};
-	House house = HouseManager::getHouse(doorNumber);
+	House house = HouseManager::getHouse(doorNumber + 1);
 
 	Enemies enemies;
 	EnemyData enemyData = ENEMYDATA[doorNumber];
@@ -196,8 +196,8 @@ void Game::makeNewHouseState(const Position playerPosition) {
 
 	Object* item = nullptr;
 	Name itemName = HOUSEDATA.at(doorNumber).itemName;
-	if(!im.hasBeenPickedUp(itemName)) {
-		item = im.get(itemName, HOUSEDATA.at(doorNumber).itemPosition);
+	if(!itemManager.hasBeenPickedUp(itemName)) {
+		item = itemManager.get(itemName, HOUSEDATA.at(doorNumber).itemPosition);
 	}
 
 	states.push(new GameState(window, assetsManager, tileSheets, house.houseDesignPath, &keyBindings, player, enemies,
@@ -255,8 +255,8 @@ void Game::pollEvents() {
 				break;
 			case StateAction::PICK_ITEM: {
 				Name itemName = dynamic_cast<GameState*>(states.top())->getItemName();
-				im.pickUp(itemName);
-				auto item = im.get(itemName);
+				itemManager.pickUp(itemName);
+				auto item = itemManager.get(itemName);
 				if(item->can_equip) {
 					player.equip(item);
 				}

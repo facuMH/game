@@ -1,8 +1,5 @@
-#include <iostream>
-#include <string>
-
+#include "ItemManager.h"
 #include "asset_data.h"
-#include "itemManager.h"
 
 ItemManager::ItemManager(AssetsManager* _am) : am(_am) {
 	std::ifstream ifs(ITEMSLIST.c);
@@ -18,26 +15,28 @@ ItemManager::ItemManager(AssetsManager* _am) : am(_am) {
 	ifs.close();
 }
 
-Object ItemManager::make(const Name& name, const Position pos) {
-	Texture* t = am->getTexture(itemsPaths.at(name));
+// name of the item to be created, positioin where it should be displayed
+Object ItemManager::make(const Name& itemName, const Position itemPosition) {
+	Texture* t = am->getTexture(itemsPaths.at(itemName));
 	sf::IntRect ir{{0, 0}, sf::Vector2i(t->getSize())};
-	Animation a{t, ir, pos};
-	Stats s{itemStats.at(name)};
-	Object ret{name, a, s};
+	Animation a{t, ir, itemPosition};
+	Stats s{itemStats.at(itemName)};
+	Object ret{itemName, a, s};
 	return ret;
 }
 
-Object* ItemManager::get(const Name& name, const Position pos) {
-	auto found = items.find(name);
+// name of the item requested, positioin where it should be displayed in case it doesn't exist yet
+Object* ItemManager::get(const Name& itemName, const Position itemPosition) {
+	auto found = items.find(itemName);
 	Object* item;
 	if(found != items.end()) {
 		item = &found->second;
 	} else {
-		item = &(items.emplace(name, make(name, pos))).first->second;
+		item = &(items.emplace(itemName, make(itemName, itemPosition))).first->second;
 	}
 	return item;
 }
 
-Object* ItemManager::get(const Name& name) {
-	return &items.at(name);
+Object* ItemManager::get(const Name& itemName) {
+	return &items.at(itemName);
 }

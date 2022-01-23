@@ -12,7 +12,7 @@ class Entity {
 
 	Entity() = default;
 	Entity(const Name& _name, const Animation& _animation) {
-	    name = _name;
+		name = _name;
 		animation = _animation;
 	};
 

@@ -51,7 +51,7 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 	isHouse = true;
 	inDialogue = false;
 	item = _item;
-	item->animation.set_position({player.get_position().x + 2, player.get_position().y});
+	if(item != nullptr) item->animation.set_position({player.get_position().x + 2, player.get_position().y});
 
 	view = sf::View(player.get_position(), {720.0, 480.0});
 	MusicPath* musicPath = gameAM.getMusic(_musicPath);
@@ -215,7 +215,7 @@ Name GameState::getEntityInInteractionRange(Position position) {
 		}
 	}
 	// if entity is an item
-	if(positionsInRange(position, item->animation.get_position(), 15.f)) {
+	if(item != nullptr && positionsInRange(position, item->animation.get_position(), 15.f)) {
 		n = item->getName();
 	}
 	return n;

@@ -19,7 +19,7 @@ class ItemManager {
 	Object make(const Name& name, const Position pos);
 
   public:
-	ItemManager(AssetsManager* am);
+	explicit ItemManager(AssetsManager* am);
 	Object* get(const Name& name, const Position pos);
 	// WARNING only you the overload that doesn't require position, if you are sure the weeapon already exists.
 	Object* get(const Name& name);
