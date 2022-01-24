@@ -6,6 +6,7 @@
 #include "AssetsPaths.h"
 #include "DialogueBox.h"
 #include "GameState.h"
+#include "asset_data.h"
 
 /// Constructor for village GameState: There are several villagers, but no enemies, as they hide in the houses
 GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vector<MapBackground*> textureSheets,
@@ -38,9 +39,10 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 	dialogueYPosition = view.getCenter().y;
 }
 
-/// Constructor for house GameState: No villagers here, but monsters
+/// Constructor for house GameState: No villagers here, but monsters and item
 GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vector<MapBackground*> textureSheets,
-    JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player, Enemies& _enemies, MusicPath& _musicPath)
+    JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player, Enemies& _enemies, MusicPath& _musicPath,
+    Object* _item)
     : State(window), map(gameAM, textureSheets, path) {
 	am = &gameAM;
 	keybinds = gameSupportedKeys;
@@ -48,6 +50,8 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 	enemies = _enemies;
 	isHouse = true;
 	inDialogue = false;
+	item = _item;
+	if(item != nullptr) item->animation.set_position({player.get_position().x + 2, player.get_position().y});
 
 	view = sf::View(player.get_position(), {720.0, 480.0});
 	MusicPath* musicPath = gameAM.getMusic(_musicPath);
@@ -78,6 +82,8 @@ void GameState::render(sf::RenderWindow* window) {
 	if(inDialogue) {
 		dialogueBox.render(window);
 	}
+
+	if(!itemPicked && item != nullptr) window->draw(item->animation.sprite);
 }
 
 void GameState::updateKeybinds(const float& dt) {}
@@ -112,15 +118,18 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 			}
 			break;
 		case KeyAction::INTERACT:
+			interactWith = getEntityInInteractionRange(player.animation.get_position());
 			if(!isHouse) {
-				interactWith = getEntityInInteractionRange(player.animation.get_position());
 				if(!interactWith.empty()) {
 					startDialogue(interactWith);
 				}
 			} else {
-				interactWith = getEntityInInteractionRange(player.animation.get_position());
-				if(!interactWith.empty()) {
+				if(interactWith == enemies[0].name)
 					result = StateAction::START_COMBAT;
+				else if(interactWith == item->getName()) {
+					if(item->can_equip) player.equip(item);
+					itemPicked = true;
+					result = StateAction::PICK_ITEM;
 				}
 			}
 		default: break;
@@ -192,17 +201,22 @@ void GameState::startDialogue(Name& characterName) {
 }
 
 Name GameState::getEntityInInteractionRange(Position position) {
+	Name n = "";
 	// if entity is a villager
 	for(auto& v : villagers) {
-		if(positionsInRange(position, v.animation.get_position(), 20.f)) {
-			return v.name;
+		if(positionsInRange(position, v.animation.get_position(), 15.f)) {
+			n = v.name;
 		}
 	}
 	// if entity is an enemy
 	for(auto& e : enemies) {
-		if(positionsInRange(position, e.animation.get_position(), 20.f)) {
-			return e.name;
+		if(positionsInRange(position, e.animation.get_position(), 15.f)) {
+			n = e.name;
 		}
 	}
-	return "";
+	// if entity is an item
+	if(item != nullptr && positionsInRange(position, item->animation.get_position(), 15.f)) {
+		n = item->getName();
+	}
+	return n;
 }

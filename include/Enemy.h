@@ -9,7 +9,7 @@
 class Enemy : public Entity, public IdleMovement, public Combatant {
   public:
 	Enemy() = default;
-	Enemy(Name _name, Stats _stats, Animation _animation, MovementType _movementType, Position _endPosition,
+	Enemy(const Name& _name, const Stats& _stats, const Animation& _animation, MovementType _movementType, Position _endPosition,
 	    float _stepsize)
 	    : Entity(_name, _animation),
 	      Combatant(_stats, _stats),

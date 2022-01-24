@@ -53,23 +53,27 @@ void TileMap::loadFromJson(const std::string& path, std::vector<MapBackground*> 
 	}
 }
 
+Position_i TileMap::getTileFromPos(Position pos) {
+	int tilePosX = std::ceil(pos.x / TILESIZE);
+	int tilePosY = std::ceil(pos.y / TILESIZE);
+	return Position_i{tilePosX, tilePosY};
+}
+
 bool TileMap::hasNoCollision(Position position) {
-	int tilePosX = std::ceil(position.x / TILESIZE);
-	int tilePosY = std::ceil(position.y / TILESIZE);
-	return !tiles[0][tilePosX][tilePosY]->is_solid && !tiles[0][tilePosX][tilePosY]->is_occupied;
+	auto t = getTileFromPos(position);
+	return !tiles[0][t.x][t.y]->is_solid && !tiles[0][t.x][t.y]->is_occupied;
 }
 
 void TileMap::setTileOccupation(Position position, bool isOccupied) {
-	int tilePosX = std::ceil(position.x / TILESIZE);
-	int tilePosY = std::ceil(position.y / TILESIZE);
-	tiles[0][tilePosX][tilePosY]->is_occupied = isOccupied;
+	auto t = getTileFromPos(position);
+	tiles[0][t.x][t.y]->is_occupied = isOccupied;
 }
 
 DoorNumber TileMap::getTileDoorNumber(Position position) {
-	int tilePosX = std::ceil(position.x / TILESIZE);
-	int tilePosY = std::ceil(position.y / TILESIZE);
-	return tiles[0][tilePosX][tilePosY]->doorNum;
+	auto t = getTileFromPos(position);
+	return tiles[0][t.x][t.y]->doorNum;
 }
+
 
 void TileMap::render(sf::RenderWindow& window) {
 	for(int z = 0; z < nLayers; z++) {
@@ -84,7 +88,7 @@ std::vector<std::pair<Position, DoorNumber>> TileMap::getHousePositions() {
 	std::vector<std::pair<Position, DoorNumber>> positionDoorNumberVector;
 	for(int y = 0; y < mapSize.y; y++) {
 		for(int x = 0; x < mapSize.x; x++) {
-			if (tiles[0][y][x]->doorNum != 0) {
+			if(tiles[0][y][x]->doorNum != 0) {
 				positionDoorNumberVector.emplace_back(tiles[0][y][x]->get_position(), tiles[0][y][x]->doorNum);
 			}
 		}

@@ -7,16 +7,16 @@
 #include "Player.h"
 #include "definitions.h"
 
-void CombatState::addCombatString(const Player& player, AssetsManager& am) {
+void CombatState::addCombatString(const Player& _p, AssetsManager& am) {
 	sf::Text characterInfo{};
 
 	characterInfo.setOutlineColor(sf::Color::Black);
 	characterInfo.setFillColor(sf::Color::Black);
 	characterInfo.setFont(font);
-	characterInfo.setString(player.name + std::string(" HP:") + std::to_string(player.get_hp()) + "/"
-	                        + std::to_string(player.maxStats.hp) + " MP:" + std::to_string(player.get_mana()) + "/"
-	                        + std::to_string(player.maxStats.mana));
-	lifeCounters.emplace(player.name, Button(initialText.x, initialText.y, 280, 40, characterInfo));
+	characterInfo.setString(_p.name + std::string(" HP:") + std::to_string(_p.get_hp()) + "/"
+	                        + std::to_string(_p.maxStats.hp) + " MP:" + std::to_string(_p.get_mana()) + "/"
+	                        + std::to_string(_p.maxStats.mana));
+	lifeCounters.emplace(_p.name, Button(initialText.x, initialText.y, 280, 40, characterInfo));
 }
 
 void CombatState::addActionMenu(const sf::RenderWindow* window) {
@@ -64,6 +64,7 @@ CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, std::vecto
 
 	auto ePos = COMBAT_FIRST_ENEMY_POSITION;
 	enemy.animation.set_position(ePos);
+	enemy.animation.sprite.setScale({3.f, 3.f});
 	ePos.y += 50;
 	turnMap.insert({enemy.currentStats.dex, &enemy});
 

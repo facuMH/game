@@ -10,6 +10,7 @@
 
 #include "AssetsManager.h"
 #include "GameState.h"
+#include "ItemManager.h"
 #include "MainMenuState.h"
 #include "definitions.h"
 
@@ -35,6 +36,7 @@ class Game {
 	std::unordered_map<std::string, KeyAction> keyActionString;
 	std::vector<std::pair<Position, DoorNumber>> housePositions;
 	AssetsManager assetsManager;
+	ItemManager itemManager;
 	float dt{}; // time delta
 	Position_i mousePos;
 	sf::Text mousePosText;

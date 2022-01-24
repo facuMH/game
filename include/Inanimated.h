@@ -3,18 +3,17 @@
 #include "Entity.h"
 
 class Object : public Entity {
-	bool can_pick_up;
-	int quantity;
+  private:
+	Stats stats;
 
   public:
-	Object() : can_pick_up(true), quantity(1){};
+	bool can_equip = true;
+	Object() {};
+	Object(const Name& n, const Animation& a, const Stats s) : Entity(n, a) {
+		if(s.str == 0 && s.dex == 0) can_equip = false;
+	}
 
 	void drop(Position pos) { animation.set_position(pos); }
-};
-
-class Weapon : public Object {
-	Name name;
-	Stats stats;
-  public:
-	const Stats& getStats() { return stats; }
+	Name getName() { return Entity::name; }
+	Stats getStats() const { return stats; }
 };

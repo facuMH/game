@@ -12,7 +12,7 @@ set(CMAKE_VERBOSE_MAKEFILE ON CACHE BOOL "ON")
 
 IF(WIN32)
     set(CMAKE_PREFIX_PATH "C:\\dev\\SFML\\lib\\cmake\\SFML")
-    set(CMAKE_CXX_FLAGS "/MP")
+    set(CMAKE_CXX_FLAGS "/MP /EHsc")
 ENDIF()
 
 #------------- CONFIGURATIONS
@@ -26,6 +26,7 @@ set(SOURCES src/main.cpp
         src/GameState.cpp
         src/HouseManager.cpp
         src/InteractionManager.cpp
+        src/ItemManager.cpp
         src/MainMenuState.cpp
         src/PauseGameState.cpp
         src/Player.cpp
@@ -49,6 +50,7 @@ set(HEADERS include/Animation.h
         include/HouseManager.h
         include/Inanimated.h
         include/InteractionManager.h
+        include/ItemManager.h
         include/MainMenuState.h
         include/PauseGameState.h
         include/Player.h
