@@ -4,9 +4,10 @@
 #include <SFML/Window.hpp>
 
 #include "AssetsManager.h"
+#include "Player.h"
 #include "State.h"
 
-class PauseGameState : public State {
+class InventoryState : public State {
   private:
 	sf::View view;
 	sf::RectangleShape background;
@@ -19,8 +20,7 @@ class PauseGameState : public State {
 	int activeButton;
 	Buttons buttons;
 
-	Position_i mousePoseWindow;
-	Position mousePosView;
+	Player* player = nullptr;
 
 	// Functions
 	void initBackground(sf::RenderWindow* window, AssetsManager& am);
@@ -32,8 +32,8 @@ class PauseGameState : public State {
 	void updateMousePositions();
 
   public:
-	PauseGameState(sf::RenderWindow* window, AssetsManager& am, KeyList* supportedKeys);
-	~PauseGameState() override;
+	InventoryState(sf::RenderWindow* window, AssetsManager& am, KeyList* _supportedKeys, Player* _player);
+	~InventoryState() override = default;
 
 	// Functions
 	void endState();
@@ -44,9 +44,11 @@ class PauseGameState : public State {
 	void updateKeybinds(const float& dt) override;
 	void quitStateActions() override;
 	bool shouldQuit() override;
+
 	Position getCurrentPlayerPosition() override { return {0, 0}; };
-	void drawPlayer(sf::RenderWindow* window) override;
+	void drawPlayer(sf::RenderWindow* window) override {}
 	sf::View getView() override { return view; };
+
 	StateAction shouldAct() override;
 	void stopMusic() override;
 	void resumeMusic() override;

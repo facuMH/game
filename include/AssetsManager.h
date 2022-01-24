@@ -26,7 +26,8 @@ class AssetsManager {
 	void emplace(const std::string& name, const JSONFilePath& newAsset) { mapDesigns.emplace(name, newAsset); }
 	void emplace(const std::string& name, const MusicPath& newAsset) { musicPaths.emplace(name, newAsset); }
 
-	template <typename U, typename T = typename U::mapped_type> T* getAsset(const std::string& name, U& map) {
+	template <typename U, typename T = typename U::mapped_type>
+	T* getAsset(const std::string& name, U& map) {
 		auto found = map.find(name);
 		if(found != map.end())
 			return &found->second;
@@ -44,11 +45,12 @@ class AssetsManager {
 	sf::Font* getFont(const std::string& name) { return getAsset(name, fonts); }
 	MapBackground* getMap(const std::string& name) { return getAsset(name, maps); }
 	sf::SoundBuffer getSoundBuffer(const std::string& name) { return *getAsset(name, sounds); }
-	JSONFilePath* getMapDesign(const std::string& name) {return getAsset(name, mapDesigns); }
-	MusicPath* getMusic(const std::string& name) {return getAsset(name, musicPaths); }
+	JSONFilePath* getMapDesign(const std::string& name) { return getAsset(name, mapDesigns); }
+	MusicPath* getMusic(const std::string& name) { return getAsset(name, musicPaths); }
 
 
-	template <typename Asset> bool loadAsset(const std::string& path) {
+	template <typename Asset>
+	bool loadAsset(const std::string& path) {
 		Asset newAsset;
 		if(newAsset.loadFromFile(path)) {
 			emplace(path, newAsset);
@@ -58,5 +60,4 @@ class AssetsManager {
 		}
 		return true;
 	}
-
 };
