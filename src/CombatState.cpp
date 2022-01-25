@@ -151,7 +151,11 @@ void CombatState::render(sf::RenderWindow* window) {
 void CombatState::updateKeybinds(const float& dt) {}
 
 bool CombatState::shouldQuit() {
-	return isQuit();
+	bool quit = isQuit();
+	if(enemy.get_hp() < 0) {
+		quit = true;
+	}
+	return quit;
 }
 
 void CombatState::quitStateActions() {
