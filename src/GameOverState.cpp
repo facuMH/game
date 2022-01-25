@@ -1,38 +1,169 @@
 #include "GameOverState.h"
 #include "AssetsPaths.h"
 
+#include <algorithm>
+#include <string>
+
+#include <SFML/System.hpp>
+#include <SFML/Window.hpp>
+
+#include "definitions.h"
+
+constexpr int MAX_RESOLUTION_COUNT = 2;
+
+GameOverState::GameOverState(sf::RenderWindow* window, AssetsManager& am, KeyList* gameSupportedKeys)
+    : State(window) {
+	view = window->getDefaultView();
+	initBackground(window, am);
+	initFonts(am);
+	initText(window);
+	initButtons(window);
+	supportedKeys = gameSupportedKeys;
+
+	soundBuffer = am.getSoundBuffer(MENU_BLIP.c);
+	blipSound.setBuffer(soundBuffer);
+	view = window->getDefaultView();
+	MusicPath* path = am.getMusic(END_MUSIC.c);
+	music.openFromFile(*path);
+	music.play();
+}
+
+GameOverState::~GameOverState() = default;
+
 void GameOverState::initBackground(sf::RenderWindow* window, AssetsManager& am) {
 	background.setTexture(am.getTexture(GAME_OVER.c));
 	background.setSize(view.getSize());
 }
-void GameOverState::initFonts(AssetsManager& am) {}
 
-GameOverState::GameOverState(sf::RenderWindow* window, AssetsManager& am, KeyList* _supportedKeys) : State(window) {
-	view = window->getDefaultView();
-	initBackground(window, am);
-	initFonts(am);
-	soundBuffer = am.getSoundBuffer(MENU_BLIP.c);
-	blipSound.setBuffer(soundBuffer);
-
-	supportedKeys = _supportedKeys;
+void GameOverState::initFonts(AssetsManager& am) {
+	font = *am.getFont(DOSIS.c);
 }
-GameOverState::~GameOverState() = default;
+
+void GameOverState::initText(sf::RenderWindow* window) {
+	text.setFont(font);
+	text.setCharacterSize(26);
+	text.setStyle(sf::Text::Bold);
+	text.setFillColor(sf::Color::White);
+	sf::Vector2u currentSize = window->getSize();
+	sf::FloatRect textRect = text.getLocalBounds();
+	text.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+	text.setPosition(currentSize.x / 2.0f, currentSize.y / 4.0f);
+}
+
+void GameOverState::initButtons(sf::RenderWindow* window){
+
+	// button size
+	unsigned int bWidth = 150;
+	unsigned int bHeight = 40;
+	activeButton = 0;
+	auto offsetX = 2 * bWidth;
+	auto offsetY = 8 * bHeight;
+
+	auto center = getWindowCenter(*window);
+	center.x -= offsetX;
+	center.y += offsetY;
+	auto bPos = center.x - 50;
+
+	buttons.push_back(Button(bPos, center.y, bWidth, bHeight, &font, "TRY AGAIN", GREY, LIGHTGREY, sf::Color::Black));
+	bPos = bPos + 3 * bWidth;
+	buttons.push_back(Button(bPos, center.y, bWidth, bHeight, &font, "QUIT", GREY, LIGHTGREY, sf::Color::Black));
+	buttons[activeButton].setInactive();
+}
+
+void GameOverState::updateButtons() {
+	for(auto it : buttons) {
+		it.update(mousePosView);
+	}
+}
+
+void GameOverState::renderButtons(sf::RenderWindow* window) {
+	for(auto& it : buttons) {
+		it.render(window);
+	}
+}
+
+void GameOverState::updateMousePositions() {
+	mousePoseWindow = State::getMouse();
+	mousePosView = getPos(mousePoseWindow);
+}
+
+void GameOverState::endState() {
+	std::cout << "Ending Pause Game State!\n";
+}
+
+void GameOverState::updateInput(const float& dt) {}
+
+
+void GameOverState::update(const float& dt) {
+	updateMousePositions();
+	updateInput(dt);
+	updateButtons();
+}
 
 void GameOverState::render(sf::RenderWindow* window) {
+	window->setView(view);
 	window->draw(background);
+	window->draw(text);
+	renderButtons(window);
 }
-void GameOverState::update(const float& dt) {}
+
 StateAction GameOverState::handleKeys(sf::Keyboard::Key key) {
-	return StateAction::PICK_ITEM;
+	StateAction result = StateAction::NONE;
+	auto action = std::find_if(supportedKeys->begin(), supportedKeys->end(),
+	    [key](const std::pair<KeyAction, sf::Keyboard::Key>& v) { return key == v.second; });
+	if(action != supportedKeys->end()) {
+		switch(action->first) {
+		case KeyAction::RIGHT: // Right arrow
+			buttons[activeButton].setInactive();
+			if(activeButton == 0) {
+				activeButton = MAX_RESOLUTION_COUNT - 1;
+			} else {
+				activeButton--;
+			}
+			buttons[activeButton].setActive();
+
+			break;
+		case KeyAction::LEFT: // Left arrow
+			buttons[activeButton].setInactive();
+			if(activeButton == MAX_RESOLUTION_COUNT - 1) {
+				activeButton = 0;
+			} else {
+				activeButton++;
+			}
+			buttons[activeButton].setActive();
+			break;
+		default: break;
+		}
+	}
+	return result;
 }
+
 void GameOverState::updateKeybinds(const float& dt) {}
-void GameOverState::quitStateActions() {}
+
+void GameOverState::quitStateActions() {
+	std::cout << "Ending pause game state" << std::endl;
+}
+
 bool GameOverState::shouldQuit() {
-	return false;
+	return isQuit();
 }
+
 void GameOverState::drawPlayer(sf::RenderWindow* window) {}
+
 StateAction GameOverState::shouldAct() {
-	return StateAction::PICK_ITEM;
+	if(activeButton == 0) {
+		return StateAction::LOAD_GAME;
+	} else if(activeButton == 1) {
+		return StateAction::EXIT_GAME;
+	} else {
+		return StateAction::NONE;
+	}
 }
-void GameOverState::stopMusic() {}
-void GameOverState::resumeMusic() {}
+
+void GameOverState::stopMusic() {
+	music.stop();
+}
+
+void GameOverState::resumeMusic() {
+	music.play();
+}

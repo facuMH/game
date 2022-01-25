@@ -247,7 +247,7 @@ void Game::pollEvents() {
 				break;
 			case StateAction::START_HOUSE:
 				turnOffMusic();
-				makeNewHouseState(states.top()->getCurrentPlayerPosition());
+				makeNewHouseState(dynamic_cast<GameState*>(states.top())->getCurrentPlayerPosition());
 				break;
 			case StateAction::EXIT_HOUSE:
 				turnOffMusic();
@@ -264,6 +264,7 @@ void Game::pollEvents() {
 				break;
 			}
 			case StateAction::GAME_OVER:
+				turnOffMusic();
 				states.push(new GameOverState(window, assetsManager, &keyBindings));
 				break;
 

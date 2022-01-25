@@ -53,7 +53,7 @@ class GameState : public State {
 	sf::View getView() override { return view; };
 	DoorNumber getCurrentDoorNumber(Position position);
 	std::vector<std::pair<Position, DoorNumber>> listHousePositions();
-	Position getCurrentPlayerPosition() override;
+	Position getCurrentPlayerPosition();
 	void drawPlayer(sf::RenderWindow* window) override;
 	Name getEntityInInteractionRange(Position position);
 	void startDialogue(Name& characterName);

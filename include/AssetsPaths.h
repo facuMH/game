@@ -115,3 +115,4 @@ constexpr auto MENU_MUSIC = cat(MUSIC.c, "main_menu.ogg");
 constexpr auto VILLAGE_MUSIC = cat(MUSIC.c, "town.ogg");
 constexpr auto COMBAT_MUSIC = cat(MUSIC.c, "combat.ogg");
 constexpr auto HOUSE_MUSIC = cat(MUSIC.c, "house.ogg");
+constexpr auto END_MUSIC = cat(MUSIC.c, "end.ogg");
