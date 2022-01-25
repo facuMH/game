@@ -1,6 +1,7 @@
 #include <cmath>
 #include <iostream>
 
+#include <GameOverState.h>
 #include <SFML/Graphics.hpp>
 
 #include "AssetsPaths.h"
@@ -260,7 +261,11 @@ void Game::pollEvents() {
 				if(item->can_equip) {
 					player.equip(item);
 				}
+				break;
 			}
+			case StateAction::GAME_OVER:
+				states.push(new GameOverState(window, assetsManager, &keyBindings));
+				break;
 
 			default: break;
 			}

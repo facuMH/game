@@ -23,7 +23,8 @@ enum class StateAction {
 	LOAD_GAME,
 	PAUSE_GAME,
 	RESUME_GAME,
-	PICK_ITEM
+	PICK_ITEM,
+	GAME_OVER
 };
 enum class KeyAction { UP, DOWN, RIGHT, LEFT, SELECT, BACK, INTERACT, NONE, PAUSE };
 enum class MovementType { VERTICAL, HORIZONTAL };

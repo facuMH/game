@@ -46,6 +46,7 @@ CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, std::vecto
 	view = window->getDefaultView();
 	view.setSize(size);
 	view.setCenter({size.x / 2.f, size.y / 2.f});
+	playerDead = false;
 
 	// initialText.y = 300; // window->getSize().y / 2;
 
@@ -119,6 +120,9 @@ void CombatState::update(const float& dt) {
 		cursor.set_position(next->animation.get_position());
 		if(player.defend() > e->attack()) {
 			player.apply_damage(e->atkDamage());
+			if(player.get_hp() <= 0) {
+				playerDead = true;
+			}
 			nextTurn = true;
 		}
 	}
@@ -147,11 +151,7 @@ void CombatState::render(sf::RenderWindow* window) {
 void CombatState::updateKeybinds(const float& dt) {}
 
 bool CombatState::shouldQuit() {
-	bool quit = isQuit();
-	if(enemy.get_hp() < 0 || player.get_hp() < 0) {
-		quit = true;
-	}
-	return quit;
+	return isQuit();
 }
 
 void CombatState::quitStateActions() {
@@ -191,6 +191,7 @@ StateAction CombatState::handleKeys(const sf::Keyboard::Key key) {
 }
 
 StateAction CombatState::shouldAct() {
+	if(playerDead) return StateAction::GAME_OVER;
 	// depending on selected action this should trigger attack animation, use item animation, etc.
 	if(!selectingItem) {
 		// combat action menu
@@ -222,6 +223,9 @@ StateAction CombatState::shouldAct() {
 		// TODO: openUsableItemInventory(turnList[currentCharacterTurn]);
 		selectingItem = false;
 		nextTurn = true;
+	}
+	if(playerDead) {
+		return StateAction::GAME_OVER;
 	}
 	return StateAction::NONE;
 }

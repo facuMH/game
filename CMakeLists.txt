@@ -23,6 +23,7 @@ set(SOURCES src/main.cpp
         src/DialogueBox.cpp
         src/Enemy.cpp
         src/Game.cpp
+        src/GameOverState.cpp
         src/GameState.cpp
         src/HouseManager.cpp
         src/InteractionManager.cpp
@@ -46,6 +47,7 @@ set(HEADERS include/Animation.h
         include/Enemy.h
         include/Game.h
         include/GameState.h
+        include/GameOverState.h
         include/House.h
         include/HouseManager.h
         include/Inanimated.h
