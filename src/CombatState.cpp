@@ -3,9 +3,9 @@
 
 #include "AssetsPaths.h"
 #include "Button.h"
-#include "CombatState.h"
 #include "Player.h"
 #include "definitions.h"
+#include "states/CombatState.h"
 
 void CombatState::addCombatString(const Player& _p, AssetsManager& am) {
 	sf::Text characterInfo{};
@@ -191,7 +191,6 @@ StateAction CombatState::handleKeys(const sf::Keyboard::Key key) {
 }
 
 StateAction CombatState::shouldAct() {
-	if(playerDead) return StateAction::GAME_OVER;
 	// depending on selected action this should trigger attack animation, use item animation, etc.
 	if(!selectingItem) {
 		// combat action menu
@@ -224,9 +223,6 @@ StateAction CombatState::shouldAct() {
 		selectingItem = false;
 		nextTurn = true;
 	}
-	if(playerDead) {
-		return StateAction::GAME_OVER;
-	}
 	return StateAction::NONE;
 }
 
@@ -239,4 +235,13 @@ void CombatState::stopMusic() {
 }
 void CombatState::resumeMusic() {
 	music.play();
+}
+
+StateAction CombatState::programAction() {
+	if (playerDead) {
+		return StateAction::GAME_OVER;
+	}
+	else {
+		return StateAction::NONE;
+	}
 }

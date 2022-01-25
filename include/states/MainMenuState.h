@@ -57,6 +57,7 @@ class MainMenuState : public State {
 	bool shouldQuit() override;
 	void drawPlayer(sf::RenderWindow* window) override{};
 	StateAction shouldAct() override;
+	StateAction programAction() override { return StateAction::NONE; };
 	sf::View getView() override { return view; };
 	void stopMusic() override;
 	void resumeMusic() override;

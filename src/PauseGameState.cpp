@@ -5,7 +5,7 @@
 #include <SFML/Window.hpp>
 
 #include "AssetsPaths.h"
-#include "PauseGameState.h"
+#include "states/PauseGameState.h"
 
 #include "definitions.h"
 

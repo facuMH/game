@@ -1,4 +1,4 @@
-#include "GameOverState.h"
+#include "states/GameOverState.h"
 #include "AssetsPaths.h"
 
 #include <algorithm>
@@ -87,10 +87,6 @@ void GameOverState::updateMousePositions() {
 	mousePosView = getPos(mousePoseWindow);
 }
 
-void GameOverState::endState() {
-	std::cout << "Ending Pause Game State!\n";
-}
-
 void GameOverState::updateInput(const float& dt) {}
 
 
@@ -141,7 +137,7 @@ StateAction GameOverState::handleKeys(sf::Keyboard::Key key) {
 void GameOverState::updateKeybinds(const float& dt) {}
 
 void GameOverState::quitStateActions() {
-	std::cout << "Ending pause game state" << std::endl;
+	std::cout << "Returning to game from Game Over screen" << std::endl;
 }
 
 bool GameOverState::shouldQuit() {

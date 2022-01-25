@@ -8,13 +8,16 @@
 #include "AssetsManager.h"
 #include "State.h"
 
-class PauseGameState : public State {
+class GameOverState : public State {
   private:
 	sf::View view;
 	sf::RectangleShape background;
-	sf::RectangleShape container;
 	sf::Font font;
 	sf::Text text;
+
+	sf::SoundBuffer soundBuffer;
+	sf::Sound blipSound;
+	sf::Music music;
 
 	KeyList* supportedKeys;
 
@@ -34,11 +37,10 @@ class PauseGameState : public State {
 	void updateMousePositions();
 
   public:
-	PauseGameState(sf::RenderWindow* window, AssetsManager& am, KeyList* supportedKeys);
-	~PauseGameState() override;
+	GameOverState(sf::RenderWindow* window, AssetsManager& am, KeyList* supportedKeys);
+	~GameOverState() override;
 
 	// Functions
-	void endState();
 	void updateInput(const float& dt);
 	void update(const float& dt) override;
 	void render(sf::RenderWindow* window) override;
@@ -49,6 +51,7 @@ class PauseGameState : public State {
 	void drawPlayer(sf::RenderWindow* window) override;
 	sf::View getView() override { return view; };
 	StateAction shouldAct() override;
+	StateAction programAction() override { return StateAction::NONE; };
 	void stopMusic() override;
 	void resumeMusic() override;
 };

@@ -60,6 +60,7 @@ class GameState : public State {
 	Player* getPlayer() { return &player; };
 	Enemy* getEnemy() { return &enemies[0]; }
 	StateAction shouldAct() override;
+	StateAction programAction() override { return StateAction::NONE; };
 	void stopMusic() override;
 	void resumeMusic() override;
 	Name getItemName() const { return item->getName(); }

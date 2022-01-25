@@ -2,44 +2,44 @@
 
 #include <vector>
 
-#include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
+#include <SFML/Graphics/Text.hpp>
+#include <SFML/Window/VideoMode.hpp>
 
 #include "AssetsManager.h"
+#include "Button.h"
 #include "State.h"
 
-class GameOverState : public State {
+class SettingsState : public State {
   private:
 	sf::View view;
 	sf::RectangleShape background;
-	sf::RectangleShape container;
 	sf::Font font;
-	sf::Text text;
-
 	sf::SoundBuffer soundBuffer;
 	sf::Sound blipSound;
 	sf::Music music;
 
-	KeyList* supportedKeys;
-
-	int activeButton;
-	Buttons buttons;
-
 	Position_i mousePoseWindow;
 	Position mousePosView;
 
+	KeyList* supportedKeys;
+	Buttons buttons;
+
+	int activeButton;
+	bool quit{};
+
 	// Functions
 	void initBackground(sf::RenderWindow* window, AssetsManager& am);
+	void applyResolution(const unsigned int width, const unsigned int height);
 	void initFonts(AssetsManager& am);
-	void initText(sf::RenderWindow* window);
+	void updateGui();
 	void initButtons(sf::RenderWindow* window);
 	void updateButtons();
 	void renderButtons(sf::RenderWindow* window);
 	void updateMousePositions();
 
   public:
-	GameOverState(sf::RenderWindow* window, AssetsManager& am, KeyList* supportedKeys);
-	~GameOverState() override;
+	SettingsState(sf::RenderWindow* window, AssetsManager& am, KeyList* supportedKeys);
+	~SettingsState() override;
 
 	// Functions
 	void endState();
@@ -53,6 +53,7 @@ class GameOverState : public State {
 	void drawPlayer(sf::RenderWindow* window) override;
 	sf::View getView() override { return view; };
 	StateAction shouldAct() override;
+	StateAction programAction() override { return StateAction::NONE; };
 	void stopMusic() override;
 	void resumeMusic() override;
 };
