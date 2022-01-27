@@ -14,7 +14,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 
 IF(WIN32)
     set(CMAKE_PREFIX_PATH "C:\\dev\\SFML\\lib\\cmake\\SFML")
-    set(CMAKE_CXX_FLAGS "/MP")
+    set(CMAKE_CXX_FLAGS "/MP /EHsc")
 ENDIF()
 
 #------------- CONFIGURATIONS
@@ -28,6 +28,7 @@ set(SOURCES src/main.cpp
         src/GameState.cpp
         src/HouseManager.cpp
         src/InteractionManager.cpp
+        src/ItemManager.cpp
         src/LoadGameState.cpp
         src/MainMenuState.cpp
         src/PauseGameState.cpp
@@ -43,21 +44,19 @@ set(HEADERS include/Animation.h
         include/AssetsManager.h
         include/AssetsPaths.h
         include/Button.h
-        include/Combatant.h
         include/CombatState.h
         include/definitions.h
         include/DialogueBox.h
         include/Enemy.h
-        include/Entity.h
         include/Game.h
         include/GameState.h
         include/House.h
         include/HouseManager.h
         include/Inanimated.h
         include/InteractionManager.h
+        include/ItemManager.h
         include/LoadGameState.h
         include/MainMenuState.h
-        include/NPC.h
         include/PauseGameState.h
         include/Player.h
         include/SaveGame.h
@@ -65,7 +64,12 @@ set(HEADERS include/Animation.h
         include/SettingsState.h
         include/Tile.h
         include/TileMap.h
-        include/Villager.h)
+        include/Villager.h
+        include/Entity.h
+        include/entity_attributes/Combatant.h
+        include/entity_attributes/Movement.h
+        include/entity_attributes/SteeredMovement.h
+        include/entity_attributes/IdleMovement.h)
 
 set(DEPENDENCIES libs/tileson.hpp)
 

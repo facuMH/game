@@ -9,8 +9,8 @@
 #include "House.h"
 #include "HouseManager.h"
 #include "LoadGameState.h"
-#include "SettingsState.h"
 #include "PauseGameState.h"
+#include "SettingsState.h"
 #include "asset_data.h"
 
 // Private functions
@@ -19,7 +19,7 @@ void Game::initVariables() {
 
 	Texture* play_text = assetsManager.getTexture(NINJA_WALK.c);
 	Animation player_animation(play_text, sf::IntRect(0, 0, TILESIZE, TILESIZE), Position(50, 50));
-	player = Player("Adventurer", Stats(15, 20, 50, 30, 15, 1), player_animation);
+	player = Player("Adventurer", Stats(15, 20, 50, 30, 15, 1), player_animation, 5.0f);
 }
 
 void Game::closeWindow() {
@@ -91,7 +91,7 @@ void Game::initStates() {
 }
 
 // Constructor
-Game::Game() {
+Game::Game() : itemManager(&assetsManager) {
 	initKeys();
 	initVariables();
 	initWindow();
@@ -142,7 +142,7 @@ void Game::makeMainGameState() {
 	villagers.push_back(
 	    createVillager("Egg Girl", EGG_GIRL_FACE.c, EGG_GIRL_WALK.c, Position(300, 50), MovementType::VERTICAL, 0.3f));
 	villagers.push_back(
-	    createVillager("Old Man", OLD_MAN_FACE.c, OLD_MAN_WALK.c, Position(50, 150), MovementType::HORIZONTAL, 0.1f));
+	    createVillager("Old Man", OLD_MAN_FACE.c, OLD_MAN_WALK.c, Position(50, 150), MovementType::HORIZONTAL, 0.2f));
 	villagers.push_back(createVillager(
 	    "Princess", PRINCESS_FACE.c, PRINCESS_WALK.c, Position(230, 150), MovementType::VERTICAL, 0.25f));
 
@@ -180,23 +180,29 @@ void Game::makeNewHouseState(const Position playerPosition) {
 	for(auto& hp : housePositions) {
 		auto doorPosition = hp.first;
 		if(positionsInRange(playerPosition, doorPosition, 8.0f)) {
-			doorNumber = hp.second;
+			doorNumber = hp.second - 1;
 			break;
 		}
 	}
 	std::vector<MapBackground*> tileSheets = {assetsManager.getMap(TILESHEET_INTERIOR_FLOOR.c),
 	    assetsManager.getMap(TILESHEET_INTERIOR_FLOOR.c), assetsManager.getMap(TILESHEET_FURNITURE.c)};
-	House house = HouseManager::getHouse(doorNumber);
-	Enemies enemies;
+	House house = HouseManager::getHouse(doorNumber + 1);
 
-	EnemyData enemyData = ENEMYDATA[int(doorNumber - 1)];
+	Enemies enemies;
+	EnemyData enemyData = ENEMYDATA[doorNumber];
 	Texture* texture = assetsManager.getTexture(enemyData.texturePath);
 	Animation animation(texture, sf::IntRect(0, 0, TILESIZE, TILESIZE), enemyData.position);
 	Enemy enemy(enemyData.name, Stats(15, 15, 15, 15, 15, 15), animation, MovementType::HORIZONTAL, {30, 30}, 2.0f);
 	enemies.push_back(enemy);
 
+	Object* item = nullptr;
+	Name itemName = HOUSEDATA.at(doorNumber).itemName;
+	if(!itemManager.hasBeenPickedUp(itemName)) {
+		item = itemManager.get(itemName, HOUSEDATA.at(doorNumber).itemPosition);
+	}
+
 	states.push(new GameState(window, assetsManager, tileSheets, house.houseDesignPath, &keyBindings, player, enemies,
-	    *assetsManager.getMusic(HOUSE_MUSIC.c)));
+	    *assetsManager.getMusic(HOUSE_MUSIC.c), item));
 }
 
 void Game::pollEvents() {
@@ -211,6 +217,10 @@ void Game::pollEvents() {
 			switch(event.key.code) {
 			case sf::Keyboard::Escape: closeWindow(); break;
 			case sf::Keyboard::Enter: action = states.top()->shouldAct(); break;
+			case sf::Keyboard::K:
+				turnOffMusic();
+				makeNewHouseState(housePositions.back().first);
+				break;
 			default: action = states.top()->handleKeys(event.key.code); break;
 			}
 			switch(action) {
@@ -244,6 +254,15 @@ void Game::pollEvents() {
 				states.pop();
 				states.top()->resumeMusic();
 				break;
+			case StateAction::PICK_ITEM: {
+				Name itemName = dynamic_cast<GameState*>(states.top())->getItemName();
+				itemManager.pickUp(itemName);
+				auto item = itemManager.get(itemName);
+				if(item->can_equip) {
+					player.equip(item);
+				}
+			}
+
 			default: break;
 			}
 			break;

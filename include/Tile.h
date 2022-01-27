@@ -17,7 +17,7 @@ class Tile {
 
   public:
 	bool is_solid;
-	bool is_occupied;
+	bool is_occupied = false;
 	DoorNumber doorNum;
 
 	Tile(tson::TileObject* tileObject, MapBackground* textureSheet);

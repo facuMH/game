@@ -1,20 +1,21 @@
 #pragma once
 
-#include "Combatant.h"
 #include "Inanimated.h"
+#include "entity_attributes/Combatant.h"
+#include "entity_attributes/SteeredMovement.h"
 
 /// Class for playable characters
-class Player : public Combatant {
-  public:
-	Weapon* weapon = nullptr;
+class Player : public Entity, public Combatant, public SteeredMovement {
+public:
+  Object *weapon = nullptr;
 
-	Player() {}
-	Player(Name _name, Stats _stats, Animation _animation) : Entity(_name, _animation), Combatant(_stats, _stats) {
-		is_solid = true;
-		can_interact = true;
-	}
+  Player() {}
+  Player(const Name &_name, const Stats &_stats, Animation _animation,
+         float _stepsize)
+      : Entity(_name, _animation), Combatant(_stats, _stats),
+        SteeredMovement(_stepsize) {}
 
-	void equip(Weapon* arms);
-	void move(KeyAction key, TileMap* map);
-	bool isEnemy() override { return false; }
+  void equip(Object *arms);
+  void move(KeyAction key, TileMap *map);
+  bool isEnemy() override { return false; }
 };

@@ -1,3 +1,5 @@
+#pragma once
+
 #include <string>
 
 // constexpr string concat from https://stackoverflow.com/a/65440575
@@ -53,6 +55,17 @@ constexpr auto LIZARD = cat(ENEMIES.c, "Lizard.png");
 constexpr auto AXOLOTL = cat(ENEMIES.c, "Axolotl.png");
 constexpr auto BAMBOO = cat(ENEMIES.c, "Bamboo.png");
 
+// ---- ITEMS
+constexpr auto ITEMS = cat(ASSETS, "items/");
+constexpr auto ITEMSLIST = cat(ITEMS.c, "itemList.txt");
+constexpr auto CLUB = cat(ITEMS.c, "Club.png");
+constexpr auto FORK = cat(ITEMS.c, "Fork.png");
+constexpr auto LIFEPOT = cat(ITEMS.c, "LifePot.png");
+constexpr auto WAND = cat(ITEMS.c, "Wand.png");
+constexpr auto MEDIPACK = cat(ITEMS.c, "Medipack.png");
+constexpr auto SWORD = cat(ITEMS.c, "Sword.png");
+
+
 // ---- TILES
 constexpr auto TILES = cat(ASSETS, "tiles/");
 constexpr auto MAP_LEVEL1 = cat(TILES.c, "map1.json");
@@ -102,4 +115,3 @@ constexpr auto MENU_MUSIC = cat(MUSIC.c, "main_menu.ogg");
 constexpr auto VILLAGE_MUSIC = cat(MUSIC.c, "town.ogg");
 constexpr auto COMBAT_MUSIC = cat(MUSIC.c, "combat.ogg");
 constexpr auto HOUSE_MUSIC = cat(MUSIC.c, "house.ogg");
-

@@ -1,16 +1,16 @@
 #pragma once
 
-#include "definitions.h"
 #include "Entity.h"
+#include "definitions.h"
 
-class Combatant : public virtual Entity {
+class Combatant {
   public:
 	Stats currentStats;
 	Stats maxStats;
 
 	Combatant() = default;
 	Combatant(Stats max, Stats current) {
-	    maxStats = max;
+		maxStats = max;
 		currentStats = current;
 	};
 

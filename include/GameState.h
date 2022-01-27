@@ -27,6 +27,8 @@ class GameState : public State {
 	sf::Music music;
 	sf::Keyboard::Key previousKey; // for gasping sound effect
 	float dialogueYPosition;       // position depends on current view
+	Object* item = nullptr;        // if in a house there will be an item, if not previously picked up
+	bool itemPicked = false;
 
 
   public:
@@ -36,7 +38,8 @@ class GameState : public State {
 	    JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player, Villagers& _villagers, MusicPath& musicPath);
 
 	GameState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets,
-	    JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player, Enemies& _enemies, MusicPath& musicPath);
+	    JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player, Enemies& _enemies, MusicPath& musicPath,
+	    Object* _item);
 	// Destructor
 	~GameState() override;
 
@@ -59,4 +62,5 @@ class GameState : public State {
 	StateAction shouldAct() override;
 	void stopMusic() override;
 	void resumeMusic() override;
+	Name getItemName() const { return item->getName(); }
 };

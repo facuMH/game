@@ -1,9 +1,10 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
 #include <cmath>
 #include <unordered_map>
+
+#include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
 
 #include "Button.h"
 
@@ -25,7 +26,8 @@ enum class StateAction {
 	EXIT_HOUSE,
 	LOAD_GAME,
 	PAUSE_GAME,
-	RESUME_GAME
+	RESUME_GAME,
+	PICK_ITEM
 };
 enum class KeyAction { UP, DOWN, RIGHT, LEFT, SELECT, BACK, INTERACT, NONE, PAUSE };
 enum class MovementType { VERTICAL, HORIZONTAL };
@@ -42,6 +44,8 @@ using Enemies = std::vector<Enemy>;
 class Villager;
 using Villagers = std::vector<Villager>;
 using CombatText = std::unordered_map<Name, Button>;
+class Object;
+using Inventory = std::vector<Object*>;
 
 class MapBackground : public sf::Texture {};
 class Texture : public sf::Texture {};
@@ -78,6 +82,24 @@ struct Stats {
 	{
 		archive(CEREAL_NVP(str), CEREAL_NVP(dex), CEREAL_NVP(hp), CEREAL_NVP(mana), CEREAL_NVP(armor), CEREAL_NVP(baseAtk));
 	}
+	void operator+=(const Stats _s) {
+		str += _s.str;
+		dex += _s.dex;
+		hp += _s.hp;
+		mana += _s.mana;
+		armor += _s.armor;
+		baseAtk += _s.baseAtk;
+	}
+
+	Stats operator+(const Stats _s) {
+		str += _s.str;
+		dex += _s.dex;
+		hp += _s.hp;
+		mana += _s.mana;
+		armor += _s.armor;
+		baseAtk += _s.baseAtk;
+		return *this;
+	}
 };
 
 const sf::Color GREY = sf::Color(70, 70, 70, 200);
@@ -90,7 +112,8 @@ const Position COMBAT_FIRST_ENEMY_POSITION{500.f, 150.f};
 
 
 namespace std {
-template <> struct hash<KeyAction> {
+template <>
+struct hash<KeyAction> {
 	size_t operator()(const KeyAction& k) const { return hash<int>()(static_cast<int>(k)); }
 };
 }; // namespace std

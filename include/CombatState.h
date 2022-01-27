@@ -6,6 +6,7 @@
 #include "State.h"
 #include "TileMap.h"
 #include "definitions.h"
+#include "entity_attributes/Combatant.h"
 
 class CombatState : public State {
   private:
@@ -27,12 +28,12 @@ class CombatState : public State {
 	Position initialText{10.f, 300.f};
 	float textIntervalHeight = 50;
 
-	std::vector<Combatant*> turnList;
+	std::vector<Entity*> turnList;
 	int currentCharacterTurn;
 	bool nextTurn;
 
 	Animation cursor;
-	int curosrOrientation;
+	int cursorOrientation;
 	sf::Clock cursorClock;
 
 	void addActionMenu(const sf::RenderWindow* window);
