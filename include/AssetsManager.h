@@ -10,6 +10,11 @@
 
 #include "definitions.h"
 
+template <typename T>
+concept Loadable = requires(T a) {
+	a.loadFromFile(std::string());
+};
+
 class AssetsManager {
   private:
 	std::unordered_map<std::string, Texture> textures;
@@ -26,7 +31,9 @@ class AssetsManager {
 	void emplace(const std::string& name, const JSONFilePath& newAsset) { mapDesigns.emplace(name, newAsset); }
 	void emplace(const std::string& name, const MusicPath& newAsset) { musicPaths.emplace(name, newAsset); }
 
-	template <typename U, typename T = typename U::mapped_type> T* getAsset(const std::string& name, U& map) {
+
+	template <typename U, typename T = typename U::mapped_type>
+	T* getAsset(const std::string& name, U& map) {
 		auto found = map.find(name);
 		if(found != map.end())
 			return &found->second;
@@ -44,19 +51,17 @@ class AssetsManager {
 	sf::Font* getFont(const std::string& name) { return getAsset(name, fonts); }
 	MapBackground* getMap(const std::string& name) { return getAsset(name, maps); }
 	sf::SoundBuffer getSoundBuffer(const std::string& name) { return *getAsset(name, sounds); }
-	JSONFilePath* getMapDesign(const std::string& name) {return getAsset(name, mapDesigns); }
-	MusicPath* getMusic(const std::string& name) {return getAsset(name, musicPaths); }
+	JSONFilePath* getMapDesign(const std::string& name) { return getAsset(name, mapDesigns); }
+	MusicPath* getMusic(const std::string& name) { return getAsset(name, musicPaths); }
 
 
-	template <typename Asset> bool loadAsset(const std::string& path) {
+	template <typename Asset>
+	bool loadAsset(const std::string& path) requires Loadable<Asset> {
 		Asset newAsset;
 		if(newAsset.loadFromFile(path)) {
 			emplace(path, newAsset);
-		} else {
-			std::cout << "RPG ERROR: no " << typeid(decltype(newAsset)).name() << " found at " << path << "\n";
-			return false;
+			return true;
 		}
-		return true;
+		return false;
 	}
-
 };
