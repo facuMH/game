@@ -61,6 +61,8 @@ class AssetsManager {
 		if(newAsset.loadFromFile(path)) {
 			emplace(path, newAsset);
 			return true;
+		} else {
+			std::cout << "RPG ERROR: Error loading file " << path << ".\n";
 		}
 		return false;
 	}
