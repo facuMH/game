@@ -42,7 +42,6 @@ class CombatState : public State {
 	bool selectingEnemy;
 	bool selectingItem;
 	bool isSpecialAtk;
-	bool playerDead;
 
   public:
 	// Constructor

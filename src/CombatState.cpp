@@ -46,7 +46,6 @@ CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, std::vecto
 	view = window->getDefaultView();
 	view.setSize(size);
 	view.setCenter({size.x / 2.f, size.y / 2.f});
-	playerDead = false;
 
 	// initialText.y = 300; // window->getSize().y / 2;
 
@@ -120,9 +119,6 @@ void CombatState::update(const float& dt) {
 		cursor.set_position(next->animation.get_position());
 		if(player.defend() > e->attack()) {
 			player.apply_damage(e->atkDamage());
-			if(player.get_hp() <= 0) {
-				playerDead = true;
-			}
 			nextTurn = true;
 		}
 	}
@@ -242,7 +238,7 @@ void CombatState::resumeMusic() {
 }
 
 StateAction CombatState::programAction() {
-	if (playerDead) {
+	if (player.get_hp() <= 0) {
 		return StateAction::GAME_OVER;
 	}
 	else {
