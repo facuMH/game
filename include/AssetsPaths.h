@@ -24,11 +24,13 @@ template <unsigned L1, unsigned L2> constexpr auto cat(const char (&s1)[L1], con
 // ---- ASSETS
 constexpr char ASSETS[] = "../assets/";
 
-// ---- MAIN MENU
+// ---- MENUS
 constexpr auto MAINMENU = cat(ASSETS, "menuBackgrounds/");
 constexpr auto BACKGROUND = cat(MAINMENU.c, "Background.jpeg");
 constexpr auto SETTING_BACKGROUND = cat(MAINMENU.c, "RPG_projects.jpg");
 constexpr auto HAND = cat(MAINMENU.c, "hand.png");
+constexpr auto GAME_OVER = cat(MAINMENU.c, "game_over.png");
+
 
 // ---- CHARACTER
 constexpr auto CHARACTER = cat(ASSETS, "characters/");
@@ -98,9 +100,7 @@ constexpr auto DIALOGUE_FONT = cat(FONTS.c, "DialogueFont.ttf");
 
 // --- DIALOGUE
 constexpr auto DIALOGUE = cat(ASSETS, "dialogue/");
-constexpr auto DIALOGUE_BOX = cat(DIALOGUE.c, "DialogBox.png");
 constexpr auto DIALOGUE_BOX_FACE = cat(DIALOGUE.c, "DialogBoxFaceset.png");
-
 constexpr auto DIALOGUE_ARROW = cat(DIALOGUE.c, "Arrow.png");
 
 // ---- SOUND FX
@@ -115,3 +115,4 @@ constexpr auto MENU_MUSIC = cat(MUSIC.c, "main_menu.ogg");
 constexpr auto VILLAGE_MUSIC = cat(MUSIC.c, "town.ogg");
 constexpr auto COMBAT_MUSIC = cat(MUSIC.c, "combat.ogg");
 constexpr auto HOUSE_MUSIC = cat(MUSIC.c, "house.ogg");
+constexpr auto END_MUSIC = cat(MUSIC.c, "end.ogg");

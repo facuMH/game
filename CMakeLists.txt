@@ -23,6 +23,7 @@ set(SOURCES src/main.cpp
         src/DialogueBox.cpp
         src/Enemy.cpp
         src/Game.cpp
+        src/GameOverState.cpp
         src/GameState.cpp
         src/HouseManager.cpp
         src/InteractionManager.cpp
@@ -40,22 +41,23 @@ set(HEADERS include/Animation.h
         include/AssetsManager.h
         include/AssetsPaths.h
         include/Button.h
-        include/CombatState.h
+        include/states/CombatState.h
         include/definitions.h
         include/DialogueBox.h
         include/Enemy.h
         include/Game.h
-        include/GameState.h
+        include/states/GameState.h
+        include/states/GameOverState.h
         include/House.h
         include/HouseManager.h
         include/Inanimated.h
         include/InteractionManager.h
         include/ItemManager.h
-        include/MainMenuState.h
-        include/PauseGameState.h
+        include/states/MainMenuState.h
+        include/states/PauseGameState.h
         include/Player.h
         include/State.h
-        include/SettingsState.h
+        include/states/SettingsState.h
         include/Tile.h
         include/TileMap.h
         include/Villager.h

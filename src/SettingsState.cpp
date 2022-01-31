@@ -6,7 +6,7 @@
 
 #include "AssetsPaths.h"
 #include "Button.h"
-#include "SettingsState.h"
+#include "states/SettingsState.h"
 
 #include "definitions.h"
 

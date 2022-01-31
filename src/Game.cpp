@@ -4,13 +4,14 @@
 #include <SFML/Graphics.hpp>
 
 #include "AssetsPaths.h"
-#include "CombatState.h"
 #include "Game.h"
 #include "House.h"
 #include "HouseManager.h"
-#include "PauseGameState.h"
-#include "SettingsState.h"
 #include "asset_data.h"
+#include "states/CombatState.h"
+#include "states/GameOverState.h"
+#include "states/PauseGameState.h"
+#include "states/SettingsState.h"
 
 // Private functions
 void Game::initVariables() {
@@ -205,8 +206,9 @@ void Game::makeNewHouseState(const Position playerPosition) {
 }
 
 void Game::pollEvents() {
-	// Event polling
-	StateAction action = StateAction::NONE;
+	// Gets StateAction that is triggered by the game itself, not the player
+	StateAction action = states.top()->programAction();
+	// Checks for events triggered by the player
 	while(window->pollEvent(event)) {
 		switch(event.type) {
 		// Event that is called when the close button is clicked
@@ -246,7 +248,7 @@ void Game::pollEvents() {
 				break;
 			case StateAction::START_HOUSE:
 				turnOffMusic();
-				makeNewHouseState(states.top()->getCurrentPlayerPosition());
+				makeNewHouseState(dynamic_cast<GameState*>(states.top())->getCurrentPlayerPosition());
 				break;
 			case StateAction::EXIT_HOUSE:
 				turnOffMusic();
@@ -260,13 +262,19 @@ void Game::pollEvents() {
 				if(item->can_equip) {
 					player.equip(item);
 				}
+				break;
 			}
-
 			default: break;
 			}
 			break;
 		case sf::Event::MouseMoved: break;
-		default: break;
+		default:
+			if(action == StateAction::GAME_OVER) {
+				turnOffMusic();
+				states.push(new GameOverState(window, assetsManager, &keyBindings));
+				break;
+			}
+			break;
 		}
 	}
 }

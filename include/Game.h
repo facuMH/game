@@ -9,10 +9,10 @@
 #include <SFML/Window.hpp>
 
 #include "AssetsManager.h"
-#include "GameState.h"
 #include "ItemManager.h"
-#include "MainMenuState.h"
 #include "definitions.h"
+#include "states/GameState.h"
+#include "states/MainMenuState.h"
 
 /*
  * Wrapper class acting as game engine.

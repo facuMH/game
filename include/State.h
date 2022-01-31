@@ -36,11 +36,13 @@ class State {
 	virtual bool shouldQuit() = 0;
 	const bool& isQuit() const { return isQuitting; }
 	virtual void quitStateActions() = 0;
+
 	virtual StateAction handleKeys(sf::Keyboard::Key key) = 0;
 	virtual StateAction shouldAct() = 0;
+	virtual StateAction programAction() = 0;
+
 	virtual void drawPlayer(sf::RenderWindow* window) = 0;
 	virtual sf::View getView() = 0;
-	virtual Position getCurrentPlayerPosition() = 0;
 	Position_i getMouse() const { return sf::Mouse::getPosition(*window); }
 	Position getPos(Position_i objectPosition) const { return window->mapPixelToCoords(objectPosition); }
 	virtual void stopMusic() = 0;
