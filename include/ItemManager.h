@@ -9,6 +9,8 @@
 #include "Inanimated.h"
 #include "definitions.h"
 
+class InventoryState;
+
 class ItemManager {
   private:
 	std::unordered_map<std::string, Object> items;
@@ -17,6 +19,8 @@ class ItemManager {
 	AssetsManager* am;
 
 	Object make(const Name& name, const Position pos);
+
+	friend InventoryState;
 
   public:
 	explicit ItemManager(AssetsManager* am);

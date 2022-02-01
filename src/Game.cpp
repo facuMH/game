@@ -8,6 +8,7 @@
 #include "Game.h"
 #include "House.h"
 #include "HouseManager.h"
+#include "InventoryState.h"
 #include "PauseGameState.h"
 #include "SettingsState.h"
 #include "asset_data.h"
@@ -204,6 +205,10 @@ void Game::makeNewHouseState(const Position playerPosition) {
 	    *assetsManager.getMusic(HOUSE_MUSIC.c), item));
 }
 
+void Game::openInventory() {
+	states.push(new InventoryState(window, assetsManager, &keyBindings, &itemManager, &player, states.top()));
+}
+
 void Game::pollEvents() {
 	// Event polling
 	StateAction action = StateAction::NONE;
@@ -253,7 +258,9 @@ void Game::pollEvents() {
 				states.pop();
 				states.top()->resumeMusic();
 				break;
-			case StateAction::PICK_ITEM: {
+			case StateAction::PICK_ITEM:
+
+			{
 				Name itemName = dynamic_cast<GameState*>(states.top())->getItemName();
 				itemManager.pickUp(itemName);
 				auto item = itemManager.get(itemName);
@@ -261,6 +268,9 @@ void Game::pollEvents() {
 					player.equip(item);
 				}
 			}
+
+			break;
+			case StateAction::OPEN_INVENTORY: openInventory(); break;
 
 			default: break;
 			}

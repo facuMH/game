@@ -57,6 +57,7 @@ class Game {
 	void makeNewHouseState(Position playerPosition);
 	Villager createVillager(const Name& name, const std::string& faceTextureName, const std::string& textureName,
 	    Position position, MovementType movementDirection, float stepsize);
+	void openInventory();
 
   public:
 	// Constructor

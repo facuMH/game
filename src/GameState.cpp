@@ -137,6 +137,7 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 	}
 	if(key == sf::Keyboard::C) result = StateAction::START_COMBAT;
 	if(key == sf::Keyboard::Q) result = StateAction::EXIT_GAME;
+	if(key == sf::Keyboard::I) result = StateAction::OPEN_INVENTORY;
 	return result;
 }
 

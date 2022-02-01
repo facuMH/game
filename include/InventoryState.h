@@ -4,8 +4,14 @@
 #include <SFML/Window.hpp>
 
 #include "AssetsManager.h"
+#include "ItemManager.h"
 #include "Player.h"
 #include "State.h"
+
+#include "definitions.h"
+
+constexpr float INVENTORY_ITEM_WIDTH = 150.f;
+constexpr float INVENTORY_ITEM_HEIGHT = 40.f;
 
 class InventoryState : public State {
   private:
@@ -13,7 +19,7 @@ class InventoryState : public State {
 	sf::RectangleShape background;
 	sf::RectangleShape container;
 	sf::Font font;
-	sf::Text text;
+	sf::Text title;
 
 	KeyList* supportedKeys;
 
@@ -21,6 +27,9 @@ class InventoryState : public State {
 	Buttons buttons;
 
 	Player* player = nullptr;
+	State* previous = nullptr;
+	ItemManager* itemManager = nullptr;
+	std::vector<sf::Text> playerItems;
 
 	// Functions
 	void initBackground(sf::RenderWindow* window, AssetsManager& am);
@@ -30,9 +39,11 @@ class InventoryState : public State {
 	void updateButtons();
 	void renderButtons(sf::RenderWindow* window);
 	void updateMousePositions();
+	void initPlayerItems();
 
   public:
-	InventoryState(sf::RenderWindow* window, AssetsManager& am, KeyList* _supportedKeys, Player* _player);
+	InventoryState(sf::RenderWindow* window, AssetsManager& am, KeyList* _supportedKeys, ItemManager* im,
+	    Player* _player, State* _previous);
 	~InventoryState() override = default;
 
 	// Functions

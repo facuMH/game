@@ -18,7 +18,7 @@ PauseGameState::PauseGameState(sf::RenderWindow* window, AssetsManager& am, KeyL
 	initFonts(am);
 	initText(window);
 	initButtons(window);
-	supportedKeys = gameSupportedKeys;	
+	supportedKeys = gameSupportedKeys;
 }
 
 PauseGameState::~PauseGameState() = default;
@@ -30,7 +30,6 @@ void PauseGameState::initBackground(sf::RenderWindow* window, AssetsManager& am)
 	sf::Vector2u currentSize = window->getSize();
 	container.setSize(sf::Vector2f(currentSize));
 	container.setFillColor(TRANSPARENT_BLACK);
-
 }
 
 void PauseGameState::initFonts(AssetsManager& am) {
@@ -48,8 +47,7 @@ void PauseGameState::initText(sf::RenderWindow* window) {
 	text.setPosition(currentSize.x / 2.0f, currentSize.y / 4.0f);
 }
 
-void PauseGameState::initButtons(sf::RenderWindow* window){
-
+void PauseGameState::initButtons(sf::RenderWindow* window) {
 	// button size
 	unsigned int bWidth = 150;
 	unsigned int bHeight = 40;
@@ -101,7 +99,7 @@ void PauseGameState::update(const float& dt) {
 void PauseGameState::render(sf::RenderWindow* window) {
 	window->setView(view);
 	window->draw(background);
-	window->draw(container);	
+	window->draw(container);
 	window->draw(text);
 	renderButtons(window);
 }
@@ -160,6 +158,6 @@ StateAction PauseGameState::shouldAct() {
 	}
 }
 
-void PauseGameState::stopMusic() { }
+void PauseGameState::stopMusic() {}
 
-void PauseGameState::resumeMusic() { }
+void PauseGameState::resumeMusic() {}
