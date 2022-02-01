@@ -1,3 +1,4 @@
+#include <format>
 
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
@@ -17,6 +18,9 @@ InventoryState::InventoryState(sf::RenderWindow* window, AssetsManager& am, KeyL
 	initPlayerItems();
 	initBackground(window, am);
 	supportedKeys = _supportedKeys;
+
+	auto soundBuffer = am.getSoundBuffer(MENU_BLIP.c);
+	blipSound.setBuffer(soundBuffer);
 }
 
 void InventoryState::initPlayerItems() {
@@ -36,11 +40,12 @@ void InventoryState::initPlayerItems() {
 			playerItems.push_back(itemText);
 		}
 	}
+	playerItems.front().setOutlineColor(activeItemColor);
 }
 
 void InventoryState::initBackground(sf::RenderWindow* window, AssetsManager& am) {
 	background.setTexture(am.getTexture(DIALOGUE_BOX.c));
-	background.setSize({INVENTORY_ITEM_WIDTH, INVENTORY_ITEM_HEIGHT * static_cast<float>(playerItems.size()) + 20.f});
+	background.setSize({INVENTORY_ITEM_WIDTH+40, INVENTORY_ITEM_HEIGHT * static_cast<float>(playerItems.size()) + 40.f});
 	background.move({0, -10});
 }
 
@@ -69,14 +74,14 @@ void InventoryState::initButtons(sf::RenderWindow* window) {
 	auto offsetY = 2 * bHeight;
 
 	auto center = getWindowCenter(*window);
-	// center.x -= offsetX;
-	// center.y -= offsetY;
 	auto bPos = center.x - offsetX;
 	center.y = 0;
 
-	buttons.push_back(Button(bPos, center.y, bWidth, bHeight, &font, "RESUME (R)", GREY, GREY, sf::Color::Black));
+	buttons.push_back(Button(
+	    bPos, center.y, bWidth, bHeight, &font, "RESUME (R)", sf::Color::Black, sf::Color::Black, sf::Color::Black));
 	bPos = bPos + offsetX;
-	buttons.push_back(Button(bPos, center.y, bWidth, bHeight, &font, "EQUIP (E)", GREY, GREY, sf::Color::Black));
+	buttons.push_back(Button(bPos, center.y, bWidth, bHeight, &font, "EQUIP/CONSUME (E)", sf::Color::Black,
+	    sf::Color::Black, sf::Color::Black));
 	buttons[activeButton].setInactive();
 }
 
@@ -115,10 +120,55 @@ void InventoryState::render(sf::RenderWindow* window) {
 
 StateAction InventoryState::handleKeys(sf::Keyboard::Key key) {
 	// up and down to to move through the items
+	auto action = std::find_if(supportedKeys->begin(), supportedKeys->end(),
+	    [key](const std::pair<KeyAction, sf::Keyboard::Key>& v) { return key == v.second; });
+	if(action != supportedKeys->end()) {
+		switch(action->first) {
+		case KeyAction::UP: // Up arrow
+			playerItems[activeButton].setOutlineColor(inactiveItemColor);
+			if(activeButton == 0) {
+				activeButton = playerItems.size() - 1;
+			} else {
+				activeButton--;
+			}
+			playerItems[activeButton].setOutlineColor(activeItemColor);
+			break;
+		case KeyAction::DOWN: // Down arrow
+			playerItems[activeButton].setOutlineColor(inactiveItemColor);
+			if(activeButton == playerItems.size() - 1) {
+				activeButton = 0;
+			} else {
+				activeButton++;
+			}
+			playerItems[activeButton].setOutlineColor(activeItemColor);
+			break;
+		default: break;
+		}
+	}
+	StateAction result = StateAction::NONE;
 	// E for equip selected item
+	if(key == sf::Keyboard::E) {
+		if(itemManager->playerInventory.size() == 0) {
+			playerItems.front().setString("You cant equip anything\nbecause you dont have\nanything");
+		} else {
+			const auto item = itemManager->get(playerItems[activeButton].getString());
+			if(item->can_equip) {
+				title.setString(item->getName()+" equipped");
+				player->equip(item);
+			} else {
+				title.setString(item->getName() + " consumed. Now you feel better.");
+				player->heal(item->getStats().hp);
+				playerItems.erase(std::find_if(playerItems.begin(), playerItems.end(),
+				    [item](sf::Text t) { return t.getString() == item->getName(); }));
+			}
+		}
+	}
 	// R for resume
-	return StateAction::NONE;
+	if(key == sf::Keyboard::R) result = StateAction::CLOSE_INVENTORY;
+	blipSound.play();
+	return result;
 }
+
 
 void InventoryState::updateKeybinds(const float& dt) {}
 

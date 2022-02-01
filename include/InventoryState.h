@@ -20,6 +20,9 @@ class InventoryState : public State {
 	sf::RectangleShape container;
 	sf::Font font;
 	sf::Text title;
+	sf::Sound blipSound;
+	const sf::Color activeItemColor = sf::Color::Red;
+	const sf::Color inactiveItemColor = sf::Color::White;
 
 	KeyList* supportedKeys;
 

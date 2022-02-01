@@ -271,6 +271,7 @@ void Game::pollEvents() {
 
 			break;
 			case StateAction::OPEN_INVENTORY: openInventory(); break;
+			case StateAction::CLOSE_INVENTORY: states.pop(); break;
 
 			default: break;
 			}
