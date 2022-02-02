@@ -12,7 +12,7 @@
 
 template <typename T>
 concept Loadable = requires(T a) {
-	a.loadFromFile(std::string());
+	a.loadFromFile(std::declval<std::string>());
 };
 
 class AssetsManager {
