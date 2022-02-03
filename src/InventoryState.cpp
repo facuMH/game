@@ -1,10 +1,8 @@
-#include <format>
-
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 
 #include "AssetsPaths.h"
-#include "InventoryState.h"
+#include "states/InventoryState.h"
 
 constexpr float INVENTORY_ITEM_WIDTH = 100.f;
 constexpr float INVENTORY_ITEM_HEIGHT = 20.f;

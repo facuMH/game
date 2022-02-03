@@ -1,64 +1,59 @@
-
 #pragma once
 
+#include <vector>
+
+#include <SFML/Graphics/Text.hpp>
+#include <SFML/Window/VideoMode.hpp>
+
+#include "AssetsManager.h"
 #include "Button.h"
-#include "GameState.h"
-#include "SettingsState.h"
-#include "definitions.h"
+#include "State.h"
 
-constexpr int MAX_BUTTONS = 4;
-
-class MainMenuState : public State {
+class SettingsState : public State {
   private:
-	// Variable
 	sf::View view;
-	sf::Texture backgroundTexture;
 	sf::RectangleShape background;
 	sf::Font font;
 	sf::SoundBuffer soundBuffer;
 	sf::Sound blipSound;
 	sf::Music music;
 
-	Buttons buttons;
-	int activeButton;
-
-	sf::Vector2i mousePosScreen;
-	sf::Vector2i mousePoseWindow;
-	sf::Vector2f mousePosView;
+	Position_i mousePoseWindow;
+	Position mousePosView;
 
 	KeyList* supportedKeys;
+	Buttons buttons;
 
+	int activeButton;
 	bool quit{};
 
 	// Functions
 	void initBackground(sf::RenderWindow* window, AssetsManager& am);
+	void applyResolution(const unsigned int width, const unsigned int height);
 	void initFonts(AssetsManager& am);
-	void initButtons(const sf::Vector2f pos);
-
+	void updateGui();
+	void initButtons(sf::RenderWindow* window);
+	void updateButtons();
+	void renderButtons(sf::RenderWindow* window);
 	void updateMousePositions();
 
   public:
-	MainMenuState(sf::RenderWindow* window, AssetsManager& am, KeyList* supportedKeys);
-
-	~MainMenuState() override;
+	SettingsState(sf::RenderWindow* window, AssetsManager& am, KeyList* supportedKeys);
+	~SettingsState() override;
 
 	// Functions
 	void endState();
-
 	void updateInput(const float& dt);
-	void updateButtons();
-	void renderButtons(sf::RenderWindow* window);
-
 	void update(const float& dt) override;
 	void render(sf::RenderWindow* window) override;
 	StateAction handleKeys(sf::Keyboard::Key key) override;
 	void updateKeybinds(const float& dt) override;
 	void quitStateActions() override;
 	bool shouldQuit() override;
-	Position getCurrentPlayerPosition() override { return {0, 0}; };
-	void drawPlayer(sf::RenderWindow* window) override{};
-	StateAction shouldAct() override;
+	void drawPlayer(sf::RenderWindow* window) override;
 	sf::View getView() override { return view; };
+	StateAction shouldAct() override;
+	StateAction programAction() override { return StateAction::NONE; };
 	void stopMusic() override;
 	void resumeMusic() override;
 };
