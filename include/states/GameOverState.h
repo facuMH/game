@@ -1,36 +1,31 @@
 #pragma once
 
+#include <vector>
+
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
 #include "AssetsManager.h"
-#include "ItemManager.h"
-#include "Player.h"
 #include "State.h"
 
-#include "definitions.h"
-
-class InventoryState : public State {
+class GameOverState : public State {
   private:
 	sf::View view;
 	sf::RectangleShape background;
-	sf::RectangleShape container;
 	sf::Font font;
-	sf::Text title;
+	sf::Text text;
+
+	sf::SoundBuffer soundBuffer;
 	sf::Sound blipSound;
-	const sf::Color activeItemColor = sf::Color::Red;
-	const sf::Color inactiveItemColor = sf::Color::Black;
+	sf::Music music;
 
 	KeyList* supportedKeys;
 
 	int activeButton;
 	Buttons buttons;
 
-	Player* player = nullptr;
-	State* previous = nullptr;
-	ItemManager* itemManager = nullptr;
-	std::vector<sf::Text> playerItems;
-	bool emptyInventory = false;
+	Position_i mousePoseWindow;
+	Position mousePosView;
 
 	// Functions
 	void initBackground(sf::RenderWindow* window, AssetsManager& am);
@@ -40,15 +35,12 @@ class InventoryState : public State {
 	void updateButtons();
 	void renderButtons(sf::RenderWindow* window);
 	void updateMousePositions();
-	void initPlayerItems();
 
   public:
-	InventoryState(sf::RenderWindow* window, AssetsManager& am, KeyList* _supportedKeys, ItemManager* im,
-	    Player* _player, State* _previous);
-	~InventoryState() override = default;
+	GameOverState(sf::RenderWindow* window, AssetsManager& am, KeyList* supportedKeys);
+	~GameOverState() override;
 
 	// Functions
-	void endState();
 	void updateInput(const float& dt);
 	void update(const float& dt) override;
 	void render(sf::RenderWindow* window) override;
@@ -56,12 +48,10 @@ class InventoryState : public State {
 	void updateKeybinds(const float& dt) override;
 	void quitStateActions() override;
 	bool shouldQuit() override;
-
-	Position getCurrentPlayerPosition() override { return {0, 0}; };
-	void drawPlayer(sf::RenderWindow* window) override {}
+	void drawPlayer(sf::RenderWindow* window) override;
 	sf::View getView() override { return view; };
-
 	StateAction shouldAct() override;
+	StateAction programAction() override { return StateAction::NONE; };
 	void stopMusic() override;
 	void resumeMusic() override;
 };

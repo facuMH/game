@@ -23,6 +23,7 @@ set(SOURCES src/main.cpp
         src/DialogueBox.cpp
         src/Enemy.cpp
         src/Game.cpp
+        src/GameOverState.cpp
         src/GameState.cpp
         src/HouseManager.cpp
         src/InteractionManager.cpp
@@ -41,31 +42,32 @@ set(HEADERS include/Animation.h
         include/AssetsManager.h
         include/AssetsPaths.h
         include/Button.h
-        include/CombatState.h
         include/definitions.h
         include/DialogueBox.h
         include/Enemy.h
+        include/entity_attributes/Combatant.h
+        include/entity_attributes/Movement.h
+        include/entity_attributes/SteeredMovement.h
+        include/entity_attributes/IdleMovement.h
         include/Game.h
-        include/GameState.h
         include/House.h
         include/HouseManager.h
         include/Inanimated.h
         include/InteractionManager.h
-        include/InventoryState.h
         include/ItemManager.h
-        include/MainMenuState.h
-        include/PauseGameState.h
         include/Player.h
         include/State.h
-        include/SettingsState.h
         include/Tile.h
         include/TileMap.h
         include/Villager.h
         include/Entity.h
-        include/entity_attributes/Combatant.h
-        include/entity_attributes/Movement.h
-        include/entity_attributes/SteeredMovement.h
-        include/entity_attributes/IdleMovement.h)
+        include/states/CombatState.h
+        include/states/GameState.h
+        include/states/GameOverState.h
+        include/states/InventoryState.h
+        include/states/MainMenuState.h
+        include/states/PauseGameState.h
+        include/states/SettingsState.h)
 
 set(DEPENDENCIES libs/tileson.hpp)
 

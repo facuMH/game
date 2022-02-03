@@ -2,7 +2,7 @@
 #include <iterator>
 
 #include "Button.h"
-#include "MainMenuState.h"
+#include "states/MainMenuState.h"
 
 Button::Button(float x, float y, float width, float height, sf::Font* _font, const std::string& _text,
     sf::Color _idleColor, sf::Color _hoverColor, sf::Color _activeColor, sf::Color _outlineIdleColor,

@@ -10,6 +10,11 @@
 
 #include "definitions.h"
 
+template <typename T>
+concept Loadable = requires(T a) {
+	a.loadFromFile(std::declval<std::string>());
+};
+
 class AssetsManager {
   private:
 	std::unordered_map<std::string, Texture> textures;
@@ -25,6 +30,7 @@ class AssetsManager {
 	void emplace(const std::string& name, const sf::SoundBuffer& newAsset) { sounds.emplace(name, newAsset); }
 	void emplace(const std::string& name, const JSONFilePath& newAsset) { mapDesigns.emplace(name, newAsset); }
 	void emplace(const std::string& name, const MusicPath& newAsset) { musicPaths.emplace(name, newAsset); }
+
 
 	template <typename U, typename T = typename U::mapped_type>
 	T* getAsset(const std::string& name, U& map) {
@@ -50,14 +56,14 @@ class AssetsManager {
 
 
 	template <typename Asset>
-	bool loadAsset(const std::string& path) {
+	bool loadAsset(const std::string& path) requires Loadable<Asset> {
 		Asset newAsset;
 		if(newAsset.loadFromFile(path)) {
 			emplace(path, newAsset);
+			return true;
 		} else {
-			std::cout << "RPG ERROR: no " << typeid(decltype(newAsset)).name() << " found at " << path << "\n";
-			return false;
+			std::cout << "RPG ERROR: Error loading file " << path << ".\n";
 		}
-		return true;
+		return false;
 	}
 };

@@ -58,9 +58,10 @@ class CombatState : public State {
 	bool shouldQuit() override;
 	void quitStateActions() override;
 	StateAction handleKeys(sf::Keyboard::Key key) override;
-	Position getCurrentPlayerPosition() override { return {0, 0}; };
-	void drawPlayer(sf::RenderWindow* window) override;
 	StateAction shouldAct() override;
+	StateAction programAction() override;
+	void drawPlayer(sf::RenderWindow* window) override;
+
 	sf::View getView() override { return view; };
 	void stopMusic() override;
 	void resumeMusic() override;

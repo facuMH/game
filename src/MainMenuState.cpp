@@ -5,7 +5,7 @@
 
 #include "AssetsPaths.h"
 #include "Button.h"
-#include "MainMenuState.h"
+#include "states/MainMenuState.h"
 
 #include "definitions.h"
 

@@ -3,9 +3,9 @@
 
 #include "AssetsPaths.h"
 #include "Button.h"
-#include "CombatState.h"
 #include "Player.h"
 #include "definitions.h"
+#include "states/CombatState.h"
 
 void CombatState::addCombatString(const Player& _p, AssetsManager& am) {
 	sf::Text characterInfo{};
@@ -148,7 +148,7 @@ void CombatState::updateKeybinds(const float& dt) {}
 
 bool CombatState::shouldQuit() {
 	bool quit = isQuit();
-	if(enemy.get_hp() < 0 || player.get_hp() < 0) {
+	if(enemy.get_hp() < 0) {
 		quit = true;
 	}
 	return quit;
@@ -235,4 +235,13 @@ void CombatState::stopMusic() {
 }
 void CombatState::resumeMusic() {
 	music.play();
+}
+
+StateAction CombatState::programAction() {
+	if (player.get_hp() <= 0) {
+		return StateAction::GAME_OVER;
+	}
+	else {
+		return StateAction::NONE;
+	}
 }
