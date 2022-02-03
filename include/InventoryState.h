@@ -22,7 +22,7 @@ class InventoryState : public State {
 	sf::Text title;
 	sf::Sound blipSound;
 	const sf::Color activeItemColor = sf::Color::Red;
-	const sf::Color inactiveItemColor = sf::Color::White;
+	const sf::Color inactiveItemColor = sf::Color::Black;
 
 	KeyList* supportedKeys;
 

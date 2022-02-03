@@ -267,12 +267,10 @@ void Game::pollEvents() {
 				if(item->can_equip) {
 					player.equip(item);
 				}
-			}
-
-			break;
+			} break;
 			case StateAction::OPEN_INVENTORY: openInventory(); break;
 			case StateAction::CLOSE_INVENTORY: states.pop(); break;
-
+			case StateAction::ADD_ITEM: itemManager.add_item(&player); break;
 			default: break;
 			}
 			break;

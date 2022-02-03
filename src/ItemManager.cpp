@@ -40,3 +40,12 @@ Object* ItemManager::get(const Name& itemName, const Position itemPosition) {
 Object* ItemManager::get(const Name& itemName) {
 	return &items.at(itemName);
 }
+
+void ItemManager::add_item(Player* player) {
+	for(const auto item : itemStats) {
+		if(!hasBeenPickedUp(item.first)) {
+			pickUp(item.first);
+			break;
+		}
+	}
+}

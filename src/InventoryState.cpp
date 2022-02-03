@@ -56,7 +56,7 @@ void InventoryState::initFonts(AssetsManager& am) {
 void InventoryState::initText(sf::RenderWindow* window) {
 	title.setFont(font);
 	title.setString(sf::String("Inventory"));
-	title.setCharacterSize(20);
+	title.setCharacterSize(30);
 	title.setStyle(sf::Text::Bold);
 	sf::Vector2u currentSize = window->getSize();
 	sf::FloatRect textRect = title.getLocalBounds();
@@ -125,22 +125,22 @@ StateAction InventoryState::handleKeys(sf::Keyboard::Key key) {
 	if(action != supportedKeys->end()) {
 		switch(action->first) {
 		case KeyAction::UP: // Up arrow
-			playerItems[activeButton].setOutlineColor(inactiveItemColor);
+			playerItems[activeButton].setFillColor(inactiveItemColor);
 			if(activeButton == 0) {
 				activeButton = playerItems.size() - 1;
 			} else {
 				activeButton--;
 			}
-			playerItems[activeButton].setOutlineColor(activeItemColor);
+			playerItems[activeButton].setFillColor(activeItemColor);
 			break;
 		case KeyAction::DOWN: // Down arrow
-			playerItems[activeButton].setOutlineColor(inactiveItemColor);
+			playerItems[activeButton].setFillColor(inactiveItemColor);
 			if(activeButton == playerItems.size() - 1) {
 				activeButton = 0;
 			} else {
 				activeButton++;
 			}
-			playerItems[activeButton].setOutlineColor(activeItemColor);
+			playerItems[activeButton].setFillColor(activeItemColor);
 			break;
 		default: break;
 		}
@@ -160,6 +160,8 @@ StateAction InventoryState::handleKeys(sf::Keyboard::Key key) {
 				player->heal(item->getStats().hp);
 				playerItems.erase(std::find_if(playerItems.begin(), playerItems.end(),
 				    [item](sf::Text t) { return t.getString() == item->getName(); }));
+				activeButton = 0;
+				playerItems[activeButton].setFillColor(activeItemColor);
 			}
 		}
 	}

@@ -7,6 +7,7 @@
 
 #include "AssetsManager.h"
 #include "Inanimated.h"
+#include "Player.h"
 #include "definitions.h"
 
 class InventoryState;
@@ -29,4 +30,5 @@ class ItemManager {
 	Object* get(const Name& name);
 	void pickUp(const Name& name) { playerInventory.emplace(name); }
 	bool hasBeenPickedUp(const Name& name) { return playerInventory.find(name) != playerInventory.end(); }
+	void add_item(Player* player);
 };
