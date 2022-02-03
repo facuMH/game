@@ -10,9 +10,6 @@
 
 #include "definitions.h"
 
-constexpr float INVENTORY_ITEM_WIDTH = 150.f;
-constexpr float INVENTORY_ITEM_HEIGHT = 40.f;
-
 class InventoryState : public State {
   private:
 	sf::View view;
@@ -33,6 +30,7 @@ class InventoryState : public State {
 	State* previous = nullptr;
 	ItemManager* itemManager = nullptr;
 	std::vector<sf::Text> playerItems;
+	bool emptyInventory = false;
 
 	// Functions
 	void initBackground(sf::RenderWindow* window, AssetsManager& am);

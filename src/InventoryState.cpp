@@ -6,6 +6,12 @@
 #include "AssetsPaths.h"
 #include "InventoryState.h"
 
+constexpr float INVENTORY_ITEM_WIDTH = 100.f;
+constexpr float INVENTORY_ITEM_HEIGHT = 20.f;
+constexpr float SPACE_FOR_EMPTY_INVENTORY_MESSAGE = 80.f + INVENTORY_ITEM_WIDTH;
+const sf::Vector2f EMPTY_INVENTORY_SIZE = {SPACE_FOR_EMPTY_INVENTORY_MESSAGE, 90.f};
+constexpr int BOX_POSITION_OFFSET = 10;
+constexpr float MINIMAL_INVENTORY_HEIGHT = 60.f;
 constexpr int END_STATE_BUTTONS = 2;
 
 InventoryState::InventoryState(sf::RenderWindow* window, AssetsManager& am, KeyList* _supportedKeys, ItemManager* im,
@@ -18,6 +24,8 @@ InventoryState::InventoryState(sf::RenderWindow* window, AssetsManager& am, KeyL
 	initPlayerItems();
 	initBackground(window, am);
 	supportedKeys = _supportedKeys;
+	activeButton = 0;
+	playerItems[activeButton].setFillColor(activeItemColor);
 
 	auto soundBuffer = am.getSoundBuffer(MENU_BLIP.c);
 	blipSound.setBuffer(soundBuffer);
@@ -29,14 +37,16 @@ void InventoryState::initPlayerItems() {
 	itemText.setCharacterSize(15);
 	itemText.setStyle(sf::Text::Bold);
 	itemText.setFillColor(sf::Color::Black);
-	itemText.move({10, 5 + INVENTORY_ITEM_HEIGHT * playerItems.size()});
 	if(itemManager->playerInventory.empty()) {
+		emptyInventory = true;
+		itemText.setPosition({BOX_POSITION_OFFSET, BOX_POSITION_OFFSET});
 		itemText.setString("No items here yet.\n Go look around");
 		playerItems.push_back(itemText);
 	} else {
 		for(const auto item : itemManager->playerInventory) {
 			itemText.setString(item.c_str());
-			itemText.move({10, INVENTORY_ITEM_HEIGHT * playerItems.size()});
+			itemText.setPosition(
+			    {BOX_POSITION_OFFSET, BOX_POSITION_OFFSET + INVENTORY_ITEM_HEIGHT * playerItems.size()});
 			playerItems.push_back(itemText);
 		}
 	}
@@ -44,9 +54,15 @@ void InventoryState::initPlayerItems() {
 }
 
 void InventoryState::initBackground(sf::RenderWindow* window, AssetsManager& am) {
-	background.setTexture(am.getTexture(DIALOGUE_BOX.c));
-	background.setSize({INVENTORY_ITEM_WIDTH+40, INVENTORY_ITEM_HEIGHT * static_cast<float>(playerItems.size()) + 40.f});
-	background.move({0, -10});
+	background.setTexture(am.getTexture(INVENTORY.c));
+	if(!emptyInventory) {
+		background.setSize({INVENTORY_ITEM_WIDTH,
+		    INVENTORY_ITEM_HEIGHT * static_cast<float>(playerItems.size()) + MINIMAL_INVENTORY_HEIGHT});
+	} else {
+		background.setSize(EMPTY_INVENTORY_SIZE);
+	}
+
+	background.move({0, -POSITION_OFFSET - 4 * static_cast<float>(playerItems.size())});
 }
 
 void InventoryState::initFonts(AssetsManager& am) {
@@ -153,7 +169,7 @@ StateAction InventoryState::handleKeys(sf::Keyboard::Key key) {
 		} else {
 			const auto item = itemManager->get(playerItems[activeButton].getString());
 			if(item->can_equip) {
-				title.setString(item->getName()+" equipped");
+				title.setString(item->getName() + " equipped");
 				player->equip(item);
 			} else {
 				title.setString(item->getName() + " consumed. Now you feel better.");
