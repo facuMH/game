@@ -16,7 +16,7 @@ ItemManager::ItemManager(AssetsManager* _am) : am(_am) {
 }
 
 // name of the item to be created, position where it should be displayed
-Object ItemManager::make(const Name& itemName, const Position itemPosition) {
+Object ItemManager::make(const Name& itemName, const Position& itemPosition) {
 	Texture* t = am->getTexture(itemsPaths.at(itemName));
 	sf::IntRect ir{{0, 0}, sf::Vector2i(t->getSize())};
 	Animation a{t, ir, itemPosition};
@@ -26,7 +26,7 @@ Object ItemManager::make(const Name& itemName, const Position itemPosition) {
 }
 
 // name of the item requested, position where it should be displayed in case it doesn't exist yet
-Object* ItemManager::get(const Name& itemName, const Position itemPosition) {
+Object* ItemManager::get(const Name& itemName, const Position& itemPosition) {
 	auto found = items.find(itemName);
 	Object* item;
 	if(found != items.end()) {
