@@ -126,7 +126,7 @@ void InventoryState::render(sf::RenderWindow* window) {
 	window->draw(background);
 	window->draw(container);
 	window->draw(title);
-	for(const auto item : playerItems) {
+	for(const auto& item : playerItems) {
 		window->draw(item);
 	}
 	renderButtons(window);
@@ -162,7 +162,7 @@ StateAction InventoryState::handleKeys(sf::Keyboard::Key key) {
 	StateAction result = StateAction::NONE;
 	// E for equip selected item
 	if(key == sf::Keyboard::E) {
-		if(itemManager->playerInventory.size() == 0) {
+		if(itemManager->playerInventory.empty()) {
 			playerItems.front().setString("You cant equip anything\nbecause you dont have\nanything");
 		} else {
 			const auto item = itemManager->get(playerItems[activeButton].getString());

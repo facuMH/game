@@ -272,7 +272,7 @@ void Game::pollEvents() {
 			} break;
 			case StateAction::OPEN_INVENTORY: openInventory(); break;
 			case StateAction::CLOSE_INVENTORY: states.pop(); break;
-			case StateAction::ADD_ITEM: itemManager.add_item(&player); break;
+			case StateAction::ADD_ITEM: itemManager.add_item(); break;
 			default: break;
 			}
 			break;
