@@ -41,7 +41,7 @@ void InventoryState::initPlayerItems() {
 		itemText.setString("No items here yet.\n Go look around");
 		playerItems.push_back(itemText);
 	} else {
-		for(const auto item : itemManager->playerInventory) {
+		for(const auto &item : itemManager->playerInventory) {
 			itemText.setString(item.c_str());
 			itemText.setPosition(
 			    {BOX_POSITION_OFFSET, BOX_POSITION_OFFSET + INVENTORY_ITEM_HEIGHT * playerItems.size()});
