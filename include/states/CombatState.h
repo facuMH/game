@@ -36,7 +36,7 @@ class CombatState : public State {
 	int cursorOrientation;
 	sf::Clock cursorClock;
 
-	void addActionMenu(const sf::RenderWindow* window);
+	void addActionMenu();
 	Buttons actionButtons;
 	int actionButtonActive;
 	bool selectingEnemy;

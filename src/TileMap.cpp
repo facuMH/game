@@ -1,7 +1,6 @@
 #include "TileMap.h"
 #include "AssetsPaths.h"
 
-
 // Constructor
 TileMap::TileMap(AssetsManager& am, std::vector<MapBackground*> textureSheets, const JSONFilePath& designPath) {
 	loadFromJson(designPath, textureSheets);

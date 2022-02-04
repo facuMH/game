@@ -20,7 +20,7 @@ InventoryState::InventoryState(sf::RenderWindow* window, AssetsManager& am, KeyL
 	initText(window);
 	initButtons(window);
 	initPlayerItems();
-	initBackground(window, am);
+	initBackground(am);
 	supportedKeys = _supportedKeys;
 	activeButton = 0;
 	playerItems[activeButton].setFillColor(activeItemColor);
@@ -51,7 +51,7 @@ void InventoryState::initPlayerItems() {
 	playerItems.front().setOutlineColor(activeItemColor);
 }
 
-void InventoryState::initBackground(sf::RenderWindow* window, AssetsManager& am) {
+void InventoryState::initBackground(AssetsManager& am) {
 	background.setTexture(am.getTexture(INVENTORY.c));
 	if(!emptyInventory) {
 		background.setSize({INVENTORY_ITEM_WIDTH,
@@ -85,7 +85,6 @@ void InventoryState::initButtons(sf::RenderWindow* window) {
 	unsigned int bHeight = 40;
 	activeButton = 0;
 	auto offsetX = bWidth;
-	auto offsetY = 2 * bHeight;
 
 	auto center = getWindowCenter(*window);
 	auto bPos = center.x - offsetX;
@@ -133,7 +132,7 @@ void InventoryState::render(sf::RenderWindow* window) {
 }
 
 StateAction InventoryState::handleKeys(sf::Keyboard::Key key) {
-	// up and down to to move through the items
+	// up and down to move through the items
 	auto action = std::find_if(supportedKeys->begin(), supportedKeys->end(),
 	    [key](const std::pair<KeyAction, sf::Keyboard::Key>& v) { return key == v.second; });
 	if(action != supportedKeys->end()) {
@@ -173,7 +172,7 @@ StateAction InventoryState::handleKeys(sf::Keyboard::Key key) {
 				title.setString(item->getName() + " consumed. Now you feel better.");
 				player->heal(item->getStats().hp);
 				playerItems.erase(std::find_if(playerItems.begin(), playerItems.end(),
-				    [item](sf::Text t) { return t.getString() == item->getName(); }));
+				    [item](sf::Text &t) { return t.getString() == item->getName(); }));
 				activeButton = 0;
 				playerItems[activeButton].setFillColor(activeItemColor);
 			}

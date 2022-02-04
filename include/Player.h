@@ -9,8 +9,8 @@ class Player : public Entity, public Combatant, public SteeredMovement {
 public:
   Object *weapon = nullptr;
 
-  Player() {}
-  Player(const Name &_name, const Stats &_stats, Animation _animation,
+  Player() = default;
+  Player(const Name &_name, const Stats &_stats, const Animation& _animation,
          float _stepsize)
       : Entity(_name, _animation), Combatant(_stats, _stats),
         SteeredMovement(_stepsize) {}

@@ -50,8 +50,6 @@ class Game {
 	// Only instances of its child classes could be put on the stack directly.
 	std::stack<State*> states;
 
-
-	void makeNewCombat();
 	void makeNewCombat(const Enemy* enemy);
 	void makeMainGameState();
 	void makeNewHouseState(Position playerPosition);

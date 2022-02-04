@@ -19,5 +19,3 @@ class Enemy : public Entity, public IdleMovement, public Combatant {
 	bool isEnemy() override { return true; }
 
 };
-
-Enemy createAlien(AssetsManager& am);

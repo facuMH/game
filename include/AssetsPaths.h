@@ -25,12 +25,12 @@ template <unsigned L1, unsigned L2> constexpr auto cat(const char (&s1)[L1], con
 constexpr char ASSETS[] = "../assets/";
 
 // ---- MENUS
-constexpr auto MAINMENU = cat(ASSETS, "menuBackgrounds/");
-constexpr auto BACKGROUND = cat(MAINMENU.c, "Background.jpeg");
-constexpr auto SETTING_BACKGROUND = cat(MAINMENU.c, "RPG_projects.jpg");
-constexpr auto HAND = cat(MAINMENU.c, "hand.png");
-constexpr auto GAME_OVER = cat(MAINMENU.c, "game_over.png");
-constexpr auto INVENTORY = cat(MAINMENU.c, "inventory.png");
+constexpr auto BACKGROUNDS = cat(ASSETS, "menuBackgrounds/");
+constexpr auto MAINMENU_BACKGROUND = cat(BACKGROUNDS.c, "Background.jpeg");
+constexpr auto SETTING_BACKGROUND = cat(BACKGROUNDS.c, "RPG_projects.jpg");
+constexpr auto HAND = cat(BACKGROUNDS.c, "hand.png");
+constexpr auto GAME_OVER_SCREEN = cat(BACKGROUNDS.c, "game_over.png");
+constexpr auto INVENTORY = cat(BACKGROUNDS.c, "inventory.png");
 
 // ---- CHARACTER
 constexpr auto CHARACTER = cat(ASSETS, "characters/");
@@ -49,7 +49,6 @@ constexpr auto PRINCESS_FACE = cat(PRINCESS.c, "Face.png");
 
 // ---- ENEMIES
 constexpr auto ENEMIES = cat(ASSETS, "enemies/");
-constexpr auto ALIEN = cat(ENEMIES.c, "alien.png");
 constexpr auto MOLE = cat(ENEMIES.c, "Mole.png");
 constexpr auto REPTILE = cat(ENEMIES.c, "Reptile.png");
 constexpr auto SKULL = cat(ENEMIES.c, "Skull.png");

@@ -15,7 +15,7 @@ constexpr int MAX_RESOLUTION_COUNT = 7;
 SettingsState::SettingsState(sf::RenderWindow* window, AssetsManager& am, KeyList* gameSupportedKeys)
     : State(window), activeButton(0) {
 	view = window->getDefaultView();
-	initBackground(window, am);
+	initBackground(am);
 	initFonts(am);
 	soundBuffer = am.getSoundBuffer(MENU_BLIP.c);
 	blipSound.setBuffer(soundBuffer);
@@ -27,7 +27,7 @@ SettingsState::SettingsState(sf::RenderWindow* window, AssetsManager& am, KeyLis
 
 SettingsState::~SettingsState() = default;
 
-void SettingsState::initBackground(sf::RenderWindow* window, AssetsManager& am) {
+void SettingsState::initBackground(AssetsManager& am) {
 	background.setTexture(am.getTexture(SETTING_BACKGROUND.c));
 	background.setSize(view.getSize());
 }

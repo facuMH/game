@@ -72,7 +72,7 @@ struct Stats {
 	int hp = 0;      // Health Points - Life
 	int mana = 0;    // Magic Energy
 	int armor = 0;   // how hard it is to hit the character
-	int baseAtk = 0; // how good is this character at hitting thigs
+	int baseAtk = 0; // how good is this character at hitting things
 	Stats(const int s, const int d, const int h, const int m, const int a, const int b)
 	    : str(s), dex(d), hp(h), mana(m), armor(a), baseAtk(b) {}
 	Stats() : str(0), dex(0), hp(0), mana(0), armor(0), baseAtk(0) {}

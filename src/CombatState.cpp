@@ -19,7 +19,7 @@ void CombatState::addCombatString(const Player& _p, AssetsManager& am) {
 	lifeCounters.emplace(_p.name, Button(initialText.x, initialText.y, 280, 40, characterInfo));
 }
 
-void CombatState::addActionMenu(const sf::RenderWindow* window) {
+void CombatState::addActionMenu() {
 	auto center = Position{320, 300};
 	center.y = center.y * 0.75f;
 	unsigned int bWidth = 150;
@@ -89,7 +89,7 @@ CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, std::vecto
 	nextTurn = false;
 
 	font = *am.getFont(ALEX.c);
-	addActionMenu(window);
+	addActionMenu();
 	selectingEnemy = false;
 	selectingItem = false;
 	isSpecialAtk = false;
