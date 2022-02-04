@@ -37,6 +37,17 @@ Object* ItemManager::get(const Name& itemName, const Position itemPosition) {
 	return item;
 }
 
+// NOTE: only use this overload if you are sure the item has been loaded before
 Object* ItemManager::get(const Name& itemName) {
 	return &items.at(itemName);
+}
+
+void ItemManager::add_item() {
+	for(const auto& item : itemStats) {
+		if(!hasBeenPickedUp(item.first)) {
+			get(item.first, {0, 0});
+			pickUp(item.first);
+			break;
+		}
+	}
 }

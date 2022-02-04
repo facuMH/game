@@ -4,23 +4,33 @@
 #include <SFML/Window.hpp>
 
 #include "AssetsManager.h"
+#include "ItemManager.h"
+#include "Player.h"
 #include "State.h"
 
-class PauseGameState : public State {
+#include "definitions.h"
+
+class InventoryState : public State {
   private:
 	sf::View view;
 	sf::RectangleShape background;
 	sf::RectangleShape container;
 	sf::Font font;
-	sf::Text text;
+	sf::Text title;
+	sf::Sound blipSound;
+	const sf::Color activeItemColor = sf::Color::Red;
+	const sf::Color inactiveItemColor = sf::Color::Black;
 
 	KeyList* supportedKeys;
 
 	int activeButton;
 	Buttons buttons;
 
-	Position_i mousePoseWindow;
-	Position mousePosView;
+	Player* player = nullptr;
+	State* previous = nullptr;
+	ItemManager* itemManager = nullptr;
+	std::vector<sf::Text> playerItems;
+	bool emptyInventory = false;
 
 	// Functions
 	void initBackground(sf::RenderWindow* window, AssetsManager& am);
@@ -30,10 +40,12 @@ class PauseGameState : public State {
 	void updateButtons();
 	void renderButtons(sf::RenderWindow* window);
 	void updateMousePositions();
+	void initPlayerItems();
 
   public:
-	PauseGameState(sf::RenderWindow* window, AssetsManager& am, KeyList* supportedKeys);
-	~PauseGameState() override;
+	InventoryState(sf::RenderWindow* window, AssetsManager& am, KeyList* _supportedKeys, ItemManager* im,
+	    Player* _player, State* _previous);
+	~InventoryState() override = default;
 
 	// Functions
 	void endState();
@@ -44,10 +56,12 @@ class PauseGameState : public State {
 	void updateKeybinds(const float& dt) override;
 	void quitStateActions() override;
 	bool shouldQuit() override;
-	void drawPlayer(sf::RenderWindow* window) override;
+
+	void drawPlayer(sf::RenderWindow* window) override {}
 	sf::View getView() override { return view; };
-	StateAction shouldAct() override;
 	StateAction programAction() override { return StateAction::NONE; };
+
+	StateAction shouldAct() override;
 	void stopMusic() override;
 	void resumeMusic() override;
 };

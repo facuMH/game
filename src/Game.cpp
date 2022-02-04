@@ -10,6 +10,7 @@
 #include "asset_data.h"
 #include "states/CombatState.h"
 #include "states/GameOverState.h"
+#include "states/InventoryState.h"
 #include "states/PauseGameState.h"
 #include "states/SettingsState.h"
 
@@ -205,6 +206,10 @@ void Game::makeNewHouseState(const Position playerPosition) {
 	    *assetsManager.getMusic(HOUSE_MUSIC.c), item));
 }
 
+void Game::openInventory() {
+	states.push(new InventoryState(window, assetsManager, &keyBindings, &itemManager, &player, states.top()));
+}
+
 void Game::pollEvents() {
 	// Gets StateAction that is triggered by the game itself, not the player
 	StateAction action = states.top()->programAction();
@@ -255,15 +260,19 @@ void Game::pollEvents() {
 				states.pop();
 				states.top()->resumeMusic();
 				break;
-			case StateAction::PICK_ITEM: {
+			case StateAction::PICK_ITEM:
+
+			{
 				Name itemName = dynamic_cast<GameState*>(states.top())->getItemName();
 				itemManager.pickUp(itemName);
 				auto item = itemManager.get(itemName);
 				if(item->can_equip) {
 					player.equip(item);
 				}
-				break;
-			}
+			} break;
+			case StateAction::OPEN_INVENTORY: openInventory(); break;
+			case StateAction::CLOSE_INVENTORY: states.pop(); break;
+			case StateAction::ADD_ITEM: itemManager.add_item(); break;
 			default: break;
 			}
 			break;

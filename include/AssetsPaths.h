@@ -30,7 +30,7 @@ constexpr auto BACKGROUND = cat(MAINMENU.c, "Background.jpeg");
 constexpr auto SETTING_BACKGROUND = cat(MAINMENU.c, "RPG_projects.jpg");
 constexpr auto HAND = cat(MAINMENU.c, "hand.png");
 constexpr auto GAME_OVER = cat(MAINMENU.c, "game_over.png");
-
+constexpr auto INVENTORY = cat(MAINMENU.c, "inventory.png");
 
 // ---- CHARACTER
 constexpr auto CHARACTER = cat(ASSETS, "characters/");
