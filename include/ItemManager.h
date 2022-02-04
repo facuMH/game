@@ -26,9 +26,9 @@ class ItemManager {
   public:
 	explicit ItemManager(AssetsManager* am);
 	Object* get(const Name& name, const Position pos);
-	// WARNING only you the overload that doesn't require position, if you are sure the weeapon already exists.
+	// WARNING: only use the overload that doesn't require position, if you are *sure* the weeapon already exists.
 	Object* get(const Name& name);
 	void pickUp(const Name& name) { playerInventory.emplace(name); }
 	bool hasBeenPickedUp(const Name& name) { return playerInventory.find(name) != playerInventory.end(); }
-	void add_item(Player* player);
+	void add_item();
 };

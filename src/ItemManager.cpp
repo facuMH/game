@@ -42,10 +42,10 @@ Object* ItemManager::get(const Name& itemName) {
 	return &items.at(itemName);
 }
 
-void ItemManager::add_item(Player* player) {
-	for(const auto item : itemStats) {
+void ItemManager::add_item() {
+	for(const auto& item : itemStats) {
 		if(!hasBeenPickedUp(item.first)) {
-			get(item.first, {0,0});
+			get(item.first, {0, 0});
 			pickUp(item.first);
 			break;
 		}
