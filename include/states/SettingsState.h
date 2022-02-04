@@ -28,7 +28,7 @@ class SettingsState : public State {
 	bool quit{};
 
 	// Functions
-	void initBackground(sf::RenderWindow* window, AssetsManager& am);
+	void initBackground(AssetsManager& am);
 	void applyResolution(const unsigned int width, const unsigned int height);
 	void initFonts(AssetsManager& am);
 	void updateGui();

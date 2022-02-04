@@ -22,7 +22,6 @@ class MainMenuState : public State {
 	Buttons buttons;
 	int activeButton;
 
-	sf::Vector2i mousePosScreen;
 	sf::Vector2i mousePoseWindow;
 	sf::Vector2f mousePosView;
 
@@ -33,7 +32,7 @@ class MainMenuState : public State {
 	// Functions
 	void initBackground(sf::RenderWindow* window, AssetsManager& am);
 	void initFonts(AssetsManager& am);
-	void initButtons(const sf::Vector2f pos);
+	void initButtons(sf::Vector2f pos);
 
 	void updateMousePositions();
 

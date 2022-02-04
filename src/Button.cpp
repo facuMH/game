@@ -6,10 +6,9 @@
 
 Button::Button(float x, float y, float width, float height, sf::Font* _font, const std::string& _text,
     sf::Color _idleColor, sf::Color _hoverColor, sf::Color _activeColor, sf::Color _outlineIdleColor,
-    sf::Color _outlineHoverColor, sf::Color _outlineActiveColor, short unsigned _id) {
+    sf::Color _outlineHoverColor, sf::Color _outlineActiveColor) {
 	buttonState = ButtonStates::BTN_IDLE;
 
-	id = _id;
 	shape.setPosition(Position(x, y));
 	shape.setSize(Position(width, height));
 
@@ -36,7 +35,7 @@ Button::Button(float x, float y, float width, float height, sf::Font* _font, con
 	shape.setFillColor(idleColor);
 }
 
-Button::Button(float x, float y, float width, float height, const sf::Text newText) {
+Button::Button(float x, float y, float width, float height, const sf::Text& newText) {
 	buttonState = ButtonStates::BTN_IDLE;
 
 	shape.setPosition(sf::Vector2f(x, y));
@@ -44,8 +43,6 @@ Button::Button(float x, float y, float width, float height, const sf::Text newTe
 	text = newText;
 	text.setFillColor(sf::Color::White);
 	text.setCharacterSize(20);
-	// auto Xs = shape.getPosition().x + (shape.getGlobalBounds().width / 2.f) - textToDraw.getGlobalBounds().width / 2.f;
-	// auto Ys = shape.getPosition().y + (shape.getGlobalBounds().height / 2.f) - textToDraw.getGlobalBounds().height / 2.f;
 	text.setPosition(x + 5.f, y + 5.f);
 	shape.setFillColor(sf::Color::Black);
 }
@@ -64,14 +61,6 @@ std::string Button::getText() const {
 // Modifiers
 void Button::setText(const std::string& _text) {
 	text.setString(_text);
-}
-
-void Button::setId(const unsigned short _id) {
-	id = _id;
-}
-
-const short unsigned& Button::getId() const {
-	return id;
 }
 
 // Function
@@ -103,7 +92,6 @@ void Button::update(const Position mousePos) {
 		shape.setFillColor(sf::Color::Red);
 		shape.setOutlineColor(outlineActiveColor);
 		break;
-	default: break;
 	}
 }
 

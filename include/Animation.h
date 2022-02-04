@@ -22,9 +22,6 @@ class Animation {
 		sprite.setPosition(initial);
 	};
 
-	void set_texture(const sf::Texture* new_texture) { sprite.setTexture(*new_texture); }
-
-
 	void next(KeyAction nextDirection) {
 		int newLeft = 0;
 		switch(nextDirection) {

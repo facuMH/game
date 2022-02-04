@@ -15,7 +15,7 @@ ItemManager::ItemManager(AssetsManager* _am) : am(_am) {
 	ifs.close();
 }
 
-// name of the item to be created, positioin where it should be displayed
+// name of the item to be created, position where it should be displayed
 Object ItemManager::make(const Name& itemName, const Position itemPosition) {
 	Texture* t = am->getTexture(itemsPaths.at(itemName));
 	sf::IntRect ir{{0, 0}, sf::Vector2i(t->getSize())};
@@ -25,7 +25,7 @@ Object ItemManager::make(const Name& itemName, const Position itemPosition) {
 	return ret;
 }
 
-// name of the item requested, positioin where it should be displayed in case it doesn't exist yet
+// name of the item requested, position where it should be displayed in case it doesn't exist yet
 Object* ItemManager::get(const Name& itemName, const Position itemPosition) {
 	auto found = items.find(itemName);
 	Object* item;

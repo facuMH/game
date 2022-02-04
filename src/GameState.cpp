@@ -205,7 +205,7 @@ void GameState::startDialogue(Name& characterName) {
 }
 
 Name GameState::getEntityInInteractionRange(Position position) {
-	Name n = "";
+	Name n;
 	// if entity is a villager
 	for(auto& v : villagers) {
 		if(positionsInRange(position, v.animation.get_position(), 15.f)) {

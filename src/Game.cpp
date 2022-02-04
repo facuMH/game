@@ -123,14 +123,6 @@ bool Game::isRunning() const {
 	return window->isOpen();
 }
 
-void Game::makeNewCombat() {
-	Enemy alien = createAlien(assetsManager);
-	auto mapTexture = {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c)};
-	JSONFilePath* design = assetsManager.getMapDesign(COMBAT_LEVEL1.c);
-	turnOffMusic();
-	states.push(new CombatState(window, assetsManager, mapTexture, *design, player, alien, &keyBindings));
-}
-
 void Game::makeNewCombat(const Enemy* enemy) {
 	auto mapTexture = {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c)};
 	JSONFilePath* design = assetsManager.getMapDesign(COMBAT_LEVEL1.c);
@@ -241,11 +233,7 @@ void Game::pollEvents() {
 			case StateAction::EXIT_SETTING:
 			case StateAction::RESUME_GAME: states.pop(); break;
 			case StateAction::START_COMBAT:
-				if(auto* house = dynamic_cast<GameState*>(states.top()); house->isHouse) {
-					makeNewCombat(house->getEnemy());
-				} else {
-					makeNewCombat();
-				}
+				makeNewCombat(dynamic_cast<GameState*>(states.top())->getEnemy());
 				break;
 			case StateAction::EXIT_COMBAT:
 				// calling quitStateActions here is only for debug reasons

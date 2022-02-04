@@ -27,7 +27,7 @@ MainMenuState::MainMenuState(sf::RenderWindow* window, AssetsManager& am, KeyLis
 
 void MainMenuState::initBackground(sf::RenderWindow* window, AssetsManager& am) {
 	background.setSize(sf::Vector2f(static_cast<float>(window->getSize().x), static_cast<float>(window->getSize().y)));
-	backgroundTexture = *am.getTexture(BACKGROUND.c);
+	backgroundTexture = *am.getTexture(MAINMENU_BACKGROUND.c);
 	background.setTexture(&backgroundTexture);
 }
 
@@ -63,7 +63,6 @@ void MainMenuState::updateButtons() {
 }
 
 void MainMenuState::updateMousePositions() {
-	mousePosScreen = sf::Mouse::getPosition();
 	mousePoseWindow = State::getMouse();
 	mousePosView = getPos(mousePoseWindow);
 }

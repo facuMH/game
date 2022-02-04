@@ -21,7 +21,6 @@ set(SOURCES src/main.cpp
         src/Button.cpp
         src/CombatState.cpp
         src/DialogueBox.cpp
-        src/Enemy.cpp
         src/Game.cpp
         src/GameOverState.cpp
         src/GameState.cpp

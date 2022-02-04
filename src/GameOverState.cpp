@@ -31,7 +31,7 @@ GameOverState::GameOverState(sf::RenderWindow* window, AssetsManager& am, KeyLis
 GameOverState::~GameOverState() = default;
 
 void GameOverState::initBackground(sf::RenderWindow* window, AssetsManager& am) {
-	background.setTexture(am.getTexture(GAME_OVER.c));
+	background.setTexture(am.getTexture(GAME_OVER_SCREEN.c));
 	background.setSize(view.getSize());
 }
 

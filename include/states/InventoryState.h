@@ -33,7 +33,7 @@ class InventoryState : public State {
 	bool emptyInventory = false;
 
 	// Functions
-	void initBackground(sf::RenderWindow* window, AssetsManager& am);
+	void initBackground(AssetsManager& am);
 	void initFonts(AssetsManager& am);
 	void initText(sf::RenderWindow* window);
 	void initButtons(sf::RenderWindow* window);
