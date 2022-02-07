@@ -185,7 +185,8 @@ void Game::makeNewHouseState(const Position playerPosition) {
 	EnemyData enemyData = ENEMYDATA[doorNumber];
 	Texture* texture = assetsManager.getTexture(enemyData.texturePath);
 	Animation animation(texture, sf::IntRect(0, 0, TILESIZE, TILESIZE), enemyData.position);
-	Enemy enemy(enemyData.name, Stats(15, 15, 15, 15, 15, 15), animation, MovementType::HORIZONTAL, {30, 30}, 2.0f);
+	Enemy enemy(enemyData.name, Stats(15, 15, 15, 15, 15, 15), animation, MovementType::HORIZONTAL, {30, 30}, 2.0f,
+	    enemyData.experience);
 	enemies.push_back(enemy);
 
 	Object* item = nullptr;
@@ -230,23 +231,11 @@ void Game::pollEvents() {
 			case StateAction::START_SETTING: states.push(new SettingsState(window, assetsManager, &keyBindings)); break;
 			case StateAction::PAUSE_GAME: states.push(new PauseGameState(window, assetsManager, &keyBindings)); break;
 			case StateAction::LOAD_GAME: /* To Do */; break;
-			case StateAction::EXIT_SETTING:
-			case StateAction::RESUME_GAME: states.pop(); break;
-			case StateAction::START_COMBAT:
-				makeNewCombat(dynamic_cast<GameState*>(states.top())->getEnemy());
-				break;
-			case StateAction::EXIT_COMBAT:
-				// calling quitStateActions here is only for debug reasons
-				states.top()->quitStateActions();
-				break;
+			case StateAction::START_COMBAT: makeNewCombat(dynamic_cast<GameState*>(states.top())->getEnemy()); break;
+			case StateAction::EXIT_COMBAT: break;
 			case StateAction::START_HOUSE:
 				turnOffMusic();
 				makeNewHouseState(dynamic_cast<GameState*>(states.top())->getCurrentPlayerPosition());
-				break;
-			case StateAction::EXIT_HOUSE:
-				turnOffMusic();
-				states.pop();
-				states.top()->resumeMusic();
 				break;
 			case StateAction::PICK_ITEM:
 
@@ -259,8 +248,15 @@ void Game::pollEvents() {
 				}
 			} break;
 			case StateAction::OPEN_INVENTORY: openInventory(); break;
-			case StateAction::CLOSE_INVENTORY: states.pop(); break;
 			case StateAction::ADD_ITEM: itemManager.add_item(); break;
+			case StateAction::EXIT_HOUSE:
+				turnOffMusic();
+				states.pop();
+				states.top()->resumeMusic();
+				break;
+			case StateAction::EXIT_SETTING:
+			case StateAction::RESUME_GAME:
+			case StateAction::CLOSE_INVENTORY: states.pop(); break;
 			default: break;
 			}
 			break;

@@ -155,8 +155,6 @@ bool CombatState::shouldQuit() {
 }
 
 void CombatState::quitStateActions() {
-	// emptying enemies list here is purely for debug
-	enemy.apply_damage(enemy.get_hp());
 	std::cout << "Ending current game state" << std::endl;
 }
 
@@ -186,7 +184,7 @@ StateAction CombatState::handleKeys(const sf::Keyboard::Key key) {
 		default: break;
 		}
 	}
-	if(key == sf::Keyboard::X) return StateAction::EXIT_COMBAT;
+	// if(key == sf::Keyboard::X) return StateAction::EXIT_COMBAT;
 	return StateAction::NONE;
 }
 
@@ -223,6 +221,7 @@ StateAction CombatState::shouldAct() {
 		selectingItem = false;
 		nextTurn = true;
 	}
+
 	return StateAction::NONE;
 }
 
@@ -238,10 +237,12 @@ void CombatState::resumeMusic() {
 }
 
 StateAction CombatState::programAction() {
-	if (player.get_hp() <= 0) {
+	if(player.get_hp() <= 0) {
 		return StateAction::GAME_OVER;
-	}
-	else {
+	} else if(enemy.get_hp() <= 0) {
+		// trigger dialogue box if new level
+		return StateAction::EXIT_COMBAT;
+	} else {
 		return StateAction::NONE;
 	}
 }

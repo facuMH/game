@@ -61,7 +61,7 @@ class CombatState : public State {
 	StateAction shouldAct() override;
 	StateAction programAction() override;
 	void drawPlayer(sf::RenderWindow* window) override;
-
+	int experienceFromEnemy() const { return enemy.getExperience(); }
 	sf::View getView() override { return view; };
 	void stopMusic() override;
 	void resumeMusic() override;
