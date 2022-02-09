@@ -78,6 +78,8 @@ CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, std::vecto
 	music.setLoop(true);
 	music.play();
 
+	sound.setBuffer(am.getSoundBuffer(MENU_BLIP.c));
+
 	// hand pointing at first character
 	Position cursorPosition;
 	auto next = turnList.at(0);
@@ -117,10 +119,10 @@ void CombatState::update(const float& dt) {
 	if(e->isEnemy()) {
 		auto next = turnList[currentCharacterTurn];
 		cursor.set_position(next->animation.get_position());
-		if(player.defend() > e->attack()) {
+		if(e->attack() > player.defend()) {
 			player.apply_damage(e->atkDamage());
-			nextTurn = true;
 		}
+		nextTurn = true;
 	}
 
 	lifeCounters.at(player.name)
@@ -132,14 +134,18 @@ void CombatState::update(const float& dt) {
 void CombatState::render(sf::RenderWindow* window) {
 	window->setView(view);
 	map.render(*window);
-	drawPlayer(window);
-	for(auto character : lifeCounters) {
-		character.second.render(window);
-	}
-	window->draw(cursor.sprite);
-	if(!dynamic_cast<Combatant*>(turnList.at(currentCharacterTurn))->isEnemy()) {
-		for(auto b : actionButtons) {
-			b.render(window);
+	if(inLevelUpBox) {
+		levelUpBox.get()->render(window);
+	} else {
+		drawPlayer(window);
+		for(auto character : lifeCounters) {
+			character.second.render(window);
+		}
+		window->draw(cursor.sprite);
+		if(!dynamic_cast<Combatant*>(turnList.at(currentCharacterTurn))->isEnemy()) {
+			for(auto b : actionButtons) {
+				b.render(window);
+			}
 		}
 	}
 }
@@ -147,11 +153,7 @@ void CombatState::render(sf::RenderWindow* window) {
 void CombatState::updateKeybinds(const float& dt) {}
 
 bool CombatState::shouldQuit() {
-	bool quit = isQuit();
-	if(enemy.get_hp() < 0) {
-		quit = true;
-	}
-	return quit;
+	return isQuit();
 }
 
 void CombatState::quitStateActions() {
@@ -162,29 +164,35 @@ StateAction CombatState::handleKeys(const sf::Keyboard::Key key) {
 	auto action = std::find_if(keybinds->begin(), keybinds->end(),
 	    [key](const std::pair<KeyAction, sf::Keyboard::Key>& v) { return key == v.second; });
 	if(action != keybinds->end()) {
-		switch(action->first) {
-		case KeyAction::UP:
-			actionButtons[actionButtonActive].setInactive();
-			if(actionButtonActive == 0) {
-				actionButtonActive = actionButtons.size() - 1;
-			} else {
-				actionButtonActive--;
+		if(!inLevelUpBox) {
+			switch(action->first) {
+			case KeyAction::UP:
+				actionButtons[actionButtonActive].setInactive();
+				if(actionButtonActive == 0) {
+					actionButtonActive = actionButtons.size() - 1;
+				} else {
+					actionButtonActive--;
+				}
+				actionButtons[actionButtonActive].setActive();
+				break;
+			case KeyAction::DOWN:
+				actionButtons[actionButtonActive].setInactive();
+				if(actionButtonActive == actionButtons.size() - 1) {
+					actionButtonActive = 0;
+				} else {
+					actionButtonActive++;
+				}
+				actionButtons[actionButtonActive].setActive();
+				break;
+			default: break;
 			}
-			actionButtons[actionButtonActive].setActive();
-			break;
-		case KeyAction::DOWN:
-			actionButtons[actionButtonActive].setInactive();
-			if(actionButtonActive == actionButtons.size() - 1) {
-				actionButtonActive = 0;
-			} else {
-				actionButtonActive++;
+		} else {
+			if(key == sf::Keyboard::F) {
+				inLevelUpBox = false;
+				return StateAction::EXIT_COMBAT;
 			}
-			actionButtons[actionButtonActive].setActive();
-			break;
-		default: break;
 		}
 	}
-	// if(key == sf::Keyboard::X) return StateAction::EXIT_COMBAT;
 	return StateAction::NONE;
 }
 
@@ -202,7 +210,7 @@ StateAction CombatState::shouldAct() {
 			// special attack with current weapon
 			if(player.currentStats.mana >= 5) {
 				if(player.attack() < enemy.defend()) {
-					enemy.apply_damage(player.atkDamage() * 2);
+					enemy.apply_damage(player.atkDamage() * 4);
 				}
 				player.spend_mana(5);
 				nextTurn = true;
@@ -222,13 +230,25 @@ StateAction CombatState::shouldAct() {
 		nextTurn = true;
 	}
 
+	if(enemy.get_hp() <= 0) {
+		if(!inLevelUpBox && player.getExp() + enemy.getExperience() >= 99) {
+			LevelUpMessage();
+
+		} else {
+			return StateAction::EXIT_COMBAT;
+		}
+	}
+
 	return StateAction::NONE;
 }
 
 void CombatState::drawPlayer(sf::RenderWindow* window) {
-	window->draw(enemy.animation.sprite);
-	window->draw(player.animation.sprite);
+	if(!inLevelUpBox) {
+		window->draw(enemy.animation.sprite);
+		window->draw(player.animation.sprite);
+	}
 }
+
 void CombatState::stopMusic() {
 	music.stop();
 }
@@ -237,12 +257,30 @@ void CombatState::resumeMusic() {
 }
 
 StateAction CombatState::programAction() {
+	StateAction ret = StateAction::NONE;
 	if(player.get_hp() <= 0) {
-		return StateAction::GAME_OVER;
-	} else if(enemy.get_hp() <= 0) {
-		// trigger dialogue box if new level
-		return StateAction::EXIT_COMBAT;
-	} else {
-		return StateAction::NONE;
+		ret = StateAction::GAME_OVER;
 	}
+	return ret;
+}
+
+void CombatState::LevelUpMessage() {
+	inLevelUpBox = true;
+	music.stop();
+	sound.play();
+	sound.play();
+	sound.play();
+	music.play();
+
+	auto center = view.getCenter();
+	sf::Text lvlUpTxt{};
+	lvlUpTxt.setFont(font);
+	const std::string lvlUpMsg =
+	    "Congrats, you killed enought crazy\n monsters to LEVEL UP.\nNow you feel stronger ... or not";
+	lvlUpTxt.setString(lvlUpMsg);
+	const int width = 400.f;
+	const int height = 100.f;
+	center.x -= width / 2;
+	center.y -= height / 2;
+	levelUpBox = std::make_unique<Button>(Button(center.x, center.y, 400.f, 100.f, lvlUpTxt));
 }

@@ -19,7 +19,8 @@ class Player : public Entity, public Combatant, public SteeredMovement {
 	void equip(Object* arms);
 	void move(KeyAction key, TileMap* map);
 	bool isEnemy() override { return false; }
-	int getLevel() { return level; }
+	int getLevel() const { return level; }
+	int getExp() const { return experience; }
 	bool addExperience(const int xp) {
 		experience += xp;
 		bool levelUp = false;

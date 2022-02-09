@@ -20,7 +20,7 @@ void Game::initVariables() {
 
 	Texture* play_text = assetsManager.getTexture(NINJA_WALK.c);
 	Animation player_animation(play_text, sf::IntRect(0, 0, TILESIZE, TILESIZE), Position(50, 50));
-	player = Player("Adventurer", Stats(15, 20, 50, 30, 15, 1), player_animation, 5.0f);
+	player = Player("Adventurer", Stats(15, 20, 50, 30, 31, 1), player_animation, 5.0f);
 }
 
 void Game::closeWindow() {
@@ -232,7 +232,13 @@ void Game::pollEvents() {
 			case StateAction::PAUSE_GAME: states.push(new PauseGameState(window, assetsManager, &keyBindings)); break;
 			case StateAction::LOAD_GAME: /* To Do */; break;
 			case StateAction::START_COMBAT: makeNewCombat(dynamic_cast<GameState*>(states.top())->getEnemy()); break;
-			case StateAction::EXIT_COMBAT: break;
+			case StateAction::EXIT_COMBAT:
+				// coming out here means you won the fight.
+				player.addExperience(dynamic_cast<CombatState*>(states.top())->experienceFromEnemy());
+				turnOffMusic();
+				states.pop();
+				states.top()->resumeMusic();
+				break;
 			case StateAction::START_HOUSE:
 				turnOffMusic();
 				makeNewHouseState(dynamic_cast<GameState*>(states.top())->getCurrentPlayerPosition());

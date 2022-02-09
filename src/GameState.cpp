@@ -135,7 +135,6 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 		default: break;
 		}
 	}
-	if(key == sf::Keyboard::C) result = StateAction::START_COMBAT;
 	if(key == sf::Keyboard::Q) result = StateAction::EXIT_GAME;
 	if(key == sf::Keyboard::I && !inDialogue) result = StateAction::OPEN_INVENTORY;
 	// BEWARE: using this will directly move the item into the player inventory
