@@ -2,11 +2,22 @@
 
 #include "AssetsManager.h"
 #include "Enemy.h"
+#include "ItemManager.h"
 #include "Player.h"
 #include "State.h"
 #include "TileMap.h"
 #include "definitions.h"
 #include "entity_attributes/Combatant.h"
+
+constexpr int COMBAT_MENU_X = 320;
+constexpr int COMBAT_MENU_Y = 300;
+
+constexpr int bWidth = 150;
+constexpr int bHeight = 40;
+
+constexpr float ITEMS_MENU_X = COMBAT_MENU_X;
+// 4 = 2 free spaces + 2 usable items at most.
+constexpr float ITEMS_MENU_Y = COMBAT_MENU_Y - bHeight * 4;
 
 class CombatState : public State {
   private:
@@ -25,7 +36,6 @@ class CombatState : public State {
 	KeyList* keybinds;
 
 	CombatText lifeCounters;
-	void addCombatString(const Player& player, AssetsManager& am);
 	Position initialText{10.f, 300.f};
 	float textIntervalHeight = 50;
 
@@ -37,17 +47,22 @@ class CombatState : public State {
 	int cursorOrientation;
 	sf::Clock cursorClock;
 
-	void addActionMenu();
 	Buttons actionButtons;
 	int actionButtonActive;
 	bool selectingEnemy;
 	bool selectingItem;
 	bool isSpecialAtk;
+	Buttons playerItems;
+	bool emptyInventory = false;
+
+	void addActionMenu();
+	void addCombatString(const Player& player, AssetsManager& am);
+	void initPlayerItems(const ItemManager* itemManager);
 
   public:
 	// Constructor
 	CombatState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets,
-	    JSONFilePath& path, const Player& p, const Enemy& e, KeyList* gameSupportedKeys);
+	    JSONFilePath& path, const Player& p, const Enemy& e, KeyList* gameSupportedKeys, const ItemManager* im);
 
 	// Destructor
 	~CombatState() override;

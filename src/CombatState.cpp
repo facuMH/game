@@ -20,27 +20,26 @@ void CombatState::addCombatString(const Player& _p, AssetsManager& am) {
 }
 
 void CombatState::addActionMenu() {
-	auto center = Position{320, 300};
+	auto center = Position{COMBAT_MENU_X, COMBAT_MENU_Y};
 	center.y = center.y * 0.75f;
-	unsigned int bWidth = 150;
-	unsigned int bHeight = 40;
+
 	actionButtons.push_back(
-	    Button(center.x, center.y, bWidth, bHeight, &font, "Attack", DARKBLUE, LIGHTGREY, sf::Color::Black));
+	    Button(center.x, center.y, bWidth, bHeight, &font, "Attack", sf::Color::Black, LIGHTGREY, sf::Color::Black));
 	center.y += bHeight;
 	actionButtons.push_back(
-	    Button(center.x, center.y, bWidth, bHeight, &font, "Special", DARKBLUE, LIGHTGREY, sf::Color::Black));
+	    Button(center.x, center.y, bWidth, bHeight, &font, "Special", sf::Color::Black, LIGHTGREY, sf::Color::Black));
 	center.y += bHeight;
 	actionButtons.push_back(
-	    Button(center.x, center.y, bWidth, bHeight, &font, "Item", DARKBLUE, LIGHTGREY, sf::Color::Black));
+	    Button(center.x, center.y, bWidth, bHeight, &font, "Item", sf::Color::Black, LIGHTGREY, sf::Color::Black));
 	center.y += bHeight;
 	actionButtons.push_back(
-	    Button(center.x, center.y, bWidth, bHeight, &font, "Skip", DARKBLUE, LIGHTGREY, sf::Color::Black));
+	    Button(center.x, center.y, bWidth, bHeight, &font, "Skip", sf::Color::Black, LIGHTGREY, sf::Color::Black));
 	actionButtonActive = 0;
 	actionButtons[actionButtonActive].setActive();
 }
 
 CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets,
-    JSONFilePath& path, const Player& p, const Enemy& e, KeyList* gameSupportedKeys)
+    JSONFilePath& path, const Player& p, const Enemy& e, KeyList* gameSupportedKeys, const ItemManager* im)
     : State(window), map(am, textureSheets, path) {
 	auto size = sf::Vector2f{720.0, 480.0};
 	view = window->getDefaultView();
@@ -95,6 +94,8 @@ CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, std::vecto
 	selectingEnemy = false;
 	selectingItem = false;
 	isSpecialAtk = false;
+
+	initPlayerItems(im);
 }
 
 CombatState::~CombatState() = default;
@@ -283,4 +284,19 @@ void CombatState::LevelUpMessage() {
 	center.x -= width / 2;
 	center.y -= height / 2;
 	levelUpBox = std::make_unique<Button>(Button(center.x, center.y, 400.f, 100.f, lvlUpTxt));
+}
+
+void CombatState::initPlayerItems(const ItemManager* itemManager) {
+	if(itemManager->playerInventory.empty()) {
+		emptyInventory = true;
+		const std::string msg("No items here yet.\n Go look around");
+		playerItems.push_back(Button(
+		    ITEMS_MENU_X, ITEMS_MENU_Y, bWidth, bHeight, &font, msg, sf::Color::Black, LIGHTGREY, sf::Color::Black));
+	} else {
+		for(const auto& item : itemManager->playerInventory) {
+			playerItems.push_back(Button(ITEMS_MENU_X, ITEMS_MENU_Y, bWidth, bHeight, &font, item.c_str(),
+			    sf::Color::Black, LIGHTGREY, sf::Color::Black));
+		}
+	}
+	playerItems.front().setActive();
 }

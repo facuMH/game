@@ -127,7 +127,7 @@ void Game::makeNewCombat(const Enemy* enemy) {
 	auto mapTexture = {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c)};
 	JSONFilePath* design = assetsManager.getMapDesign(COMBAT_LEVEL1.c);
 	turnOffMusic();
-	states.push(new CombatState(window, assetsManager, mapTexture, *design, player, *enemy, &keyBindings));
+	states.push(new CombatState(window, assetsManager, mapTexture, *design, player, *enemy, &keyBindings, &itemManager));
 }
 
 void Game::makeMainGameState() {
