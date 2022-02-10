@@ -97,6 +97,8 @@ struct Stats {
 	}
 };
 
+const Stats levelUpStatsIncrement{3, 3, 10, 10, 5, 5};
+
 const sf::Color GREY = sf::Color(70, 70, 70, 200);
 const sf::Color LIGHTGREY = sf::Color(150, 150, 150, 255);
 const sf::Color DARKBLUE = sf::Color(0, 0, 255, 255);
