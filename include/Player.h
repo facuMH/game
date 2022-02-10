@@ -28,6 +28,7 @@ class Player : public Entity, public Combatant, public SteeredMovement {
 			level++;
 			experience = 0;
 			levelUp = true;
+			Combatant::maxStats + levelUpStatsIncrement;
 		}
 		return levelUp;
 	}
