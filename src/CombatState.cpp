@@ -78,7 +78,8 @@ CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, std::vecto
 	music.setLoop(true);
 	music.play();
 
-	sound.setBuffer(am.getSoundBuffer(MENU_BLIP.c));
+	soundBuffer = am.getSoundBuffer(POWER_UP.c);
+	sound.setBuffer(soundBuffer);
 
 	// hand pointing at first character
 	Position cursorPosition;
@@ -266,17 +267,17 @@ StateAction CombatState::programAction() {
 
 void CombatState::LevelUpMessage() {
 	inLevelUpBox = true;
-	music.stop();
+	music.setVolume(music.getVolume() / 2.0f);
+	sf ::sleep(sf::milliseconds(1000));
 	sound.play();
-	sound.play();
-	sound.play();
-	music.play();
+	sf ::sleep(sf::milliseconds(1000));
+	music.setVolume(music.getVolume() * 2.0f);
 
 	auto center = view.getCenter();
 	sf::Text lvlUpTxt{};
 	lvlUpTxt.setFont(font);
 	const std::string lvlUpMsg =
-	    "Congrats, you killed enought crazy\n monsters to LEVEL UP.\nNow you feel stronger ... or not";
+	    "Congrats, you killed enough crazy\n monsters to LEVEL UP.\nNow you feel stronger ... or not";
 	lvlUpTxt.setString(lvlUpMsg);
 	const int width = 400.f;
 	const int height = 100.f;
