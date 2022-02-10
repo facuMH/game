@@ -8,6 +8,7 @@
 class Player : public Entity, public Combatant, public SteeredMovement {
 	int level = 1;
 	int experience = 0;
+	const Stats levelUpStatsIncrement{3, 3, 10, 10, 5, 5};
 
   public:
 	Object* weapon = nullptr;
@@ -28,6 +29,7 @@ class Player : public Entity, public Combatant, public SteeredMovement {
 			level++;
 			experience = 0;
 			levelUp = true;
+			Combatant::maxStats + levelUpStatsIncrement;
 		}
 		return levelUp;
 	}
