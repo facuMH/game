@@ -2,6 +2,7 @@
 
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
+#include <cereal/cereal.hpp>
 #include <fstream>
 #include <iostream>
 
@@ -30,6 +31,7 @@ class SaveObject {
 	// must be implemented for serialization
 	template <class Archive>
 	void serialize(Archive& ar) {
-		ar(houseNumber, housePositionX, housePositionY, mainGamePositionX, mainGamePositionY, level);
+		ar(CEREAL_NVP(houseNumber), CEREAL_NVP(housePositionX), CEREAL_NVP(housePositionY),
+		    CEREAL_NVP(mainGamePositionX), CEREAL_NVP(mainGamePositionY), CEREAL_NVP(level));
 	}
 };

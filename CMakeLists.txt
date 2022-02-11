@@ -71,7 +71,8 @@ set(HEADERS include/Animation.h
         include/SaveAndLoad.h)
 
 set(DEPENDENCIES libs/tileson.hpp
-        libs/cereal/archives/json.hpp)
+        libs/cereal/archives/json.hpp
+        libs/cereal/cereal.hpp)
 
 #------------- DEPENDENCIES
 
