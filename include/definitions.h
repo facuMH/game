@@ -66,6 +66,13 @@ class MusicPath : public std::string {
 	}
 };
 
+struct SaveObject {
+	int slot; // we only offer 3 save slots
+	float positionX;
+	float positionY;
+	int level;
+};
+
 struct Stats {
 	int str = 0;     // Strength
 	int dex = 0;     // Dexterity

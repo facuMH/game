@@ -234,7 +234,6 @@ StateAction CombatState::shouldAct() {
 	if(enemy.get_hp() <= 0) {
 		if(!inLevelUpBox && player.getExp() + enemy.getExperience() >= 99) {
 			LevelUpMessage();
-
 		} else {
 			return StateAction::EXIT_COMBAT;
 		}
