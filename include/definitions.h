@@ -67,13 +67,6 @@ class MusicPath : public std::string {
 	}
 };
 
-// struct SaveObject {
-//	int houseNumber;
-//	Position housePosition;
-//	Position mainGamePosition;
-//	int level;
-// };
-
 struct Stats {
 	int str = 0;     // Strength
 	int dex = 0;     // Dexterity
