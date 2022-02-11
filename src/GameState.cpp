@@ -12,7 +12,6 @@
 GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vector<MapBackground*> textureSheets,
     JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player, Villagers& _villagers, MusicPath& _musicPath)
     : State(window), map(gameAM, textureSheets, path) {
-	std::cout << "New game state" << std::endl;
 	am = &gameAM;
 	keybinds = gameSupportedKeys;
 	player = _player;

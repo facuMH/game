@@ -67,9 +67,9 @@ set(HEADERS include/Animation.h
         include/states/PauseGameState.h
         include/states/SettingsState.h
         include/states/State.h
-        include/SaveAndLoad.h)
+        include/SaveObject.h)
 
-set(DEPENDENCIES libs/tileson.hpp)
+set(DEPENDENCIES libs/tileson.hpp include/SaveAndLoad.h)
 
 #------------- DEPENDENCIES
 

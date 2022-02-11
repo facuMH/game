@@ -1,33 +1,34 @@
 #pragma once
-
-#include <fstream>
-#include <iostream>
-
-#include "definitions.h"
-#include "AssetsPaths.h"
-
+#include "SaveObject.h"
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/text_oarchive.hpp>
 
 class SaveAndLoad {
   public:
-	static void saveGame(SaveObject saveObject) {
-		std::ofstream file;
-		file.open(SAVED.c, std::ofstream::trunc); // deletes the contents of the file before writing
-		file << saveObject.houseNumber << std::endl;
-		file << saveObject.positionX << " " << saveObject.positionY << std::endl;
-		file << saveObject.level << std::endl;
-		file.close();
-	};
+
 
 	static SaveObject loadGame() {
-	    std::ifstream ifs(SAVED.c);
+		std::ifstream ifs(SAVED.c);
 
 		SaveObject saveObject{};
 		if (ifs.is_open()) {
 			ifs >> saveObject.houseNumber;
-			ifs >> saveObject.positionX >> saveObject.positionY;
+			ifs >> saveObject.housePosition.x >> saveObject.housePosition.y;
+			ifs >> saveObject.mainGamePosition.x >> saveObject.mainGamePosition.y;
 			ifs >> saveObject.level;
 		}
 		ifs.close();
 		return saveObject;
+	};
+
+
+	static void saveGame(int _houseNumber, Position _housePosition, Position _mainGamePosition, int _level) {
+		std::ofstream file;
+		file.open(SAVED.c, std::ofstream::trunc); // deletes the contents of the file before writing
+		file << _houseNumber << std::endl;
+		file << _housePosition.x << " " << _housePosition.y << std::endl;
+		file << _mainGamePosition.x << " " << _mainGamePosition.y << std::endl;
+		file << _level << std::endl;
+		file.close();
 	};
 };
