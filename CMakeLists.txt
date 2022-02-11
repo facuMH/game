@@ -55,7 +55,6 @@ set(HEADERS include/Animation.h
         include/InteractionManager.h
         include/ItemManager.h
         include/Player.h
-        include/State.h
         include/Tile.h
         include/TileMap.h
         include/Villager.h
@@ -66,7 +65,9 @@ set(HEADERS include/Animation.h
         include/states/InventoryState.h
         include/states/MainMenuState.h
         include/states/PauseGameState.h
-        include/states/SettingsState.h include/SaveAndLoad.h)
+        include/states/SettingsState.h
+        include/states/State.h
+        include/SaveAndLoad.h)
 
 set(DEPENDENCIES libs/tileson.hpp)
 

@@ -67,6 +67,7 @@ class MusicPath : public std::string {
 };
 
 struct SaveObject {
+	int houseNumber;
 	float positionX;
 	float positionY;
 	int level;

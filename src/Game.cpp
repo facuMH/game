@@ -130,7 +130,7 @@ void Game::makeNewCombat(const Enemy* enemy) {
 	states.push(new CombatState(window, assetsManager, mapTexture, *design, player, *enemy, &keyBindings));
 }
 
-void Game::makeMainGameState() {
+void Game::makeMainGameState(Position playerPosition = {50, 50}) {
 	Villagers villagers;
 	villagers.push_back(
 	    createVillager("Egg Girl", EGG_GIRL_FACE.c, EGG_GIRL_WALK.c, Position(300, 50), MovementType::VERTICAL, 0.3f));
@@ -139,6 +139,7 @@ void Game::makeMainGameState() {
 	villagers.push_back(createVillager(
 	    "Princess", PRINCESS_FACE.c, PRINCESS_WALK.c, Position(230, 150), MovementType::VERTICAL, 0.25f));
 
+	player.animation.set_position(playerPosition);
 	// Comment: There's a bug in Tileson. Tile attributes, such as isBlocked are connected with the tile
 	// ID. However, the tile ID differs of tiles in the 2nd, 3rd, ... tile sheet from the original ID,
 	// because it's counted with an offset. My theory is that, internally, this ID is used to get the
@@ -168,15 +169,7 @@ Villager Game::createVillager(const Name& name, const std::string& faceTextureNa
 	return {anim, name, movementDirection, endPosition, stepsize, faceTextureName};
 }
 
-void Game::makeNewHouseState(const Position playerPosition) {
-	DoorNumber doorNumber = 0;
-	for(auto& hp : housePositions) {
-		auto doorPosition = hp.first;
-		if(positionsInRange(playerPosition, doorPosition, 8.0f)) {
-			doorNumber = hp.second - 1;
-			break;
-		}
-	}
+void Game::makeNewHouseState(DoorNumber doorNumber) {
 	std::vector<MapBackground*> tileSheets = {assetsManager.getMap(TILESHEET_INTERIOR_FLOOR.c),
 	    assetsManager.getMap(TILESHEET_INTERIOR_FLOOR.c), assetsManager.getMap(TILESHEET_FURNITURE.c)};
 	House house = HouseManager::getHouse(doorNumber + 1);
@@ -194,9 +187,21 @@ void Game::makeNewHouseState(const Position playerPosition) {
 	if(!itemManager.hasBeenPickedUp(itemName)) {
 		item = itemManager.get(itemName, HOUSEDATA.at(doorNumber).itemPosition);
 	}
-
 	states.push(new GameState(window, assetsManager, tileSheets, house.houseDesignPath, &keyBindings, player, enemies,
-	    *assetsManager.getMusic(HOUSE_MUSIC.c), item));
+	    *assetsManager.getMusic(HOUSE_MUSIC.c), item, doorNumber + 1));
+
+}
+
+void Game::makeNewHouseStateFromPlayerPosition(const Position playerPosition) {
+	DoorNumber doorNumber = 0;
+	for(auto& hp : housePositions) {
+		auto doorPosition = hp.first;
+		if(positionsInRange(playerPosition, doorPosition, 8.0f)) {
+			doorNumber = hp.second - 1;
+			break;
+		}
+	}
+	makeNewHouseState(doorNumber);
 }
 
 void Game::openInventory() {
@@ -206,6 +211,8 @@ void Game::openInventory() {
 void Game::pollEvents() {
 	// Gets StateAction that is triggered by the game itself, not the player
 	StateAction action = states.top()->programAction();
+	SaveObject savedGame{};
+	Position lastPosition;
 	// Checks for events triggered by the player
 	while(window->pollEvent(event)) {
 		switch(event.type) {
@@ -218,7 +225,7 @@ void Game::pollEvents() {
 			case sf::Keyboard::Enter: action = states.top()->shouldAct(); break;
 			case sf::Keyboard::K:
 				turnOffMusic();
-				makeNewHouseState(housePositions.back().first);
+				makeNewHouseStateFromPlayerPosition(housePositions.back().first);
 				break;
 			default: action = states.top()->handleKeys(event.key.code); break;
 			}
@@ -230,7 +237,13 @@ void Game::pollEvents() {
 				break;
 			case StateAction::START_SETTING: states.push(new SettingsState(window, assetsManager, &keyBindings)); break;
 			case StateAction::PAUSE_GAME: states.push(new PauseGameState(window, assetsManager, &keyBindings)); break;
-			case StateAction::LOAD_GAME: /* To Do */; break;
+			case StateAction::LOAD_GAME:
+			    turnOffMusic();
+				savedGame = SaveAndLoad::loadGame();
+				makeMainGameState();
+				makeNewHouseState(savedGame.houseNumber);
+				player.animation.set_position({savedGame.positionX, savedGame.positionY});
+				break;
 			case StateAction::START_COMBAT: makeNewCombat(dynamic_cast<GameState*>(states.top())->getEnemy()); break;
 			case StateAction::EXIT_COMBAT:
 				// coming out here means you won the fight.
@@ -239,15 +252,17 @@ void Game::pollEvents() {
 				states.pop();
 				states.top()->resumeMusic();
 				// save progress
-				SaveAndLoad::saveGame(SaveObject{dynamic_cast<GameState*>(states.top())->getCurrentPlayerPosition().x,
-				    dynamic_cast<GameState*>(states.top())->getCurrentPlayerPosition().y, player.getLevel()});
+				SaveAndLoad::saveGame(SaveObject{
+				    dynamic_cast<GameState*>(states.top())->doorNumber,
+				    dynamic_cast<GameState*>(states.top())->getCurrentPlayerPosition().x,
+				    dynamic_cast<GameState*>(states.top())->getCurrentPlayerPosition().y,
+				    player.getLevel()});
 				break;
 			case StateAction::START_HOUSE:
 				turnOffMusic();
-				makeNewHouseState(dynamic_cast<GameState*>(states.top())->getCurrentPlayerPosition());
+				makeNewHouseStateFromPlayerPosition(dynamic_cast<GameState*>(states.top())->getCurrentPlayerPosition());
 				break;
 			case StateAction::PICK_ITEM:
-
 			{
 				Name itemName = dynamic_cast<GameState*>(states.top())->getItemName();
 				itemManager.pickUp(itemName);

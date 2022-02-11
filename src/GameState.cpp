@@ -12,6 +12,7 @@
 GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vector<MapBackground*> textureSheets,
     JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player, Villagers& _villagers, MusicPath& _musicPath)
     : State(window), map(gameAM, textureSheets, path) {
+	std::cout << "New game state" << std::endl;
 	am = &gameAM;
 	keybinds = gameSupportedKeys;
 	player = _player;
@@ -42,13 +43,15 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 /// Constructor for house GameState: No villagers here, but monsters and item
 GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vector<MapBackground*> textureSheets,
     JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player, Enemies& _enemies, MusicPath& _musicPath,
-    Object* _item)
+    Object* _item, DoorNumber _doorNumber)
     : State(window), map(gameAM, textureSheets, path) {
+	std::cout << "New house state" << std::endl;
 	am = &gameAM;
 	keybinds = gameSupportedKeys;
 	player = _player;
 	enemies = _enemies;
 	isHouse = true;
+	doorNumber = _doorNumber;
 	inDialogue = false;
 	item = _item;
 	if(item != nullptr) item->animation.set_position({player.get_position().x + 2, player.get_position().y});
@@ -149,7 +152,11 @@ StateAction GameState::shouldAct() {
 }
 
 void GameState::quitStateActions() {
-	std::cout << "Ending current game state" << std::endl;
+	if(isHouse) {
+		std::cout << "Ending house state" << std::endl;
+	} else {
+		std::cout << "Ending game state" << std::endl;
+	}
 }
 
 void GameState::drawPlayer(sf::RenderWindow* window) {
