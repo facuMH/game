@@ -247,8 +247,8 @@ void Game::pollEvents() {
 			case StateAction::LOAD_GAME:
 				turnOffMusic();
 				savedGame = SaveAndLoad::loadGame();
-				makeMainGameState(savedGame.mainGamePosition);
-				makeNewHouseState(savedGame.houseNumber);
+				makeMainGameState(savedGame.getMainGamePosition());
+				makeNewHouseState(savedGame.houseNumber, savedGame.getHouseStatePosition());
 				break;
 			case StateAction::START_COMBAT: makeNewCombat(dynamic_cast<GameState*>(states.top())->getEnemy()); break;
 			case StateAction::EXIT_COMBAT:

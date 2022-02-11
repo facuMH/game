@@ -23,7 +23,10 @@ class SaveObject {
 	    : houseNumber(houseNumber), housePositionX(housePosition.x), housePositionY(housePosition.y),
 	      mainGamePositionX(mainGamePosition.x), mainGamePositionY(mainGamePosition.y), level(level) {}
 
-  private:
+	Position getHouseStatePosition() const { return {housePositionX, housePositionY}; }
+	Position getMainGamePosition() const { return {mainGamePositionX, mainGamePositionY}; }
+
+
 	// must be implemented for serialization
 	template <class Archive>
 	void serialize(Archive& ar) {
