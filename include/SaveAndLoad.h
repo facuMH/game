@@ -14,7 +14,7 @@ class SaveAndLoad {
 	static SaveObject loadGame() {
 		std::ifstream ifs(SAVED.c);
 		cereal::JSONInputArchive inputArchive(ifs); // Create an input archive
-		SaveObject saveObject;
+		SaveObject saveObject{};
 		inputArchive(saveObject); // Read the data from the archive
 		return saveObject;
 	}

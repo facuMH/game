@@ -248,6 +248,8 @@ void Game::pollEvents() {
 				turnOffMusic();
 				savedGame = SaveAndLoad::loadGame();
 				makeMainGameState(savedGame.getMainGamePosition());
+				turnOffMusic();
+				player.set_stats(savedGame.currentStats);
 				makeNewHouseState(savedGame.houseNumber, savedGame.getHouseStatePosition());
 				break;
 			case StateAction::START_COMBAT: makeNewCombat(dynamic_cast<GameState*>(states.top())->getEnemy()); break;
@@ -259,8 +261,8 @@ void Game::pollEvents() {
 				states.top()->resumeMusic();
 				// save progress
 				SaveAndLoad::saveGame({dynamic_cast<GameState*>(states.top())->doorNumber,
-				    dynamic_cast<GameState*>(states.top())->getCurrentPlayerPosition(),
-				    lastMainGameStatePosition,player.getLevel()});
+				    dynamic_cast<GameState*>(states.top())->getCurrentPlayerPosition(), lastMainGameStatePosition,
+				    player.getLevel(), player.currentStats});
 				break;
 			case StateAction::START_HOUSE:
 				turnOffMusic();
