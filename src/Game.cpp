@@ -235,11 +235,12 @@ void Game::pollEvents() {
 			case StateAction::EXIT_COMBAT:
 				// coming out here means you won the fight.
 				player.addExperience(dynamic_cast<CombatState*>(states.top())->experienceFromEnemy());
-				// save progress
-				SaveAndLoad::saveGame(SaveObject{1, 2, 3, 4});
 				turnOffMusic();
 				states.pop();
 				states.top()->resumeMusic();
+				// save progress
+				SaveAndLoad::saveGame(SaveObject{dynamic_cast<GameState*>(states.top())->getCurrentPlayerPosition().x,
+				    dynamic_cast<GameState*>(states.top())->getCurrentPlayerPosition().y, player.getLevel()});
 				break;
 			case StateAction::START_HOUSE:
 				turnOffMusic();

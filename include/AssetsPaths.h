@@ -93,9 +93,7 @@ constexpr auto WINDOW = cat(CONFIG, "window.ini");
 
 // ---- SAVED GAMES
 constexpr char SAVED_GAMES[] = "../saved_games/";
-constexpr auto SLOT1 = cat(SAVED_GAMES, "1.txt");
-constexpr auto SLOT2 = cat(SAVED_GAMES, "2.txt");
-constexpr auto SLOT3 = cat(SAVED_GAMES, "3.txt");
+constexpr auto SAVED = cat(SAVED_GAMES, "last_saved_game.txt");
 
 // --- FONTS
 constexpr auto FONTS = cat(ASSETS, "fonts/");
