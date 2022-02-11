@@ -259,8 +259,8 @@ void Game::pollEvents() {
 				states.top()->resumeMusic();
 				// save progress
 				SaveAndLoad::saveGame({dynamic_cast<GameState*>(states.top())->doorNumber,
-				    dynamic_cast<GameState*>(states.top())->getCurrentPlayerPosition(), lastMainGameStatePosition,
-				    player.getLevel()});
+				    dynamic_cast<GameState*>(states.top())->getCurrentPlayerPosition(),
+				    lastMainGameStatePosition,player.getLevel()});
 				break;
 			case StateAction::START_HOUSE:
 				turnOffMusic();
