@@ -1,12 +1,12 @@
 #pragma once
 
-#include <fstream>
-#include <iostream>
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
+#include <fstream>
+#include <iostream>
 
-#include "definitions.h"
 #include "AssetsPaths.h"
+#include "definitions.h"
 
 
 class SaveObject {
@@ -15,13 +15,13 @@ class SaveObject {
 	Position housePosition;
 	Position mainGamePosition;
 	int level;
+
 	SaveObject() = default;
-	SaveObject(int _houseNumber, Position _housePosition, Position _mainGamePosition, int _level) {
-		this->houseNumber = _houseNumber;
-		this->housePosition = _housePosition;
-		this->mainGamePosition = _mainGamePosition;
-		this->level = _level;
+
+  private:
+	// must be implemented for serialization
+	template <class Archive>
+	void serialize(Archive& ar) {
+		ar(houseNumber, housePosition.x, housePosition.y, mainGamePosition.x, mainGamePosition.y, level);
 	}
-
 };
-
