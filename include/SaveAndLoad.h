@@ -2,15 +2,13 @@
 #include "SaveObject.h"
 
 #include <cereal/archives/json.hpp>
-#include <cereal/types/memory.hpp>
-#include <cereal/types/unordered_map.hpp>
 
 class SaveAndLoad {
   public:
 	static void saveGame(SaveObject saveObject) {
 		std::ofstream ofs(SAVED.c);
 		cereal::JSONOutputArchive oarchive(ofs); // Create an output archive
-		oarchive(saveObject);                    // Write the data to the archive
+		oarchive(saveObject); // Write the data to the archive
 	}
 
 	static SaveObject loadGame() {
