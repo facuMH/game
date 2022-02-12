@@ -13,13 +13,14 @@
 #include "SettingsState.h"
 #include "asset_data.h"
 
+SaveGame saveGame;
+
 // Private functions
 void Game::initVariables() {
 	window = nullptr;
 
-	Texture* play_text = assetsManager.getTexture(NINJA_WALK.c);
-	Animation player_animation(play_text, sf::IntRect(0, 0, TILESIZE, TILESIZE), Position(50, 50));
-	player = Player("Adventurer", Stats(15, 20, 50, 30, 15, 1), player_animation, 5.0f);
+	saveGame.NewGame();
+	player = saveGame.getPlayer();
 }
 
 void Game::closeWindow() {

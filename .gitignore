@@ -41,3 +41,6 @@ cmake-*
 # misc
 ltmain.sh
 androidbuildlibs.sh
+
+compile_commands.json
+.cache

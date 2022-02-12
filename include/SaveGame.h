@@ -1,18 +1,16 @@
 #pragma once
 
 #include <fstream>
-
-
-
 #include "definitions.h"
-
+#include "Player.h"
 class SaveGame {
   private:
 	void UpdateCombatantEquipment();
+	Player player;
 
   public:
-	struct Stats player_stats;
     std::string save_game_file;
+	Player& getPlayer() { return player; };
 
 	SaveGame();
 	~SaveGame();
@@ -24,7 +22,7 @@ class SaveGame {
 	template <class Archive>
 	void serialize(Archive &archive)
 	{
-		archive(CEREAL_NVP(player_stats));
+		archive(CEREAL_NVP(player));
 	}
 
 	void saveCurrentGame();

@@ -18,4 +18,9 @@ public:
   void equip(Object *arms);
   void move(KeyAction key, TileMap *map);
   bool isEnemy() override { return false; }
+
+  template <class Archive>
+	void serialize(Archive &archive) {
+    archive(CEREAL_NVP(currentStats));
+  }
 };

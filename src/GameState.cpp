@@ -7,6 +7,9 @@
 #include "DialogueBox.h"
 #include "GameState.h"
 #include "asset_data.h"
+#include "SaveGame.h"
+
+extern SaveGame saveGame;
 
 /// Constructor for village GameState: There are several villagers, but no enemies, as they hide in the houses
 GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vector<MapBackground*> textureSheets,
@@ -137,6 +140,9 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 	}
 	if(key == sf::Keyboard::C) result = StateAction::START_COMBAT;
 	if(key == sf::Keyboard::Q) result = StateAction::EXIT_GAME;
+	if(key == sf::Keyboard::O){
+		saveGame.saveCurrentGame();
+	}
 	return result;
 }
 

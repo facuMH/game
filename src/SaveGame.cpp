@@ -1,14 +1,17 @@
 #include <filesystem>
-
+#include "AssetsManager.h"
 #include "SaveGame.h"
+#include "AssetsPaths.h"
 
 
 namespace fs = std::filesystem;
+AssetsManager assetsManager;
 
 SaveGame::SaveGame()
-    : player_stats(16,17,18,19,20,21)
 {
-
+	Texture* play_text = assetsManager.getTexture(NINJA_WALK.c);
+	Animation player_animation(play_text, sf::IntRect(0, 0, TILESIZE, TILESIZE), Position(50, 50));
+	player = Player("Adventurer", Stats(0, 0, 0, 0, 0, 0), player_animation, 5.0f);
 }
 
 SaveGame::~SaveGame() = default;
@@ -25,7 +28,9 @@ void SaveGame::SetItems()
 
 void SaveGame::NewGame()
 {
-
+	Texture* play_text = assetsManager.getTexture(NINJA_WALK.c);
+	Animation player_animation(play_text, sf::IntRect(0, 0, TILESIZE, TILESIZE), Position(50, 50));
+	player = Player("Adventurer", Stats(15, 20, 50, 30, 15, 1), player_animation, 5.0f);
 }
 
 void SaveGame::UpdateCombatantEquipment()
@@ -50,8 +55,7 @@ void SaveGame::saveCurrentGame()
 
 	{
 		cereal::JSONOutputArchive ar(ss);
-		player_stats = {1,2,3,4,5,6};
-		ar(player_stats);
+		ar(player);
 	}
 
 	std::ofstream outFile(output_file);
@@ -68,8 +72,7 @@ void SaveGame::saveCurrentGame(const std::string & output_file)
 
     {
 		cereal::JSONOutputArchive ar(ss);
-        player_stats = {11,22,33,44,55,66};
-		ar(player_stats);
+		ar(player);
     }
 
 	std::ofstream outFile(output_file);
@@ -88,7 +91,7 @@ void SaveGame::loadGame(const std::string &saved_game_path)
 	}
 	{
 		cereal::JSONInputArchive ir(ss);
-		ir(player_stats);
+		ir(player);
         save_game_file = saved_game_path;
 	}
 }
