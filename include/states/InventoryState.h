@@ -64,4 +64,5 @@ class InventoryState : public State {
 	StateAction shouldAct() override;
 	void stopMusic() override;
 	void resumeMusic() override;
+	void playErrorSound() override;
 };

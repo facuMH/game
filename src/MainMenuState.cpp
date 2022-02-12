@@ -17,8 +17,15 @@ MainMenuState::MainMenuState(sf::RenderWindow* window, AssetsManager& am, KeyLis
 
 	view = window->getDefaultView();
 
-	soundBuffer = am.getSoundBuffer(MENU_BLIP.c);
-	blipSound.setBuffer(soundBuffer);
+	soundBuffers.emplace("blip", am.getSoundBuffer(MENU_BLIP.c));
+	soundBuffers.emplace("nope", am.getSoundBuffer(NOPE_SOUND.c));
+
+	for(auto& sb : soundBuffers) {
+		sf::Sound sound;
+		sound.setBuffer(sb.second);
+		sounds.emplace(sb.first, sound);
+	}
+
 	view = window->getDefaultView();
 	MusicPath* path = am.getMusic(MENU_MUSIC.c);
 	music.openFromFile(*path);
@@ -121,7 +128,7 @@ StateAction MainMenuState::handleKeys(sf::Keyboard::Key key) {
 		default: break;
 		}
 	}
-	blipSound.play();
+	sounds.find("blip")->second.play();
 	return StateAction::NONE;
 }
 
@@ -145,4 +152,8 @@ void MainMenuState::stopMusic() {
 
 void MainMenuState::resumeMusic() {
 	music.play();
+}
+
+void MainMenuState::playErrorSound() {
+	sounds.find("nope")->second.play();
 }

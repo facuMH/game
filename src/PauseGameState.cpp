@@ -161,3 +161,4 @@ StateAction PauseGameState::shouldAct() {
 void PauseGameState::stopMusic() {}
 
 void PauseGameState::resumeMusic() {}
+void PauseGameState::playErrorSound() {}

@@ -56,4 +56,5 @@ class SettingsState : public State {
 	StateAction programAction() override { return StateAction::NONE; };
 	void stopMusic() override;
 	void resumeMusic() override;
+	void playErrorSound() override;
 };

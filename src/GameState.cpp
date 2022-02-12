@@ -229,3 +229,4 @@ Name GameState::getEntityInInteractionRange(Position position) {
 	}
 	return n;
 }
+void GameState::playErrorSound() {}

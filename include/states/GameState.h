@@ -65,4 +65,5 @@ class GameState : public State {
 	void stopMusic() override;
 	void resumeMusic() override;
 	Name getItemName() const { return item->getName(); }
+	void playErrorSound() override;
 };

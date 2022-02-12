@@ -178,8 +178,8 @@ void Game::makeNewHouseState(DoorNumber doorNumber, Position playerPosition = {0
 	EnemyData enemyData = ENEMYDATA[doorNumber - 1];
 	Texture* texture = assetsManager.getTexture(enemyData.texturePath);
 	Animation animation(texture, sf::IntRect(0, 0, TILESIZE, TILESIZE), enemyData.position);
-	Enemy enemy(enemyData.name, Stats(15, 15, 15, 15, 15, 15), animation, MovementType::HORIZONTAL, {30, 30}, 2.0f,
-	    enemyData.experience);
+	Enemy enemy(enemyData.name, Stats(15, 15, 15, 15, 15, 15), animation,
+	    MovementType::HORIZONTAL, {30, 30}, 2.0f, enemyData.experience);
 	enemies.push_back(enemy);
 
 	Object* item = nullptr;
@@ -219,7 +219,6 @@ void Game::pollEvents() {
 	// Gets StateAction that is triggered by the game itself, not the player
 	StateAction action = states.top()->programAction();
 	SaveObject savedGame;
-	Position lastPosition;
 	// Checks for events triggered by the player
 	while(window->pollEvent(event)) {
 		switch(event.type) {
@@ -245,12 +244,16 @@ void Game::pollEvents() {
 			case StateAction::START_SETTING: states.push(new SettingsState(window, assetsManager, &keyBindings)); break;
 			case StateAction::PAUSE_GAME: states.push(new PauseGameState(window, assetsManager, &keyBindings)); break;
 			case StateAction::LOAD_GAME:
-				turnOffMusic();
-				savedGame = SaveAndLoad::loadGame();
-				makeMainGameState(savedGame.getMainGamePosition());
-				turnOffMusic();
-				player.set_stats(savedGame.currentStats);
-				makeNewHouseState(savedGame.houseNumber, savedGame.getHouseStatePosition());
+				try {
+					savedGame = SaveAndLoad::loadGame();
+					turnOffMusic(); // main menu music
+					makeMainGameState(savedGame.getMainGamePosition());
+					turnOffMusic(); // main game state music
+					player.set_stats(savedGame.currentStats);
+					makeNewHouseState(savedGame.houseNumber, savedGame.getHouseStatePosition());
+				} catch(...) {
+					states.top()->playErrorSound();
+				}
 				break;
 			case StateAction::START_COMBAT: makeNewCombat(dynamic_cast<GameState*>(states.top())->getEnemy()); break;
 			case StateAction::EXIT_COMBAT:
