@@ -34,11 +34,11 @@ set(SOURCES src/main.cpp
         src/SettingsState.cpp
         src/State.cpp
         src/Tile.cpp
-        src/TileMap.cpp)
+        src/TileMap.cpp src/EnemyManager.cpp include/managers/EnemyManager.h)
 
 set(HEADERS include/Animation.h
         include/asset_data.h
-        include/AssetsManager.h
+        include/managers/AssetsManager.h
         include/AssetsPaths.h
         include/Button.h
         include/definitions.h
@@ -50,10 +50,10 @@ set(HEADERS include/Animation.h
         include/entity_attributes/IdleMovement.h
         include/Game.h
         include/House.h
-        include/HouseManager.h
+        include/managers/HouseManager.h
         include/Inanimated.h
-        include/InteractionManager.h
-        include/ItemManager.h
+        include/managers/InteractionManager.h
+        include/managers/ItemManager.h
         include/Player.h
         include/Tile.h
         include/TileMap.h
@@ -68,7 +68,7 @@ set(HEADERS include/Animation.h
         include/states/SettingsState.h
         include/states/State.h
         include/SaveObject.h
-        include/SaveAndLoad.h)
+        include/SaveAndLoad.h src/EnemyManager.cpp include/managers/EnemyManager.h)
 
 set(DEPENDENCIES libs/tileson.hpp
         libs/cereal/archives/json.hpp

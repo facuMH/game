@@ -3,10 +3,10 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
-#include "AssetsManager.h"
-#include "ItemManager.h"
 #include "Player.h"
 #include "State.h"
+#include "managers/AssetsManager.h"
+#include "managers/ItemManager.h"
 
 #include "definitions.h"
 

@@ -5,9 +5,9 @@
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Window/VideoMode.hpp>
 
-#include "AssetsManager.h"
 #include "Button.h"
 #include "State.h"
+#include "managers/AssetsManager.h"
 
 class SettingsState : public State {
   private:

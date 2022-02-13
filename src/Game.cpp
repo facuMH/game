@@ -7,8 +7,8 @@
 #include "AssetsPaths.h"
 #include "Game.h"
 #include "House.h"
-#include "HouseManager.h"
 #include "asset_data.h"
+#include "managers/HouseManager.h"
 #include "definitions.h"
 #include "states/CombatState.h"
 #include "states/GameOverState.h"
@@ -23,6 +23,8 @@ void Game::initVariables() {
 	Texture* play_text = assetsManager.getTexture(NINJA_WALK.c);
 	Animation player_animation(play_text, sf::IntRect(0, 0, TILESIZE, TILESIZE), Position(50, 50));
 	player = Player("Adventurer", Stats(15, 20, 50, 30, 31, 1), player_animation, 5.0f);
+
+	enemyManager.initEnemyMap();
 }
 
 void Game::closeWindow() {
@@ -177,14 +179,14 @@ void Game::makeNewHouseState(DoorNumber doorNumber, Position playerPosition = {0
 	    assetsManager.getMap(TILESHEET_INTERIOR_FLOOR.c), assetsManager.getMap(TILESHEET_FURNITURE.c)};
 	House house = HouseManager::getHouse(doorNumber);
 
-	Enemies enemies;
 	EnemyData enemyData = ENEMYDATA[doorNumber - 1];
-	Texture* texture = assetsManager.getTexture(enemyData.texturePath);
-	Animation animation(texture, sf::IntRect(0, 0, TILESIZE, TILESIZE), enemyData.position);
-	Enemy enemy(enemyData.name, Stats(15, 15, 15, 15, 15, 15), animation, MovementType::HORIZONTAL, {30, 30}, 2.0f,
-	    enemyData.experience);
-	enemies.push_back(enemy);
-
+	Enemies enemies;
+	if (!enemyManager.isEnemyDefeated(enemyData.name)) {
+		Texture* texture = assetsManager.getTexture(enemyData.texturePath);
+		Animation animation(texture, sf::IntRect(0, 0, TILESIZE, TILESIZE), enemyData.position);
+		enemies.push_back(Enemy(enemyData.name, Stats(15, 15, 15, 15, 15, 15), animation, MovementType::HORIZONTAL, {30, 30}, 2.0f,
+		    enemyData.experience, false));
+	}
 	Object* item = nullptr;
 	Name itemName = HOUSEDATA.at(doorNumber - 1).itemName;
 
@@ -198,7 +200,7 @@ void Game::makeNewHouseState(DoorNumber doorNumber, Position playerPosition = {0
 
 	lastMainGameStatePosition = dynamic_cast<GameState*>(states.top())->getCurrentPlayerPosition();
 	player.animation.set_position(playerPosition);
-	states.push(new GameState(window, assetsManager, tileSheets, house.houseDesignPath, &keyBindings, player, enemies,
+	states.push(new GameState(window, assetsManager, enemyManager, tileSheets, house.houseDesignPath, &keyBindings, player, enemies,
 	    *assetsManager.getMusic(HOUSE_MUSIC.c), item, doorNumber));
 }
 
@@ -269,6 +271,7 @@ void Game::pollEvents() {
 			case StateAction::EXIT_COMBAT:
 				// coming out here means you won the fight.
 				player.addExperience(dynamic_cast<CombatState*>(states.top())->experienceFromEnemy());
+				enemyManager.setEnemyDefeated(dynamic_cast<CombatState*>(states.top())->getEnemyName());
 				turnOffMusic();
 				states.pop();
 				states.top()->resumeMusic();
@@ -290,7 +293,7 @@ void Game::pollEvents() {
 				}
 			} break;
 			case StateAction::OPEN_INVENTORY: openInventory(); break;
-			case StateAction::ADD_ITEM: itemManager.add_item(); break;
+			case StateAction::ADD_ITEM: itemManager.addItem(); break;
 			case StateAction::EXIT_HOUSE:
 				turnOffMusic();
 				states.pop();
