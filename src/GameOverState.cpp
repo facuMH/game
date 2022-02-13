@@ -153,6 +153,8 @@ bool GameOverState::shouldQuit() {
 	return isQuit();
 }
 
+void GameOverState::drawPlayer(sf::RenderWindow* window) {}
+
 StateAction GameOverState::shouldAct() {
 	if(activeButton == 0) {
 		return StateAction::LOAD_GAME;

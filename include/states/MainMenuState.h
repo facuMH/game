@@ -38,18 +38,20 @@ class MainMenuState : public State {
 	~MainMenuState() override;
 
 	// Functions
+	void endState();
+
+	void updateInput(const float& dt);
+	void updateButtons();
+	void renderButtons(sf::RenderWindow* window);
+
 	void update(const float& dt) override;
 	void render(sf::RenderWindow* window) override;
 	StateAction handleKeys(sf::Keyboard::Key key) override;
 	void updateKeybinds(const float& dt) override;
 	void quitStateActions() override;
 	bool shouldQuit() override;
+	void drawPlayer(sf::RenderWindow* window) override{};
 	StateAction shouldAct() override;
-
+	sf::View getView() override { return view; };
 	void playErrorSound();
-	void updateInput(const float& dt);
-	void updateButtons();
-	void renderButtons(sf::RenderWindow* window);
-
-
 };

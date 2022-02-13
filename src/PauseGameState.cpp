@@ -83,6 +83,9 @@ void PauseGameState::updateMousePositions() {
 	mousePosView = getPos(mousePoseWindow);
 }
 
+void PauseGameState::endState() {
+	std::cout << "Ending Pause Game State!\n";
+}
 
 void PauseGameState::updateInput(const float& dt) {}
 
@@ -142,6 +145,8 @@ void PauseGameState::quitStateActions() {
 bool PauseGameState::shouldQuit() {
 	return isQuit();
 }
+
+void PauseGameState::drawPlayer(sf::RenderWindow* window) {}
 
 StateAction PauseGameState::shouldAct() {
 	if(activeButton == 0) {

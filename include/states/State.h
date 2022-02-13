@@ -39,16 +39,17 @@ class State {
 	virtual void render(sf::RenderWindow* window) = 0;
 	virtual void updateKeybinds(const float& dt) = 0;
 	virtual bool shouldQuit() = 0;
+	const bool& isQuit() const { return isQuitting; }
 	virtual void quitStateActions() = 0;
+
 	virtual StateAction handleKeys(sf::Keyboard::Key key) = 0;
 	virtual StateAction shouldAct() = 0;
 
-	virtual void stopMusic();
-	virtual void resumeMusic();
-
-	const bool& isQuit() const { return isQuitting; }
-	sf::View getView() const { return view; };
-	sf::RenderWindow* getWindow() { return window; }
+	virtual void drawPlayer(sf::RenderWindow* window) = 0;
+	virtual sf::View getView() = 0;
 	Position_i getMouse() const { return sf::Mouse::getPosition(*window); }
 	Position getPos(Position_i objectPosition) const { return window->mapPixelToCoords(objectPosition); }
+	virtual void stopMusic();
+	virtual void resumeMusic();
+	sf::RenderWindow* getWindow() { return window; }
 };

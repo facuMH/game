@@ -42,18 +42,23 @@ void MainMenuState::initFonts(AssetsManager& am) {
 	font = *am.getFont(DOSIS.c);
 }
 
-void MainMenuState::initButtons(const Position& pos) {
-	auto x = pos.x - 75;
-	auto y = pos.y - 150;
+void MainMenuState::initButtons(const Position &pos) {
+	auto x = pos.x-75;
+	auto y = pos.y-150;
 	buttons.push_back(Button(x, y, 150, 50, &font, "New Game", GREY, LIGHTGREY, sf::Color::Black));
-	buttons.push_back(Button(x, y + 50, 150, 50, &font, "Load Game", GREY, LIGHTGREY, sf::Color::Black));
-	buttons.push_back(Button(x, y + 100, 150, 50, &font, "Settings", GREY, LIGHTGREY, sf::Color::Black));
-	buttons.push_back(Button(x, y + 150, 150, 50, &font, "QUIT", GREY, LIGHTGREY, sf::Color::Black));
+	buttons.push_back(Button(x, y+50, 150, 50, &font, "Load Game", GREY, LIGHTGREY, sf::Color::Black));
+	buttons.push_back(Button(x, y+100, 150, 50, &font, "Settings", GREY, LIGHTGREY, sf::Color::Black));
+	buttons.push_back(Button(x, y+150, 150, 50, &font, "QUIT", GREY, LIGHTGREY, sf::Color::Black));
 	activeButton = 0;
 	buttons[activeButton].setActive();
 }
 
 MainMenuState::~MainMenuState() = default;
+
+void MainMenuState::endState() {
+	std::cout << "Ending Main Menu!"
+	          << "\n";
+}
 
 void MainMenuState::updateInput(const float& dt) {}
 
@@ -128,12 +133,16 @@ StateAction MainMenuState::handleKeys(sf::Keyboard::Key key) {
 }
 
 StateAction MainMenuState::shouldAct() {
-	switch(activeButton) {
-	case 0: return StateAction::START_GAME;
-	case 1: return StateAction::LOAD_GAME;
-	case 2: return StateAction::START_SETTING;
-	case 3: return StateAction::EXIT_GAME;
-	default: return StateAction::NONE;
+	if(activeButton == 0) {
+		return StateAction::START_GAME;
+	} else if(activeButton == 1) {
+		return StateAction::LOAD_GAME;
+	} else if(activeButton == 2) {
+		return StateAction::START_SETTING;
+	} else if(activeButton == 3) {
+		return StateAction::EXIT_GAME;
+	} else {
+		return StateAction::NONE;
 	}
 }
 

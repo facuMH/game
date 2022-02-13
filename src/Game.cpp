@@ -353,14 +353,7 @@ void Game::render() {
 		states.top()->render(window);
 	}
 	window->setView(states.top()->getView());
-
-	// only draw play in GameState or CombatState
-	if(!states.empty()) {
-		if(typeid(states.top()) == typeid(CombatState)) {
-			dynamic_cast<CombatState*>(states.top())->drawPlayer(window);
-		} else if(typeid(states.top()) == typeid(GameState))
-			dynamic_cast<GameState*>(states.top())->drawPlayer(window);
-	}
+	if(!states.empty()) states.top()->drawPlayer(window);
 	// Window is done drawing --> display result
 	// window->draw(mousePosText);
 	window->display();
