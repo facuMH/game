@@ -19,7 +19,6 @@ class GameState : public State {
 	Enemies enemies;
 	DialogueBox dialogueBox;
 	bool inDialogue;
-
 	EnemyManager* enemyManager;
 	AssetsManager* assetsManager;
 	KeyList* keybinds;
@@ -58,6 +57,8 @@ class GameState : public State {
 	Position getCurrentPlayerPosition();
 	Name getEntityInInteractionRange(Position position);
 	void startDialogue(Name& characterName);
-	Enemy* getEnemy() { return &enemies[0]; }
+	Enemy* getEnemy() { return &enemies.front(); }
+
 	Name getItemName() const { return item->getName(); }
+	void removeEnemy(const Enemy& enemy);
 };
