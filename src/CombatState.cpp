@@ -79,6 +79,9 @@ CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, std::vecto
 	music.play();
 
 	soundBuffers.emplace("power_up", am.getSoundBuffer(POWER_UP.c));
+	soundBuffers.emplace("punch1", am.getSoundBuffer(PUNCH1.c));
+	soundBuffers.emplace("punch2", am.getSoundBuffer(PUNCH2.c));
+
 
 	for(auto& sb : soundBuffers) {
 		sf::Sound sound;
@@ -208,11 +211,13 @@ StateAction CombatState::shouldAct() {
 		// combat action menu
 		if(actionButtonActive == 0) {
 			// normal attack with current weapon
+			sounds.find("punch1")->second.play();
 			if(player.attack() < enemy.defend()) {
 				enemy.apply_damage(player.atkDamage());
 			}
 			nextTurn = true;
 		} else if(actionButtonActive == 1) {
+			sounds.find("punch2")->second.play();
 			// special attack with current weapon
 			if(player.currentStats.mana >= 5) {
 				if(player.attack() < enemy.defend()) {
