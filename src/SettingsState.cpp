@@ -122,10 +122,6 @@ void SettingsState::updateMousePositions() {
 	mousePosView = getPos(mousePoseWindow);
 }
 
-void SettingsState::endState() {
-	std::cout << "Ending Settings Menu!\n";
-}
-
 void SettingsState::updateInput(const float& dt) {}
 
 void SettingsState::update(const float& dt) {
@@ -133,7 +129,6 @@ void SettingsState::update(const float& dt) {
 	updateInput(dt);
 	updateButtons();
 }
-
 
 void SettingsState::render(sf::RenderWindow* window) {
 	window->setView(view);
@@ -181,8 +176,6 @@ void SettingsState::quitStateActions() {
 bool SettingsState::shouldQuit() {
 	return isQuit();
 }
-
-void SettingsState::drawPlayer(sf::RenderWindow* window) {}
 
 StateAction SettingsState::shouldAct() {
 	updateGui();

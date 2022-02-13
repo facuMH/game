@@ -11,7 +11,6 @@
 class CombatState : public State {
   private:
 	sf::Font font;
-
 	Player player;
 	Enemy enemy;
 	TileMap map;
@@ -20,7 +19,6 @@ class CombatState : public State {
 	KeyList* keybinds;
 
 	CombatText lifeCounters;
-	void addCombatString(const Player& player, AssetsManager& am);
 	Position initialText{10.f, 300.f};
 	float textIntervalHeight = 50;
 
@@ -32,13 +30,14 @@ class CombatState : public State {
 	int cursorOrientation;
 	sf::Clock cursorClock;
 
-	void addActionMenu();
 	Buttons actionButtons;
 	int actionButtonActive;
 	bool selectingEnemy;
 	bool selectingItem;
 	bool isSpecialAtk;
 
+	void addActionMenu();
+	void addCombatString(const Player& player, AssetsManager& am);
   public:
 	// Constructor
 	CombatState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets,
@@ -55,9 +54,9 @@ class CombatState : public State {
 	void quitStateActions() override;
 	StateAction handleKeys(sf::Keyboard::Key key) override;
 	StateAction shouldAct() override;
+
 	StateAction programAction();
-	void drawPlayer(sf::RenderWindow* window) override;
+	void drawPlayer(sf::RenderWindow* window);
 	int experienceFromEnemy() const { return enemy.getExperience(); }
-	sf::View getView() override { return view; };
 	void LevelUpMessage();
 };
