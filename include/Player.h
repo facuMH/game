@@ -6,16 +6,30 @@
 
 /// Class for playable characters
 class Player : public Entity, public Combatant, public SteeredMovement {
-public:
-  Object *weapon = nullptr;
+	int level = 1;
+	int experience = 0;
 
-  Player() = default;
-  Player(const Name &_name, const Stats &_stats, const Animation& _animation,
-         float _stepsize)
-      : Entity(_name, _animation), Combatant(_stats, _stats),
-        SteeredMovement(_stepsize) {}
+  public:
+	Object* weapon = nullptr;
 
-  void equip(Object *arms);
-  void move(KeyAction key, TileMap *map);
-  bool isEnemy() override { return false; }
+	Player() = default;
+	Player(const Name& _name, const Stats& _stats, const Animation& _animation, float _stepsize)
+	    : Entity(_name, _animation), Combatant(_stats, _stats), SteeredMovement(_stepsize) {}
+
+	void equip(Object* arms);
+	void move(KeyAction key, TileMap* map);
+	bool isEnemy() override { return false; }
+	int getLevel() const { return level; }
+	int getExp() const { return experience; }
+	bool addExperience(const int xp) {
+		experience += xp;
+		bool levelUp = false;
+		if(experience > 99) {
+			level++;
+			experience = 0;
+			levelUp = true;
+			Combatant::maxStats + levelUpStatsIncrement;
+		}
+		return levelUp;
+	}
 };

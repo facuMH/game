@@ -107,6 +107,7 @@ constexpr auto SOUNDS = cat(ASSETS, "sounds/");
 constexpr auto GASP = cat(SOUNDS.c, "gasp.wav");
 constexpr auto MENU_BLIP = cat(SOUNDS.c, "menu.wav");
 constexpr auto INTERACTION_BLING = cat(SOUNDS.c, "interaction.wav");
+constexpr auto POWER_UP = cat(SOUNDS.c, "power_up.wav");
 
 // ---- MUSIC
 constexpr auto MUSIC = cat(ASSETS, "music/");

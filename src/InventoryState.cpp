@@ -24,9 +24,7 @@ InventoryState::InventoryState(sf::RenderWindow* window, AssetsManager& am, KeyL
 	supportedKeys = _supportedKeys;
 	activeButton = 0;
 	playerItems[activeButton].setFillColor(activeItemColor);
-
-	auto soundBuffer = am.getSoundBuffer(MENU_BLIP.c);
-	blipSound.setBuffer(soundBuffer);
+	blipSound.setBuffer(am.getSoundBuffer(MENU_BLIP.c));
 }
 
 void InventoryState::initPlayerItems() {
