@@ -181,12 +181,15 @@ void Game::makeNewHouseState(DoorNumber doorNumber, Position playerPosition = {0
 
 	EnemyData enemyData = ENEMYDATA[doorNumber - 1];
 	Enemies enemies;
+
+	// only add enemy if it hasn't been defeated yet.
 	if (!enemyManager.isEnemyDefeated(enemyData.name)) {
 		Texture* texture = assetsManager.getTexture(enemyData.texturePath);
 		Animation animation(texture, sf::IntRect(0, 0, TILESIZE, TILESIZE), enemyData.position);
 		enemies.push_back(Enemy(enemyData.name, Stats(15, 15, 15, 15, 15, 15), animation, MovementType::HORIZONTAL, {30, 30}, 2.0f,
-		    enemyData.experience, false));
+		    enemyData.experience));
 	}
+
 	Object* item = nullptr;
 	Name itemName = HOUSEDATA.at(doorNumber - 1).itemName;
 
