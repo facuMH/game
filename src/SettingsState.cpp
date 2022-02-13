@@ -191,3 +191,4 @@ void SettingsState::stopMusic() {
 void SettingsState::resumeMusic() {
 	music.play();
 }
+void SettingsState::playErrorSound() {}

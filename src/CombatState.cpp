@@ -234,7 +234,6 @@ StateAction CombatState::shouldAct() {
 	if(enemy.get_hp() <= 0) {
 		if(!inLevelUpBox && player.getExp() + enemy.getExperience() >= 99) {
 			LevelUpMessage();
-
 		} else {
 			return StateAction::EXIT_COMBAT;
 		}
@@ -285,3 +284,4 @@ void CombatState::LevelUpMessage() {
 	center.y -= height / 2;
 	levelUpBox = std::make_unique<Button>(Button(center.x, center.y, 400.f, 100.f, lvlUpTxt));
 }
+void CombatState::playErrorSound() {}

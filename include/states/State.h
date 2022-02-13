@@ -48,4 +48,5 @@ class State {
 	virtual void stopMusic() = 0;
 	virtual void resumeMusic() = 0;
 	sf::RenderWindow* getWindow() { return window; }
+	virtual void playErrorSound() = 0;
 };

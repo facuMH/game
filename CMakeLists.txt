@@ -10,10 +10,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
 set(CMAKE_VERBOSE_MAKEFILE ON CACHE BOOL "ON")
 
-IF(WIN32)
+IF (WIN32)
     set(CMAKE_PREFIX_PATH "C:\\dev\\SFML\\lib\\cmake\\SFML")
     set(CMAKE_CXX_FLAGS "/MP /EHsc")
-ENDIF()
+ENDIF ()
 
 #------------- CONFIGURATIONS
 
@@ -55,7 +55,6 @@ set(HEADERS include/Animation.h
         include/InteractionManager.h
         include/ItemManager.h
         include/Player.h
-        include/State.h
         include/Tile.h
         include/TileMap.h
         include/Villager.h
@@ -66,9 +65,14 @@ set(HEADERS include/Animation.h
         include/states/InventoryState.h
         include/states/MainMenuState.h
         include/states/PauseGameState.h
-        include/states/SettingsState.h)
+        include/states/SettingsState.h
+        include/states/State.h
+        include/SaveObject.h
+        include/SaveAndLoad.h)
 
-set(DEPENDENCIES libs/tileson.hpp)
+set(DEPENDENCIES libs/tileson.hpp
+        libs/cereal/archives/json.hpp
+        libs/cereal/cereal.hpp)
 
 #------------- DEPENDENCIES
 
@@ -82,28 +86,28 @@ add_executable(rpg ${SOURCES} ${HEADERS} ${DEPENDENCIES})
 #------------- LINK
 target_include_directories(rpg PUBLIC include/ ${SFML_INCLUDE_DIR})
 target_include_directories(rpg PUBLIC libs/ ${SFML_INCLUDE_DIR})
-target_link_libraries(rpg sfml-graphics sfml-audio  ${SFML_DEPENDENCIES})
+target_link_libraries(rpg sfml-graphics sfml-audio ${SFML_DEPENDENCIES})
 
 
 #------------- POST LINK
-IF(WIN32)
+IF (WIN32)
     set(DLL_PATH "${PROJECT_SOURCE_DIR}/lib")
     # the following command copies SDL DLL to bin folder
     message("${PROJECT_SOURCE_DIR}")
     add_custom_command(TARGET rpg POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy_directory
-           ${DLL_PATH}
-           $<TARGET_FILE_DIR:rpg>)
+            COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${DLL_PATH}
+            $<TARGET_FILE_DIR:rpg>)
 
     set(ASSETS_ORIGIN "${PROJECT_SOURCE_DIR}/assets")
     add_custom_command(TARGET rpg POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy_directory
-           ${ASSETS_ORIGIN}
-           $<TARGET_FILE_DIR:rpg>/../assets)
+            COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${ASSETS_ORIGIN}
+            $<TARGET_FILE_DIR:rpg>/../assets)
 
     set(CONFIG_ORIGIN "${PROJECT_SOURCE_DIR}/config")
     add_custom_command(TARGET rpg POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy_directory
-           ${CONFIG_ORIGIN}
-           $<TARGET_FILE_DIR:rpg>/../config)
-ENDIF()
+            COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${CONFIG_ORIGIN}
+            $<TARGET_FILE_DIR:rpg>/../config)
+ENDIF ()

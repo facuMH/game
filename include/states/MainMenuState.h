@@ -15,8 +15,8 @@ class MainMenuState : public State {
 	sf::Texture backgroundTexture;
 	sf::RectangleShape background;
 	sf::Font font;
-	sf::SoundBuffer soundBuffer;
-	sf::Sound blipSound;
+	std::unordered_map<std::string, sf::SoundBuffer> soundBuffers;
+	std::unordered_map<std::string, sf::Sound> sounds;
 	sf::Music music;
 
 	Buttons buttons;
@@ -60,4 +60,5 @@ class MainMenuState : public State {
 	sf::View getView() override { return view; };
 	void stopMusic() override;
 	void resumeMusic() override;
+	void playErrorSound() override;
 };

@@ -15,8 +15,8 @@ class GameOverState : public State {
 	sf::Font font;
 	sf::Text text;
 
-	sf::SoundBuffer soundBuffer;
-	sf::Sound blipSound;
+	std::unordered_map<std::string, sf::SoundBuffer> soundBuffers;
+	std::unordered_map<std::string, sf::Sound> sounds;
 	sf::Music music;
 
 	KeyList* supportedKeys;
@@ -54,4 +54,5 @@ class GameOverState : public State {
 	StateAction programAction() override { return StateAction::NONE; };
 	void stopMusic() override;
 	void resumeMusic() override;
+	void playErrorSound() override;
 };

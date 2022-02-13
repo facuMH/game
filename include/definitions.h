@@ -5,6 +5,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
+#include <cereal/cereal.hpp>
 
 #include "Button.h"
 
@@ -94,6 +95,16 @@ struct Stats {
 		armor += _s.armor;
 		baseAtk += _s.baseAtk;
 		return *this;
+	}
+
+	template <class Archive>
+	void serialize(Archive& archive) {
+		archive(CEREAL_NVP(str),
+		    CEREAL_NVP(dex),
+		    CEREAL_NVP(hp),
+		    CEREAL_NVP(mana),
+		    CEREAL_NVP(armor),
+		    CEREAL_NVP(baseAtk));
 	}
 };
 

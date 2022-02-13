@@ -91,6 +91,10 @@ constexpr auto KEYBIND = cat(CONFIG, "gamestate_Keysbind.ini");
 constexpr auto MENUKEYBIND = cat(CONFIG, "mainmenustate_keysbind.ini");
 constexpr auto WINDOW = cat(CONFIG, "window.ini");
 
+// ---- SAVED GAMES
+constexpr char SAVED_GAMES[] = "../saved_games/";
+constexpr auto SAVED = cat(SAVED_GAMES, "last_saved_game.txt");
+
 // --- FONTS
 constexpr auto FONTS = cat(ASSETS, "fonts/");
 constexpr auto DOSIS = cat(FONTS.c, "Dosis-Light.ttf");
@@ -108,6 +112,8 @@ constexpr auto GASP = cat(SOUNDS.c, "gasp.wav");
 constexpr auto MENU_BLIP = cat(SOUNDS.c, "menu.wav");
 constexpr auto INTERACTION_BLING = cat(SOUNDS.c, "interaction.wav");
 constexpr auto POWER_UP = cat(SOUNDS.c, "power_up.wav");
+constexpr auto NOPE_SOUND = cat(SOUNDS.c, "nope.wav");
+
 
 // ---- MUSIC
 constexpr auto MUSIC = cat(ASSETS, "music/");

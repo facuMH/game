@@ -10,6 +10,8 @@
 
 #include "AssetsManager.h"
 #include "ItemManager.h"
+#include "SaveObject.h"
+#include "SaveAndLoad.h"
 #include "definitions.h"
 #include "states/GameState.h"
 #include "states/MainMenuState.h"
@@ -40,6 +42,7 @@ class Game {
 	float dt{}; // time delta
 	Position_i mousePos;
 	sf::Text mousePosText;
+	Position lastMainGameStatePosition;
 
 	Player player;
 
@@ -51,8 +54,9 @@ class Game {
 	std::stack<State*> states;
 
 	void makeNewCombat(const Enemy* enemy);
-	void makeMainGameState();
-	void makeNewHouseState(Position playerPosition);
+	void makeMainGameState(Position playerPosition);
+	void makeNewHouseState(DoorNumber doorNumber, Position playerPosition);
+	void makeNewHouseStateFromPlayerPosition(Position playerPosition);
 	Villager createVillager(const Name& name, const std::string& faceTextureName, const std::string& textureName,
 	    Position position, MovementType movementDirection, float stepsize);
 	void openInventory();

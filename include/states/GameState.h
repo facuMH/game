@@ -33,13 +33,14 @@ class GameState : public State {
 
   public:
 	bool isHouse;
+	DoorNumber doorNumber;
 	// Constructors
 	GameState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets,
 	    JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player, Villagers& _villagers, MusicPath& musicPath);
 
 	GameState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets,
 	    JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player, Enemies& _enemies, MusicPath& musicPath,
-	    Object* _item);
+	    Object* _item, DoorNumber _doorNumber);
 	// Destructor
 	~GameState() override;
 
@@ -64,4 +65,5 @@ class GameState : public State {
 	void stopMusic() override;
 	void resumeMusic() override;
 	Name getItemName() const { return item->getName(); }
+	void playErrorSound() override;
 };
