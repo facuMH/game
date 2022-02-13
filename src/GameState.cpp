@@ -40,9 +40,9 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 }
 
 /// Constructor for house GameState: No villagers here, but monsters and item
-GameState::GameState(sf::RenderWindow* window, AssetsManager& _assetsManager, EnemyManager &_enemyManager, std::vector<MapBackground*> textureSheets,
-    JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player, Enemies& _enemies, MusicPath& _musicPath,
-    Object* _item, DoorNumber _doorNumber)
+GameState::GameState(sf::RenderWindow* window, AssetsManager& _assetsManager, EnemyManager& _enemyManager,
+    std::vector<MapBackground*> textureSheets, JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player,
+    Enemies& _enemies, MusicPath& _musicPath, Object* _item, DoorNumber _doorNumber)
     : State(window), map(_assetsManager, textureSheets, path) {
 	std::cout << "New house state" << std::endl;
 	assetsManager = &_assetsManager;
@@ -85,7 +85,6 @@ void GameState::render(sf::RenderWindow* window) {
 	if(inDialogue) {
 		dialogueBox.render(window);
 	}
-
 	if(!itemPicked && item != nullptr) window->draw(item->animation.sprite);
 }
 
@@ -127,12 +126,14 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 					startDialogue(interactWith);
 				}
 			} else {
-				if(interactWith == enemies[0].name)
-					result = StateAction::START_COMBAT;
-				else if(interactWith == item->getName()) {
-					if(item->can_equip) player.equip(item);
-					itemPicked = true;
-					result = StateAction::PICK_ITEM;
+				for(auto& e : enemies) {
+					if(interactWith == e.name)
+						result = StateAction::START_COMBAT;
+					else if(interactWith == item->getName()) {
+						if(item->can_equip) player.equip(item);
+						itemPicked = true;
+						result = StateAction::PICK_ITEM;
+					}
 				}
 			}
 		default: break;
@@ -168,10 +169,8 @@ void GameState::drawPlayer(sf::RenderWindow* window) {
 		}
 	}
 	for(auto& e : enemies) {
-		if (!enemyManager->isEnemyDefeated(e.name)) {
-			window->draw(e.animation.sprite);
-			e.move(&e.animation, &map);
-		}
+		window->draw(e.animation.sprite);
+		e.move(&e.animation, &map);
 	}
 }
 
@@ -233,3 +232,8 @@ Name GameState::getEntityInInteractionRange(Position position) {
 	return n;
 }
 void GameState::playErrorSound() {}
+
+void GameState::removeEnemy(const Enemy& enemy) {
+	Enemy::setTileOccupation(&map, enemy.get_position(), false);
+	enemies.remove(enemy);
+}

@@ -181,11 +181,11 @@ void Game::makeNewHouseState(DoorNumber doorNumber, Position playerPosition = {0
 	Enemies enemies;
 
 	// only add enemy if it hasn't been defeated yet.
-	if (!enemyManager.isEnemyDefeated(enemyData.name)) {
+	if(!enemyManager.isEnemyDefeated(enemyData.name)) {
 		Texture* texture = assetsManager.getTexture(enemyData.texturePath);
 		Animation animation(texture, sf::IntRect(0, 0, TILESIZE, TILESIZE), enemyData.position);
-		enemies.push_back(Enemy(enemyData.name, Stats(15, 15, 15, 15, 15, 15), animation, MovementType::HORIZONTAL, {30, 30}, 2.0f,
-		    enemyData.experience));
+		enemies.push_back(Enemy(enemyData.name, Stats(15, 15, 15, 15, 15, 15), animation, MovementType::HORIZONTAL,
+		    {30, 30}, 2.0f, enemyData.experience));
 	}
 
 	Object* item = nullptr;
@@ -201,8 +201,8 @@ void Game::makeNewHouseState(DoorNumber doorNumber, Position playerPosition = {0
 
 	lastMainGameStatePosition = dynamic_cast<GameState*>(states.top())->getCurrentPlayerPosition();
 	player.animation.set_position(playerPosition);
-	states.push(new GameState(window, assetsManager, enemyManager, tileSheets, house.houseDesignPath, &keyBindings, player, enemies,
-	    *assetsManager.getMusic(HOUSE_MUSIC.c), item, doorNumber));
+	states.push(new GameState(window, assetsManager, enemyManager, tileSheets, house.houseDesignPath, &keyBindings,
+	    player, enemies, *assetsManager.getMusic(HOUSE_MUSIC.c), item, doorNumber));
 }
 
 void Game::makeNewHouseStateFromPlayerPosition(const Position playerPosition) {
@@ -265,12 +265,16 @@ void Game::pollEvents() {
 			case StateAction::START_COMBAT: makeNewCombat(dynamic_cast<GameState*>(states.top())->getEnemy()); break;
 			case StateAction::EXIT_COMBAT:
 				// coming out here means you won the fight.
+				// We're still in CombatState
 				player.addExperience(dynamic_cast<CombatState*>(states.top())->experienceFromEnemy());
 				enemyManager.setEnemyDefeated(dynamic_cast<CombatState*>(states.top())->getEnemyName());
 				turnOffMusic();
 				states.pop();
+				// We're in GameState (House) now.
+				dynamic_cast<GameState*>(states.top())
+				    ->removeEnemy(*dynamic_cast<GameState*>(states.top())->getEnemy());
 				states.top()->resumeMusic();
-				// save progress
+				// Save progress.
 				SaveAndLoad::saveGame({dynamic_cast<GameState*>(states.top())->doorNumber,
 				    dynamic_cast<GameState*>(states.top())->getCurrentPlayerPosition(), lastMainGameStatePosition,
 				    player.getLevel(), player.currentStats});

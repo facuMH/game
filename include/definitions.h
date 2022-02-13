@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cmath>
+#include <list>
 #include <unordered_map>
 
 #include <SFML/Graphics.hpp>
@@ -41,7 +42,7 @@ using KeyList = std::unordered_map<KeyAction, sf::Keyboard::Key>;
 using DoorNumber = int;
 
 class Enemy;
-using Enemies = std::vector<Enemy>;
+using Enemies = std::list<Enemy>;
 class Villager;
 using Villagers = std::vector<Villager>;
 using CombatText = std::unordered_map<Name, Button>;

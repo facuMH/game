@@ -61,11 +61,12 @@ class GameState : public State {
 	Name getEntityInInteractionRange(Position position);
 	void startDialogue(Name& characterName);
 	Player* getPlayer() { return &player; };
-	Enemy* getEnemy() { return &enemies[0]; }
+	Enemy* getEnemy() { return &enemies.front(); }
 	StateAction shouldAct() override;
 	StateAction programAction() override { return StateAction::NONE; };
 	void stopMusic() override;
 	void resumeMusic() override;
 	Name getItemName() const { return item->getName(); }
 	void playErrorSound() override;
+	void removeEnemy(const Enemy& enemy);
 };
