@@ -12,15 +12,15 @@
 GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vector<MapBackground*> textureSheets,
     JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player, Villagers& _villagers, MusicPath& _musicPath)
     : State(window), map(gameAM, textureSheets, path) {
-	am = &gameAM;
+	assetsManager = &gameAM;
 	keybinds = gameSupportedKeys;
 	player = _player;
 	villagers = _villagers;
 	isHouse = false;
 	inDialogue = false;
 
-	soundBuffers.emplace("gasp", am->getSoundBuffer(GASP.c));
-	soundBuffers.emplace("interaction bling", am->getSoundBuffer(INTERACTION_BLING.c));
+	soundBuffers.emplace("gasp", assetsManager->getSoundBuffer(GASP.c));
+	soundBuffers.emplace("interaction bling", assetsManager->getSoundBuffer(INTERACTION_BLING.c));
 
 	for(auto& sb : soundBuffers) {
 		sf::Sound sound;
@@ -40,12 +40,13 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 }
 
 /// Constructor for house GameState: No villagers here, but monsters and item
-GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vector<MapBackground*> textureSheets,
+GameState::GameState(sf::RenderWindow* window, AssetsManager& _assetsManager, EnemyManager &_enemyManager, std::vector<MapBackground*> textureSheets,
     JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player, Enemies& _enemies, MusicPath& _musicPath,
     Object* _item, DoorNumber _doorNumber)
-    : State(window), map(gameAM, textureSheets, path) {
+    : State(window), map(_assetsManager, textureSheets, path) {
 	std::cout << "New house state" << std::endl;
-	am = &gameAM;
+	assetsManager = &_assetsManager;
+	enemyManager = &_enemyManager;
 	keybinds = gameSupportedKeys;
 	player = _player;
 	enemies = _enemies;
@@ -56,7 +57,7 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 	if(item != nullptr) item->animation.set_position({player.get_position().x + 2, player.get_position().y});
 
 	view = sf::View(player.get_position(), {720.0, 480.0});
-	MusicPath* musicPath = gameAM.getMusic(_musicPath);
+	MusicPath* musicPath = _assetsManager.getMusic(_musicPath);
 	music.openFromFile(*musicPath);
 	music.setLoop(true);
 	music.play();
@@ -167,8 +168,10 @@ void GameState::drawPlayer(sf::RenderWindow* window) {
 		}
 	}
 	for(auto& e : enemies) {
-		window->draw(e.animation.sprite);
-		e.move(&e.animation, &map);
+		if (!enemyManager->isEnemyDefeated(e.name)) {
+			window->draw(e.animation.sprite);
+			e.move(&e.animation, &map);
+		}
 	}
 }
 

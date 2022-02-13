@@ -11,8 +11,8 @@
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 
-#include "AssetsManager.h"
 #include "definitions.h"
+#include "managers/AssetsManager.h"
 
 /**
  * Parent class for States: GameState, ...

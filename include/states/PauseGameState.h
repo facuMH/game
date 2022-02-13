@@ -3,8 +3,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
-#include "AssetsManager.h"
 #include "State.h"
+#include "managers/AssetsManager.h"
 
 class PauseGameState : public State {
   private:

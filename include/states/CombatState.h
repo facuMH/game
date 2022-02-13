@@ -1,12 +1,12 @@
 #pragma once
 
-#include "AssetsManager.h"
 #include "Enemy.h"
 #include "Player.h"
 #include "State.h"
 #include "TileMap.h"
 #include "definitions.h"
 #include "entity_attributes/Combatant.h"
+#include "managers/AssetsManager.h"
 
 class CombatState : public State {
   private:
@@ -63,6 +63,7 @@ class CombatState : public State {
 	StateAction programAction() override;
 	void drawPlayer(sf::RenderWindow* window) override;
 	int experienceFromEnemy() const { return enemy.getExperience(); }
+	std::string getEnemyName() const {return enemy.name; }
 	sf::View getView() override { return view; };
 	void stopMusic() override;
 	void resumeMusic() override;

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "AssetsManager.h"
-#include "InteractionManager.h"
 #include "definitions.h"
+#include "managers/AssetsManager.h"
+#include "managers/InteractionManager.h"
 
 class DialogueBox {
   private:
