@@ -17,8 +17,14 @@ SettingsState::SettingsState(sf::RenderWindow* window, AssetsManager& am, KeyLis
 	view = window->getDefaultView();
 	initBackground(am);
 	initFonts(am);
-	soundBuffer = am.getSoundBuffer(MENU_BLIP.c);
-	blipSound.setBuffer(soundBuffer);
+
+	soundBuffers.emplace("blip", am.getSoundBuffer(MENU_BLIP.c));
+
+	for(auto& sb : soundBuffers) {
+		sf::Sound sound;
+		sound.setBuffer(sb.second);
+		sounds.emplace(sb.first, sound);
+	}
 
 	// Settings should keep on playing music from Menu
 	supportedKeys = gameSupportedKeys;
@@ -162,8 +168,7 @@ StateAction SettingsState::handleKeys(sf::Keyboard::Key key) {
 		default: break;
 		}
 	}
-	// play gasping gaspSound each time change button.
-	blipSound.play();
+	sounds.find("blip")->second.play();
 	return StateAction::NONE;
 }
 

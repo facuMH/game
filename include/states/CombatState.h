@@ -10,11 +10,6 @@
 
 class CombatState : public State {
   private:
-	sf::View view;
-
-	sf::SoundBuffer soundBuffer;
-	sf::Sound sound;
-	sf::Music music;
 	sf::Font font;
 
 	Player player;

@@ -24,7 +24,14 @@ InventoryState::InventoryState(sf::RenderWindow* window, AssetsManager& am, KeyL
 	supportedKeys = _supportedKeys;
 	activeButton = 0;
 	playerItems[activeButton].setFillColor(activeItemColor);
-	blipSound.setBuffer(am.getSoundBuffer(MENU_BLIP.c));
+
+	soundBuffers.emplace("blip", am.getSoundBuffer(MENU_BLIP.c));
+
+	for(auto& sb : soundBuffers) {
+		sf::Sound sound;
+		sound.setBuffer(sb.second);
+		sounds.emplace(sb.first, sound);
+	}
 }
 
 void InventoryState::initPlayerItems() {
@@ -178,7 +185,7 @@ StateAction InventoryState::handleKeys(sf::Keyboard::Key key) {
 	}
 	// R for resume
 	if(key == sf::Keyboard::R) result = StateAction::CLOSE_INVENTORY;
-	blipSound.play();
+	sounds.find("blip")->second.play();
 	return result;
 }
 

@@ -11,13 +11,9 @@ constexpr int MAX_BUTTONS = 4;
 class MainMenuState : public State {
   private:
 	// Variable
-	sf::View view;
 	sf::Texture backgroundTexture;
 	sf::RectangleShape background;
 	sf::Font font;
-	std::unordered_map<std::string, sf::SoundBuffer> soundBuffers;
-	std::unordered_map<std::string, sf::Sound> sounds;
-	sf::Music music;
 
 	Buttons buttons;
 	int activeButton;

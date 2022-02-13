@@ -8,7 +8,6 @@
 
 class PauseGameState : public State {
   private:
-	sf::View view;
 	sf::RectangleShape background;
 	sf::RectangleShape container;
 	sf::Font font;

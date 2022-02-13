@@ -11,12 +11,8 @@
 
 class SettingsState : public State {
   private:
-	sf::View view;
 	sf::RectangleShape background;
 	sf::Font font;
-	sf::SoundBuffer soundBuffer;
-	sf::Sound blipSound;
-	sf::Music music;
 
 	Position_i mousePoseWindow;
 	Position mousePosView;

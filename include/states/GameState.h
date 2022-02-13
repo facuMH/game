@@ -18,13 +18,9 @@ class GameState : public State {
 	Enemies enemies;
 	DialogueBox dialogueBox;
 	bool inDialogue;
-	sf::View view;
 	AssetsManager* am;
 	KeyList* keybinds;
 	sf::Clock clock;
-	std::unordered_map<std::string, sf::SoundBuffer> soundBuffers;
-	std::unordered_map<std::string, sf::Sound> sounds;
-	sf::Music music;
 	sf::Keyboard::Key previousKey; // for gasping sound effect
 	float dialogueYPosition;       // position depends on current view
 	Object* item = nullptr;        // if in a house there will be an item, if not previously picked up

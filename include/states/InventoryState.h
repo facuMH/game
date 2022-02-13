@@ -12,12 +12,10 @@
 
 class InventoryState : public State {
   private:
-	sf::View view;
 	sf::RectangleShape background;
 	sf::RectangleShape container;
 	sf::Font font;
 	sf::Text title;
-	sf::Sound blipSound;
 	const sf::Color activeItemColor = sf::Color::Red;
 	const sf::Color inactiveItemColor = sf::Color::Black;
 

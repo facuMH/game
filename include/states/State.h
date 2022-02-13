@@ -23,6 +23,11 @@ class State {
 	bool isQuitting = false;
 
   public:
+	sf::View view;
+	std::unordered_map<std::string, sf::SoundBuffer> soundBuffers;
+	std::unordered_map<std::string, sf::Sound> sounds;
+	sf::Music music;
+
 	// Constructor
 	explicit State(sf::RenderWindow* window);
 	// Destructor

@@ -78,8 +78,13 @@ CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, std::vecto
 	music.setLoop(true);
 	music.play();
 
-	soundBuffer = am.getSoundBuffer(POWER_UP.c);
-	sound.setBuffer(soundBuffer);
+	soundBuffers.emplace("power_up", am.getSoundBuffer(POWER_UP.c));
+
+	for(auto& sb : soundBuffers) {
+		sf::Sound sound;
+		sound.setBuffer(sb.second);
+		sounds.emplace(sb.first, sound);
+	}
 
 	// hand pointing at first character
 	Position cursorPosition;
@@ -268,7 +273,7 @@ void CombatState::LevelUpMessage() {
 	inLevelUpBox = true;
 	music.setVolume(music.getVolume() / 2.0f);
 	sf ::sleep(sf::milliseconds(1000));
-	sound.play();
+	sounds.find("power_up")->second.play();
 	sf ::sleep(sf::milliseconds(1000));
 	music.setVolume(music.getVolume() * 2.0f);
 
