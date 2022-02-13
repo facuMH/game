@@ -35,7 +35,6 @@ class PauseGameState : public State {
 	~PauseGameState() override;
 
 	// Functions
-	void endState();
 	void updateInput(const float& dt);
 	void update(const float& dt) override;
 	void render(sf::RenderWindow* window) override;

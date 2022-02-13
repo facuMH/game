@@ -55,8 +55,9 @@ class CombatState : public State {
 	void quitStateActions() override;
 	StateAction handleKeys(sf::Keyboard::Key key) override;
 	StateAction shouldAct() override;
-	StateAction programAction();
 	void drawPlayer(sf::RenderWindow* window) override;
+
+	StateAction programAction();
 	int experienceFromEnemy() const { return enemy.getExperience(); }
 	sf::View getView() override { return view; };
 	void LevelUpMessage();

@@ -55,11 +55,6 @@ void MainMenuState::initButtons(const Position &pos) {
 
 MainMenuState::~MainMenuState() = default;
 
-void MainMenuState::endState() {
-	std::cout << "Ending Main Menu!"
-	          << "\n";
-}
-
 void MainMenuState::updateInput(const float& dt) {}
 
 void MainMenuState::updateButtons() {

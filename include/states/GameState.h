@@ -48,14 +48,14 @@ class GameState : public State {
 	void quitStateActions() override;
 	StateAction handleKeys(sf::Keyboard::Key key) override;
 	sf::View getView() override { return view; };
+	void drawPlayer(sf::RenderWindow* window) override;
+	StateAction shouldAct() override;
+
 	DoorNumber getCurrentDoorNumber(Position position);
 	std::vector<std::pair<Position, DoorNumber>> listHousePositions();
 	Position getCurrentPlayerPosition();
-	void drawPlayer(sf::RenderWindow* window) override;
 	Name getEntityInInteractionRange(Position position);
 	void startDialogue(Name& characterName);
-	Player* getPlayer() { return &player; };
 	Enemy* getEnemy() { return &enemies[0]; }
-	StateAction shouldAct() override;
 	Name getItemName() const { return item->getName(); }
 };

@@ -122,10 +122,6 @@ void SettingsState::updateMousePositions() {
 	mousePosView = getPos(mousePoseWindow);
 }
 
-void SettingsState::endState() {
-	std::cout << "Ending Settings Menu!\n";
-}
-
 void SettingsState::updateInput(const float& dt) {}
 
 void SettingsState::update(const float& dt) {

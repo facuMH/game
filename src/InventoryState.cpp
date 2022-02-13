@@ -114,10 +114,6 @@ void InventoryState::renderButtons(sf::RenderWindow* window) {
 void InventoryState::updateMousePositions() {}
 
 // Functions
-void InventoryState::endState() {
-	std::cout << "Closing Inventory!\n";
-}
-
 void InventoryState::updateInput(const float& dt) {}
 
 void InventoryState::update(const float& dt) {

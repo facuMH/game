@@ -38,8 +38,6 @@ class MainMenuState : public State {
 	~MainMenuState() override;
 
 	// Functions
-	void endState();
-
 	void updateInput(const float& dt);
 	void updateButtons();
 	void renderButtons(sf::RenderWindow* window);
