@@ -1,5 +1,6 @@
 #include <cmath>
 #include <iostream>
+#include <typeinfo>
 
 #include <SFML/Graphics.hpp>
 
@@ -8,6 +9,7 @@
 #include "House.h"
 #include "HouseManager.h"
 #include "asset_data.h"
+#include "definitions.h"
 #include "states/CombatState.h"
 #include "states/GameOverState.h"
 #include "states/InventoryState.h"
@@ -124,7 +126,8 @@ bool Game::isRunning() const {
 }
 
 void Game::makeNewCombat(const Enemy* enemy) {
-	auto mapTexture = {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c), assetsManager.getMap(TILESHEET_FLOOR_DETAILS.c)};
+	auto mapTexture = {assetsManager.getMap(TILESHEET_FLOOR.c), assetsManager.getMap(TILESHEET_NATURE.c),
+	    assetsManager.getMap(TILESHEET_FLOOR_DETAILS.c)};
 	JSONFilePath* design = assetsManager.getMapDesign(COMBAT_LEVEL1.c);
 	turnOffMusic();
 	states.push(new CombatState(window, assetsManager, mapTexture, *design, player, *enemy, &keyBindings));
@@ -178,8 +181,8 @@ void Game::makeNewHouseState(DoorNumber doorNumber, Position playerPosition = {0
 	EnemyData enemyData = ENEMYDATA[doorNumber - 1];
 	Texture* texture = assetsManager.getTexture(enemyData.texturePath);
 	Animation animation(texture, sf::IntRect(0, 0, TILESIZE, TILESIZE), enemyData.position);
-	Enemy enemy(enemyData.name, Stats(15, 15, 15, 15, 15, 15), animation,
-	    MovementType::HORIZONTAL, {30, 30}, 2.0f, enemyData.experience);
+	Enemy enemy(enemyData.name, Stats(15, 15, 15, 15, 15, 15), animation, MovementType::HORIZONTAL, {30, 30}, 2.0f,
+	    enemyData.experience);
 	enemies.push_back(enemy);
 
 	Object* item = nullptr;
@@ -217,7 +220,10 @@ void Game::openInventory() {
 
 void Game::pollEvents() {
 	// Gets StateAction that is triggered by the game itself, not the player
-	StateAction action = states.top()->programAction();
+	StateAction action = StateAction::NONE;
+	if(typeid(states.top()) == typeid(CombatState)) {
+		action = dynamic_cast<CombatState*>(states.top())->programAction();
+	}
 	SaveObject savedGame;
 	// Checks for events triggered by the player
 	while(window->pollEvent(event)) {
@@ -252,7 +258,11 @@ void Game::pollEvents() {
 					player.set_stats(savedGame.currentStats);
 					makeNewHouseState(savedGame.houseNumber, savedGame.getHouseStatePosition());
 				} catch(...) {
-					states.top()->playErrorSound();
+					if(typeid(states.top()) == typeid(MainMenuState)) {
+						dynamic_cast<MainMenuState*>(states.top())->playErrorSound();
+					} else if(typeid(states.top()) == typeid(GameOverState)) {
+						dynamic_cast<GameOverState*>(states.top())->playErrorSound();
+					}
 				}
 				break;
 			case StateAction::START_COMBAT: makeNewCombat(dynamic_cast<GameState*>(states.top())->getEnemy()); break;

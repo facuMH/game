@@ -60,12 +60,11 @@ class CombatState : public State {
 	void quitStateActions() override;
 	StateAction handleKeys(sf::Keyboard::Key key) override;
 	StateAction shouldAct() override;
-	StateAction programAction() override;
+	StateAction programAction();
 	void drawPlayer(sf::RenderWindow* window) override;
 	int experienceFromEnemy() const { return enemy.getExperience(); }
 	sf::View getView() override { return view; };
 	void stopMusic() override;
 	void resumeMusic() override;
-	void playErrorSound() override;
 	void LevelUpMessage();
 };

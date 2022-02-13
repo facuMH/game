@@ -46,9 +46,7 @@ class PauseGameState : public State {
 	bool shouldQuit() override;
 	void drawPlayer(sf::RenderWindow* window) override;
 	sf::View getView() override { return view; };
-	StateAction shouldAct() override;
-	StateAction programAction() override { return StateAction::NONE; };
+	StateAction shouldAct() override;;
 	void stopMusic() override;
 	void resumeMusic() override;
-	void playErrorSound() override;
 };

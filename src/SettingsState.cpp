@@ -183,12 +183,5 @@ StateAction SettingsState::shouldAct() {
 	updateGui();
 	return StateAction::EXIT_SETTING;
 }
-
-void SettingsState::stopMusic() {
-	music.stop();
-}
-
-void SettingsState::resumeMusic() {
-	music.play();
-}
-void SettingsState::playErrorSound() {}
+void SettingsState::stopMusic() {}
+void SettingsState::resumeMusic() {}

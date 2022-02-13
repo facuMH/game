@@ -39,7 +39,6 @@ class State {
 
 	virtual StateAction handleKeys(sf::Keyboard::Key key) = 0;
 	virtual StateAction shouldAct() = 0;
-	virtual StateAction programAction() = 0;
 
 	virtual void drawPlayer(sf::RenderWindow* window) = 0;
 	virtual sf::View getView() = 0;
@@ -48,5 +47,4 @@ class State {
 	virtual void stopMusic() = 0;
 	virtual void resumeMusic() = 0;
 	sf::RenderWindow* getWindow() { return window; }
-	virtual void playErrorSound() = 0;
 };

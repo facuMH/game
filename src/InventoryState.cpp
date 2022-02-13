@@ -26,7 +26,6 @@ InventoryState::InventoryState(sf::RenderWindow* window, AssetsManager& am, KeyL
 	playerItems[activeButton].setFillColor(activeItemColor);
 	blipSound.setBuffer(am.getSoundBuffer(MENU_BLIP.c));
 }
-void InventoryState::playErrorSound() {}
 
 void InventoryState::initPlayerItems() {
 	sf::Text itemText;
