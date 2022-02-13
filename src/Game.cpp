@@ -68,7 +68,7 @@ void Game::initWindow() {
 	std::ifstream ifs(WINDOW.c);
 
 	// set default values
-	std::string title = "RPG";
+	std::string title = "Who ate grandma's foot?";
 	unsigned int framerate_limit = 120;
 	bool vertical_sync_enabled = false;
 
