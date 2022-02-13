@@ -59,6 +59,5 @@ class CombatState : public State {
 
 	StateAction programAction();
 	int experienceFromEnemy() const { return enemy.getExperience(); }
-	sf::View getView() override { return view; };
 	void LevelUpMessage();
 };

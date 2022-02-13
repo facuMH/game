@@ -54,6 +54,5 @@ class InventoryState : public State {
 	void quitStateActions() override;
 	bool shouldQuit() override;
 	void drawPlayer(sf::RenderWindow* window) override {}
-	sf::View getView() override { return view; };
 	StateAction shouldAct() override;
 };

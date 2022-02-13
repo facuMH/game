@@ -47,7 +47,6 @@ class GameState : public State {
 	bool shouldQuit() override;
 	void quitStateActions() override;
 	StateAction handleKeys(sf::Keyboard::Key key) override;
-	sf::View getView() override { return view; };
 	void drawPlayer(sf::RenderWindow* window) override;
 	StateAction shouldAct() override;
 

@@ -43,8 +43,7 @@ class GameOverState : public State {
 	void updateKeybinds(const float& dt) override;
 	void quitStateActions() override;
 	bool shouldQuit() override;
-	void drawPlayer(sf::RenderWindow* window) override;
-	sf::View getView() override { return view; };
+	void drawPlayer(sf::RenderWindow* window) override {};
 	StateAction shouldAct() override;
 
 	void playErrorSound();

@@ -59,7 +59,6 @@ void GameOverState::initText(sf::RenderWindow* window) {
 }
 
 void GameOverState::initButtons(sf::RenderWindow* window){
-
 	// button size
 	unsigned int bWidth = 150;
 	unsigned int bHeight = 40;
@@ -152,8 +151,6 @@ void GameOverState::quitStateActions() {
 bool GameOverState::shouldQuit() {
 	return isQuit();
 }
-
-void GameOverState::drawPlayer(sf::RenderWindow* window) {}
 
 StateAction GameOverState::shouldAct() {
 	if(activeButton == 0) {
