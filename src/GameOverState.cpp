@@ -165,14 +165,6 @@ StateAction GameOverState::shouldAct() {
 	}
 }
 
-void GameOverState::stopMusic() {
-	music.stop();
-}
-
-void GameOverState::resumeMusic() {
-	music.play();
-}
-
 void GameOverState::playErrorSound() {
 	sounds.find("nope")->second.play();
 }

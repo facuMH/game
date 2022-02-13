@@ -204,6 +204,3 @@ StateAction InventoryState::shouldAct() {
 	// if active button is E then equip and exit state, if active button is resume just exit state
 	return StateAction::NONE;
 }
-
-void InventoryState::stopMusic() {}
-void InventoryState::resumeMusic() {}

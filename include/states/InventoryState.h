@@ -57,6 +57,4 @@ class InventoryState : public State {
 	void drawPlayer(sf::RenderWindow* window) override {}
 	sf::View getView() override { return view; };
 	StateAction shouldAct() override;
-	void stopMusic() override;
-	void resumeMusic() override;
 };

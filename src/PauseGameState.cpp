@@ -157,5 +157,3 @@ StateAction PauseGameState::shouldAct() {
 		return StateAction::NONE;
 	}
 }
-void PauseGameState::stopMusic() {}
-void PauseGameState::resumeMusic() {}

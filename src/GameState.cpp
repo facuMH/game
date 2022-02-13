@@ -176,14 +176,6 @@ bool GameState::shouldQuit() {
 	return isQuit();
 }
 
-void GameState::stopMusic() {
-	music.stop();
-}
-
-void GameState::resumeMusic() {
-	music.play();
-}
-
 DoorNumber GameState::getCurrentDoorNumber(Position position) {
 	return map.getTileDoorNumber(position);
 }

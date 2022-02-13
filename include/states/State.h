@@ -49,7 +49,7 @@ class State {
 	virtual sf::View getView() = 0;
 	Position_i getMouse() const { return sf::Mouse::getPosition(*window); }
 	Position getPos(Position_i objectPosition) const { return window->mapPixelToCoords(objectPosition); }
-	virtual void stopMusic() = 0;
-	virtual void resumeMusic() = 0;
+	virtual void stopMusic();
+	virtual void resumeMusic();
 	sf::RenderWindow* getWindow() { return window; }
 };

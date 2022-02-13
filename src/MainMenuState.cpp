@@ -146,14 +146,6 @@ StateAction MainMenuState::shouldAct() {
 	}
 }
 
-void MainMenuState::stopMusic() {
-	music.stop();
-}
-
-void MainMenuState::resumeMusic() {
-	music.play();
-}
-
 void MainMenuState::playErrorSound() {
 	sounds.find("nope")->second.play();
 }

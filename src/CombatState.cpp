@@ -82,7 +82,6 @@ CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, std::vecto
 	soundBuffers.emplace("punch1", am.getSoundBuffer(PUNCH1.c));
 	soundBuffers.emplace("punch2", am.getSoundBuffer(PUNCH2.c));
 
-
 	for(auto& sb : soundBuffers) {
 		sf::Sound sound;
 		sound.setBuffer(sb.second);
@@ -257,13 +256,6 @@ void CombatState::drawPlayer(sf::RenderWindow* window) {
 		window->draw(enemy.animation.sprite);
 		window->draw(player.animation.sprite);
 	}
-}
-
-void CombatState::stopMusic() {
-	music.stop();
-}
-void CombatState::resumeMusic() {
-	music.play();
 }
 
 StateAction CombatState::programAction() {
