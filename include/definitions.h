@@ -147,6 +147,7 @@ inline bool positionsInRange(Position one, Position other, float epsilon) {
 
 // DEFINITIONS/CONSTANTS FOR DIALOGUE BOX
 const int POSITION_OFFSET = 10;
+const int Y_OFFSET = 150;
 const Position TEXT_POS_OFFSET = {55, 20};
 const int MAX_TEXT_LINES = 2;
 const float TIME_UNTIL_NEXT_CHAR = 0.05; // after this time the next character of the text is drawn

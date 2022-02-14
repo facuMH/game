@@ -34,7 +34,6 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 	music.openFromFile(*musicPath);
 	music.setLoop(true);
 	music.play();
-	dialogueYPosition = view.getCenter().y;
 }
 
 /// Constructor for house GameState: No villagers here, but monsters and item
@@ -199,7 +198,7 @@ void GameState::startDialogue(Name& characterName) {
 			break;
 		}
 	}
-	dialogueBox = DialogueBox(characterName, faceTextureName, dialogueYPosition);
+	dialogueBox = DialogueBox(characterName, faceTextureName, player.get_position());
 }
 
 Name GameState::getEntityInInteractionRange(Position position) {
