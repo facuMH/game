@@ -206,7 +206,7 @@ void Game::makeNewHouseStateFromPlayerPosition(const Position playerPosition) {
 	DoorNumber doorNumber = 0;
 	for(auto& hp : housePositions) {
 		auto doorPosition = hp.first;
-		if(positionsInRange(playerPosition, doorPosition, 8.0f)) {
+		if(positionsInRange(playerPosition, doorPosition, 15.f)) {
 			doorNumber = hp.second;
 			break;
 		}
