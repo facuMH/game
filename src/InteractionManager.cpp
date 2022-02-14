@@ -10,5 +10,9 @@ void InteractionManager::initDialogue(const Name& name) {
 		dialogues.emplace(name, "Help me! A monster is in my house and stole all my toys!");
 	} else if(name == "Princess") {
 		dialogues.emplace(name, "This is the worst day of my life!");
+	} else if(name == "Ralph") {
+		dialogues.emplace(name, "I really hope you can find my grandma. Who would do such a thing?");
+	} else if (name == "Dolores") {
+		dialogues.emplace(name, "At least they also did the dishes after snacking the old lady...");
 	}
 }

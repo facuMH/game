@@ -3,37 +3,41 @@
 #include "definitions.h"
 #include <sstream>
 
-DialogueBox::DialogueBox(const Name& characterName, const std::string& faceTexturePath, float dialogueYPosition) {
-
+DialogueBox::DialogueBox(const Name& characterName, const std::string& faceTexturePath, Position dialoguePosition) {
 	Texture* dialogueBoxTexture = assetsManager.getTexture(DIALOGUE_BOX_FACE.c);
 	dialogueBoxSprite.setTexture(*dialogueBoxTexture);
-	dialogueBoxSprite.setTextureRect(sf::IntRect(0, 0, int(dialogueBoxTexture->getSize().x), int(dialogueBoxTexture->getSize().y)));
-	dialogueBoxSprite.setPosition(sf::Vector2f(
-	    float(POSITION_OFFSET), float(dialogueYPosition - dialogueBoxTexture->getSize().y + POSITION_OFFSET)));
+	dialogueBoxSprite.setTextureRect(
+	    sf::IntRect(0, 0, dialogueBoxTexture->getSize().x, dialogueBoxTexture->getSize().y));
+	dialogueBoxSprite.setPosition(
+	    sf::Vector2f(POSITION_OFFSET + dialoguePosition.x - dialogueBoxTexture->getSize().x / 2,
+	        dialoguePosition.y - dialogueBoxTexture->getSize().y - Y_OFFSET + POSITION_OFFSET));
 
 	Texture* arrowTexture = assetsManager.getTexture(DIALOGUE_ARROW.c);
 	arrowSprite.setTexture(*arrowTexture);
-	arrowSprite.setTextureRect(sf::IntRect(0, 0, int(arrowTexture->getSize().x), int(arrowTexture->getSize().y)));
-	arrowSprite.setPosition(
-	    float(dialogueBoxTexture->getSize().x) - ARROW_POS_OFFSET.x, dialogueYPosition - ARROW_POS_OFFSET.y);
+	arrowSprite.setTextureRect(sf::IntRect(0, 0, arrowTexture->getSize().x, arrowTexture->getSize().y));
+	arrowSprite.setPosition(dialogueBoxTexture->getSize().x / 2 - ARROW_POS_OFFSET.x + dialoguePosition.x,
+	    dialoguePosition.y - ARROW_POS_OFFSET.y - Y_OFFSET);
 
 	sf::Font* font = assetsManager.getFont(DIALOGUE_FONT.c);
 
 	characterNameText.setFont(*font);
 	characterNameText.setCharacterSize(12);
 	characterNameText.setFillColor(sf::Color::White);
-	characterNameText.setPosition(
-	    dialogueBoxSprite.getPosition().x + CHARACTER_NAME_OFFSET.x, dialogueBoxSprite.getPosition().y + CHARACTER_NAME_OFFSET.y);
+	characterNameText.setPosition(dialogueBoxSprite.getPosition().x + CHARACTER_NAME_OFFSET.x,
+	    dialogueBoxSprite.getPosition().y + CHARACTER_NAME_OFFSET.y);
 
 	dialogueText.setFont(*font);
 	dialogueText.setCharacterSize(12);
 	dialogueText.setFillColor(sf::Color::Black);
-	dialogueText.setPosition(dialogueBoxSprite.getPosition().x + TEXT_POS_OFFSET.x, dialogueBoxSprite.getPosition().y + TEXT_POS_OFFSET.y);
+	dialogueText.setPosition(
+	    dialogueBoxSprite.getPosition().x + TEXT_POS_OFFSET.x, dialogueBoxSprite.getPosition().y + TEXT_POS_OFFSET.y);
 
 	Texture* characterFaceTexture = assetsManager.getTexture(faceTexturePath);
 	characterFaceSprite.setTexture(*characterFaceTexture);
-	characterFaceSprite.setTextureRect(sf::IntRect(0, 0, int(characterFaceTexture->getSize().x), int(characterFaceTexture->getSize().y)));
-	characterFaceSprite.setPosition(dialogueBoxSprite.getPosition().x + FACE_OFFSET.x, dialogueBoxSprite.getPosition().y + FACE_OFFSET.y);
+	characterFaceSprite.setTextureRect(
+	    sf::IntRect(0, 0, characterFaceTexture->getSize().x, characterFaceTexture->getSize().y));
+	characterFaceSprite.setPosition(
+	    dialogueBoxSprite.getPosition().x + FACE_OFFSET.x, dialogueBoxSprite.getPosition().y + FACE_OFFSET.y);
 	setText(characterName, interactionManager.getDialogue(characterName));
 }
 
@@ -60,7 +64,6 @@ void DialogueBox::update(const float& dt) {
 			}
 		} else {
 			if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-
 				// if all textToDraw has been printed, the job is done
 				if(drawTo + drawFrom >= textToDraw.size() - 1) {
 					textIsFinished = true;
@@ -99,7 +102,7 @@ std::vector<std::string> split(const std::string& s) {
 	std::vector<std::string> words;
 	std::istringstream ss(s);
 	std::string word;
-	while (ss >> word) {
+	while(ss >> word) {
 		words.push_back(word);
 	}
 	return words;
@@ -121,7 +124,9 @@ void DialogueBox::cropTextToBox(std::string& new_text) {
 				tmp_text << " " << t;
 				dialogueText.setString(tmp_text.str());
 				// true if textToDraw is bouncing out of the box
-				if(dialogueText.getLocalBounds().width < float(dialogueBoxSprite.getTexture()->getSize().x - TEXT_POS_OFFSET.x + POSITION_OFFSET) - TEXT_POS_OFFSET.y * 2) {
+				if(dialogueText.getLocalBounds().width
+				    < float(dialogueBoxSprite.getTexture()->getSize().x - TEXT_POS_OFFSET.x + POSITION_OFFSET)
+				          - TEXT_POS_OFFSET.y * 2) {
 					processed_text.str(std::string(""));
 					processed_text << tmp_text.str();
 				} else {
