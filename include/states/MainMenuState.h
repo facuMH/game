@@ -11,13 +11,9 @@ constexpr int MAX_BUTTONS = 4;
 class MainMenuState : public State {
   private:
 	// Variable
-	sf::View view;
 	sf::Texture backgroundTexture;
 	sf::RectangleShape background;
 	sf::Font font;
-	std::unordered_map<std::string, sf::SoundBuffer> soundBuffers;
-	std::unordered_map<std::string, sf::Sound> sounds;
-	sf::Music music;
 
 	Buttons buttons;
 	int activeButton;
@@ -42,8 +38,6 @@ class MainMenuState : public State {
 	~MainMenuState() override;
 
 	// Functions
-	void endState();
-
 	void updateInput(const float& dt);
 	void updateButtons();
 	void renderButtons(sf::RenderWindow* window);
@@ -56,9 +50,5 @@ class MainMenuState : public State {
 	bool shouldQuit() override;
 	void drawPlayer(sf::RenderWindow* window) override{};
 	StateAction shouldAct() override;
-	StateAction programAction() override { return StateAction::NONE; };
-	sf::View getView() override { return view; };
-	void stopMusic() override;
-	void resumeMusic() override;
-	void playErrorSound() override;
+	void playErrorSound();
 };

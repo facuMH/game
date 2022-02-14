@@ -18,13 +18,9 @@ class GameState : public State {
 	Enemies enemies;
 	DialogueBox dialogueBox;
 	bool inDialogue;
-	sf::View view;
 	AssetsManager* am;
 	KeyList* keybinds;
 	sf::Clock clock;
-	std::unordered_map<std::string, sf::SoundBuffer> soundBuffers;
-	std::unordered_map<std::string, sf::Sound> sounds;
-	sf::Music music;
 	sf::Keyboard::Key previousKey; // for gasping sound effect
 	float dialogueYPosition;       // position depends on current view
 	Object* item = nullptr;        // if in a house there will be an item, if not previously picked up
@@ -51,19 +47,14 @@ class GameState : public State {
 	bool shouldQuit() override;
 	void quitStateActions() override;
 	StateAction handleKeys(sf::Keyboard::Key key) override;
-	sf::View getView() override { return view; };
+	void drawPlayer(sf::RenderWindow* window) override;
+	StateAction shouldAct() override;
+
 	DoorNumber getCurrentDoorNumber(Position position);
 	std::vector<std::pair<Position, DoorNumber>> listHousePositions();
 	Position getCurrentPlayerPosition();
-	void drawPlayer(sf::RenderWindow* window) override;
 	Name getEntityInInteractionRange(Position position);
 	void startDialogue(Name& characterName);
-	Player* getPlayer() { return &player; };
 	Enemy* getEnemy() { return &enemies[0]; }
-	StateAction shouldAct() override;
-	StateAction programAction() override { return StateAction::NONE; };
-	void stopMusic() override;
-	void resumeMusic() override;
 	Name getItemName() const { return item->getName(); }
-	void playErrorSound() override;
 };

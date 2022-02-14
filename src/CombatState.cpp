@@ -78,8 +78,15 @@ CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, std::vecto
 	music.setLoop(true);
 	music.play();
 
-	soundBuffer = am.getSoundBuffer(POWER_UP.c);
-	sound.setBuffer(soundBuffer);
+	soundBuffers.emplace("power_up", am.getSoundBuffer(POWER_UP.c));
+	soundBuffers.emplace("punch1", am.getSoundBuffer(PUNCH1.c));
+	soundBuffers.emplace("punch2", am.getSoundBuffer(PUNCH2.c));
+
+	for(auto& sb : soundBuffers) {
+		sf::Sound sound;
+		sound.setBuffer(sb.second);
+		sounds.emplace(sb.first, sound);
+	}
 
 	// hand pointing at first character
 	Position cursorPosition;
@@ -203,11 +210,13 @@ StateAction CombatState::shouldAct() {
 		// combat action menu
 		if(actionButtonActive == 0) {
 			// normal attack with current weapon
+			sounds.find("punch1")->second.play();
 			if(player.attack() < enemy.defend()) {
 				enemy.apply_damage(player.atkDamage());
 			}
 			nextTurn = true;
 		} else if(actionButtonActive == 1) {
+			sounds.find("punch2")->second.play();
 			// special attack with current weapon
 			if(player.currentStats.mana >= 5) {
 				if(player.attack() < enemy.defend()) {
@@ -249,13 +258,6 @@ void CombatState::drawPlayer(sf::RenderWindow* window) {
 	}
 }
 
-void CombatState::stopMusic() {
-	music.stop();
-}
-void CombatState::resumeMusic() {
-	music.play();
-}
-
 StateAction CombatState::programAction() {
 	StateAction ret = StateAction::NONE;
 	if(player.get_hp() <= 0) {
@@ -268,7 +270,7 @@ void CombatState::LevelUpMessage() {
 	inLevelUpBox = true;
 	music.setVolume(music.getVolume() / 2.0f);
 	sf ::sleep(sf::milliseconds(1000));
-	sound.play();
+	sounds.find("power_up")->second.play();
 	sf ::sleep(sf::milliseconds(1000));
 	music.setVolume(music.getVolume() * 2.0f);
 
@@ -284,4 +286,3 @@ void CombatState::LevelUpMessage() {
 	center.y -= height / 2;
 	levelUpBox = std::make_unique<Button>(Button(center.x, center.y, 400.f, 100.f, lvlUpTxt));
 }
-void CombatState::playErrorSound() {}

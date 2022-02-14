@@ -53,7 +53,11 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 	doorNumber = _doorNumber;
 	inDialogue = false;
 	item = _item;
-	if(item != nullptr) item->animation.set_position({player.get_position().x + 2, player.get_position().y});
+	if(item != nullptr) {
+		item->animation.set_position({player.get_position().x + 2, player.get_position().y});
+	} else {
+		itemPicked = true;
+	}
 
 	view = sf::View(player.get_position(), {720.0, 480.0});
 	MusicPath* musicPath = gameAM.getMusic(_musicPath);
@@ -128,7 +132,7 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 			} else {
 				if(interactWith == enemies[0].name)
 					result = StateAction::START_COMBAT;
-				else if(interactWith == item->getName()) {
+				else if(!itemPicked && interactWith == item->getName()) {
 					if(item->can_equip) player.equip(item);
 					itemPicked = true;
 					result = StateAction::PICK_ITEM;
@@ -176,14 +180,6 @@ bool GameState::shouldQuit() {
 	return isQuit();
 }
 
-void GameState::stopMusic() {
-	music.stop();
-}
-
-void GameState::resumeMusic() {
-	music.play();
-}
-
 DoorNumber GameState::getCurrentDoorNumber(Position position) {
 	return map.getTileDoorNumber(position);
 }
@@ -229,4 +225,3 @@ Name GameState::getEntityInInteractionRange(Position position) {
 	}
 	return n;
 }
-void GameState::playErrorSound() {}

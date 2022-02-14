@@ -12,12 +12,10 @@
 
 class InventoryState : public State {
   private:
-	sf::View view;
 	sf::RectangleShape background;
 	sf::RectangleShape container;
 	sf::Font font;
 	sf::Text title;
-	sf::Sound blipSound;
 	const sf::Color activeItemColor = sf::Color::Red;
 	const sf::Color inactiveItemColor = sf::Color::Black;
 
@@ -48,7 +46,6 @@ class InventoryState : public State {
 	~InventoryState() override = default;
 
 	// Functions
-	void endState();
 	void updateInput(const float& dt);
 	void update(const float& dt) override;
 	void render(sf::RenderWindow* window) override;
@@ -56,13 +53,6 @@ class InventoryState : public State {
 	void updateKeybinds(const float& dt) override;
 	void quitStateActions() override;
 	bool shouldQuit() override;
-
 	void drawPlayer(sf::RenderWindow* window) override {}
-	sf::View getView() override { return view; };
-	StateAction programAction() override { return StateAction::NONE; };
-
 	StateAction shouldAct() override;
-	void stopMusic() override;
-	void resumeMusic() override;
-	void playErrorSound() override;
 };

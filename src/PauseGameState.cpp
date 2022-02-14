@@ -83,10 +83,6 @@ void PauseGameState::updateMousePositions() {
 	mousePosView = getPos(mousePoseWindow);
 }
 
-void PauseGameState::endState() {
-	std::cout << "Ending Pause Game State!\n";
-}
-
 void PauseGameState::updateInput(const float& dt) {}
 
 
@@ -157,8 +153,3 @@ StateAction PauseGameState::shouldAct() {
 		return StateAction::NONE;
 	}
 }
-
-void PauseGameState::stopMusic() {}
-
-void PauseGameState::resumeMusic() {}
-void PauseGameState::playErrorSound() {}

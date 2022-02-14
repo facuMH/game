@@ -17,8 +17,14 @@ SettingsState::SettingsState(sf::RenderWindow* window, AssetsManager& am, KeyLis
 	view = window->getDefaultView();
 	initBackground(am);
 	initFonts(am);
-	soundBuffer = am.getSoundBuffer(MENU_BLIP.c);
-	blipSound.setBuffer(soundBuffer);
+
+	soundBuffers.emplace("blip", am.getSoundBuffer(MENU_BLIP.c));
+
+	for(auto& sb : soundBuffers) {
+		sf::Sound sound;
+		sound.setBuffer(sb.second);
+		sounds.emplace(sb.first, sound);
+	}
 
 	// Settings should keep on playing music from Menu
 	supportedKeys = gameSupportedKeys;
@@ -116,10 +122,6 @@ void SettingsState::updateMousePositions() {
 	mousePosView = getPos(mousePoseWindow);
 }
 
-void SettingsState::endState() {
-	std::cout << "Ending Settings Menu!\n";
-}
-
 void SettingsState::updateInput(const float& dt) {}
 
 void SettingsState::update(const float& dt) {
@@ -162,8 +164,7 @@ StateAction SettingsState::handleKeys(sf::Keyboard::Key key) {
 		default: break;
 		}
 	}
-	// play gasping gaspSound each time change button.
-	blipSound.play();
+	sounds.find("blip")->second.play();
 	return StateAction::NONE;
 }
 
@@ -183,12 +184,3 @@ StateAction SettingsState::shouldAct() {
 	updateGui();
 	return StateAction::EXIT_SETTING;
 }
-
-void SettingsState::stopMusic() {
-	music.stop();
-}
-
-void SettingsState::resumeMusic() {
-	music.play();
-}
-void SettingsState::playErrorSound() {}

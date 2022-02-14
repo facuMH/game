@@ -10,14 +10,9 @@
 
 class GameOverState : public State {
   private:
-	sf::View view;
 	sf::RectangleShape background;
 	sf::Font font;
 	sf::Text text;
-
-	std::unordered_map<std::string, sf::SoundBuffer> soundBuffers;
-	std::unordered_map<std::string, sf::Sound> sounds;
-	sf::Music music;
 
 	KeyList* supportedKeys;
 
@@ -48,11 +43,8 @@ class GameOverState : public State {
 	void updateKeybinds(const float& dt) override;
 	void quitStateActions() override;
 	bool shouldQuit() override;
-	void drawPlayer(sf::RenderWindow* window) override;
-	sf::View getView() override { return view; };
+	void drawPlayer(sf::RenderWindow* window) override {};
 	StateAction shouldAct() override;
-	StateAction programAction() override { return StateAction::NONE; };
-	void stopMusic() override;
-	void resumeMusic() override;
-	void playErrorSound() override;
+
+	void playErrorSound();
 };

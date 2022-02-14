@@ -10,11 +10,6 @@
 
 class CombatState : public State {
   private:
-	sf::View view;
-
-	sf::SoundBuffer soundBuffer;
-	sf::Sound sound;
-	sf::Music music;
 	sf::Font font;
 
 	Player player;
@@ -60,12 +55,9 @@ class CombatState : public State {
 	void quitStateActions() override;
 	StateAction handleKeys(sf::Keyboard::Key key) override;
 	StateAction shouldAct() override;
-	StateAction programAction() override;
 	void drawPlayer(sf::RenderWindow* window) override;
+
+	StateAction programAction();
 	int experienceFromEnemy() const { return enemy.getExperience(); }
-	sf::View getView() override { return view; };
-	void stopMusic() override;
-	void resumeMusic() override;
-	void playErrorSound() override;
 	void LevelUpMessage();
 };

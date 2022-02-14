@@ -11,12 +11,8 @@
 
 class SettingsState : public State {
   private:
-	sf::View view;
 	sf::RectangleShape background;
 	sf::Font font;
-	sf::SoundBuffer soundBuffer;
-	sf::Sound blipSound;
-	sf::Music music;
 
 	Position_i mousePoseWindow;
 	Position mousePosView;
@@ -42,7 +38,6 @@ class SettingsState : public State {
 	~SettingsState() override;
 
 	// Functions
-	void endState();
 	void updateInput(const float& dt);
 	void update(const float& dt) override;
 	void render(sf::RenderWindow* window) override;
@@ -51,10 +46,5 @@ class SettingsState : public State {
 	void quitStateActions() override;
 	bool shouldQuit() override;
 	void drawPlayer(sf::RenderWindow* window) override;
-	sf::View getView() override { return view; };
 	StateAction shouldAct() override;
-	StateAction programAction() override { return StateAction::NONE; };
-	void stopMusic() override;
-	void resumeMusic() override;
-	void playErrorSound() override;
 };

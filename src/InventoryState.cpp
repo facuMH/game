@@ -24,9 +24,15 @@ InventoryState::InventoryState(sf::RenderWindow* window, AssetsManager& am, KeyL
 	supportedKeys = _supportedKeys;
 	activeButton = 0;
 	playerItems[activeButton].setFillColor(activeItemColor);
-	blipSound.setBuffer(am.getSoundBuffer(MENU_BLIP.c));
+
+	soundBuffers.emplace("blip", am.getSoundBuffer(MENU_BLIP.c));
+
+	for(auto& sb : soundBuffers) {
+		sf::Sound sound;
+		sound.setBuffer(sb.second);
+		sounds.emplace(sb.first, sound);
+	}
 }
-void InventoryState::playErrorSound() {}
 
 void InventoryState::initPlayerItems() {
 	sf::Text itemText;
@@ -108,10 +114,6 @@ void InventoryState::renderButtons(sf::RenderWindow* window) {
 void InventoryState::updateMousePositions() {}
 
 // Functions
-void InventoryState::endState() {
-	std::cout << "Closing Inventory!\n";
-}
-
 void InventoryState::updateInput(const float& dt) {}
 
 void InventoryState::update(const float& dt) {
@@ -179,7 +181,7 @@ StateAction InventoryState::handleKeys(sf::Keyboard::Key key) {
 	}
 	// R for resume
 	if(key == sf::Keyboard::R) result = StateAction::CLOSE_INVENTORY;
-	blipSound.play();
+	sounds.find("blip")->second.play();
 	return result;
 }
 
@@ -198,6 +200,3 @@ StateAction InventoryState::shouldAct() {
 	// if active button is E then equip and exit state, if active button is resume just exit state
 	return StateAction::NONE;
 }
-
-void InventoryState::stopMusic() {}
-void InventoryState::resumeMusic() {}

@@ -114,6 +114,9 @@ constexpr auto MENU_BLIP = cat(SOUNDS.c, "menu.wav");
 constexpr auto INTERACTION_BLING = cat(SOUNDS.c, "interaction.wav");
 constexpr auto POWER_UP = cat(SOUNDS.c, "power_up.wav");
 constexpr auto NOPE_SOUND = cat(SOUNDS.c, "nope.wav");
+constexpr auto PUNCH1 = cat(SOUNDS.c, "punch1.wav");
+constexpr auto PUNCH2 = cat(SOUNDS.c, "punch2.wav");
+
 
 
 // ---- MUSIC

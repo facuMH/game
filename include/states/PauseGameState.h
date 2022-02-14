@@ -8,7 +8,6 @@
 
 class PauseGameState : public State {
   private:
-	sf::View view;
 	sf::RectangleShape background;
 	sf::RectangleShape container;
 	sf::Font font;
@@ -36,7 +35,6 @@ class PauseGameState : public State {
 	~PauseGameState() override;
 
 	// Functions
-	void endState();
 	void updateInput(const float& dt);
 	void update(const float& dt) override;
 	void render(sf::RenderWindow* window) override;
@@ -45,10 +43,5 @@ class PauseGameState : public State {
 	void quitStateActions() override;
 	bool shouldQuit() override;
 	void drawPlayer(sf::RenderWindow* window) override;
-	sf::View getView() override { return view; };
-	StateAction shouldAct() override;
-	StateAction programAction() override { return StateAction::NONE; };
-	void stopMusic() override;
-	void resumeMusic() override;
-	void playErrorSound() override;
+	StateAction shouldAct() override;;
 };
