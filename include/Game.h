@@ -7,12 +7,12 @@
 #include <SFML/Network.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
-#include <managers/EnemyManager.h>
 
 #include "SaveAndLoad.h"
 #include "SaveObject.h"
 #include "definitions.h"
 #include "managers/AssetsManager.h"
+#include "managers/EnemyManager.h"
 #include "managers/ItemManager.h"
 #include "states/GameState.h"
 #include "states/MainMenuState.h"

@@ -42,14 +42,14 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 /// Constructor for house GameState: No villagers here, but monsters and item
 GameState::GameState(sf::RenderWindow* window, AssetsManager& _assetsManager, EnemyManager& _enemyManager,
     std::vector<MapBackground*> textureSheets, JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player,
-    Enemies& _enemies, MusicPath& _musicPath, Object* _item, DoorNumber _doorNumber)
+    Enemy& _enemy, MusicPath& _musicPath, Object* _item, DoorNumber _doorNumber)
     : State(window), map(_assetsManager, textureSheets, path) {
 	std::cout << "New house state" << std::endl;
 	assetsManager = &_assetsManager;
 	enemyManager = &_enemyManager;
 	keybinds = gameSupportedKeys;
 	player = _player;
-	enemies = _enemies;
+	enemy = _enemy;
 	isHouse = true;
 	doorNumber = _doorNumber;
 	inDialogue = false;
@@ -130,15 +130,12 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 					startDialogue(interactWith);
 				}
 			} else {
-				if(interactWith == item->getName()) {
+				if(item != nullptr && interactWith == item->getName()) {
 					if(item->can_equip) player.equip(item);
 					itemPicked = true;
 					result = StateAction::PICK_ITEM;
-				}
-				for(auto& e : enemies) {
-					if(interactWith == e.name) {
-						result = StateAction::START_COMBAT;
-					}
+				} else if(!enemy.isEmpty() && interactWith == enemy.name) {
+					result = StateAction::START_COMBAT;
 				}
 			}
 		default: break;
@@ -173,9 +170,9 @@ void GameState::drawPlayer(sf::RenderWindow* window) {
 			v.move(&v.animation, &map);
 		}
 	}
-	for(auto& e : enemies) {
-		window->draw(e.animation.sprite);
-		e.move(&e.animation, &map);
+	if(!enemy.isEmpty()) {
+		window->draw(enemy.animation.sprite);
+		enemy.move(&enemy.animation, &map);
 	}
 }
 
@@ -217,9 +214,9 @@ Name GameState::getEntityInInteractionRange(Position position) {
 		}
 	}
 	// if entity is an enemy
-	for(auto& e : enemies) {
-		if(positionsInRange(position, e.animation.get_position(), 15.f)) {
-			n = e.name;
+	if(!enemy.isEmpty()) {
+		if(positionsInRange(position, enemy.animation.get_position(), 15.f)) {
+			n = enemy.name;
 		}
 	}
 	// if entity is an item
@@ -229,7 +226,8 @@ Name GameState::getEntityInInteractionRange(Position position) {
 	return n;
 }
 
-void GameState::removeEnemy(const Enemy& enemy) {
-	Enemy::setTileOccupation(&map, enemy.get_position(), false);
-	enemies.remove(enemy);
+void GameState::removeEnemy() {
+	if(!enemy.isEmpty()) {
+		Enemy::setTileOccupation(&map, enemy.get_position(), false);
+	}
 }

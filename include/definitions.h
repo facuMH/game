@@ -42,7 +42,6 @@ using KeyList = std::unordered_map<KeyAction, sf::Keyboard::Key>;
 using DoorNumber = int;
 
 class Enemy;
-using Enemies = std::list<Enemy>;
 class Villager;
 using Villagers = std::vector<Villager>;
 using CombatText = std::unordered_map<Name, Button>;

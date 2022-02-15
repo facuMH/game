@@ -16,7 +16,7 @@ class GameState : public State {
 	TileMap map;
 	Player player;
 	Villagers villagers;
-	Enemies enemies;
+	Enemy enemy;
 	DialogueBox dialogueBox;
 	bool inDialogue;
 	EnemyManager* enemyManager;
@@ -38,7 +38,7 @@ class GameState : public State {
 
 	GameState(sf::RenderWindow* window, AssetsManager& _assetsManager, EnemyManager& enemyManager,
 	    std::vector<MapBackground*> textureSheets, JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player,
-	    Enemies& _enemies, MusicPath& musicPath, Object* _item, DoorNumber _doorNumber);
+	    Enemy& _enemy, MusicPath& musicPath, Object* _item, DoorNumber _doorNumber);
 	// Destructor
 	~GameState() override;
 
@@ -57,8 +57,15 @@ class GameState : public State {
 	Position getCurrentPlayerPosition();
 	Name getEntityInInteractionRange(Position position);
 	void startDialogue(Name& characterName);
-	Enemy* getEnemy() { return &enemies.front(); }
+	Enemy* getEnemy() { return &enemy; }
 
 	Name getItemName() const { return item->getName(); }
-	void removeEnemy(const Enemy& enemy);
+	void removeEnemy();
+	int experienceFromEnemy() const {
+		if(!enemy.isEmpty()) {
+			return enemy.getExperience();
+		} else {
+			return 0;
+		}
+	}
 };
