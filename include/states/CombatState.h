@@ -60,5 +60,4 @@ class CombatState : public State {
 	StateAction programAction();
 	int experienceFromEnemy() const { return enemy.getExperience(); }
 	void LevelUpMessage();
-	std::string getEnemyName() const {return enemy.name; }
 };

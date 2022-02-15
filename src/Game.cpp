@@ -23,8 +23,6 @@ void Game::initVariables() {
 	Texture* play_text = assetsManager.getTexture(NINJA_WALK.c);
 	Animation player_animation(play_text, sf::IntRect(0, 0, TILESIZE, TILESIZE), Position(50, 50));
 	player = Player("Adventurer", Stats(15, 20, 50, 30, 31, 1), player_animation, 5.0f);
-
-	enemyManager.initEnemyMap();
 }
 
 void Game::closeWindow() {
@@ -230,6 +228,7 @@ void Game::pollEvents() {
 		action = dynamic_cast<CombatState*>(states.top())->programAction();
 	}
 	SaveObject savedGame;
+	State* state;
 	// Checks for events triggered by the player
 	while(window->pollEvent(event)) {
 		switch(event.type) {
@@ -275,10 +274,10 @@ void Game::pollEvents() {
 				// coming out here means you won the fight.
 				// We're still in CombatState
 				player.addExperience(dynamic_cast<CombatState*>(states.top())->experienceFromEnemy());
-				enemyManager.setEnemyDefeated(dynamic_cast<CombatState*>(states.top())->getEnemyName());
 				turnOffMusic();
 				states.pop();
 				// We're in GameState (House) now.
+				enemyManager.setEnemyDefeated(dynamic_cast<GameState*>(states.top())->getEnemy()->name);
 				dynamic_cast<GameState*>(states.top())
 				    ->removeEnemy(*dynamic_cast<GameState*>(states.top())->getEnemy());
 				states.top()->resumeMusic();

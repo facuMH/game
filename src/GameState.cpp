@@ -130,13 +130,14 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 					startDialogue(interactWith);
 				}
 			} else {
+				if(interactWith == item->getName()) {
+					if(item->can_equip) player.equip(item);
+					itemPicked = true;
+					result = StateAction::PICK_ITEM;
+				}
 				for(auto& e : enemies) {
-					if(interactWith == e.name)
+					if(interactWith == e.name) {
 						result = StateAction::START_COMBAT;
-					else if(interactWith == item->getName()) {
-						if(item->can_equip) player.equip(item);
-						itemPicked = true;
-						result = StateAction::PICK_ITEM;
 					}
 				}
 			}

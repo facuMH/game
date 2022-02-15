@@ -2,14 +2,12 @@
 
 #include <Enemy.h>
 #include <string>
-#include <unordered_map>
 
 class EnemyManager {
   public:
-	std::unordered_map<std::string, bool> enemiesDefeated;
+	std::unordered_set<Name> enemiesDefeated;
 
-	bool isEnemyDefeated(std::string &enemyName);
+	bool isEnemyDefeated(Name &enemyName);
 	bool allEnemiesDefeated();
-	void initEnemyMap();
-	void setEnemyDefeated(std::string enemyName);
+	void setEnemyDefeated(const Name& enemyName);
 };

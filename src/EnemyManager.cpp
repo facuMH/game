@@ -1,21 +1,15 @@
 #include "managers/EnemyManager.h"
 #include <asset_data.h>
 
-void EnemyManager::initEnemyMap() {
-	for(auto& E : ENEMYDATA) {
-		enemiesDefeated.emplace(E.name, false);
-	}
-}
 
 bool EnemyManager::allEnemiesDefeated() {
-	return std::all_of(enemiesDefeated.begin(), enemiesDefeated.end(),
-	    [](const std::pair<const std::string, bool>& entry) { return entry.second; });
+	return enemiesDefeated.size() == ENEMYDATA.size();
 }
 
 bool EnemyManager::isEnemyDefeated(std::string &enemyName) {
-	return enemiesDefeated.find(enemyName)->second;
+	return enemiesDefeated.find(enemyName) != enemiesDefeated.end();
 }
 
-void EnemyManager::setEnemyDefeated(std::string enemyName) {
-	enemiesDefeated.find(enemyName)->second = true;
+void EnemyManager::setEnemyDefeated(const std::string& enemyName) {
+	enemiesDefeated.emplace(enemyName);
 }
