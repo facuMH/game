@@ -181,10 +181,7 @@ void Game::makeNewHouseState(DoorNumber doorNumber, Position playerPosition = {0
 	Enemy enemy;
 	// only add enemy if it hasn't been defeated yet.
 	if(!enemyManager.isEnemyDefeated(enemyData.name)) {
-		Texture* texture = assetsManager.getTexture(enemyData.texturePath);
-		Animation animation(texture, sf::IntRect(0, 0, TILESIZE, TILESIZE), enemyData.position);
-		enemy = {enemyData.name, Stats(15, 15, 15, 15, 15, 15), animation, MovementType::HORIZONTAL,
-		    {30, 30}, 2.0f, enemyData.experience};
+		enemy = enemyManager.makeEnemy(enemyData, assetsManager);
 	}
 
 	Object* item = nullptr;
@@ -275,13 +272,14 @@ void Game::pollEvents() {
 				turnOffMusic();
 				states.pop();
 				// We're in GameState (House) now.
-				auto house = dynamic_cast<GameState*>(states.top());
-				player.addExperience(house->experienceFromEnemy());
-				enemyManager.setEnemyDefeated(house->getEnemy()->name);
-				house->removeEnemy();
+				auto houseState = dynamic_cast<GameState*>(states.top());
+				player.addExperience(houseState->getExperienceFromEnemy());
+				enemyManager.setEnemyDefeated(houseState->getEnemy()->name);
+				houseState->unblockEnemyTile();
+				houseState->setEnemy(new Enemy());
 				states.top()->resumeMusic();
 				// Save progress.
-				SaveAndLoad::saveGame({house->doorNumber, house->getCurrentPlayerPosition(), lastMainGameStatePosition,
+				SaveAndLoad::saveGame({houseState->doorNumber, houseState->getCurrentPlayerPosition(), lastMainGameStatePosition,
 				    player.getLevel(), player.currentStats});
 			} break;
 			case StateAction::START_HOUSE:

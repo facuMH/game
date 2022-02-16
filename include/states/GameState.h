@@ -43,6 +43,7 @@ class GameState : public State {
 	~GameState() override;
 
 	// Functions
+	void setEnemy(Enemy* _enemy) {enemy = *_enemy;}
 	void update(const float& dt) override;
 	void render(sf::RenderWindow* window) override;
 	void updateKeybinds(const float& dt) override;
@@ -60,12 +61,6 @@ class GameState : public State {
 	Enemy* getEnemy() { return &enemy; }
 
 	Name getItemName() const { return item->getName(); }
-	void removeEnemy();
-	int experienceFromEnemy() const {
-		if(!enemy.isEmpty()) {
-			return enemy.getExperience();
-		} else {
-			return 0;
-		}
-	}
+	void unblockEnemyTile();
+	int getExperienceFromEnemy() const;
 };

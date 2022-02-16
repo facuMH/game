@@ -1,6 +1,8 @@
 #pragma once
 
-#include <Enemy.h>
+#include "Enemy.h"
+#include "asset_data.h"
+#include "AssetsManager.h"
 #include <string>
 
 class EnemyManager {
@@ -10,4 +12,5 @@ class EnemyManager {
 	bool isEnemyDefeated(Name &enemyName);
 	bool allEnemiesDefeated();
 	void setEnemyDefeated(const Name& enemyName);
+	static Enemy makeEnemy(EnemyData &data, AssetsManager &assetsManager);
 };

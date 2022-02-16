@@ -29,8 +29,6 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 	}
 
 	previousKey = sf::Keyboard::Unknown;
-
-	// view = sf::View(player.get_position(), {float(window->getSize().x), float(window->getSize().y)});
 	view = sf::View(player.get_position(), {720.0, 480.0});
 	MusicPath* musicPath = gameAM.getMusic(_musicPath);
 	music.openFromFile(*musicPath);
@@ -44,7 +42,6 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& _assetsManager, En
     std::vector<MapBackground*> textureSheets, JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player,
     Enemy& _enemy, MusicPath& _musicPath, Object* _item, DoorNumber _doorNumber)
     : State(window), map(_assetsManager, textureSheets, path) {
-	std::cout << "New house state" << std::endl;
 	assetsManager = &_assetsManager;
 	enemyManager = &_enemyManager;
 	keybinds = gameSupportedKeys;
@@ -226,8 +223,15 @@ Name GameState::getEntityInInteractionRange(Position position) {
 	return n;
 }
 
-void GameState::removeEnemy() {
+void GameState::unblockEnemyTile() {
 	if(!enemy.isEmpty()) {
 		Enemy::setTileOccupation(&map, enemy.get_position(), false);
+	}
+}
+int GameState::getExperienceFromEnemy() const {
+	if(!enemy.isEmpty()) {
+		return enemy.getExperience();
+	} else {
+		return 0;
 	}
 }
