@@ -12,5 +12,5 @@ class EnemyManager {
 	bool isEnemyDefeated(const Name &enemyName);
 	bool allEnemiesDefeated();
 	void setEnemyDefeated(const Name& enemyName);
-	static Enemy makeEnemy(EnemyData &data, AssetsManager &assetsManager);
+	Enemy makeEnemy(const DoorNumber doorNumber, AssetsManager& assetsManager);
 };
