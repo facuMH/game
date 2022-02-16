@@ -141,6 +141,8 @@ void Game::makeMainGameState(Position playerPosition = {50, 50}) {
 	    createVillager("Old Man", OLD_MAN_FACE.c, OLD_MAN_WALK.c, Position(50, 150), MovementType::HORIZONTAL, 0.2f));
 	villagers.push_back(createVillager(
 	    "Princess", PRINCESS_FACE.c, PRINCESS_WALK.c, Position(230, 150), MovementType::VERTICAL, 0.25f));
+	villagers.push_back(createVillager("Ralph", BOY_FACE.c, BOY_WALK.c, Position(500, 580), MovementType::HORIZONTAL, 0.3f));
+	villagers.push_back(createVillager("Dolores", GRUMPY_FACE.c, GRUMPY_WALK.c, Position(250, 560), MovementType::HORIZONTAL, 0.1f));
 
 	player.animation.set_position(playerPosition);
 	// Comment: There's a bug in Tileson. Tile attributes, such as isBlocked are connected with the tile

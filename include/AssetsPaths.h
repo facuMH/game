@@ -46,6 +46,12 @@ constexpr auto OLD_MAN_FACE = cat(OLD_MAN.c, "Face.png");
 constexpr auto PRINCESS = cat(CHARACTER.c, "princess/");
 constexpr auto PRINCESS_WALK = cat(PRINCESS.c, "Walk.png");
 constexpr auto PRINCESS_FACE = cat(PRINCESS.c, "Face.png");
+constexpr auto BOY = cat(CHARACTER.c, "boy/");
+constexpr auto BOY_WALK = cat(BOY.c, "Walk.png");
+constexpr auto BOY_FACE = cat(BOY.c, "Face.png");
+constexpr auto GRUMPY = cat(CHARACTER.c, "grumpy_woman/");
+constexpr auto GRUMPY_WALK = cat(GRUMPY.c, "Walk.png");
+constexpr auto GRUMPY_FACE = cat(GRUMPY.c, "Face.png");
 
 // ---- ENEMIES
 constexpr auto ENEMIES = cat(ASSETS, "enemies/");
