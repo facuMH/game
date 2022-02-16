@@ -81,6 +81,12 @@ void InventoryState::initText(sf::RenderWindow* window) {
 	sf::FloatRect textRect = title.getLocalBounds();
 	title.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
 	title.setPosition(currentSize.x / 2.0f, currentSize.y / 4.0f);
+	titleBackground.setFillColor(sf::Color::Black);
+	Position pos = title.getPosition();
+	float w = 150;
+	float h = 50;
+	titleBackground.setPosition({pos.x-w/2.f, pos.y-h/2.f});
+	titleBackground.setSize({w*2,h});
 }
 
 void InventoryState::initButtons(sf::RenderWindow* window) {
@@ -125,6 +131,7 @@ void InventoryState::render(sf::RenderWindow* window) {
 	window->setView(view);
 	window->draw(background);
 	window->draw(container);
+	window->draw(titleBackground);
 	window->draw(title);
 	for(const auto& item : playerItems) {
 		window->draw(item);

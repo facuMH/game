@@ -229,7 +229,7 @@ StateAction CombatState::shouldAct() {
 			}
 		} else if(actionButtonActive == 2) {
 			// select an item to be used
-			selectingItem = true;
+			return StateAction::OPEN_INVENTORY;
 		} else {
 			// skip turn
 			nextTurn = true;
