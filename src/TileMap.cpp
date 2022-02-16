@@ -52,7 +52,7 @@ void TileMap::loadFromJson(const std::string& path, std::vector<MapBackground*> 
 	}
 }
 
-Position_i TileMap::getTileFromPos(Position pos) {
+Position_i TileMap::getTileFromPos(const Position &pos) {
 	int tilePosX = std::ceil(pos.x / TILESIZE);
 	int tilePosY = std::ceil(pos.y / TILESIZE);
 	return Position_i{tilePosX, tilePosY};

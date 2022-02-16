@@ -18,6 +18,7 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 	villagers = _villagers;
 	isHouse = false;
 	inDialogue = false;
+	clearedForFinalBoss = false;
 
 	soundBuffers.emplace("gasp", assetsManager->getSoundBuffer(GASP.c));
 	soundBuffers.emplace("interaction bling", assetsManager->getSoundBuffer(INTERACTION_BLING.c));
@@ -37,12 +38,11 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 }
 
 /// Constructor for house GameState: No villagers here, but monsters and item
-GameState::GameState(sf::RenderWindow* window, AssetsManager& _assetsManager, EnemyManager& _enemyManager,
-    std::vector<MapBackground*> textureSheets, JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player,
-    Enemy& _enemy, MusicPath& _musicPath, Object* _item, DoorNumber _doorNumber)
+GameState::GameState(sf::RenderWindow* window, AssetsManager& _assetsManager, std::vector<MapBackground*> textureSheets,
+    JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player, Enemy& _enemy, MusicPath& _musicPath,
+    Object* _item, DoorNumber _doorNumber)
     : State(window), map(_assetsManager, textureSheets, path) {
 	assetsManager = &_assetsManager;
-	enemyManager = &_enemyManager;
 	keybinds = gameSupportedKeys;
 	player = _player;
 	enemy = _enemy;
@@ -227,6 +227,7 @@ void GameState::unblockEnemyTile() {
 		Enemy::setTileOccupation(&map, enemy.get_position(), false);
 	}
 }
+
 int GameState::getExperienceFromEnemy() const {
 	if(!enemy.isEmpty()) {
 		return enemy.getExperience();

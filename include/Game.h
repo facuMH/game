@@ -22,12 +22,6 @@
  */
 class Game {
   private:
-	void initVariables();
-	void closeWindow();
-	void initWindow();
-	void initStates();
-	void initKeys();
-
 	// window is a pointer, since the new-operator returns a pointer to
 	// the beginning of the new block of memory allocated
 	sf::RenderWindow* window;
@@ -45,8 +39,8 @@ class Game {
 	Position_i mousePos;
 	sf::Text mousePosText;
 	Position lastMainGameStatePosition;
-
 	Player player;
+	bool clearedForFinalBoss;
 
 	// Stack of states - the top entry is the active state, i.e. [main menu,
 	// map-layer, fight-layer]: If the fight layer is left, the next active state
@@ -54,6 +48,12 @@ class Game {
 	// a pointer, since State is an abstract class and cannot be instantiated.
 	// Only instances of its child classes could be put on the stack directly.
 	std::stack<State*> states;
+
+	void initVariables();
+	void closeWindow();
+	void initWindow();
+	void initStates();
+	void initKeys();
 
 	void makeNewCombat(const Enemy* enemy);
 	void makeMainGameState(Position playerPosition);
@@ -74,8 +74,7 @@ class Game {
 	// Everything defining behind-the-scenes logic
 	void update();
 
-	// Update time variable dt (new time is the time it takes to update and render
-	// 1 frame)
+	// Update time variable dt (new time is the time it takes to update and render 1 frame)
 	void updateDT();
 
 	// Visual representation of the game

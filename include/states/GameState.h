@@ -19,12 +19,10 @@ class GameState : public State {
 	Enemy enemy;
 	DialogueBox dialogueBox;
 	bool inDialogue;
-	EnemyManager* enemyManager;
 	AssetsManager* assetsManager;
 	KeyList* keybinds;
 	sf::Clock clock;
 	sf::Keyboard::Key previousKey; // for gasping sound effect
-	float dialogueYPosition;       // position depends on current view
 	Object* item = nullptr;        // if in a house there will be an item, if not previously picked up
 	bool itemPicked = false;
 
@@ -32,13 +30,15 @@ class GameState : public State {
   public:
 	bool isHouse;
 	DoorNumber doorNumber;
+	bool clearedForFinalBoss;
+
 	// Constructors
 	GameState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets,
 	    JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player, Villagers& _villagers, MusicPath& musicPath);
 
-	GameState(sf::RenderWindow* window, AssetsManager& _assetsManager, EnemyManager& enemyManager,
-	    std::vector<MapBackground*> textureSheets, JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player,
-	    Enemy& _enemy, MusicPath& musicPath, Object* _item, DoorNumber _doorNumber);
+	GameState(sf::RenderWindow* window, AssetsManager& _assetsManager, std::vector<MapBackground*> textureSheets,
+	    JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player, Enemy& _enemy, MusicPath& _musicPath,
+	    Object* _item, DoorNumber _doorNumber);
 	// Destructor
 	~GameState() override;
 

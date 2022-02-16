@@ -25,5 +25,5 @@ class TileMap {
 	std::vector<std::pair<Position, DoorNumber>> getHousePositions();
 	void setTileOccupation(Position position, bool isOccupied);
 	void render(sf::RenderWindow& window);
-	Position_i getTileFromPos(const Position pos);
+	Position_i getTileFromPos(const Position& pos);
 };

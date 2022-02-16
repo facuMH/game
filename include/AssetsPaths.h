@@ -83,6 +83,8 @@ constexpr auto HOUSE3 = cat(TILES.c, "house3.json");
 constexpr auto HOUSE4 = cat(TILES.c, "house4.json");
 constexpr auto HOUSE5 = cat(TILES.c, "house5.json");
 constexpr auto HOUSE6 = cat(TILES.c, "house6.json");
+constexpr auto FINAL_HOUSE = cat(TILES.c, "final_house.json");
+
 
 constexpr auto TILESHEET_FLOOR = cat(TILES.c, "TilesetFloor.png");
 constexpr auto TILESHEET_NATURE = cat(TILES.c, "TilesetNature.png");

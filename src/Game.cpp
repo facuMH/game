@@ -23,6 +23,8 @@ void Game::initVariables() {
 	Texture* play_text = assetsManager.getTexture(NINJA_WALK.c);
 	Animation player_animation(play_text, sf::IntRect(0, 0, TILESIZE, TILESIZE), Position(50, 50));
 	player = Player("Adventurer", Stats(15, 20, 50, 30, 31, 1), player_animation, 5.0f);
+
+	clearedForFinalBoss = false;
 }
 
 void Game::closeWindow() {
@@ -141,8 +143,10 @@ void Game::makeMainGameState(Position playerPosition = {50, 50}) {
 	    createVillager("Old Man", OLD_MAN_FACE.c, OLD_MAN_WALK.c, Position(50, 150), MovementType::HORIZONTAL, 0.2f));
 	villagers.push_back(createVillager(
 	    "Princess", PRINCESS_FACE.c, PRINCESS_WALK.c, Position(230, 150), MovementType::VERTICAL, 0.25f));
-	villagers.push_back(createVillager("Ralph", BOY_FACE.c, BOY_WALK.c, Position(500, 580), MovementType::HORIZONTAL, 0.3f));
-	villagers.push_back(createVillager("Dolores", GRUMPY_FACE.c, GRUMPY_WALK.c, Position(250, 560), MovementType::HORIZONTAL, 0.1f));
+	villagers.push_back(
+	    createVillager("Ralph", BOY_FACE.c, BOY_WALK.c, Position(500, 580), MovementType::HORIZONTAL, 0.3f));
+	villagers.push_back(
+	    createVillager("Dolores", GRUMPY_FACE.c, GRUMPY_WALK.c, Position(250, 560), MovementType::HORIZONTAL, 0.1f));
 
 	player.animation.set_position(playerPosition);
 	// Comment: There's a bug in Tileson. Tile attributes, such as isBlocked are connected with the tile
@@ -195,8 +199,8 @@ void Game::makeNewHouseState(DoorNumber doorNumber, Position playerPosition = {0
 
 	lastMainGameStatePosition = dynamic_cast<GameState*>(states.top())->getCurrentPlayerPosition();
 	player.animation.set_position(playerPosition);
-	states.push(new GameState(window, assetsManager, enemyManager, tileSheets, house.houseDesignPath, &keyBindings,
-	    player, enemy, *assetsManager.getMusic(HOUSE_MUSIC.c), item, doorNumber));
+	states.push(new GameState(window, assetsManager, tileSheets, house.houseDesignPath, &keyBindings, player, enemy,
+	    *assetsManager.getMusic(HOUSE_MUSIC.c), item, doorNumber));
 }
 
 void Game::makeNewHouseStateFromPlayerPosition(const Position playerPosition) {
@@ -277,6 +281,9 @@ void Game::pollEvents() {
 				auto houseState = dynamic_cast<GameState*>(states.top());
 				player.addExperience(houseState->getExperienceFromEnemy());
 				enemyManager.setEnemyDefeated(houseState->getEnemy()->name);
+				if(enemyManager.allEnemiesDefeated()) {
+					clearedForFinalBoss = true;
+				}
 				houseState->unblockEnemyTile();
 				houseState->setEnemy(new Enemy());
 				states.top()->resumeMusic();
@@ -303,6 +310,7 @@ void Game::pollEvents() {
 				turnOffMusic();
 				states.pop();
 				states.top()->resumeMusic();
+				dynamic_cast<GameState*>(states.top())->clearedForFinalBoss = clearedForFinalBoss;
 				break;
 			case StateAction::EXIT_SETTING:
 			case StateAction::RESUME_GAME:

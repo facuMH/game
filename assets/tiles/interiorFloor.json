@@ -6,7 +6,7 @@
  "name":"InteriorFloor",
  "spacing":0,
  "tilecount":374,
- "tiledversion":"1.7.2",
+ "tiledversion":"1.8.1",
  "tileheight":16,
  "tiles":[
         {
@@ -4957,7 +4957,7 @@
                 {
                  "name":"door",
                  "type":"int",
-                 "value":0
+                 "value":7
                 }, 
                 {
                  "name":"isBlocked",
@@ -5247,5 +5247,5 @@
         }],
  "tilewidth":16,
  "type":"tileset",
- "version":"1.6"
+ "version":"1.8"
 }
