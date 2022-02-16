@@ -3,14 +3,14 @@
 
 
 bool EnemyManager::allEnemiesDefeated() {
-	return enemiesDefeated.size() == ENEMYDATA.size();
+	return enemiesDefeated.size() == ENEMYDATA.size() - 1;
 }
 
-bool EnemyManager::isEnemyDefeated(std::string &enemyName) {
+bool EnemyManager::isEnemyDefeated(const Name &enemyName) {
 	return enemiesDefeated.find(enemyName) != enemiesDefeated.end();
 }
 
-void EnemyManager::setEnemyDefeated(const std::string& enemyName) {
+void EnemyManager::setEnemyDefeated(const Name& enemyName) {
 	enemiesDefeated.emplace(enemyName);
 }
 Enemy EnemyManager::makeEnemy(EnemyData &enemyData, AssetsManager &assetsManager) {

@@ -9,7 +9,7 @@ class EnemyManager {
   public:
 	std::unordered_set<Name> enemiesDefeated;
 
-	bool isEnemyDefeated(Name &enemyName);
+	bool isEnemyDefeated(const Name &enemyName);
 	bool allEnemiesDefeated();
 	void setEnemyDefeated(const Name& enemyName);
 	static Enemy makeEnemy(EnemyData &data, AssetsManager &assetsManager);

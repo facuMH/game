@@ -44,6 +44,7 @@ set(HEADERS include/Animation.h
         include/definitions.h
         include/DialogueBox.h
         include/Enemy.h
+        include/Entity.h
         include/entity_attributes/Combatant.h
         include/entity_attributes/Movement.h
         include/entity_attributes/SteeredMovement.h
@@ -57,10 +58,8 @@ set(HEADERS include/Animation.h
         include/managers/InteractionManager.h
         include/managers/ItemManager.h
         include/Player.h
-        include/Tile.h
-        include/TileMap.h
-        include/Villager.h
-        include/Entity.h
+        include/SaveObject.h
+        include/SaveAndLoad.h
         include/states/CombatState.h
         include/states/GameState.h
         include/states/GameOverState.h
@@ -69,8 +68,9 @@ set(HEADERS include/Animation.h
         include/states/PauseGameState.h
         include/states/SettingsState.h
         include/states/State.h
-        include/SaveObject.h
-        include/SaveAndLoad.h)
+        include/Tile.h
+        include/TileMap.h
+        include/Villager.h)
 
 set(DEPENDENCIES libs/tileson.hpp
         libs/cereal/archives/json.hpp

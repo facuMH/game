@@ -224,7 +224,6 @@ void Game::pollEvents() {
 		action = dynamic_cast<CombatState*>(states.top())->programAction();
 	}
 	SaveObject savedGame;
-	State* state;
 	// Checks for events triggered by the player
 	while(window->pollEvent(event)) {
 		switch(event.type) {
