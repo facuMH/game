@@ -3,6 +3,7 @@
 #include <typeinfo>
 
 #include <SFML/Graphics.hpp>
+#include <states/GameWonState.h>
 
 #include "AssetsPaths.h"
 #include "Game.h"
@@ -318,6 +319,9 @@ void Game::pollEvents() {
 			case StateAction::EXIT_SETTING:
 			case StateAction::RESUME_GAME:
 			case StateAction::CLOSE_INVENTORY: states.pop(); break;
+			case StateAction::GAME_WON:
+				turnOffMusic();
+				states.push(new GameWonState(window, assetsManager));
 			default: break;
 			}
 			break;

@@ -30,6 +30,7 @@ constexpr auto MAINMENU_BACKGROUND = cat(BACKGROUNDS.c, "Background.jpeg");
 constexpr auto SETTING_BACKGROUND = cat(BACKGROUNDS.c, "RPG_projects.jpg");
 constexpr auto HAND = cat(BACKGROUNDS.c, "hand.png");
 constexpr auto GAME_OVER_SCREEN = cat(BACKGROUNDS.c, "game_over.png");
+constexpr auto GAME_WON_SCREEN = cat(BACKGROUNDS.c, "game_won.png");
 constexpr auto INVENTORY = cat(BACKGROUNDS.c, "inventory.png");
 
 // ---- CHARACTER
@@ -136,3 +137,4 @@ constexpr auto VILLAGE_MUSIC = cat(MUSIC.c, "town.ogg");
 constexpr auto COMBAT_MUSIC = cat(MUSIC.c, "combat.ogg");
 constexpr auto HOUSE_MUSIC = cat(MUSIC.c, "house.ogg");
 constexpr auto END_MUSIC = cat(MUSIC.c, "end.ogg");
+constexpr auto GAME_WON_MUSIC = cat(MUSIC.c, "final.ogg");

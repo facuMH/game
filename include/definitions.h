@@ -29,7 +29,8 @@ enum class StateAction {
 	GAME_OVER,
 	OPEN_INVENTORY,
 	CLOSE_INVENTORY,
-	ADD_ITEM
+	ADD_ITEM,
+	GAME_WON
 };
 enum class KeyAction { UP, DOWN, RIGHT, LEFT, SELECT, BACK, INTERACT, NONE, PAUSE };
 enum class MovementType { VERTICAL, HORIZONTAL };
