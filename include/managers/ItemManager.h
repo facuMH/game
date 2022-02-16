@@ -10,6 +10,7 @@
 #include "definitions.h"
 
 class InventoryState;
+class SaveObject;
 
 class ItemManager {
   private:
@@ -21,6 +22,7 @@ class ItemManager {
 	Object make(const Name& name, const Position& pos);
 
 	friend InventoryState;
+	friend SaveObject;
 
   public:
 	explicit ItemManager(AssetsManager* am);

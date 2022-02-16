@@ -8,6 +8,7 @@
 class Player : public Entity, public Combatant, public SteeredMovement {
 	int level = 1;
 	int experience = 0;
+	Name equipped;
 
   public:
 	Object* weapon = nullptr;
@@ -17,6 +18,7 @@ class Player : public Entity, public Combatant, public SteeredMovement {
 	    : Entity(_name, _animation), Combatant(_stats, _stats), SteeredMovement(_stepsize) {}
 
 	void equip(Object* arms);
+	Name equippedWeapon() const { return equipped; }
 	void move(KeyAction key, TileMap* map);
 	bool isEnemy() override { return false; }
 	int getLevel() const { return level; }
