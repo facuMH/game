@@ -46,7 +46,7 @@ void InventoryState::initPlayerItems() {
 		itemText.setString("No items here yet.\n Go look around");
 		playerItems.push_back(itemText);
 	} else {
-		for(const auto &item : itemManager->playerInventory) {
+		for(const auto& item : itemManager->playerInventory) {
 			itemText.setString(item.c_str());
 			itemText.setPosition(
 			    {BOX_POSITION_OFFSET, BOX_POSITION_OFFSET + INVENTORY_ITEM_HEIGHT * playerItems.size()});
@@ -86,8 +86,8 @@ void InventoryState::initText(sf::RenderWindow* window) {
 void InventoryState::initButtons(sf::RenderWindow* window) {
 	// equip and resume buttons
 	// button size
-	unsigned int bWidth = 150;
-	unsigned int bHeight = 40;
+	const int bWidth = 150;
+	const int bHeight = 40;
 	activeButton = 0;
 	auto offsetX = bWidth;
 
@@ -95,11 +95,11 @@ void InventoryState::initButtons(sf::RenderWindow* window) {
 	auto bPos = center.x - offsetX;
 	center.y = 0;
 
-	buttons.push_back(Button(
-	    bPos, center.y, bWidth, bHeight, &font, "RESUME (R)", sf::Color::Black, sf::Color::Black, sf::Color::Black));
+	buttons.push_back(
+	    Button({bPos, center.y}, {bWidth, bHeight}, &font, "RESUME (R)", sf::Color::Black, sf::Color::Black));
 	bPos = bPos + offsetX;
-	buttons.push_back(Button(bPos, center.y, bWidth, bHeight, &font, "EQUIP/CONSUME (E)", sf::Color::Black,
-	    sf::Color::Black, sf::Color::Black));
+	buttons.push_back(
+	    Button({bPos, center.y}, {bWidth, bHeight}, &font, "EQUIP/CONSUME (E)", sf::Color::Black, sf::Color::Black));
 	buttons[activeButton].setInactive();
 }
 
@@ -173,7 +173,7 @@ StateAction InventoryState::handleKeys(sf::Keyboard::Key key) {
 				title.setString(item->getName() + " consumed. Now you feel better.");
 				player->heal(item->getStats().hp);
 				playerItems.erase(std::find_if(playerItems.begin(), playerItems.end(),
-				    [item](sf::Text &t) { return t.getString() == item->getName(); }));
+				    [item](sf::Text& t) { return t.getString() == item->getName(); }));
 				activeButton = 0;
 				playerItems[activeButton].setFillColor(activeItemColor);
 			}

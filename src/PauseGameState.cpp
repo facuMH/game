@@ -49,8 +49,10 @@ void PauseGameState::initText(sf::RenderWindow* window) {
 
 void PauseGameState::initButtons(sf::RenderWindow* window) {
 	// button size
-	unsigned int bWidth = 150;
-	unsigned int bHeight = 40;
+	const int bWidth = 150;
+	const int bHeight = 40;
+	const Position size{bWidth, bHeight};
+
 	activeButton = 0;
 	auto offsetX = 2 * bWidth;
 	auto offsetY = 2 * bHeight;
@@ -58,11 +60,10 @@ void PauseGameState::initButtons(sf::RenderWindow* window) {
 	auto center = getWindowCenter(*window);
 	center.x -= offsetX;
 	center.y -= offsetY;
-	auto bPos = center.x;
 
-	buttons.push_back(Button(bPos, center.y, bWidth, bHeight, &font, "RESUME", GREY, LIGHTGREY, sf::Color::Black));
-	bPos = bPos + 3 * bWidth;
-	buttons.push_back(Button(bPos, center.y, bWidth, bHeight, &font, "QUIT", GREY, LIGHTGREY, sf::Color::Black));
+	buttons.push_back(Button(center, size, &font, "RESUME", GREY, sf::Color::Black));
+	center.x += +3 * bWidth;
+	buttons.push_back(Button(center, size, &font, "QUIT", GREY, sf::Color::Black));
 	buttons[activeButton].setInactive();
 }
 
