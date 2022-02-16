@@ -30,7 +30,7 @@ class DialogueBox {
 
   public:
 	DialogueBox() = default;
-	DialogueBox(const Name& characterName, const std::string& faceTexturePath, Position dialoguePosition);
+	DialogueBox(const Name& characterName, const std::string& faceTexturePath, const Position &dialoguePosition);
 
 	bool textDone() const;
 	void setText(const std::string& characterName, std::string dialogueString);

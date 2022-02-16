@@ -3,20 +3,20 @@
 #include "definitions.h"
 #include <sstream>
 
-DialogueBox::DialogueBox(const Name& characterName, const std::string& faceTexturePath, Position dialoguePosition) {
+DialogueBox::DialogueBox(
+    const Name& characterName, const std::string& faceTexturePath, const Position& dialoguePosition) {
 	Texture* dialogueBoxTexture = assetsManager.getTexture(DIALOGUE_BOX_FACE.c);
 	dialogueBoxSprite.setTexture(*dialogueBoxTexture);
 	dialogueBoxSprite.setTextureRect(
 	    sf::IntRect(0, 0, dialogueBoxTexture->getSize().x, dialogueBoxTexture->getSize().y));
-	dialogueBoxSprite.setPosition(
-	    sf::Vector2f(POSITION_OFFSET + dialoguePosition.x - dialogueBoxTexture->getSize().x / 2,
-	        dialoguePosition.y - dialogueBoxTexture->getSize().y - Y_OFFSET + POSITION_OFFSET));
+	dialogueBoxSprite.setPosition(sf::Vector2f(dialoguePosition.x - dialogueBoxTexture->getSize().x / 2,
+	    dialoguePosition.y - dialogueBoxTexture->getSize().y - Y_OFFSET_DIALOGUE_POSITION));
 
 	Texture* arrowTexture = assetsManager.getTexture(DIALOGUE_ARROW.c);
 	arrowSprite.setTexture(*arrowTexture);
 	arrowSprite.setTextureRect(sf::IntRect(0, 0, arrowTexture->getSize().x, arrowTexture->getSize().y));
 	arrowSprite.setPosition(dialogueBoxTexture->getSize().x / 2 - ARROW_POS_OFFSET.x + dialoguePosition.x,
-	    dialoguePosition.y - ARROW_POS_OFFSET.y - Y_OFFSET);
+	    dialoguePosition.y - ARROW_POS_OFFSET.y - Y_OFFSET_DIALOGUE_POSITION);
 
 	sf::Font* font = assetsManager.getFont(DIALOGUE_FONT.c);
 
@@ -125,8 +125,7 @@ void DialogueBox::cropTextToBox(std::string& new_text) {
 				dialogueText.setString(tmp_text.str());
 				// true if textToDraw is bouncing out of the box
 				if(dialogueText.getLocalBounds().width
-				    < float(dialogueBoxSprite.getTexture()->getSize().x - TEXT_POS_OFFSET.x + POSITION_OFFSET)
-				          - TEXT_POS_OFFSET.y * 2) {
+				    < dialogueBoxSprite.getTexture()->getSize().x - TEXT_POS_OFFSET.x - DISTANCE_TEXT_TO_END_OF_BOX) {
 					processed_text.str(std::string(""));
 					processed_text << tmp_text.str();
 				} else {
