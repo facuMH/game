@@ -2,7 +2,7 @@
 
 #include "Player.h"
 
-// if a weapon is already equipped it is swapped with the new one
+// if a weapon is already weaponUsed it is swapped with the new one
 // otherwise simply equips the new one
 void Player::equip(Object* arms) {
 	if(weapon != nullptr) {
@@ -11,7 +11,7 @@ void Player::equip(Object* arms) {
 		weapon = arms;
 		arms = nullptr;
 	}
-	equipped = weapon->name;
+	weaponUsed = weapon->name;
 	currentStats = maxStats + weapon->getStats();
 }
 
@@ -20,4 +20,16 @@ void Player::move(const KeyAction key, TileMap* map) {
 	animation.next(key);
 	moveCharacter(key, &animation.sprite, map, animation.get_position());
 	setTileOccupation(map, animation.get_position(), true);
+}
+
+bool Player::addExperience(const int xp) {
+	experience += xp;
+	bool levelUp = false;
+	if(experience > 99) {
+		level++;
+		experience = 0;
+		levelUp = true;
+		Combatant::maxStats + levelUpStatsIncrement;
+	}
+	return levelUp;
 }

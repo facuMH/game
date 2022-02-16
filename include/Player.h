@@ -8,7 +8,7 @@
 class Player : public Entity, public Combatant, public SteeredMovement {
 	int level = 1;
 	int experience = 0;
-	Name equipped;
+	Name weaponUsed;
 
   public:
 	Object* weapon = nullptr;
@@ -18,20 +18,10 @@ class Player : public Entity, public Combatant, public SteeredMovement {
 	    : Entity(_name, _animation), Combatant(_stats, _stats), SteeredMovement(_stepsize) {}
 
 	void equip(Object* arms);
-	Name equippedWeapon() const { return equipped; }
+	Name equippedWeapon() const { return weaponUsed; }
 	void move(KeyAction key, TileMap* map);
 	bool isEnemy() override { return false; }
 	int getLevel() const { return level; }
 	int getExp() const { return experience; }
-	bool addExperience(const int xp) {
-		experience += xp;
-		bool levelUp = false;
-		if(experience > 99) {
-			level++;
-			experience = 0;
-			levelUp = true;
-			Combatant::maxStats + levelUpStatsIncrement;
-		}
-		return levelUp;
-	}
+	bool addExperience(const int xp);
 };
