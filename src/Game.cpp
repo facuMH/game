@@ -177,13 +177,9 @@ void Game::makeNewHouseState(DoorNumber doorNumber, Position playerPosition = {0
 	    assetsManager.getMap(TILESHEET_INTERIOR_FLOOR.c), assetsManager.getMap(TILESHEET_FURNITURE.c)};
 	House house = HouseManager::getHouse(doorNumber);
 
-	EnemyData enemyData = ENEMYDATA[doorNumber - 1];
-	Enemy enemy;
-	// only add enemy if it hasn't been defeated yet.
-	if(!enemyManager.isEnemyDefeated(enemyData.name)) {
-		enemy = enemyManager.makeEnemy(enemyData, assetsManager);
-	}
 
+	// only add enemy if it hasn't been defeated yet.
+	Enemy enemy = enemyManager.makeEnemy(doorNumber, assetsManager);
 	Object* item = nullptr;
 	Name itemName = HOUSEDATA.at(doorNumber - 1).itemName;
 
@@ -278,8 +274,8 @@ void Game::pollEvents() {
 				houseState->setEnemy(new Enemy());
 				states.top()->resumeMusic();
 				// Save progress.
-				SaveAndLoad::saveGame({houseState->doorNumber, houseState->getCurrentPlayerPosition(), lastMainGameStatePosition,
-				    player.getLevel(), player.currentStats});
+				SaveAndLoad::saveGame({houseState->doorNumber, houseState->getCurrentPlayerPosition(),
+				    lastMainGameStatePosition, player.getLevel(), player.currentStats});
 			} break;
 			case StateAction::START_HOUSE:
 				turnOffMusic();
