@@ -1,11 +1,15 @@
 #pragma once
 
-#include <cereal/cereal.hpp>
 #include <fstream>
 #include <iostream>
 
+#include <cereal/cereal.hpp>
+#include <cereal/types/unordered_set.hpp>
+
 #include "AssetsPaths.h"
 #include "definitions.h"
+#include "managers/EnemyManager.h"
+#include "managers/ItemManager.h"
 
 
 class SaveObject {
@@ -15,11 +19,16 @@ class SaveObject {
 	Position mainGamePosition;
 	int level;
 	Stats currentStats;
+	std::unordered_set<Name> items;
+	std::unordered_set<Name> defeatedEnemies;
+	Name equippedWeapon;
 
 	SaveObject() = default;
-	SaveObject(const int houseNumber, const Position& housePosition, const Position& mainGamePosition, int level, Stats _currentStats)
-	    : houseNumber(houseNumber), housePosition(housePosition),
-	      mainGamePosition(mainGamePosition), level(level), currentStats(_currentStats) {}
+	SaveObject(const int houseNumber, const Position& housePosition, const Position& mainGamePosition, int level,
+	    Stats _currentStats, ItemManager* itemManager, EnemyManager* enemyManager, const Name& _equippedWeapon)
+	    : houseNumber(houseNumber), housePosition(housePosition), mainGamePosition(mainGamePosition), level(level),
+	      currentStats(_currentStats), items(itemManager->playerInventory),
+	      defeatedEnemies(enemyManager->enemiesDefeated), equippedWeapon(_equippedWeapon) {}
 
 	Position getHouseStatePosition() const { return housePosition; }
 	Position getMainGamePosition() const { return mainGamePosition; }
@@ -29,6 +38,7 @@ class SaveObject {
 	template <class Archive>
 	void serialize(Archive& ar) {
 		ar(CEREAL_NVP(houseNumber), CEREAL_NVP(housePosition.x), CEREAL_NVP(housePosition.y),
-		    CEREAL_NVP(mainGamePosition.x), CEREAL_NVP(mainGamePosition.y), CEREAL_NVP(level), currentStats);
+		    CEREAL_NVP(mainGamePosition.x), CEREAL_NVP(mainGamePosition.y), CEREAL_NVP(level), currentStats,
+		    CEREAL_NVP(items), CEREAL_NVP(defeatedEnemies), CEREAL_NVP(equippedWeapon));
 	}
 };

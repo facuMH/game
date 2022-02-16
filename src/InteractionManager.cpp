@@ -1,4 +1,4 @@
-#include "InteractionManager.h"
+#include "managers/InteractionManager.h"
 
 void InteractionManager::initDialogue(const Name& name) {
 	if(name == "Old Man") {

@@ -7,9 +7,9 @@
 #include "AssetsPaths.h"
 #include "Game.h"
 #include "House.h"
-#include "HouseManager.h"
 #include "asset_data.h"
 #include "definitions.h"
+#include "managers/HouseManager.h"
 #include "states/CombatState.h"
 #include "states/GameOverState.h"
 #include "states/InventoryState.h"
@@ -177,14 +177,9 @@ void Game::makeNewHouseState(DoorNumber doorNumber, Position playerPosition = {0
 	    assetsManager.getMap(TILESHEET_INTERIOR_FLOOR.c), assetsManager.getMap(TILESHEET_FURNITURE.c)};
 	House house = HouseManager::getHouse(doorNumber);
 
-	Enemies enemies;
-	EnemyData enemyData = ENEMYDATA[doorNumber - 1];
-	Texture* texture = assetsManager.getTexture(enemyData.texturePath);
-	Animation animation(texture, sf::IntRect(0, 0, TILESIZE, TILESIZE), enemyData.position);
-	Enemy enemy(enemyData.name, Stats(15, 15, 15, 15, 15, 15), animation, MovementType::HORIZONTAL, {30, 30}, 2.0f,
-	    enemyData.experience);
-	enemies.push_back(enemy);
 
+	// only add enemy if it hasn't been defeated yet.
+	Enemy enemy = enemyManager.makeEnemy(doorNumber, assetsManager);
 	Object* item = nullptr;
 	Name itemName = HOUSEDATA.at(doorNumber - 1).itemName;
 
@@ -198,8 +193,8 @@ void Game::makeNewHouseState(DoorNumber doorNumber, Position playerPosition = {0
 
 	lastMainGameStatePosition = dynamic_cast<GameState*>(states.top())->getCurrentPlayerPosition();
 	player.animation.set_position(playerPosition);
-	states.push(new GameState(window, assetsManager, tileSheets, house.houseDesignPath, &keyBindings, player, enemies,
-	    *assetsManager.getMusic(HOUSE_MUSIC.c), item, doorNumber));
+	states.push(new GameState(window, assetsManager, enemyManager, tileSheets, house.houseDesignPath, &keyBindings,
+	    player, enemy, *assetsManager.getMusic(HOUSE_MUSIC.c), item, doorNumber));
 }
 
 void Game::makeNewHouseStateFromPlayerPosition(const Position playerPosition) {
@@ -252,9 +247,14 @@ void Game::pollEvents() {
 			case StateAction::LOAD_GAME:
 				try {
 					savedGame = SaveAndLoad::loadGame();
+					enemyManager.enemiesDefeated = savedGame.defeatedEnemies;
+					for(const auto& item : savedGame.items) {
+						itemManager.pickUp(item);
+					}
 					turnOffMusic(); // main menu music
 					makeMainGameState(savedGame.getMainGamePosition());
 					turnOffMusic(); // main game state music
+					player.equip(itemManager.get(savedGame.equippedWeapon));
 					player.set_stats(savedGame.currentStats);
 					makeNewHouseState(savedGame.houseNumber, savedGame.getHouseStatePosition());
 				} catch(...) {
@@ -266,17 +266,23 @@ void Game::pollEvents() {
 				}
 				break;
 			case StateAction::START_COMBAT: makeNewCombat(dynamic_cast<GameState*>(states.top())->getEnemy()); break;
-			case StateAction::EXIT_COMBAT:
+			case StateAction::EXIT_COMBAT: {
 				// coming out here means you won the fight.
-				player.addExperience(dynamic_cast<CombatState*>(states.top())->experienceFromEnemy());
+				// We're still in CombatState
 				turnOffMusic();
 				states.pop();
+				// We're in GameState (House) now.
+				auto houseState = dynamic_cast<GameState*>(states.top());
+				player.addExperience(houseState->getExperienceFromEnemy());
+				enemyManager.setEnemyDefeated(houseState->getEnemy()->name);
+				houseState->unblockEnemyTile();
+				houseState->setEnemy(new Enemy());
 				states.top()->resumeMusic();
-				// save progress
-				SaveAndLoad::saveGame({dynamic_cast<GameState*>(states.top())->doorNumber,
-				    dynamic_cast<GameState*>(states.top())->getCurrentPlayerPosition(), lastMainGameStatePosition,
-				    player.getLevel(), player.currentStats});
-				break;
+				// Save progress.
+				SaveAndLoad::saveGame(
+				    {houseState->doorNumber, houseState->getCurrentPlayerPosition(), lastMainGameStatePosition,
+				        player.getLevel(), player.currentStats, &itemManager, &enemyManager, player.equippedWeapon()});
+			} break;
 			case StateAction::START_HOUSE:
 				turnOffMusic();
 				makeNewHouseStateFromPlayerPosition(dynamic_cast<GameState*>(states.top())->getCurrentPlayerPosition());
@@ -290,7 +296,7 @@ void Game::pollEvents() {
 				}
 			} break;
 			case StateAction::OPEN_INVENTORY: openInventory(); break;
-			case StateAction::ADD_ITEM: itemManager.add_item(); break;
+			case StateAction::ADD_ITEM: itemManager.addItem(); break;
 			case StateAction::EXIT_HOUSE:
 				turnOffMusic();
 				states.pop();

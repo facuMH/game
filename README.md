@@ -12,3 +12,21 @@
 - X: end combat
 - Esc and Q: Quit application
 - P: Pause the game
+
+## Build process
+
+### On Linux:
+
+Build and run with:
+```
+cd path/to/game
+mkdir build
+cd build
+cmake ..
+make
+./rpg
+```
+
+### On Windows
+
+TODO

@@ -21,6 +21,7 @@ set(SOURCES src/main.cpp
         src/Button.cpp
         src/CombatState.cpp
         src/DialogueBox.cpp
+        src/EnemyManager.cpp
         src/Game.cpp
         src/GameOverState.cpp
         src/GameState.cpp
@@ -38,27 +39,27 @@ set(SOURCES src/main.cpp
 
 set(HEADERS include/Animation.h
         include/asset_data.h
-        include/AssetsManager.h
         include/AssetsPaths.h
         include/Button.h
         include/definitions.h
         include/DialogueBox.h
         include/Enemy.h
+        include/Entity.h
         include/entity_attributes/Combatant.h
         include/entity_attributes/Movement.h
         include/entity_attributes/SteeredMovement.h
         include/entity_attributes/IdleMovement.h
         include/Game.h
         include/House.h
-        include/HouseManager.h
         include/Inanimated.h
-        include/InteractionManager.h
-        include/ItemManager.h
+        include/managers/AssetsManager.h
+        include/managers/EnemyManager.h
+        include/managers/HouseManager.h
+        include/managers/InteractionManager.h
+        include/managers/ItemManager.h
         include/Player.h
-        include/Tile.h
-        include/TileMap.h
-        include/Villager.h
-        include/Entity.h
+        include/SaveObject.h
+        include/SaveAndLoad.h
         include/states/CombatState.h
         include/states/GameState.h
         include/states/GameOverState.h
@@ -67,8 +68,9 @@ set(HEADERS include/Animation.h
         include/states/PauseGameState.h
         include/states/SettingsState.h
         include/states/State.h
-        include/SaveObject.h
-        include/SaveAndLoad.h)
+        include/Tile.h
+        include/TileMap.h
+        include/Villager.h)
 
 set(DEPENDENCIES libs/tileson.hpp
         libs/cereal/archives/json.hpp

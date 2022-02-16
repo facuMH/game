@@ -19,4 +19,7 @@ class Enemy : public Entity, public IdleMovement, public Combatant {
 	};
 	bool isEnemy() override { return true; }
 	int getExperience() const { return experience; }
+	bool isEmpty() const { return name.empty(); }
+
+	bool operator == (const Enemy& e) const { return name == e.name; }
 };

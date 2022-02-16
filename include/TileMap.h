@@ -1,8 +1,8 @@
 #pragma once
 
-#include "AssetsManager.h"
 #include "Tile.h"
 #include "definitions.h"
+#include "managers/AssetsManager.h"
 
 #include "tileson.hpp"
 

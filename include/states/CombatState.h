@@ -1,12 +1,12 @@
 #pragma once
 
-#include "AssetsManager.h"
 #include "Enemy.h"
 #include "Player.h"
 #include "State.h"
 #include "TileMap.h"
 #include "definitions.h"
 #include "entity_attributes/Combatant.h"
+#include "managers/AssetsManager.h"
 
 class CombatState : public State {
   private:

@@ -1,7 +1,7 @@
-#include "ItemManager.h"
+#include "managers/ItemManager.h"
 #include "asset_data.h"
 
-ItemManager::ItemManager(AssetsManager* _am) : am(_am) {
+ItemManager::ItemManager(AssetsManager* _am) : assetsManager(_am) {
 	std::ifstream ifs(ITEMSLIST.c);
 	std::string line;
 	std::string name;
@@ -17,7 +17,7 @@ ItemManager::ItemManager(AssetsManager* _am) : am(_am) {
 
 // name of the item to be created, position where it should be displayed
 Object ItemManager::make(const Name& itemName, const Position& itemPosition) {
-	Texture* t = am->getTexture(itemsPaths.at(itemName));
+	Texture* t = assetsManager->getTexture(itemsPaths.at(itemName));
 	sf::IntRect ir{{0, 0}, sf::Vector2i(t->getSize())};
 	Animation a{t, ir, itemPosition};
 	Stats s{itemStats.at(itemName)};
@@ -42,7 +42,7 @@ Object* ItemManager::get(const Name& itemName) {
 	return &items.at(itemName);
 }
 
-void ItemManager::add_item() {
+void ItemManager::addItem() {
 	for(const auto& item : itemStats) {
 		if(!hasBeenPickedUp(item.first)) {
 			get(item.first, {0, 0});

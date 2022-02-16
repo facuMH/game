@@ -11,6 +11,7 @@ void Player::equip(Object* arms) {
 		weapon = arms;
 		arms = nullptr;
 	}
+	equipped = weapon->name;
 	currentStats = maxStats + weapon->getStats();
 }
 

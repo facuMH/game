@@ -10,17 +10,19 @@
 #include "definitions.h"
 
 class InventoryState;
+class SaveObject;
 
 class ItemManager {
   private:
 	std::unordered_map<std::string, Object> items;
 	std::unordered_map<Name, Stats> itemStats;
 	std::unordered_set<Name> playerInventory;
-	AssetsManager* am;
+	AssetsManager* assetsManager;
 
 	Object make(const Name& name, const Position& pos);
 
 	friend InventoryState;
+	friend SaveObject;
 
   public:
 	explicit ItemManager(AssetsManager* am);
@@ -29,5 +31,5 @@ class ItemManager {
 	Object* get(const Name& name);
 	void pickUp(const Name& name) { playerInventory.emplace(name); }
 	bool hasBeenPickedUp(const Name& name) { return playerInventory.find(name) != playerInventory.end(); }
-	void add_item();
+	void addItem();
 };

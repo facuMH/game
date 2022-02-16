@@ -16,8 +16,9 @@ const EnemyData LIZARD_DATA = {"Lizard", LIZARD.c, {30, 30}, 50};
 const EnemyData SKULL_DATA = {"Skull", SKULL.c, {30, 30}, 50};
 const EnemyData BAMBOO_DATA = {"Bamboo", BAMBOO.c, {30, 30}, 50};
 const EnemyData AXOLOTL_DATA = {"Axolotl", AXOLOTL.c, {30, 30}, 50};
+const EnemyData GRANDPA_DATA = {"Old Man", OLD_MAN_WALK.c, {30, 30}, 100};
 
-const std::vector<EnemyData> ENEMYDATA{MOLE_DATA, REPTILE_DATA, LIZARD_DATA, SKULL_DATA, BAMBOO_DATA, AXOLOTL_DATA};
+const std::vector<EnemyData> ENEMYDATA{MOLE_DATA, REPTILE_DATA, LIZARD_DATA, SKULL_DATA, BAMBOO_DATA, AXOLOTL_DATA, GRANDPA_DATA};
 
 struct HouseData {
 	DoorNumber doorNumber;
