@@ -40,7 +40,6 @@ class Game {
 	sf::Text mousePosText;
 	Position lastMainGameStatePosition;
 	Player player;
-	bool clearedForFinalBoss;
 
 	// Stack of states - the top entry is the active state, i.e. [main menu,
 	// map-layer, fight-layer]: If the fight layer is left, the next active state

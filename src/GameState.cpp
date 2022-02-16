@@ -18,16 +18,10 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 	villagers = _villagers;
 	isHouse = false;
 	inDialogue = false;
+
 	clearedForFinalBoss = false;
-
-	soundBuffers.emplace("gasp", assetsManager->getSoundBuffer(GASP.c));
-	soundBuffers.emplace("interaction bling", assetsManager->getSoundBuffer(INTERACTION_BLING.c));
-
-	for(auto& sb : soundBuffers) {
-		sf::Sound sound;
-		sound.setBuffer(sb.second);
-		sounds.emplace(sb.first, sound);
-	}
+	setEntranceBlock(true);
+	initSounds();
 
 	previousKey = sf::Keyboard::Unknown;
 	view = sf::View(player.get_position(), {720.0, 480.0});
@@ -61,7 +55,26 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& _assetsManager, st
 	music.openFromFile(*musicPath);
 	music.setLoop(true);
 	music.play();
+	initSounds();
+
+	// The final boss holds a little monologue before the fight - as they always do.
+	if (doorNumber == 7) {
+		Name finalBoss = "Evil Grandpa";
+		startDialogue(finalBoss);
+	}
 }
+
+void GameState::initSounds() {
+	soundBuffers.emplace("gasp", assetsManager->getSoundBuffer(GASP.c));
+	soundBuffers.emplace("interaction bling", assetsManager->getSoundBuffer(INTERACTION_BLING.c));
+
+	for(auto& sb : soundBuffers) {
+		sf::Sound sound;
+		sound.setBuffer(sb.second);
+		sounds.emplace(sb.first, sound);
+	}
+}
+
 
 GameState::~GameState() = default;
 
@@ -86,6 +99,9 @@ void GameState::render(sf::RenderWindow* window) {
 		dialogueBox.render(window);
 	}
 	if(!itemPicked && item != nullptr) window->draw(item->animation.sprite);
+	if(!isHouse && !clearedForFinalBoss) {
+		window->draw(entranceBlocker);
+	}
 }
 
 void GameState::updateKeybinds(const float& dt) {}
@@ -103,6 +119,7 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 		case KeyAction::DOWN:
 		case KeyAction::RIGHT:
 		case KeyAction::LEFT:
+			std::cout << player.get_position().x << " " << player.get_position().y << std::endl;
 			if(!inDialogue) { // Player cannot move while in dialogue
 				player.move(action->first, &map);
 				view.setCenter(player.animation.get_position());
@@ -198,6 +215,9 @@ void GameState::startDialogue(Name& characterName) {
 			break;
 		}
 	}
+	if (characterName == "Evil Grandpa") {
+	faceTextureName = OLD_MAN_FACE.c;
+	}
 	dialogueBox = DialogueBox(characterName, faceTextureName, player.get_position());
 }
 
@@ -235,3 +255,24 @@ int GameState::getExperienceFromEnemy() const {
 		return 0;
 	}
 }
+void GameState::setEntranceBlock(bool isBlocked) {
+	std::vector<std::pair<Position, DoorNumber>> tmp = map.getHousePositions();
+	Position finalHouseDoor;
+	for(auto& pair : tmp) {
+		if(pair.second == 7) {
+			finalHouseDoor = pair.first;
+		}
+	}
+	map.setTileOccupation(finalHouseDoor, isBlocked);
+
+	if(isBlocked) {
+		Texture* entranceBlockerTexture = assetsManager->getTexture(ROCK.c);
+		entranceBlocker.setTexture(*entranceBlockerTexture);
+		entranceBlocker.setTextureRect(
+		    sf::IntRect(0, 0, entranceBlockerTexture->getSize().x, entranceBlockerTexture->getSize().y));
+		entranceBlocker.setPosition(finalHouseDoor);
+	} else {
+		clearedForFinalBoss = true;
+	}
+}
+

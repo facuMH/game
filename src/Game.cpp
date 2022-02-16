@@ -23,8 +23,6 @@ void Game::initVariables() {
 	Texture* play_text = assetsManager.getTexture(NINJA_WALK.c);
 	Animation player_animation(play_text, sf::IntRect(0, 0, TILESIZE, TILESIZE), Position(50, 50));
 	player = Player("Adventurer", Stats(15, 20, 50, 30, 31, 1), player_animation, 5.0f);
-
-	clearedForFinalBoss = false;
 }
 
 void Game::closeWindow() {
@@ -140,7 +138,7 @@ void Game::makeMainGameState(Position playerPosition = {50, 50}) {
 	villagers.push_back(
 	    createVillager("Egg Girl", EGG_GIRL_FACE.c, EGG_GIRL_WALK.c, Position(300, 50), MovementType::VERTICAL, 0.3f));
 	villagers.push_back(
-	    createVillager("Old Man", OLD_MAN_FACE.c, OLD_MAN_WALK.c, Position(50, 150), MovementType::HORIZONTAL, 0.2f));
+	    createVillager("Nice Grandpa", OLD_MAN_FACE.c, OLD_MAN_WALK.c, Position(50, 150), MovementType::HORIZONTAL, 0.2f));
 	villagers.push_back(createVillager(
 	    "Princess", PRINCESS_FACE.c, PRINCESS_WALK.c, Position(230, 150), MovementType::VERTICAL, 0.25f));
 	villagers.push_back(
@@ -193,7 +191,10 @@ void Game::makeNewHouseState(DoorNumber doorNumber, Position playerPosition = {0
 		playerPosition = HOUSEDATA.at(doorNumber - 1).doorPosition;
 	}
 
-	if(!itemManager.hasBeenPickedUp(itemName)) {
+	if (doorNumber == 7) {
+		item = nullptr;
+	}
+	else if(!itemManager.hasBeenPickedUp(itemName)) {
 		item = itemManager.get(itemName, HOUSEDATA.at(doorNumber - 1).itemPosition);
 	}
 
@@ -259,6 +260,9 @@ void Game::pollEvents() {
 					}
 					turnOffMusic(); // main menu music
 					makeMainGameState(savedGame.getMainGamePosition());
+					if (enemyManager.allEnemiesDefeated()) {
+						dynamic_cast<GameState*>(states.top())->setEntranceBlock(false);
+					}
 					turnOffMusic(); // main game state music
 					player.equip(itemManager.get(savedGame.equippedWeapon));
 					player.set_stats(savedGame.currentStats);
@@ -281,9 +285,6 @@ void Game::pollEvents() {
 				auto houseState = dynamic_cast<GameState*>(states.top());
 				player.addExperience(houseState->getExperienceFromEnemy());
 				enemyManager.setEnemyDefeated(houseState->getEnemy()->name);
-				if(enemyManager.allEnemiesDefeated()) {
-					clearedForFinalBoss = true;
-				}
 				houseState->unblockEnemyTile();
 				houseState->setEnemy(new Enemy());
 				states.top()->resumeMusic();
@@ -310,7 +311,9 @@ void Game::pollEvents() {
 				turnOffMusic();
 				states.pop();
 				states.top()->resumeMusic();
-				dynamic_cast<GameState*>(states.top())->clearedForFinalBoss = clearedForFinalBoss;
+				if(enemyManager.allEnemiesDefeated()) {
+					dynamic_cast<GameState*>(states.top())->setEntranceBlock(false);
+				}
 				break;
 			case StateAction::EXIT_SETTING:
 			case StateAction::RESUME_GAME:

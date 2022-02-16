@@ -151,6 +151,6 @@ const Position TEXT_POS_OFFSET = {55, 20};
 const int DISTANCE_TEXT_TO_END_OF_BOX = 25;
 const int MAX_TEXT_LINES = 2;
 const float TIME_UNTIL_NEXT_CHAR = 0.05; // after this time the next character of the text is drawn
-const Position CHARACTER_NAME_OFFSET = {10, -2};
+const Position CHARACTER_NAME_OFFSET = {8, 0};
 const Position ARROW_POS_OFFSET = {20, 20};
 const Position FACE_OFFSET = {6, 15};
