@@ -21,7 +21,7 @@ DialogueBox::DialogueBox(
 	sf::Font* font = assetsManager.getFont(DIALOGUE_FONT.c);
 
 	characterNameText.setFont(*font);
-	characterNameText.setCharacterSize(12);
+	characterNameText.setCharacterSize(8);
 	characterNameText.setFillColor(sf::Color::White);
 	characterNameText.setPosition(dialogueBoxSprite.getPosition().x + CHARACTER_NAME_OFFSET.x,
 	    dialogueBoxSprite.getPosition().y + CHARACTER_NAME_OFFSET.y);

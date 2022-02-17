@@ -52,10 +52,10 @@ void TileMap::loadFromJson(const std::string& path, std::vector<MapBackground*> 
 	}
 }
 
-Position_i TileMap::getTileFromPos(Position pos) {
+Position_i TileMap::getTileFromPos(const Position &pos) {
 	int tilePosX = std::ceil(pos.x / TILESIZE);
 	int tilePosY = std::ceil(pos.y / TILESIZE);
-	return Position_i{tilePosX, tilePosY};
+	return {tilePosX, tilePosY};
 }
 
 bool TileMap::hasNoCollision(Position position) {
@@ -66,6 +66,15 @@ bool TileMap::hasNoCollision(Position position) {
 void TileMap::setTileOccupation(Position position, bool isOccupied) {
 	auto t = getTileFromPos(position);
 	tiles[0][t.x][t.y]->is_occupied = isOccupied;
+}
+
+void TileMap::setAreaOccupation(const Position& position, const Position_i& size, bool isOccupied) {
+	for (int i = int(position.x); i < int(position.x + size.x); i++) {
+		for (int j = int(position.y); j < int(position.y + size.y); j++) {
+			Position tmp = {float(i), float(j)};
+			setTileOccupation(tmp, isOccupied);
+		}
+	}
 }
 
 DoorNumber TileMap::getTileDoorNumber(Position position) {
@@ -94,3 +103,4 @@ std::vector<std::pair<Position, DoorNumber>> TileMap::getHousePositions() {
 	}
 	return positionDoorNumberVector;
 }
+

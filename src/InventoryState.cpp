@@ -64,8 +64,7 @@ void InventoryState::initBackground(AssetsManager& am) {
 	} else {
 		background.setSize(EMPTY_INVENTORY_SIZE);
 	}
-
-	background.move({0, -POSITION_OFFSET - 4 * static_cast<float>(playerItems.size())});
+	background.move({0, -BOX_POSITION_OFFSET - 4 * static_cast<float>(playerItems.size())});
 }
 
 void InventoryState::initFonts(AssetsManager& am) {

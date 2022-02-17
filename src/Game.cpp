@@ -1,8 +1,7 @@
+#include <SFML/Graphics.hpp>
 #include <cmath>
 #include <iostream>
 #include <typeinfo>
-
-#include <SFML/Graphics.hpp>
 
 #include "AssetsPaths.h"
 #include "Game.h"
@@ -12,6 +11,7 @@
 #include "managers/HouseManager.h"
 #include "states/CombatState.h"
 #include "states/GameOverState.h"
+#include "states/GameWonState.h"
 #include "states/InventoryState.h"
 #include "states/PauseGameState.h"
 #include "states/SettingsState.h"
@@ -137,12 +137,14 @@ void Game::makeMainGameState(Position playerPosition = {50, 50}) {
 	Villagers villagers;
 	villagers.push_back(
 	    createVillager("Egg Girl", EGG_GIRL_FACE.c, EGG_GIRL_WALK.c, Position(300, 50), MovementType::VERTICAL, 0.3f));
-	villagers.push_back(
-	    createVillager("Old Man", OLD_MAN_FACE.c, OLD_MAN_WALK.c, Position(50, 150), MovementType::HORIZONTAL, 0.2f));
+	villagers.push_back(createVillager(
+	    "Nice Grandpa", OLD_MAN_FACE.c, OLD_MAN_WALK.c, Position(50, 150), MovementType::HORIZONTAL, 0.2f));
 	villagers.push_back(createVillager(
 	    "Princess", PRINCESS_FACE.c, PRINCESS_WALK.c, Position(230, 150), MovementType::VERTICAL, 0.25f));
-	villagers.push_back(createVillager("Ralph", BOY_FACE.c, BOY_WALK.c, Position(500, 580), MovementType::HORIZONTAL, 0.3f));
-	villagers.push_back(createVillager("Dolores", GRUMPY_FACE.c, GRUMPY_WALK.c, Position(250, 560), MovementType::HORIZONTAL, 0.1f));
+	villagers.push_back(
+	    createVillager("Ralph", BOY_FACE.c, BOY_WALK.c, Position(500, 580), MovementType::HORIZONTAL, 0.3f));
+	villagers.push_back(
+	    createVillager("Dolores", GRUMPY_FACE.c, GRUMPY_WALK.c, Position(250, 560), MovementType::HORIZONTAL, 0.1f));
 
 	player.animation.set_position(playerPosition);
 	// Comment: There's a bug in Tileson. Tile attributes, such as isBlocked are connected with the tile
@@ -189,14 +191,14 @@ void Game::makeNewHouseState(DoorNumber doorNumber, Position playerPosition = {0
 		playerPosition = HOUSEDATA.at(doorNumber - 1).doorPosition;
 	}
 
-	if(!itemManager.hasBeenPickedUp(itemName)) {
+	if(!itemManager.hasBeenPickedUp(itemName) && doorNumber != 7) {
 		item = itemManager.get(itemName, HOUSEDATA.at(doorNumber - 1).itemPosition);
 	}
 
 	lastMainGameStatePosition = dynamic_cast<GameState*>(states.top())->getCurrentPlayerPosition();
 	player.animation.set_position(playerPosition);
-	states.push(new GameState(window, assetsManager, enemyManager, tileSheets, house.houseDesignPath, &keyBindings,
-	    player, enemy, *assetsManager.getMusic(HOUSE_MUSIC.c), item, doorNumber));
+	states.push(new GameState(window, assetsManager, tileSheets, house.houseDesignPath, &keyBindings, player, enemy,
+	    *assetsManager.getMusic(HOUSE_MUSIC.c), item, doorNumber));
 }
 
 void Game::makeNewHouseStateFromPlayerPosition(const Position playerPosition) {
@@ -218,7 +220,7 @@ void Game::openInventory() {
 void Game::pollEvents() {
 	// Gets StateAction that is triggered by the game itself, not the player
 	StateAction action = StateAction::NONE;
-	if(typeid(states.top()) == typeid(CombatState)) {
+	if(std::is_same_v<CombatState, decltype(states.top())>) {
 		action = dynamic_cast<CombatState*>(states.top())->programAction();
 	}
 	SaveObject savedGame;
@@ -255,6 +257,9 @@ void Game::pollEvents() {
 					}
 					turnOffMusic(); // main menu music
 					makeMainGameState(savedGame.getMainGamePosition());
+					if(enemyManager.allEnemiesDefeated()) {
+						dynamic_cast<GameState*>(states.top())->setEntranceBlock(false);
+					}
 					turnOffMusic(); // main game state music
 					player.equip(itemManager.get(savedGame.equippedWeapon));
 					player.set_stats(savedGame.currentStats);
@@ -303,10 +308,14 @@ void Game::pollEvents() {
 				turnOffMusic();
 				states.pop();
 				states.top()->resumeMusic();
+				if(enemyManager.allEnemiesDefeated()) {
+					dynamic_cast<GameState*>(states.top())->setEntranceBlock(false);
+				}
 				break;
 			case StateAction::EXIT_SETTING:
 			case StateAction::RESUME_GAME:
 			case StateAction::CLOSE_INVENTORY: states.pop(); break;
+			case StateAction::GAME_WON: turnOffMusic(); states.push(new GameWonState(window, assetsManager));
 			default: break;
 			}
 			break;

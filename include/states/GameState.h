@@ -8,8 +8,8 @@
 #include "Villager.h"
 #include "definitions.h"
 #include "managers/AssetsManager.h"
-#include "managers/InteractionManager.h"
 #include "managers/EnemyManager.h"
+#include "managers/InteractionManager.h"
 
 class GameState : public State {
   private:
@@ -19,31 +19,31 @@ class GameState : public State {
 	Enemy enemy;
 	DialogueBox dialogueBox;
 	bool inDialogue;
-	EnemyManager* enemyManager;
 	AssetsManager* assetsManager;
 	KeyList* keybinds;
 	sf::Clock clock;
 	sf::Keyboard::Key previousKey; // for gasping sound effect
-	float dialogueYPosition;       // position depends on current view
 	Object* item = nullptr;        // if in a house there will be an item, if not previously picked up
 	bool itemPicked = false;
-
+	sf::Sprite entranceBlocker;
 
   public:
 	bool isHouse;
 	DoorNumber doorNumber;
+	bool clearedForFinalBoss;
+
 	// Constructors
 	GameState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets,
 	    JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player, Villagers& _villagers, MusicPath& musicPath);
 
-	GameState(sf::RenderWindow* window, AssetsManager& _assetsManager, EnemyManager& enemyManager,
-	    std::vector<MapBackground*> textureSheets, JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player,
-	    Enemy& _enemy, MusicPath& musicPath, Object* _item, DoorNumber _doorNumber);
+	GameState(sf::RenderWindow* window, AssetsManager& _assetsManager, std::vector<MapBackground*> textureSheets,
+	    JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player, Enemy& _enemy, MusicPath& _musicPath,
+	    Object* _item, DoorNumber _doorNumber);
 	// Destructor
 	~GameState() override;
 
 	// Functions
-	void setEnemy(Enemy* _enemy) {enemy = *_enemy;}
+	void setEnemy(Enemy* _enemy) { enemy = *_enemy; }
 	void update(const float& dt) override;
 	void render(sf::RenderWindow* window) override;
 	void updateKeybinds(const float& dt) override;
@@ -53,14 +53,15 @@ class GameState : public State {
 	void drawPlayer(sf::RenderWindow* window) override;
 	StateAction shouldAct() override;
 
+	void initSounds();
 	DoorNumber getCurrentDoorNumber(Position position);
 	std::vector<std::pair<Position, DoorNumber>> listHousePositions();
 	Position getCurrentPlayerPosition();
 	Name getEntityInInteractionRange(Position position);
 	void startDialogue(Name& characterName);
 	Enemy* getEnemy() { return &enemy; }
-
 	Name getItemName() const { return item->getName(); }
 	void unblockEnemyTile();
 	int getExperienceFromEnemy() const;
+	void setEntranceBlock(bool isBlocked);
 };

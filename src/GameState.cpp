@@ -19,14 +19,9 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 	isHouse = false;
 	inDialogue = false;
 
-	soundBuffers.emplace("gasp", assetsManager->getSoundBuffer(GASP.c));
-	soundBuffers.emplace("interaction bling", assetsManager->getSoundBuffer(INTERACTION_BLING.c));
-
-	for(auto& sb : soundBuffers) {
-		sf::Sound sound;
-		sound.setBuffer(sb.second);
-		sounds.emplace(sb.first, sound);
-	}
+	clearedForFinalBoss = false;
+	setEntranceBlock(true);
+	initSounds();
 
 	previousKey = sf::Keyboard::Unknown;
 	view = sf::View(player.get_position(), {720.0, 480.0});
@@ -37,12 +32,11 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& gameAM, std::vecto
 }
 
 /// Constructor for house GameState: No villagers here, but monsters and item
-GameState::GameState(sf::RenderWindow* window, AssetsManager& _assetsManager, EnemyManager& _enemyManager,
-    std::vector<MapBackground*> textureSheets, JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player,
-    Enemy& _enemy, MusicPath& _musicPath, Object* _item, DoorNumber _doorNumber)
+GameState::GameState(sf::RenderWindow* window, AssetsManager& _assetsManager, std::vector<MapBackground*> textureSheets,
+    JSONFilePath& path, KeyList* gameSupportedKeys, Player& _player, Enemy& _enemy, MusicPath& _musicPath,
+    Object* _item, DoorNumber _doorNumber)
     : State(window), map(_assetsManager, textureSheets, path) {
 	assetsManager = &_assetsManager;
-	enemyManager = &_enemyManager;
 	keybinds = gameSupportedKeys;
 	player = _player;
 	enemy = _enemy;
@@ -61,7 +55,26 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& _assetsManager, En
 	music.openFromFile(*musicPath);
 	music.setLoop(true);
 	music.play();
+	initSounds();
+
+	// The final boss holds a little monologue before the fight - as they always do.
+	if(doorNumber == 7) {
+		Name finalBoss = "Evil Grandpa";
+		startDialogue(finalBoss);
+	}
 }
+
+void GameState::initSounds() {
+	soundBuffers.emplace("gasp", assetsManager->getSoundBuffer(GASP.c));
+	soundBuffers.emplace("interaction bling", assetsManager->getSoundBuffer(INTERACTION_BLING.c));
+
+	for(auto& sb : soundBuffers) {
+		sf::Sound sound;
+		sound.setBuffer(sb.second);
+		sounds.emplace(sb.first, sound);
+	}
+}
+
 
 GameState::~GameState() = default;
 
@@ -86,6 +99,9 @@ void GameState::render(sf::RenderWindow* window) {
 		dialogueBox.render(window);
 	}
 	if(!itemPicked && item != nullptr) window->draw(item->animation.sprite);
+	if(!isHouse && !clearedForFinalBoss) {
+		window->draw(entranceBlocker);
+	}
 }
 
 void GameState::updateKeybinds(const float& dt) {}
@@ -103,6 +119,7 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 		case KeyAction::DOWN:
 		case KeyAction::RIGHT:
 		case KeyAction::LEFT:
+			std::cout << player.get_position().x << " " << player.get_position().y << std::endl;
 			if(!inDialogue) { // Player cannot move while in dialogue
 				player.move(action->first, &map);
 				view.setCenter(player.animation.get_position());
@@ -198,6 +215,9 @@ void GameState::startDialogue(Name& characterName) {
 			break;
 		}
 	}
+	if(characterName == "Evil Grandpa") {
+		faceTextureName = OLD_MAN_FACE.c;
+	}
 	dialogueBox = DialogueBox(characterName, faceTextureName, player.get_position());
 }
 
@@ -227,10 +247,35 @@ void GameState::unblockEnemyTile() {
 		Enemy::setTileOccupation(&map, enemy.get_position(), false);
 	}
 }
+
 int GameState::getExperienceFromEnemy() const {
 	if(!enemy.isEmpty()) {
 		return enemy.getExperience();
 	} else {
 		return 0;
+	}
+}
+void GameState::setEntranceBlock(bool isBlocked) {
+	std::vector<std::pair<Position, DoorNumber>> tmp = map.getHousePositions();
+	Position finalHouseDoor;
+	for(auto& pair : tmp) {
+		if(pair.second == 7) {
+			finalHouseDoor = pair.first;
+		}
+	}
+	map.setTileOccupation(finalHouseDoor, isBlocked);
+
+	if(isBlocked) {
+		Texture* entranceBlockerTexture = assetsManager->getTexture(BLOCKER_IDLE.c);
+		entranceBlocker.setTexture(*entranceBlockerTexture);
+		entranceBlocker.setTextureRect(sf::IntRect(0, 0, 16, 16));
+		entranceBlocker.setPosition(finalHouseDoor);
+		Animation animation(entranceBlockerTexture, entranceBlocker.getTextureRect(), entranceBlocker.getPosition());
+		Villager villager(
+		    animation, "Skele Tony", MovementType::STILL, entranceBlocker.getPosition(), 0, BLOCKER_FACE.c);
+		villagers.push_back(villager);
+	} else {
+		clearedForFinalBoss = true;
+		villagers.pop_back();
 	}
 }

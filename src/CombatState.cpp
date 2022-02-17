@@ -241,6 +241,9 @@ StateAction CombatState::shouldAct() {
 		if(!inLevelUpBox && player.getExp() + enemy.getExperience() >= 99) {
 			LevelUpMessage();
 		} else {
+			if (enemy.name == "Evil Grandpa") {
+				return StateAction::GAME_WON;
+			}
 			return StateAction::EXIT_COMBAT;
 		}
 	}
