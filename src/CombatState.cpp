@@ -276,11 +276,11 @@ void CombatState::LevelUpMessage() {
 	sf::Text lvlUpTxt{};
 	lvlUpTxt.setFont(font);
 	const std::string lvlUpMsg =
-	    "Congrats, you killed enough crazy\n monsters to LEVEL UP.\nNow you feel stronger ... or not";
+	    "You killed enough crazy monsters\nto LEVEL UP.\nNow you feel stronger...";
 	lvlUpTxt.setString(lvlUpMsg);
-	const int width = 400.f;
-	const int height = 100.f;
+	const int width = 320.f;
+	const int height = 80.f;
 	center.x -= width / 2;
 	center.y -= height / 2;
-	levelUpBox = std::make_unique<Button>(Button(center, {400, 100}, lvlUpTxt));
+	levelUpBox = std::make_unique<Button>(Button(center, {width, height}, lvlUpTxt));
 }

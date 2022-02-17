@@ -22,7 +22,7 @@ void Game::initVariables() {
 
 	Texture* play_text = assetsManager.getTexture(NINJA_WALK.c);
 	Animation player_animation(play_text, sf::IntRect(0, 0, TILESIZE, TILESIZE), Position(50, 50));
-	player = Player("Adventurer", Stats(15, 20, 50, 30, 31, 1), player_animation, 5.0f);
+	player = Player("Green Ninja", Stats(15, 20, 50, 30, 31, 1), player_animation, 5.0f);
 }
 
 void Game::closeWindow() {
