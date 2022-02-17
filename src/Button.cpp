@@ -1,16 +1,17 @@
 #include <cstddef>
 #include <iterator>
 
+#include <SFML/Graphics.hpp>
+
 #include "Button.h"
 #include "states/MainMenuState.h"
 
-Button::Button(float x, float y, float width, float height, sf::Font* _font, const std::string& _text,
-    sf::Color _idleColor, sf::Color _hoverColor, sf::Color _activeColor, sf::Color _outlineIdleColor,
-    sf::Color _outlineHoverColor, sf::Color _outlineActiveColor) {
+Button::Button(const sf::Vector2f& _position, const sf::Vector2f& _size, sf::Font* _font, const std::string& _text,
+    sf::Color _activeColor, sf::Color _inactiveColor) {
 	buttonState = ButtonStates::BTN_IDLE;
 
-	shape.setPosition(Position(x, y));
-	shape.setSize(Position(width, height));
+	shape.setPosition(_position);
+	shape.setSize(_size);
 
 	font = _font;
 	text.setFont(*font);
@@ -18,32 +19,26 @@ Button::Button(float x, float y, float width, float height, sf::Font* _font, con
 	text.setFillColor(sf::Color::White);
 	text.setCharacterSize(12);
 	shape.setOutlineThickness(1.f);
-	shape.setOutlineColor(_outlineIdleColor);
 	auto Xs = shape.getPosition().x + (shape.getGlobalBounds().width / 2.f) - text.getGlobalBounds().width / 2.f;
 	auto Ys = shape.getPosition().y + (shape.getGlobalBounds().height / 2.f) - text.getGlobalBounds().height / 2.f;
 
 	text.setPosition(Xs, Ys);
 
-	idleColor = _idleColor;
-	hoverColor = _hoverColor;
+	idleColor = _inactiveColor;
 	activeColor = _activeColor;
-
-	outlineIdleColor = _outlineIdleColor;
-	outlineHoverColor = _outlineHoverColor;
-	outlineActiveColor = _outlineActiveColor;
 
 	shape.setFillColor(idleColor);
 }
 
-Button::Button(float x, float y, float width, float height, const sf::Text& newText) {
+Button::Button(const sf::Vector2f& position, const sf::Vector2f& size, const sf::Text& newText) {
 	buttonState = ButtonStates::BTN_IDLE;
 
-	shape.setPosition(sf::Vector2f(x, y));
-	shape.setSize(sf::Vector2f(width, height));
+	shape.setPosition(position);
+	shape.setSize(size);
 	text = newText;
 	text.setFillColor(sf::Color::White);
 	text.setCharacterSize(20);
-	text.setPosition(x + 5.f, y + 5.f);
+	text.setPosition(position.x + 5.f, position.y + 5.f);
 	shape.setFillColor(sf::Color::Black);
 }
 
@@ -101,7 +96,7 @@ void Button::render(sf::RenderWindow* window) {
 }
 
 void Button::setActive() {
-	shape.setFillColor(hoverColor);
+	shape.setFillColor(activeColor);
 	buttonState = ButtonStates::BTN_ACTIVE;
 }
 void Button::setInactive() {

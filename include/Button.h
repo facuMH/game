@@ -1,8 +1,8 @@
 #pragma once
 
-#include <vector>
-
 #include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
+
 
 enum class ButtonStates { BTN_IDLE = 0, BTN_HOVER, BTN_ACTIVE };
 
@@ -22,11 +22,10 @@ class Button {
 	sf::Color outlineActiveColor;
 
   public:
-	Button(float x, float y, float width, float height, sf::Font* _font, const std::string& _text, sf::Color _idleColor,
-	    sf::Color _hoverColor, sf::Color _activeColor, sf::Color _outlineIdleColor = sf::Color::Transparent,
-	    sf::Color _outlineHoverColor = sf::Color::Transparent, sf::Color _outlineActiveColor = sf::Color::Transparent);
+	Button(const sf::Vector2f& _position, const sf::Vector2f& size, sf::Font* _font, const std::string& _text,
+	    sf::Color ActiveColor, sf::Color InactiveColor);
 
-	Button(float x, float y, float width, float height, const sf::Text& newText);
+	Button(const sf::Vector2f& _position, const sf::Vector2f& size, const sf::Text& newText);
 
 	~Button();
 

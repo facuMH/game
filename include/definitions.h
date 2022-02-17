@@ -36,6 +36,7 @@ enum class MovementType { VERTICAL, HORIZONTAL };
 
 using Position = sf::Vector2f;
 using Position_i = sf::Vector2i;
+
 using Name = std::string;
 using Buttons = std::vector<Button>;
 using KeyList = std::unordered_map<KeyAction, sf::Keyboard::Key>;

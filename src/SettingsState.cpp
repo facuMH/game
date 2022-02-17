@@ -68,29 +68,28 @@ void SettingsState::initButtons(sf::RenderWindow* window) {
 	sf::Vector2u currentSize = window->getSize();
 
 	// button size
-	unsigned int bWidth = 150;
-	unsigned int bHeight = 40;
+	const int bWidth = 150;
+	const int bHeight = 40;
 	auto offsetX = 0.5 * bWidth;
 	auto offsetY = 4 * bHeight;
-
+	const Position size{bWidth, bHeight};
 	auto center = getWindowCenter(*window);
 	center.x -= offsetX;
 	center.y -= offsetY;
-	auto bPos = center.y;
 
-	buttons.push_back(Button(center.x, bPos, bWidth, bHeight, &font, "720x480", GREY, LIGHTGREY, sf::Color::Black));
-	bPos += bHeight;
-	buttons.push_back(Button(center.x, bPos, bWidth, bHeight, &font, "800x600", GREY, LIGHTGREY, sf::Color::Black));
-	bPos += bHeight;
-	buttons.push_back(Button(center.x, bPos, bWidth, bHeight, &font, "1024x768", GREY, LIGHTGREY, sf::Color::Black));
-	bPos += bHeight;
-	buttons.push_back(Button(center.x, bPos, bWidth, bHeight, &font, "1280x720", GREY, LIGHTGREY, sf::Color::Black));
-	bPos += bHeight;
-	buttons.push_back(Button(center.x, bPos, bWidth, bHeight, &font, "1440x900", GREY, LIGHTGREY, sf::Color::Black));
-	bPos += bHeight;
-	buttons.push_back(Button(center.x, bPos, bWidth, bHeight, &font, "1920x1080", GREY, LIGHTGREY, sf::Color::Black));
-	bPos += bHeight;
-	buttons.push_back(Button(center.x, bPos, bWidth, bHeight, &font, "BACK", GREY, LIGHTGREY, sf::Color::Black));
+	buttons.push_back(Button(center, size, &font, "720x480", GREY, sf::Color::Black));
+	center.y += bHeight;
+	buttons.push_back(Button(center, size, &font, "800x600", GREY, sf::Color::Black));
+	center.y += bHeight;
+	buttons.push_back(Button(center, size, &font, "1024x768", GREY, sf::Color::Black));
+	center.y += bHeight;
+	buttons.push_back(Button(center, size, &font, "1280x720", GREY, sf::Color::Black));
+	center.y += bHeight;
+	buttons.push_back(Button(center, size, &font, "1440x900", GREY, sf::Color::Black));
+	center.y += bHeight;
+	buttons.push_back(Button(center, size, &font, "1920x1080", GREY, sf::Color::Black));
+	center.y += bHeight;
+	buttons.push_back(Button(center, size, &font, "BACK", GREY, sf::Color::Black));
 
 	switch(currentSize.x) {
 	case 720: activeButton = 0; break;

@@ -11,8 +11,7 @@
 
 constexpr int MAX_RESOLUTION_COUNT = 2;
 
-GameOverState::GameOverState(sf::RenderWindow* window, AssetsManager& am, KeyList* gameSupportedKeys)
-    : State(window) {
+GameOverState::GameOverState(sf::RenderWindow* window, AssetsManager& am, KeyList* gameSupportedKeys) : State(window) {
 	std::cout << "New game over state" << std::endl;
 	view = window->getDefaultView();
 	initBackground(window, am);
@@ -58,10 +57,10 @@ void GameOverState::initText(sf::RenderWindow* window) {
 	text.setPosition(currentSize.x / 2.0f, currentSize.y / 4.0f);
 }
 
-void GameOverState::initButtons(sf::RenderWindow* window){
+void GameOverState::initButtons(sf::RenderWindow* window) {
 	// button size
-	unsigned int bWidth = 150;
-	unsigned int bHeight = 40;
+	const int bWidth = 150;
+	const int bHeight = 40;
 	activeButton = 0;
 	auto offsetX = 2 * bWidth;
 	auto offsetY = 8 * bHeight;
@@ -71,9 +70,9 @@ void GameOverState::initButtons(sf::RenderWindow* window){
 	center.y += offsetY;
 	auto bPos = center.x - 50;
 
-	buttons.push_back(Button(bPos, center.y, bWidth, bHeight, &font, "TRY AGAIN", GREY, LIGHTGREY, sf::Color::Black));
+	buttons.push_back(Button({bPos, center.y}, {bWidth, bHeight}, &font, "TRY AGAIN", LIGHTGREY, sf::Color::Black));
 	bPos = bPos + 3 * bWidth;
-	buttons.push_back(Button(bPos, center.y, bWidth, bHeight, &font, "QUIT", GREY, LIGHTGREY, sf::Color::Black));
+	buttons.push_back(Button({bPos, center.y}, {bWidth, bHeight}, &font, "QUIT", LIGHTGREY, sf::Color::Black));
 	buttons[activeButton].setInactive();
 }
 
