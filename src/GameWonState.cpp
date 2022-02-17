@@ -1,11 +1,9 @@
-#include "states/GameWonState.h"
-#include "AssetsPaths.h"
-
 #include <SFML/Window.hpp>
 
+#include "AssetsPaths.h"
+#include "states/GameWonState.h"
 
-GameWonState::GameWonState(sf::RenderWindow* window, AssetsManager& _assetsManager)
-    : State(window) {
+GameWonState::GameWonState(sf::RenderWindow* window, AssetsManager& _assetsManager) : State(window) {
 	view = window->getDefaultView();
 	initBackground(_assetsManager);
 	view = window->getDefaultView();
@@ -20,8 +18,7 @@ void GameWonState::initBackground(AssetsManager& am) {
 	background.setSize(view.getSize());
 }
 
-void GameWonState::update(const float& dt) {
-}
+void GameWonState::update(const float& dt) {}
 
 void GameWonState::render(sf::RenderWindow* window) {
 	window->setView(view);
@@ -34,8 +31,7 @@ StateAction GameWonState::handleKeys(sf::Keyboard::Key key) {
 
 void GameWonState::updateKeybinds(const float& dt) {}
 
-void GameWonState::quitStateActions() {
-}
+void GameWonState::quitStateActions() {}
 
 bool GameWonState::shouldQuit() {
 	return isQuit();
@@ -44,4 +40,3 @@ bool GameWonState::shouldQuit() {
 StateAction GameWonState::shouldAct() {
 	return StateAction::NONE;
 }
-

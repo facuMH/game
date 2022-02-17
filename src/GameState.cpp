@@ -239,9 +239,6 @@ Name GameState::getEntityInInteractionRange(Position position) {
 	if(item != nullptr && positionsInRange(position, item->animation.get_position(), 15.f)) {
 		n = item->getName();
 	}
-	// if entity is entrance blocker
-	if(positionsInRange(position, entranceBlocker.getPosition(), 15.0f)) {
-	}
 	return n;
 }
 

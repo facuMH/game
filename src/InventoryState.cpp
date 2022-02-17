@@ -46,7 +46,7 @@ void InventoryState::initPlayerItems() {
 		itemText.setString("No items here yet.\n Go look around");
 		playerItems.push_back(itemText);
 	} else {
-		for(const auto &item : itemManager->playerInventory) {
+		for(const auto& item : itemManager->playerInventory) {
 			itemText.setString(item.c_str());
 			itemText.setPosition(
 			    {BOX_POSITION_OFFSET, BOX_POSITION_OFFSET + INVENTORY_ITEM_HEIGHT * playerItems.size()});
@@ -64,8 +64,7 @@ void InventoryState::initBackground(AssetsManager& am) {
 	} else {
 		background.setSize(EMPTY_INVENTORY_SIZE);
 	}
-
-	background.move({0, -10 - 4 * static_cast<float>(playerItems.size())});
+	background.move({0, -BOX_POSITION_OFFSET - 4 * static_cast<float>(playerItems.size())});
 }
 
 void InventoryState::initFonts(AssetsManager& am) {
@@ -173,7 +172,7 @@ StateAction InventoryState::handleKeys(sf::Keyboard::Key key) {
 				title.setString(item->getName() + " consumed. Now you feel better.");
 				player->heal(item->getStats().hp);
 				playerItems.erase(std::find_if(playerItems.begin(), playerItems.end(),
-				    [item](sf::Text &t) { return t.getString() == item->getName(); }));
+				    [item](sf::Text& t) { return t.getString() == item->getName(); }));
 				activeButton = 0;
 				playerItems[activeButton].setFillColor(activeItemColor);
 			}
