@@ -21,6 +21,7 @@ class SaveObject {
 	Stats currentStats;
 	std::unordered_set<Name> items;
 	std::unordered_set<Name> defeatedEnemies;
+	std::unordered_set<Name> bodyParts;
 	Name equippedWeapon;
 
 	SaveObject() = default;
@@ -28,7 +29,7 @@ class SaveObject {
 	    Stats _currentStats, ItemManager* itemManager, EnemyManager* enemyManager, const Name& _equippedWeapon)
 	    : houseNumber(houseNumber), housePosition(housePosition), mainGamePosition(mainGamePosition), level(level),
 	      currentStats(_currentStats), items(itemManager->playerInventory),
-	      defeatedEnemies(enemyManager->enemiesDefeated), equippedWeapon(_equippedWeapon) {}
+	      defeatedEnemies(enemyManager->enemiesDefeated), equippedWeapon(_equippedWeapon), bodyParts(itemManager->grandmaParts) {}
 
 	Position getHouseStatePosition() const { return housePosition; }
 	Position getMainGamePosition() const { return mainGamePosition; }
@@ -39,6 +40,6 @@ class SaveObject {
 	void serialize(Archive& ar) {
 		ar(CEREAL_NVP(houseNumber), CEREAL_NVP(housePosition.x), CEREAL_NVP(housePosition.y),
 		    CEREAL_NVP(mainGamePosition.x), CEREAL_NVP(mainGamePosition.y), CEREAL_NVP(level), currentStats,
-		    CEREAL_NVP(items), CEREAL_NVP(defeatedEnemies), CEREAL_NVP(equippedWeapon));
+		    CEREAL_NVP(items), CEREAL_NVP(defeatedEnemies), CEREAL_NVP(equippedWeapon), CEREAL_NVP(bodyParts));
 	}
 };

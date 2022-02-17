@@ -17,6 +17,7 @@ class ItemManager {
 	std::unordered_map<std::string, Object> items;
 	std::unordered_map<Name, Stats> itemStats;
 	std::unordered_set<Name> playerInventory;
+	std::unordered_set<Name> grandmaParts;
 	AssetsManager* assetsManager;
 
 	Object make(const Name& name, const Position& pos);
@@ -32,4 +33,5 @@ class ItemManager {
 	void pickUp(const Name& name) { playerInventory.emplace(name); }
 	bool hasBeenPickedUp(const Name& name) { return playerInventory.find(name) != playerInventory.end(); }
 	void addItem();
+	void addBodyPart(const Name& name) { grandmaParts.emplace(name); }
 };

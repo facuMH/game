@@ -13,6 +13,7 @@
 class InventoryState : public State {
   private:
 	sf::RectangleShape background;
+	sf::RectangleShape bodyPartyBackground;
 	sf::RectangleShape container;
 	sf::Font font;
 	sf::Text title;
@@ -29,10 +30,12 @@ class InventoryState : public State {
 	State* previous = nullptr;
 	ItemManager* itemManager = nullptr;
 	std::vector<sf::Text> playerItems;
+	std::vector<sf::Text> bodyParts;
 	bool emptyInventory = false;
 
 	// Functions
 	void initBackground(AssetsManager& am);
+	void initBodyPartBackground(AssetsManager& am, ItemManager* im);
 	void initFonts(AssetsManager& am);
 	void initText(sf::RenderWindow* window);
 	void initButtons(sf::RenderWindow* window);
@@ -40,6 +43,7 @@ class InventoryState : public State {
 	void renderButtons(sf::RenderWindow* window);
 	void updateMousePositions();
 	void initPlayerItems();
+	void initBodyParts();
 
   public:
 	InventoryState(sf::RenderWindow* window, AssetsManager& am, KeyList* _supportedKeys, ItemManager* im,
