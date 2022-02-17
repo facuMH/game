@@ -29,4 +29,14 @@ make
 
 ### On Windows
 
-TODO
+```
+cd path/to/game
+mkdir build
+cd build
+cmake ..
+[open rpg.sln]
+[build with MSVC]
+cd Release
+./rpg.exe
+
+```
