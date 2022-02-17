@@ -7,7 +7,8 @@ void InteractionManager::initDialogue(const Name& name) {
 		    "our houses. Each alien has eaten one of her body parts. Only if you can defeat all of them, we "
 		    "might get all parts back, so that she's saved and we can be together again! You're my last hope!");
 	} else if(name == "Egg Girl") {
-		dialogues.emplace(name, "Help me! A monster is in my house and stole all my toys!");
+		dialogues.emplace(
+		    name, "In each house, there is one monster. My mom said their boss is down there in the big log...");
 	} else if(name == "Princess") {
 		dialogues.emplace(name, "This is the worst day of my life!");
 	} else if(name == "Ralph") {
