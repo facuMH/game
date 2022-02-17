@@ -10,10 +10,11 @@ Oh no! A bunch of aliens has taken over the town! Luckily, you are there to save
 - S: down
 - D: right
 - W: up
-- C: start combat
-- X: end combat
+- F: Interact
+- I: Inventory
 - Esc and Q: Quit application
 - P: Pause the game
+- Space: continue conversation
 
 ## Build process
 
@@ -40,7 +41,6 @@ cmake ..
 [build with MSVC]
 cd Release
 ./rpg.exe
-
 ```
 
 ## Asset pack

@@ -260,8 +260,10 @@ void Game::pollEvents() {
 						dynamic_cast<GameState*>(states.top())->setEntranceBlock(false);
 					}
 					turnOffMusic(); // main game state music
-					player.equip(itemManager.get(savedGame.equippedWeapon));
-					player.set_stats(savedGame.currentStats);
+					if(!savedGame.items.empty()) {
+						player.equip(itemManager.get(savedGame.equippedWeapon, {0, 0}));
+						player.set_stats(savedGame.currentStats);
+					}
 					makeNewHouseState(savedGame.houseNumber, savedGame.getHouseStatePosition());
 				} catch(...) {
 					dynamic_cast<MakesErrorSound*>(states.top())->playErrorSound();

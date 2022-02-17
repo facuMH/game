@@ -3,13 +3,13 @@
 
 #include "Button.h"
 #include "GameState.h"
+#include "MakesErrorSound.h"
 #include "SettingsState.h"
 #include "definitions.h"
-#include "MakesErrorSound.h"
 
 constexpr int MAX_BUTTONS = 4;
 
-class MainMenuState : public State, public MakesErrorSound {
+class MainMenuState : public MakesErrorSound {
   private:
 	// Variable
 	sf::Texture backgroundTexture;

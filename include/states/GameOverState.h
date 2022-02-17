@@ -9,7 +9,7 @@
 #include "State.h"
 #include "managers/AssetsManager.h"
 
-class GameOverState : public State, public MakesErrorSound {
+class GameOverState : public MakesErrorSound {
   private:
 	sf::RectangleShape background;
 	sf::Font font;

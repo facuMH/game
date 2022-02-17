@@ -11,7 +11,8 @@
 
 constexpr int MAX_RESOLUTION_COUNT = 2;
 
-GameOverState::GameOverState(sf::RenderWindow* window, AssetsManager& am, KeyList* gameSupportedKeys) : State(window) {
+GameOverState::GameOverState(sf::RenderWindow* window, AssetsManager& am, KeyList* gameSupportedKeys)
+    : MakesErrorSound(window) {
 	std::cout << "New game over state" << std::endl;
 	view = window->getDefaultView();
 	initBackground(window, am);

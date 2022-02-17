@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <filesystem>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
@@ -9,7 +10,8 @@
 
 #include "definitions.h"
 
-MainMenuState::MainMenuState(sf::RenderWindow* window, AssetsManager& am, KeyList* gameSupportedKeys) : State(window) {
+MainMenuState::MainMenuState(sf::RenderWindow* window, AssetsManager& am, KeyList* gameSupportedKeys)
+    : MakesErrorSound(window) {
 	supportedKeys = gameSupportedKeys;
 	initBackground(window, am);
 	initFonts(am);
@@ -132,6 +134,10 @@ StateAction MainMenuState::shouldAct() {
 	if(activeButton == 0) {
 		return StateAction::START_GAME;
 	} else if(activeButton == 1) {
+		if(!std::filesystem::exists(SAVED.c)) {
+			playErrorSound();
+			buttons[activeButton].setColor(sf::Color::Red);
+		}
 		return StateAction::LOAD_GAME;
 	} else if(activeButton == 2) {
 		return StateAction::START_SETTING;
