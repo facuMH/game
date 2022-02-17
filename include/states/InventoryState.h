@@ -16,6 +16,7 @@ class InventoryState : public State {
 	sf::RectangleShape container;
 	sf::Font font;
 	sf::Text title;
+	sf::RectangleShape titleBackground;
 	const sf::Color activeItemColor = sf::Color::Red;
 	const sf::Color inactiveItemColor = sf::Color::Black;
 

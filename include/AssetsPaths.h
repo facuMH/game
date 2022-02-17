@@ -30,13 +30,13 @@ constexpr auto MAINMENU_BACKGROUND = cat(BACKGROUNDS.c, "Background.jpeg");
 constexpr auto SETTING_BACKGROUND = cat(BACKGROUNDS.c, "RPG_projects.jpg");
 constexpr auto HAND = cat(BACKGROUNDS.c, "hand.png");
 constexpr auto GAME_OVER_SCREEN = cat(BACKGROUNDS.c, "game_over.png");
+constexpr auto GAME_WON_SCREEN = cat(BACKGROUNDS.c, "game_won.png");
 constexpr auto INVENTORY = cat(BACKGROUNDS.c, "inventory.png");
 
 // ---- CHARACTER
 constexpr auto CHARACTER = cat(ASSETS, "characters/");
 constexpr auto NINJA = cat(CHARACTER.c, "green_ninja/");
 constexpr auto NINJA_WALK = cat(NINJA.c, "Walk.png");
-constexpr auto NINJA_FACE = cat(NINJA.c, "Face.png");
 constexpr auto EGG_GIRL = cat(CHARACTER.c, "egg_girl/");
 constexpr auto EGG_GIRL_WALK = cat(EGG_GIRL.c, "Walk.png");
 constexpr auto EGG_GIRL_FACE = cat(EGG_GIRL.c, "Face.png");
@@ -52,6 +52,9 @@ constexpr auto BOY_FACE = cat(BOY.c, "Face.png");
 constexpr auto GRUMPY = cat(CHARACTER.c, "grumpy_woman/");
 constexpr auto GRUMPY_WALK = cat(GRUMPY.c, "Walk.png");
 constexpr auto GRUMPY_FACE = cat(GRUMPY.c, "Face.png");
+constexpr auto BLOCKER = cat(CHARACTER.c, "blocker/");
+constexpr auto BLOCKER_IDLE = cat(BLOCKER.c, "idle.png");
+constexpr auto BLOCKER_FACE = cat(BLOCKER.c, "Face.png");
 
 // ---- ENEMIES
 constexpr auto ENEMIES = cat(ASSETS, "enemies/");
@@ -72,6 +75,8 @@ constexpr auto WAND = cat(ITEMS.c, "Wand.png");
 constexpr auto MEDIPACK = cat(ITEMS.c, "Medipack.png");
 constexpr auto SWORD = cat(ITEMS.c, "Sword.png");
 
+constexpr auto ROCK = cat(ITEMS.c, "rock.png");
+
 
 // ---- TILES
 constexpr auto TILES = cat(ASSETS, "tiles/");
@@ -83,6 +88,8 @@ constexpr auto HOUSE3 = cat(TILES.c, "house3.json");
 constexpr auto HOUSE4 = cat(TILES.c, "house4.json");
 constexpr auto HOUSE5 = cat(TILES.c, "house5.json");
 constexpr auto HOUSE6 = cat(TILES.c, "house6.json");
+constexpr auto FINAL_HOUSE = cat(TILES.c, "final_house.json");
+
 
 constexpr auto TILESHEET_FLOOR = cat(TILES.c, "TilesetFloor.png");
 constexpr auto TILESHEET_NATURE = cat(TILES.c, "TilesetNature.png");
@@ -132,3 +139,4 @@ constexpr auto VILLAGE_MUSIC = cat(MUSIC.c, "town.ogg");
 constexpr auto COMBAT_MUSIC = cat(MUSIC.c, "combat.ogg");
 constexpr auto HOUSE_MUSIC = cat(MUSIC.c, "house.ogg");
 constexpr auto END_MUSIC = cat(MUSIC.c, "end.ogg");
+constexpr auto GAME_WON_MUSIC = cat(MUSIC.c, "final.ogg");

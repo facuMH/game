@@ -16,25 +16,22 @@ void CombatState::addCombatString(const Player& _p, AssetsManager& am) {
 	characterInfo.setString(_p.name + std::string(" HP:") + std::to_string(_p.get_hp()) + "/"
 	                        + std::to_string(_p.maxStats.hp) + " MP:" + std::to_string(_p.get_mana()) + "/"
 	                        + std::to_string(_p.maxStats.mana));
-	lifeCounters.emplace(_p.name, Button(initialText.x, initialText.y, 280, 40, characterInfo));
+	lifeCounters.emplace(_p.name, Button(initialText, {280, 40}, characterInfo));
 }
 
 void CombatState::addActionMenu() {
 	auto center = Position{320, 300};
 	center.y = center.y * 0.75f;
-	unsigned int bWidth = 150;
-	unsigned int bHeight = 40;
-	actionButtons.push_back(
-	    Button(center.x, center.y, bWidth, bHeight, &font, "Attack", DARKBLUE, LIGHTGREY, sf::Color::Black));
+	const int bWidth = 150;
+	const int bHeight = 40;
+	const Position size{bWidth, bHeight};
+	actionButtons.push_back(Button(center, size, &font, "Attack", DARKBLUE, sf::Color::Black));
 	center.y += bHeight;
-	actionButtons.push_back(
-	    Button(center.x, center.y, bWidth, bHeight, &font, "Special", DARKBLUE, LIGHTGREY, sf::Color::Black));
+	actionButtons.push_back(Button(center, size, &font, "Special", DARKBLUE, sf::Color::Black));
 	center.y += bHeight;
-	actionButtons.push_back(
-	    Button(center.x, center.y, bWidth, bHeight, &font, "Item", DARKBLUE, LIGHTGREY, sf::Color::Black));
+	actionButtons.push_back(Button(center, size, &font, "Item", DARKBLUE, sf::Color::Black));
 	center.y += bHeight;
-	actionButtons.push_back(
-	    Button(center.x, center.y, bWidth, bHeight, &font, "Skip", DARKBLUE, LIGHTGREY, sf::Color::Black));
+	actionButtons.push_back(Button(center, size, &font, "Skip", DARKBLUE, sf::Color::Black));
 	actionButtonActive = 0;
 	actionButtons[actionButtonActive].setActive();
 }
@@ -229,7 +226,7 @@ StateAction CombatState::shouldAct() {
 			}
 		} else if(actionButtonActive == 2) {
 			// select an item to be used
-			selectingItem = true;
+			return StateAction::OPEN_INVENTORY;
 		} else {
 			// skip turn
 			nextTurn = true;
@@ -244,6 +241,9 @@ StateAction CombatState::shouldAct() {
 		if(!inLevelUpBox && player.getExp() + enemy.getExperience() >= 99) {
 			LevelUpMessage();
 		} else {
+			if (enemy.name == "Evil Grandpa") {
+				return StateAction::GAME_WON;
+			}
 			return StateAction::EXIT_COMBAT;
 		}
 	}
@@ -284,5 +284,5 @@ void CombatState::LevelUpMessage() {
 	const int height = 100.f;
 	center.x -= width / 2;
 	center.y -= height / 2;
-	levelUpBox = std::make_unique<Button>(Button(center.x, center.y, 400.f, 100.f, lvlUpTxt));
+	levelUpBox = std::make_unique<Button>(Button(center, {400, 100}, lvlUpTxt));
 }

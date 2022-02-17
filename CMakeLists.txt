@@ -27,6 +27,7 @@ set(SOURCES src/main.cpp
         src/Game.cpp
         src/GameOverState.cpp
         src/GameState.cpp
+        src/GameWonState.cpp
         src/HouseManager.cpp
         src/InteractionManager.cpp
         src/InventoryState.cpp
@@ -65,6 +66,7 @@ set(HEADERS include/Animation.h
         include/states/CombatState.h
         include/states/GameState.h
         include/states/GameOverState.h
+        include/states/GameWonState.h
         include/states/InventoryState.h
         include/states/MainMenuState.h
         include/states/PauseGameState.h

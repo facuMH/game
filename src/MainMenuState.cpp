@@ -42,13 +42,14 @@ void MainMenuState::initFonts(AssetsManager& am) {
 	font = *am.getFont(DOSIS.c);
 }
 
-void MainMenuState::initButtons(const Position &pos) {
-	auto x = pos.x-75;
-	auto y = pos.y-150;
-	buttons.push_back(Button(x, y, 150, 50, &font, "New Game", GREY, LIGHTGREY, sf::Color::Black));
-	buttons.push_back(Button(x, y+50, 150, 50, &font, "Load Game", GREY, LIGHTGREY, sf::Color::Black));
-	buttons.push_back(Button(x, y+100, 150, 50, &font, "Settings", GREY, LIGHTGREY, sf::Color::Black));
-	buttons.push_back(Button(x, y+150, 150, 50, &font, "QUIT", GREY, LIGHTGREY, sf::Color::Black));
+void MainMenuState::initButtons(const Position& pos) {
+	auto x = pos.x - 75;
+	auto y = pos.y - 150;
+	const Position size{150, 50};
+	buttons.push_back(Button({x, y}, size, &font, "New Game", LIGHTGREY, sf::Color::Black));
+	buttons.push_back(Button({x, y + 50}, size, &font, "Load Game", LIGHTGREY, sf::Color::Black));
+	buttons.push_back(Button({x, y + 100}, size, &font, "Settings", LIGHTGREY, sf::Color::Black));
+	buttons.push_back(Button({x, y + 150}, size, &font, "QUIT", LIGHTGREY, sf::Color::Black));
 	activeButton = 0;
 	buttons[activeButton].setActive();
 }
