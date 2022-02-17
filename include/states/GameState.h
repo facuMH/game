@@ -52,6 +52,7 @@ class GameState : public State {
 	StateAction handleKeys(sf::Keyboard::Key key) override;
 	void drawPlayer(sf::RenderWindow* window) override;
 	StateAction shouldAct() override;
+	StateAction programAction() override { return StateAction::NONE; };
 
 	void initSounds();
 	DoorNumber getCurrentDoorNumber(Position position);
@@ -64,4 +65,5 @@ class GameState : public State {
 	void unblockEnemyTile();
 	int getExperienceFromEnemy() const;
 	void setEntranceBlock(bool isBlocked);
+
 };

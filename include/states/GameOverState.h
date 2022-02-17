@@ -5,10 +5,11 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
+#include "MakesErrorSound.h"
 #include "State.h"
 #include "managers/AssetsManager.h"
 
-class GameOverState : public State {
+class GameOverState : public State, public MakesErrorSound {
   private:
 	sf::RectangleShape background;
 	sf::Font font;
@@ -43,8 +44,8 @@ class GameOverState : public State {
 	void updateKeybinds(const float& dt) override;
 	void quitStateActions() override;
 	bool shouldQuit() override;
-	void drawPlayer(sf::RenderWindow* window) override {};
+	void drawPlayer(sf::RenderWindow* window) override{};
 	StateAction shouldAct() override;
-
-	void playErrorSound();
+	StateAction programAction() override { return StateAction::NONE; };
+	void playErrorSound() override;
 };

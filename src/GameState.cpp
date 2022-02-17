@@ -119,7 +119,6 @@ StateAction GameState::handleKeys(sf::Keyboard::Key key) {
 		case KeyAction::DOWN:
 		case KeyAction::RIGHT:
 		case KeyAction::LEFT:
-			std::cout << player.get_position().x << " " << player.get_position().y << std::endl;
 			if(!inDialogue) { // Player cannot move while in dialogue
 				player.move(action->first, &map);
 				view.setCenter(player.animation.get_position());

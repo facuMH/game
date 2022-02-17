@@ -2,7 +2,7 @@
 #include "asset_data.h"
 
 
-bool EnemyManager::allEnemiesDefeated() {
+bool EnemyManager::allEnemiesDefeated() const {
 	return enemiesDefeated.size() == ENEMYDATA.size() - 1;
 }
 

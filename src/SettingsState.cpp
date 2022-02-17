@@ -34,7 +34,7 @@ SettingsState::SettingsState(sf::RenderWindow* window, AssetsManager& am, KeyLis
 SettingsState::~SettingsState() = default;
 
 void SettingsState::initBackground(AssetsManager& am) {
-	background.setTexture(am.getTexture(SETTING_BACKGROUND.c));
+	background.setTexture(am.getTexture(MAINMENU_BACKGROUND.c));
 	background.setSize(view.getSize());
 }
 

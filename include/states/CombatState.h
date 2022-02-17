@@ -22,7 +22,6 @@ class CombatState : public State {
 	CombatText lifeCounters;
 	void addCombatString(const Player& player, AssetsManager& am);
 	Position initialText{10.f, 300.f};
-	float textIntervalHeight = 50;
 
 	std::vector<Entity*> turnList;
 	int currentCharacterTurn;
@@ -35,9 +34,7 @@ class CombatState : public State {
 	void addActionMenu();
 	Buttons actionButtons;
 	int actionButtonActive;
-	bool selectingEnemy;
 	bool selectingItem;
-	bool isSpecialAtk;
 
   public:
 	// Constructor
@@ -57,7 +54,6 @@ class CombatState : public State {
 	StateAction shouldAct() override;
 	void drawPlayer(sf::RenderWindow* window) override;
 
-	StateAction programAction();
-	int experienceFromEnemy() const { return enemy.getExperience(); }
+	StateAction programAction() override;
 	void LevelUpMessage();
 };

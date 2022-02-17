@@ -39,11 +39,11 @@ class State {
 	virtual void render(sf::RenderWindow* window) = 0;
 	virtual void updateKeybinds(const float& dt) = 0;
 	virtual bool shouldQuit() = 0;
-
 	virtual void quitStateActions() = 0;
 	virtual StateAction handleKeys(sf::Keyboard::Key key) = 0;
 	virtual StateAction shouldAct() = 0;
 	virtual void drawPlayer(sf::RenderWindow* window) = 0;
+	virtual StateAction programAction() = 0;
 
 	virtual sf::View getView() { return view; };
 	Position_i getMouse() const { return sf::Mouse::getPosition(*window); }
@@ -52,4 +52,5 @@ class State {
 	virtual void resumeMusic();
 	sf::RenderWindow* getWindow() { return window; }
 	const bool& isQuit() const { return isQuitting; }
+
 };

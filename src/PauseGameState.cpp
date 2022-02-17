@@ -24,7 +24,7 @@ PauseGameState::PauseGameState(sf::RenderWindow* window, AssetsManager& am, KeyL
 PauseGameState::~PauseGameState() = default;
 
 void PauseGameState::initBackground(sf::RenderWindow* window, AssetsManager& am) {
-	background.setTexture(am.getTexture(SETTING_BACKGROUND.c));
+	background.setTexture(am.getTexture(MAINMENU_BACKGROUND.c));
 	background.setSize(view.getSize());
 
 	sf::Vector2u currentSize = window->getSize();

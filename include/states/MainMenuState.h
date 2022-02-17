@@ -5,10 +5,11 @@
 #include "GameState.h"
 #include "SettingsState.h"
 #include "definitions.h"
+#include "MakesErrorSound.h"
 
 constexpr int MAX_BUTTONS = 4;
 
-class MainMenuState : public State {
+class MainMenuState : public State, public MakesErrorSound {
   private:
 	// Variable
 	sf::Texture backgroundTexture;
@@ -50,5 +51,6 @@ class MainMenuState : public State {
 	bool shouldQuit() override;
 	void drawPlayer(sf::RenderWindow* window) override{};
 	StateAction shouldAct() override;
-	void playErrorSound();
+	void playErrorSound() override;
+	StateAction programAction() override { return StateAction::NONE; };
 };

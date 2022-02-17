@@ -74,7 +74,7 @@ set(HEADERS include/Animation.h
         include/states/State.h
         include/Tile.h
         include/TileMap.h
-        include/Villager.h)
+        include/Villager.h include/states/MakesErrorSound.h)
 
 set(DEPENDENCIES libs/tileson.hpp
         libs/cereal/archives/json.hpp

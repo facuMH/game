@@ -97,9 +97,7 @@ CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, std::vecto
 
 	font = *am.getFont(ALEX.c);
 	addActionMenu();
-	selectingEnemy = false;
 	selectingItem = false;
-	isSpecialAtk = false;
 }
 
 CombatState::~CombatState() = default;

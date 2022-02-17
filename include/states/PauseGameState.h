@@ -43,5 +43,6 @@ class PauseGameState : public State {
 	void quitStateActions() override;
 	bool shouldQuit() override;
 	void drawPlayer(sf::RenderWindow* window) override;
-	StateAction shouldAct() override;;
+	StateAction shouldAct() override;
+	StateAction programAction() override { return StateAction::NONE; };
 };

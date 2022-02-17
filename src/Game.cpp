@@ -26,36 +26,37 @@ void Game::initVariables() {
 }
 
 void Game::closeWindow() {
-	std::ifstream ifs(WINDOW.c);
-
 	// set default values
 	std::string title = "Who ate grandma's foot?";
 	unsigned int framerate_limit = 120;
 	bool vertical_sync_enabled = false;
-
-	// read default configs with file contents
-	if(ifs.is_open()) {
-		std::getline(ifs, title);
-		ifs >> videoMode.width >> videoMode.height;
-		ifs >> framerate_limit;
-		ifs >> vertical_sync_enabled;
+	{
+		std::ifstream ifs(WINDOW.c);
+		// read default configs with file contents
+		if(ifs.is_open()) {
+			std::getline(ifs, title);
+			ifs >> videoMode.width >> videoMode.height;
+			ifs >> framerate_limit;
+			ifs >> vertical_sync_enabled;
+		}
+		ifs.close();
 	}
-	ifs.close();
-
-	std::ofstream ofs(WINDOW.c);
-	// get the size of the window
-	sf::Vector2u currentSize = window->getSize();
-	unsigned int width = currentSize.x;
-	unsigned int height = currentSize.y;
-	// write new configs
-	if(ofs.is_open()) {
-		std::string res = std::to_string(width) + " " + std::to_string(height);
-		ofs << title << std::endl;
-		ofs << res << std::endl;
-		ofs << framerate_limit << std::endl;
-		ofs << vertical_sync_enabled << std::endl;
+	{
+		std::ofstream ofs(WINDOW.c);
+		// get the size of the window
+		sf::Vector2u currentSize = window->getSize();
+		unsigned int width = currentSize.x;
+		unsigned int height = currentSize.y;
+		// write new configs
+		if(ofs.is_open()) {
+			std::string res = std::to_string(width) + " " + std::to_string(height);
+			ofs << title << std::endl;
+			ofs << res << std::endl;
+			ofs << framerate_limit << std::endl;
+			ofs << vertical_sync_enabled << std::endl;
+		}
+		ofs.close();
 	}
-	ofs.close();
 	window->close();
 }
 
@@ -66,23 +67,24 @@ std::string PosToString(Position_i pos) {
 void Game::initWindow() {
 	videoMode.height = 720;
 	videoMode.width = 1280;
-	// load window configs from file
-	std::ifstream ifs(WINDOW.c);
 
 	// set default values
 	std::string title = "Who ate grandma's foot?";
 	unsigned int framerate_limit = 120;
 	bool vertical_sync_enabled = false;
 
-	// replace default configs with file contents
-	if(ifs.is_open()) {
-		std::getline(ifs, title);
-		ifs >> videoMode.width >> videoMode.height;
-		ifs >> framerate_limit;
-		ifs >> vertical_sync_enabled;
+	{
+		// load window configs from file
+		std::ifstream ifs(WINDOW.c);
+		// replace default configs with file contents
+		if(ifs.is_open()) {
+			std::getline(ifs, title);
+			ifs >> videoMode.width >> videoMode.height;
+			ifs >> framerate_limit;
+			ifs >> vertical_sync_enabled;
+		}
+		ifs.close();
 	}
-	ifs.close();
-
 	// create window
 	window = new sf::RenderWindow(videoMode, title, sf::Style::Titlebar | sf::Style::Close | sf::Style::Resize);
 	window->setFramerateLimit(framerate_limit);
@@ -219,10 +221,7 @@ void Game::openInventory() {
 
 void Game::pollEvents() {
 	// Gets StateAction that is triggered by the game itself, not the player
-	StateAction action = StateAction::NONE;
-	if(std::is_same_v<CombatState, decltype(states.top())>) {
-		action = dynamic_cast<CombatState*>(states.top())->programAction();
-	}
+	StateAction action = states.top()->programAction();
 	SaveObject savedGame;
 	// Checks for events triggered by the player
 	while(window->pollEvent(event)) {
@@ -265,11 +264,7 @@ void Game::pollEvents() {
 					player.set_stats(savedGame.currentStats);
 					makeNewHouseState(savedGame.houseNumber, savedGame.getHouseStatePosition());
 				} catch(...) {
-					if(typeid(states.top()) == typeid(MainMenuState)) {
-						dynamic_cast<MainMenuState*>(states.top())->playErrorSound();
-					} else if(typeid(states.top()) == typeid(GameOverState)) {
-						dynamic_cast<GameOverState*>(states.top())->playErrorSound();
-					}
+					dynamic_cast<MakesErrorSound*>(states.top())->playErrorSound();
 				}
 				break;
 			case StateAction::START_COMBAT: makeNewCombat(dynamic_cast<GameState*>(states.top())->getEnemy()); break;
@@ -393,14 +388,16 @@ void Game::initKeys() {
 	keyActionString.emplace("INTERACT", KeyAction::INTERACT);
 	keyActionString.emplace("PAUSE", KeyAction::PAUSE);
 
-	std::ifstream ifs(KEYS.c);
-	std::string key;
-	size_t key_value = 0;
+	{
+		std::ifstream ifs(KEYS.c);
+		std::string key;
+		size_t key_value = 0;
 
-	if(ifs.is_open()) {
-		while(ifs >> key >> key_value) {
-			keyBindings.emplace(keyActionString.at(key), static_cast<sf::Keyboard::Key>(key_value));
+		if(ifs.is_open()) {
+			while(ifs >> key >> key_value) {
+				keyBindings.emplace(keyActionString.at(key), static_cast<sf::Keyboard::Key>(key_value));
+			}
 		}
+		ifs.close();
 	}
-	ifs.close();
 }

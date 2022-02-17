@@ -10,7 +10,7 @@ class EnemyManager {
 	std::unordered_set<Name> enemiesDefeated;
 
 	bool isEnemyDefeated(const Name& enemyName);
-	bool allEnemiesDefeated();
+	bool allEnemiesDefeated() const;
 	void setEnemyDefeated(const Name& enemyName);
 	Enemy makeEnemy(const DoorNumber doorNumber, AssetsManager& assetsManager);
 };
