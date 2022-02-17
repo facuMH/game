@@ -24,6 +24,3 @@ Enemy EnemyManager::makeEnemy(const DoorNumber doorNumber, AssetsManager& assets
 	}
 	return enemy;
 }
-bool EnemyManager::finalBossDefeated() {
-	return enemiesDefeated.size() == ENEMYDATA.size();
-}

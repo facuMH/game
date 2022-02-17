@@ -58,7 +58,7 @@ GameState::GameState(sf::RenderWindow* window, AssetsManager& _assetsManager, st
 	initSounds();
 
 	// The final boss holds a little monologue before the fight - as they always do.
-	if (doorNumber == 7) {
+	if(doorNumber == 7) {
 		Name finalBoss = "Evil Grandpa";
 		startDialogue(finalBoss);
 	}
@@ -215,8 +215,8 @@ void GameState::startDialogue(Name& characterName) {
 			break;
 		}
 	}
-	if (characterName == "Evil Grandpa") {
-	faceTextureName = OLD_MAN_FACE.c;
+	if(characterName == "Evil Grandpa") {
+		faceTextureName = OLD_MAN_FACE.c;
 	}
 	dialogueBox = DialogueBox(characterName, faceTextureName, player.get_position());
 }
@@ -241,7 +241,6 @@ Name GameState::getEntityInInteractionRange(Position position) {
 	}
 	// if entity is entrance blocker
 	if(positionsInRange(position, entranceBlocker.getPosition(), 15.0f)) {
-
 	}
 	return n;
 }
@@ -272,15 +271,14 @@ void GameState::setEntranceBlock(bool isBlocked) {
 	if(isBlocked) {
 		Texture* entranceBlockerTexture = assetsManager->getTexture(BLOCKER_IDLE.c);
 		entranceBlocker.setTexture(*entranceBlockerTexture);
-		entranceBlocker.setTextureRect(
-		    sf::IntRect(0, 0, 16, 16));
+		entranceBlocker.setTextureRect(sf::IntRect(0, 0, 16, 16));
 		entranceBlocker.setPosition(finalHouseDoor);
 		Animation animation(entranceBlockerTexture, entranceBlocker.getTextureRect(), entranceBlocker.getPosition());
-		Villager villager(animation, "Skele Tony", MovementType::STILL, entranceBlocker.getPosition(), 0, BLOCKER_FACE.c);
+		Villager villager(
+		    animation, "Skele Tony", MovementType::STILL, entranceBlocker.getPosition(), 0, BLOCKER_FACE.c);
 		villagers.push_back(villager);
 	} else {
 		clearedForFinalBoss = true;
 		villagers.pop_back();
 	}
 }
-
