@@ -14,6 +14,9 @@ void InteractionManager::initDialogue(const Name& name) {
 		dialogues.emplace(name, "I really hope you can find my grandma. Who would do such a thing?");
 	} else if(name == "Dolores") {
 		dialogues.emplace(name, "At least they also did the dishes after snacking the old lady...");
+	} else if(name == "Skele Tony") {
+		dialogues.emplace(name, "You can't get in here. Come back once you've fought the other aliens and proven "
+		                        "yourself a worthy opponent for our alien lord.");
 	} else if(name == "Evil Grandpa") {
 		dialogues.emplace(name, "HAHAHA! I fooled you, you little goblin! Old lady feet are worth a fortune on the "
 		                        "black market, you will never get old granny's foot back! Only over my dead body!");

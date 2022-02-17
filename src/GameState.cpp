@@ -239,6 +239,10 @@ Name GameState::getEntityInInteractionRange(Position position) {
 	if(item != nullptr && positionsInRange(position, item->animation.get_position(), 15.f)) {
 		n = item->getName();
 	}
+	// if entity is entrance blocker
+	if(positionsInRange(position, entranceBlocker.getPosition(), 15.0f)) {
+
+	}
 	return n;
 }
 
@@ -266,13 +270,17 @@ void GameState::setEntranceBlock(bool isBlocked) {
 	map.setTileOccupation(finalHouseDoor, isBlocked);
 
 	if(isBlocked) {
-		Texture* entranceBlockerTexture = assetsManager->getTexture(ROCK.c);
+		Texture* entranceBlockerTexture = assetsManager->getTexture(BLOCKER_IDLE.c);
 		entranceBlocker.setTexture(*entranceBlockerTexture);
 		entranceBlocker.setTextureRect(
-		    sf::IntRect(0, 0, entranceBlockerTexture->getSize().x, entranceBlockerTexture->getSize().y));
+		    sf::IntRect(0, 0, 16, 16));
 		entranceBlocker.setPosition(finalHouseDoor);
+		Animation animation(entranceBlockerTexture, entranceBlocker.getTextureRect(), entranceBlocker.getPosition());
+		Villager villager(animation, "Skele Tony", MovementType::STILL, entranceBlocker.getPosition(), 0, BLOCKER_FACE.c);
+		villagers.push_back(villager);
 	} else {
 		clearedForFinalBoss = true;
+		villagers.pop_back();
 	}
 }
 

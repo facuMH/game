@@ -37,7 +37,6 @@ constexpr auto INVENTORY = cat(BACKGROUNDS.c, "inventory.png");
 constexpr auto CHARACTER = cat(ASSETS, "characters/");
 constexpr auto NINJA = cat(CHARACTER.c, "green_ninja/");
 constexpr auto NINJA_WALK = cat(NINJA.c, "Walk.png");
-constexpr auto NINJA_FACE = cat(NINJA.c, "Face.png");
 constexpr auto EGG_GIRL = cat(CHARACTER.c, "egg_girl/");
 constexpr auto EGG_GIRL_WALK = cat(EGG_GIRL.c, "Walk.png");
 constexpr auto EGG_GIRL_FACE = cat(EGG_GIRL.c, "Face.png");
@@ -53,6 +52,9 @@ constexpr auto BOY_FACE = cat(BOY.c, "Face.png");
 constexpr auto GRUMPY = cat(CHARACTER.c, "grumpy_woman/");
 constexpr auto GRUMPY_WALK = cat(GRUMPY.c, "Walk.png");
 constexpr auto GRUMPY_FACE = cat(GRUMPY.c, "Face.png");
+constexpr auto BLOCKER = cat(CHARACTER.c, "blocker/");
+constexpr auto BLOCKER_IDLE = cat(BLOCKER.c, "idle.png");
+constexpr auto BLOCKER_FACE = cat(BLOCKER.c, "Face.png");
 
 // ---- ENEMIES
 constexpr auto ENEMIES = cat(ASSETS, "enemies/");
