@@ -43,6 +43,8 @@ cd Release
 ./rpg.exe
 ```
 
+The build process was tested on Ubuntu 20.04 and Windows 11.
+
 ## Asset pack
 
 Almost all assets are taken from the "Ninja Adventure" asset pack by pixel-boy: https://pixel-boy.itch.io/ninja-adventure-asset-pack
