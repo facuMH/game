@@ -20,38 +20,20 @@ void Game::initVariables() {
 
 	Texture* play_text = assetsManager.getTexture(NINJA_WALK.c);
 	Animation player_animation(play_text, sf::IntRect(0, 0, TILESIZE, TILESIZE), Position(50, 50));
-	player = Player("Green Ninja", Stats(15, 20, 50, 30, 31, 1), player_animation, 5.0f);
+	player = Player("Adventurer", Stats(15, 20, 50, 30, 31, 1), player_animation, 5.0f);
 }
 
 void Game::closeWindow() {
-	// set default values
-	std::string title = "Who ate grandma's foot?";
-	unsigned int framerate_limit = 120;
-	bool vertical_sync_enabled = false;
-	{
-		std::ifstream ifs(WINDOW.c);
-		// read default configs with file contents
-		if(ifs.is_open()) {
-			std::getline(ifs, title);
-			ifs >> videoMode.width >> videoMode.height;
-			ifs >> framerate_limit;
-			ifs >> vertical_sync_enabled;
-		}
-		ifs.close();
-	}
+	// get the size of the window
+	sf::Vector2u currentSize = window->getSize();
+	unsigned int width = currentSize.x;
+	unsigned int height = currentSize.y;
 	{
 		std::ofstream ofs(WINDOW.c);
-		// get the size of the window
-		sf::Vector2u currentSize = window->getSize();
-		unsigned int width = currentSize.x;
-		unsigned int height = currentSize.y;
 		// write new configs
 		if(ofs.is_open()) {
 			std::string res = std::to_string(width) + " " + std::to_string(height);
-			ofs << title << std::endl;
 			ofs << res << std::endl;
-			ofs << framerate_limit << std::endl;
-			ofs << vertical_sync_enabled << std::endl;
 		}
 		ofs.close();
 	}
@@ -70,16 +52,10 @@ void Game::initWindow() {
 	std::string title = "Who ate grandma's foot?";
 	unsigned int framerate_limit = 120;
 	bool vertical_sync_enabled = false;
-
 	{
-		// load window configs from file
 		std::ifstream ifs(WINDOW.c);
-		// replace default configs with file contents
 		if(ifs.is_open()) {
-			std::getline(ifs, title);
 			ifs >> videoMode.width >> videoMode.height;
-			ifs >> framerate_limit;
-			ifs >> vertical_sync_enabled;
 		}
 		ifs.close();
 	}
@@ -252,7 +228,7 @@ void Game::pollEvents() {
 					for(const auto& item : savedGame.items) {
 						itemManager.pickUp(item);
 					}
-					for (const auto& part : savedGame.bodyParts) {
+					for(const auto& part : savedGame.bodyParts) {
 						itemManager.addBodyPart(part);
 					}
 					turnOffMusic(); // main menu music

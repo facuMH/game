@@ -44,8 +44,6 @@ CombatState::CombatState(sf::RenderWindow* window, AssetsManager& am, std::vecto
 	view.setSize(size);
 	view.setCenter({size.x / 2.f, size.y / 2.f});
 
-	// initialText.y = 300; // window->getSize().y / 2;
-
 	keybinds = gameSupportedKeys;
 	std::map<int, Entity*> turnMap;
 	player = p;
