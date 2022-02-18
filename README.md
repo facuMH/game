@@ -87,6 +87,7 @@ Abdul worked on:
 - PauseState
 - SettingsState (change resolution)
 
+ ### References:
 
 - [1] Youtube playlist by Suraj Sharma: https://www.youtube.com/playlist?list=PL6xSOsbVA1ebkU66okpi-KViAO8_9DJKg
 - [2] Tiled: https://www.mapeditor.org/ (Map editor)
