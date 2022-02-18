@@ -83,7 +83,9 @@ Andrea worked on:
 - Story progress
 
 Abdul worked on:
-TODO
+- Part of MainMenuState
+- PauseState
+- SettingsState (change resolution)
 
 
 - [1] Youtube playlist by Suraj Sharma: https://www.youtube.com/playlist?list=PL6xSOsbVA1ebkU66okpi-KViAO8_9DJKg
