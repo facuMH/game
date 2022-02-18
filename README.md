@@ -3,7 +3,7 @@
 Oh no! A bunch of aliens has taken over the town! Luckily, you are there to save the old lady that has been abducted and eaten by the aliens. The houses of the villagers are occupied by aliens. If you can defeat all of them with your ninja skills, the old lady will be saved and the town will be in peace again. GO hurry!
 
 ## Dependencies:
-[SFML](https://www.sfml-dev.org/tutorials/2.5/#getting-started)
+We're using [SFML](https://www.sfml-dev.org/tutorials/2.5/#getting-started) 2.5.
 
 ## Controls
 - A: left
