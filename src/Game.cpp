@@ -254,6 +254,9 @@ void Game::pollEvents() {
 					for(const auto& item : savedGame.items) {
 						itemManager.pickUp(item);
 					}
+					for (const auto& part : savedGame.bodyParts) {
+						itemManager.addBodyPart(part);
+					}
 					turnOffMusic(); // main menu music
 					makeMainGameState(savedGame.getMainGamePosition());
 					if(enemyManager.allEnemiesDefeated()) {
@@ -279,6 +282,7 @@ void Game::pollEvents() {
 				auto houseState = dynamic_cast<GameState*>(states.top());
 				player.addExperience(houseState->getExperienceFromEnemy());
 				enemyManager.setEnemyDefeated(houseState->getEnemy()->name);
+				itemManager.addBodyPart(houseState->getEnemy()->getBodyPart());
 				houseState->unblockEnemyTile();
 				houseState->setEnemy(new Enemy());
 				states.top()->resumeMusic();

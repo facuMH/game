@@ -21,6 +21,9 @@ InventoryState::InventoryState(sf::RenderWindow* window, AssetsManager& am, KeyL
 	initButtons(window);
 	initPlayerItems();
 	initBackground(am);
+	initBodyParts();
+	initBodyPartBackground(am, im);
+
 	supportedKeys = _supportedKeys;
 	activeButton = 0;
 	playerItems[activeButton].setFillColor(activeItemColor);
@@ -56,6 +59,27 @@ void InventoryState::initPlayerItems() {
 	playerItems.front().setOutlineColor(activeItemColor);
 }
 
+void InventoryState::initBodyParts() {
+	sf::Text itemText;
+	itemText.setFont(font);
+	itemText.setCharacterSize(15);
+	itemText.setStyle(sf::Text::Bold);
+	itemText.setFillColor(sf::Color::Black);
+	if(itemManager->grandmaParts.empty()) {
+		itemText.setPosition({INVENTORY_ITEM_WIDTH * 5, BOX_POSITION_OFFSET});
+		itemText.setString("No grandma parts here yet.\n Go kill look around");
+		bodyParts.push_back(itemText);
+	} else {
+		for(const auto& item : itemManager->grandmaParts) {
+			itemText.setString(item.c_str());
+			itemText.setPosition(
+			    {INVENTORY_ITEM_WIDTH * 5, BOX_POSITION_OFFSET + INVENTORY_ITEM_HEIGHT * bodyParts.size()});
+			bodyParts.push_back(itemText);
+		}
+	}
+	bodyParts.front().setOutlineColor(inactiveItemColor);
+}
+
 void InventoryState::initBackground(AssetsManager& am) {
 	background.setTexture(am.getTexture(INVENTORY.c));
 	if(!emptyInventory) {
@@ -67,9 +91,22 @@ void InventoryState::initBackground(AssetsManager& am) {
 	background.move({0, -BOX_POSITION_OFFSET - 4 * static_cast<float>(playerItems.size())});
 }
 
+void InventoryState::initBodyPartBackground(AssetsManager& am, ItemManager* im) {
+	bodyPartyBackground.setTexture(am.getTexture(INVENTORY.c));
+	if(!im->grandmaParts.empty()) {
+		bodyPartyBackground.setSize({INVENTORY_ITEM_WIDTH,
+		    INVENTORY_ITEM_HEIGHT * static_cast<float>(bodyParts.size()) + MINIMAL_INVENTORY_HEIGHT});
+	} else {
+		bodyPartyBackground.setSize({EMPTY_INVENTORY_SIZE.x + 25, EMPTY_INVENTORY_SIZE.y});
+	}
+	bodyPartyBackground.move(
+	    {INVENTORY_ITEM_WIDTH * 5 - 5, -BOX_POSITION_OFFSET - 4 * static_cast<float>(bodyParts.size())});
+}
+
 void InventoryState::initFonts(AssetsManager& am) {
 	font = *am.getFont(DOSIS.c);
 }
+
 
 void InventoryState::initText(sf::RenderWindow* window) {
 	title.setFont(font);
@@ -84,8 +121,8 @@ void InventoryState::initText(sf::RenderWindow* window) {
 	Position pos = title.getPosition();
 	float w = 150;
 	float h = 50;
-	titleBackground.setPosition({pos.x-w/2.f, pos.y-h/2.f});
-	titleBackground.setSize({w*2,h});
+	titleBackground.setPosition({pos.x - w / 2.f, pos.y - h / 2.f});
+	titleBackground.setSize({w * 2, h});
 }
 
 void InventoryState::initButtons(sf::RenderWindow* window) {
@@ -129,12 +166,16 @@ void InventoryState::render(sf::RenderWindow* window) {
 	previous->render(window);
 	window->setView(view);
 	window->draw(background);
-	window->draw(container);
 	window->draw(titleBackground);
 	window->draw(title);
 	for(const auto& item : playerItems) {
 		window->draw(item);
 	}
+	window->draw(bodyPartyBackground);
+	for(const auto& item : bodyParts) {
+		window->draw(item);
+	}
+
 	renderButtons(window);
 }
 
