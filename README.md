@@ -86,8 +86,8 @@ Abdul worked on:
 TODO
 
 
-[1] Youtube playlist by Suraj Sharma: https://www.youtube.com/playlist?list=PL6xSOsbVA1ebkU66okpi-KViAO8_9DJKg
-[2] Tiled: https://www.mapeditor.org/ (Map editor)
-[3] Tileson: https://github.com/SSBMTonberry/tileson (JSON tile map parser)
-[4] Cereal: https://github.com/USCiLab/cereal (Serialization library)
+- [1] Youtube playlist by Suraj Sharma: https://www.youtube.com/playlist?list=PL6xSOsbVA1ebkU66okpi-KViAO8_9DJKg
+- [2] Tiled: https://www.mapeditor.org/ (Map editor)
+- [3] Tileson: https://github.com/SSBMTonberry/tileson (JSON tile map parser)
+- [4] Cereal: https://github.com/USCiLab/cereal (Serialization library)
 
