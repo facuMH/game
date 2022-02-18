@@ -230,7 +230,6 @@ StateAction CombatState::shouldAct() {
 			nextTurn = true;
 		}
 	} else {
-		// TODO: openUsableItemInventory(turnList[currentCharacterTurn]);
 		selectingItem = false;
 		nextTurn = true;
 	}

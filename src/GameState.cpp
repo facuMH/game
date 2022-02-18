@@ -80,10 +80,6 @@ GameState::~GameState() = default;
 
 void GameState::update(const float& dt) {
 	updateKeybinds(dt);
-
-	if(clock.getElapsedTime().asSeconds() > .05f) {
-		clock.restart();
-	}
 	if(inDialogue) {
 		dialogueBox.update(dt);
 		if(dialogueBox.textDone()) {

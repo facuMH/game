@@ -1,4 +1,3 @@
-#include <cstddef>
 #include <iterator>
 
 #include <SFML/Graphics.hpp>
