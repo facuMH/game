@@ -22,7 +22,7 @@ We're using [SFML](https://www.sfml-dev.org/tutorials/2.5/#getting-started) 2.5.
 
 Build and run with:
 ```
-cd path/to/game
+cd path/to/team_RPG_assignment
 mkdir build
 cd build
 cmake ..
@@ -33,7 +33,7 @@ make
 ### On Windows
 
 ```
-cd path/to/game
+cd path/to/team_RPG_assignment
 mkdir build
 cd build
 cmake ..
