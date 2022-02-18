@@ -20,7 +20,7 @@ Enemy EnemyManager::makeEnemy(const DoorNumber doorNumber, AssetsManager& assets
 		Texture* texture = assetsManager.getTexture(enemyData.texturePath);
 		Animation animation(texture, sf::IntRect(0, 0, TILESIZE, TILESIZE), enemyData.position);
 		enemy = {enemyData.name, Stats(15, 15, 15, 15, 15, 15), animation, MovementType::HORIZONTAL, {30, 30}, 2.0f,
-		    enemyData.experience};
+		    enemyData.experience, enemyData.bodyPart};
 	}
 	return enemy;
 }
