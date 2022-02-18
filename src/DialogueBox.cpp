@@ -108,10 +108,11 @@ std::vector<std::string> split(const std::string& s) {
 	return words;
 }
 
+// Helper function for cropping the text to match the size of the dialogue box
 void DialogueBox::cropTextToBox(std::string& new_text) {
 	if(!new_text.empty()) {
 		std::vector<std::string> words = split(new_text);
-		// base case with only one word and no whitespace
+		// base case with only one word and no whitespaces
 		if(words.size() == 1) {
 			new_text = words[0];
 		} else {

@@ -22,6 +22,7 @@ class Animation {
 		sprite.setPosition(initial);
 	};
 
+	// moves the texture rectangle to the next image
 	void next(KeyAction nextDirection) {
 		int newLeft = 0;
 		switch(nextDirection) {

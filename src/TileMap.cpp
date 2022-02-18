@@ -68,20 +68,10 @@ void TileMap::setTileOccupation(Position position, bool isOccupied) {
 	tiles[0][t.x][t.y]->is_occupied = isOccupied;
 }
 
-void TileMap::setAreaOccupation(const Position& position, const Position_i& size, bool isOccupied) {
-	for (int i = int(position.x); i < int(position.x + size.x); i++) {
-		for (int j = int(position.y); j < int(position.y + size.y); j++) {
-			Position tmp = {float(i), float(j)};
-			setTileOccupation(tmp, isOccupied);
-		}
-	}
-}
-
 DoorNumber TileMap::getTileDoorNumber(Position position) {
 	auto t = getTileFromPos(position);
 	return tiles[0][t.x][t.y]->doorNum;
 }
-
 
 void TileMap::render(sf::RenderWindow& window) {
 	for(int z = 0; z < nLayers; z++) {
@@ -92,6 +82,7 @@ void TileMap::render(sf::RenderWindow& window) {
 		}
 	}
 }
+
 std::vector<std::pair<Position, DoorNumber>> TileMap::getHousePositions() {
 	std::vector<std::pair<Position, DoorNumber>> positionDoorNumberVector;
 	for(int y = 0; y < mapSize.y; y++) {

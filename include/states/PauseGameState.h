@@ -6,6 +6,7 @@
 #include "State.h"
 #include "managers/AssetsManager.h"
 
+/// State which contains a Pause menu with RESUME and QUIT buttons
 class PauseGameState : public State {
   private:
 	sf::RectangleShape background;

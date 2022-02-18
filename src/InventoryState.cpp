@@ -155,9 +155,6 @@ void InventoryState::renderButtons(sf::RenderWindow* window) {
 
 void InventoryState::updateMousePositions() {}
 
-// Functions
-void InventoryState::updateInput(const float& dt) {}
-
 void InventoryState::update(const float& dt) {
 	updateButtons();
 }

@@ -69,6 +69,11 @@ class MusicPath : public std::string {
 	}
 };
 
+class House {
+  public:
+	JSONFilePath houseDesignPath;
+};
+
 struct Stats {
 	int str = 0;     // Strength
 	int dex = 0;     // Dexterity

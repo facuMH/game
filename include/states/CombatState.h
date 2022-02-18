@@ -8,10 +8,9 @@
 #include "entity_attributes/Combatant.h"
 #include "managers/AssetsManager.h"
 
+/// State in which the player fights an enemy
 class CombatState : public State {
   private:
-	sf::Font font;
-
 	Player player;
 	Enemy enemy;
 	TileMap map;
@@ -20,7 +19,7 @@ class CombatState : public State {
 	KeyList* keybinds;
 
 	CombatText lifeCounters;
-	void addCombatString(const Player& player, AssetsManager& am);
+	sf::Font font;
 	Position initialText{10.f, 300.f};
 
 	std::vector<Entity*> turnList;
@@ -31,11 +30,12 @@ class CombatState : public State {
 	int cursorOrientation;
 	sf::Clock cursorClock;
 
-	void addActionMenu();
 	Buttons actionButtons;
 	int actionButtonActive;
 	bool selectingItem;
 
+	void addCombatString(const Player& player, AssetsManager& am);
+	void addActionMenu();
   public:
 	// Constructor
 	CombatState(sf::RenderWindow* window, AssetsManager& am, std::vector<MapBackground*> textureSheets,

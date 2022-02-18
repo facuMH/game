@@ -83,6 +83,7 @@ Andrea worked on:
 - Saving and loading the game (using [4])
 - Villagers
 - Story progress
+- Part of Animation
 
 Abdul worked on:
 - Part of MainMenuState

@@ -10,6 +10,7 @@
 
 #include "definitions.h"
 
+/// State which shows the current inventory
 class InventoryState : public State {
   private:
 	sf::RectangleShape background;
@@ -51,7 +52,6 @@ class InventoryState : public State {
 	~InventoryState() override = default;
 
 	// Functions
-	void updateInput(const float& dt);
 	void update(const float& dt) override;
 	void render(sf::RenderWindow* window) override;
 	StateAction handleKeys(sf::Keyboard::Key key) override;

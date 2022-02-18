@@ -9,6 +9,7 @@
 
 constexpr int MAX_BUTTONS = 4;
 
+/// State which contains the Main Menu with START, LOAD, SETTINGS and QUIT buttons
 class MainMenuState : public MakesErrorSound {
   private:
 	// Variable
@@ -23,8 +24,6 @@ class MainMenuState : public MakesErrorSound {
 	sf::Vector2f mousePosView;
 
 	KeyList* supportedKeys;
-
-	bool quit{};
 
 	// Functions
 	void initBackground(sf::RenderWindow* window, AssetsManager& am);

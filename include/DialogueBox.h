@@ -17,8 +17,8 @@ class DialogueBox {
 
 	// text animation
 	std::string textToDraw; // substring of the actual textToDraw since not all textToDraw is drawn at once
-	int drawFrom;           // pointer to the position of the textToDraw to be drawn
-	int drawTo;             // pointer to the first sign to be drawn
+	int drawFrom;           // used as pointer to the position of the textToDraw to be drawn
+	int drawTo;             // used as pointer to the first sign to be drawn
 	float textAnimationTimer;
 	int textLinesCounter;
 	int arrowMotionCounter;
@@ -30,7 +30,7 @@ class DialogueBox {
 
   public:
 	DialogueBox() = default;
-	DialogueBox(const Name& characterName, const std::string& faceTexturePath, const Position &dialoguePosition);
+	DialogueBox(const Name& characterName, const std::string& faceTexturePath, const Position& dialoguePosition);
 
 	bool textDone() const;
 	void setText(const std::string& characterName, std::string dialogueString);

@@ -4,7 +4,6 @@
 #include "entity_attributes/Combatant.h"
 #include "entity_attributes/IdleMovement.h"
 
-
 /// Class for non-playable characters who engage in combat
 class Enemy : public Entity, public IdleMovement, public Combatant {
 	int experience;

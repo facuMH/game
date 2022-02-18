@@ -9,6 +9,7 @@
 #include "State.h"
 #include "managers/AssetsManager.h"
 
+/// State which shows a Game Over Screen and lets the player return to the last saved point or quit
 class GameOverState : public MakesErrorSound {
   private:
 	sf::RectangleShape background;

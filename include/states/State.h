@@ -15,7 +15,7 @@
 #include "managers/AssetsManager.h"
 
 /**
- * Parent class for States: GameState, ...
+ * Parent class for all states
  */
 class State {
   private:
@@ -33,8 +33,6 @@ class State {
 	// Destructor
 	virtual ~State();
 
-	// virtual ==> application on run-time object of child class (i.e. GameState)
-	// these MUST be defined in child class
 	virtual void update(const float& dt) = 0;
 	virtual void render(sf::RenderWindow* window) = 0;
 	virtual void updateKeybinds(const float& dt) = 0;
@@ -52,5 +50,4 @@ class State {
 	virtual void resumeMusic();
 	sf::RenderWindow* getWindow() { return window; }
 	const bool& isQuit() const { return isQuitting; }
-
 };

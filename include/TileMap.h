@@ -6,14 +6,13 @@
 
 #include "tileson.hpp"
 
+
 class TileMap {
   private:
-	// number of layers per tile position
-	int nLayers;
-	// max. number of tiles in x and y direction
-	sf::Vector2u mapSize;
-	// Tiles are saved in a matrix, but each tile itself is a vector of layers
-	std::vector<std::vector<std::vector<Tile*>>> tiles;
+	int nLayers;          // number of layers per tile position
+	sf::Vector2u mapSize; // max. number of tiles in x and y direction
+	std::vector<std::vector<std::vector<Tile*>>>
+	    tiles; // Tiles are saved in a 2D vector. Each tile position itself is a vector of layers
 
   public:
 	TileMap(AssetsManager& am, std::vector<MapBackground*> textureSheets, const JSONFilePath& designPath);
@@ -24,7 +23,6 @@ class TileMap {
 	DoorNumber getTileDoorNumber(Position position);
 	std::vector<std::pair<Position, DoorNumber>> getHousePositions();
 	void setTileOccupation(Position position, bool isOccupied);
-	void setAreaOccupation(const Position& position, const Position_i& size, bool isOccupied);
 	void render(sf::RenderWindow& window);
 	Position_i getTileFromPos(const Position& pos);
 };

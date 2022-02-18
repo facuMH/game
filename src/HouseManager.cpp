@@ -1,5 +1,6 @@
 #include "managers/HouseManager.h"
 #include "asset_data.h"
+#include "definitions.h"
 
 House HouseManager::getHouse(DoorNumber doorNum) {
 	HouseData houseData;
@@ -9,5 +10,5 @@ House HouseManager::getHouse(DoorNumber doorNum) {
 			break;
 		}
 	}
-	return {houseData.mapDesignPath, houseData.doorPosition};
+	return {houseData.mapDesignPath};
 }

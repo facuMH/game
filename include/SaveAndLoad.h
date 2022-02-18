@@ -7,6 +7,7 @@
 
 namespace fs = std::filesystem;
 
+/// Class for saving and loading a game
 class SaveAndLoad {
   public:
 	static void saveGame(SaveObject saveObject) {

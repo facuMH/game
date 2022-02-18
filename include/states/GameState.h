@@ -11,6 +11,7 @@
 #include "managers/EnemyManager.h"
 #include "managers/InteractionManager.h"
 
+/// State in which the player can roam around and interact with other entities
 class GameState : public State {
   private:
 	TileMap map;
@@ -21,10 +22,11 @@ class GameState : public State {
 	bool inDialogue;
 	AssetsManager* assetsManager;
 	KeyList* keybinds;
-	sf::Clock clock;
 	sf::Keyboard::Key previousKey; // for gasping sound effect
+
 	Object* item = nullptr;        // if in a house there will be an item, if not previously picked up
 	bool itemPicked = false;
+
 	sf::Sprite entranceBlocker;
 
   public:

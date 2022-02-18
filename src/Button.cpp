@@ -44,10 +44,6 @@ Button::Button(const sf::Vector2f& position, const sf::Vector2f& size, const sf:
 Button::~Button() = default;
 
 // Accessors
-bool Button::isPressed() const {
-	return (buttonState == ButtonStates::BTN_ACTIVE);
-}
-
 std::string Button::getText() const {
 	return text.getString();
 }

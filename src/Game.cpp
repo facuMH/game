@@ -1,11 +1,9 @@
 #include <SFML/Graphics.hpp>
 #include <cmath>
 #include <iostream>
-#include <typeinfo>
 
 #include "AssetsPaths.h"
 #include "Game.h"
-#include "House.h"
 #include "asset_data.h"
 #include "definitions.h"
 #include "managers/HouseManager.h"

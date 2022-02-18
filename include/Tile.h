@@ -11,6 +11,7 @@
 #include <stack>
 #include <vector>
 
+/// Class that defines a tile in a TileMap
 class Tile {
   private:
 	sf::RectangleShape shape;

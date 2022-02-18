@@ -74,8 +74,6 @@ constexpr auto WAND = cat(ITEMS.c, "Wand.png");
 constexpr auto MEDIPACK = cat(ITEMS.c, "Medipack.png");
 constexpr auto SWORD = cat(ITEMS.c, "Sword.png");
 
-constexpr auto ROCK = cat(ITEMS.c, "rock.png");
-
 
 // ---- TILES
 constexpr auto TILES = cat(ASSETS, "tiles/");

@@ -4,6 +4,7 @@
 
 #include "Animation.h"
 
+/// Base class for all entities, such as characters and items
 class Entity {
   public:
 	Name name;

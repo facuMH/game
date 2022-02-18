@@ -54,7 +54,6 @@ set(HEADERS include/Animation.h
         include/entity_attributes/SteeredMovement.h
         include/entity_attributes/IdleMovement.h
         include/Game.h
-        include/House.h
         include/Inanimated.h
         include/managers/AssetsManager.h
         include/managers/EnemyManager.h

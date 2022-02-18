@@ -11,7 +11,7 @@
 #include "managers/EnemyManager.h"
 #include "managers/ItemManager.h"
 
-
+/// Class which defines which attributes of a game are saved and loaded
 class SaveObject {
   public:
 	int houseNumber;
@@ -29,7 +29,8 @@ class SaveObject {
 	    Stats _currentStats, ItemManager* itemManager, EnemyManager* enemyManager, const Name& _equippedWeapon)
 	    : houseNumber(houseNumber), housePosition(housePosition), mainGamePosition(mainGamePosition), level(level),
 	      currentStats(_currentStats), items(itemManager->playerInventory),
-	      defeatedEnemies(enemyManager->enemiesDefeated), equippedWeapon(_equippedWeapon), bodyParts(itemManager->grandmaParts) {}
+	      defeatedEnemies(enemyManager->enemiesDefeated), equippedWeapon(_equippedWeapon),
+	      bodyParts(itemManager->grandmaParts) {}
 
 	Position getHouseStatePosition() const { return housePosition; }
 	Position getMainGamePosition() const { return mainGamePosition; }

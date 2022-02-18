@@ -1,0 +1,28 @@
+{
+    "value0": {
+        "houseNumber": 3,
+        "housePosition.x": 45.0,
+        "housePosition.y": 25.0,
+        "mainGamePosition.x": 300.0,
+        "mainGamePosition.y": 270.0,
+        "level": 1,
+        "value0": {
+            "str": 15,
+            "dex": 20,
+            "hp": 50,
+            "mana": 30,
+            "armor": 31,
+            "baseAtk": 1
+        },
+        "items": [
+            "Club"
+        ],
+        "defeatedEnemies": [
+            "Lizard"
+        ],
+        "equippedWeapon": "Club",
+        "bodyParts": [
+            "Left Arm"
+        ]
+    }
+}

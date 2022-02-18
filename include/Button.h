@@ -30,7 +30,6 @@ class Button {
 	~Button();
 
 	// Accessors
-	bool isPressed() const;
 	std::string getText() const;
 
 	// Modifiers

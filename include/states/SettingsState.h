@@ -9,6 +9,7 @@
 #include "State.h"
 #include "managers/AssetsManager.h"
 
+/// State in which the user can adjust the game resolution
 class SettingsState : public State {
   private:
 	sf::RectangleShape background;
@@ -21,7 +22,6 @@ class SettingsState : public State {
 	Buttons buttons;
 
 	int activeButton;
-	bool quit{};
 
 	// Functions
 	void initBackground(AssetsManager& am);

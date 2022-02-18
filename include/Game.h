@@ -17,13 +17,10 @@
 #include "states/GameState.h"
 #include "states/MainMenuState.h"
 
-/*
- * Wrapper class acting as game engine.
- */
+
+/// Wrapper class acting as game engine.
 class Game {
   private:
-	// window is a pointer, since the new-operator returns a pointer to
-	// the beginning of the new block of memory allocated
 	sf::RenderWindow* window;
 	sf::VideoMode videoMode;
 	sf::Event event{};

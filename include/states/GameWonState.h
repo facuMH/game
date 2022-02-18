@@ -8,13 +8,13 @@
 #include "State.h"
 #include "managers/AssetsManager.h"
 
+/// State which shows a Game Won screen which marks the end of the game
 class GameWonState : public State {
   private:
 	sf::RectangleShape background;
 
 	// Functions
 	void initBackground(AssetsManager& am);
-
 
   public:
 	GameWonState(sf::RenderWindow* window, AssetsManager& _assetsManager);

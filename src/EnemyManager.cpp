@@ -13,6 +13,7 @@ bool EnemyManager::isEnemyDefeated(const Name& enemyName) {
 void EnemyManager::setEnemyDefeated(const Name& enemyName) {
 	enemiesDefeated.emplace(enemyName);
 }
+
 Enemy EnemyManager::makeEnemy(const DoorNumber doorNumber, AssetsManager& assetsManager) {
 	EnemyData enemyData = ENEMYDATA[doorNumber - 1];
 	Enemy enemy;

@@ -13,10 +13,9 @@ class Villager : public Entity, public IdleMovement {
   public:
 	std::string faceTexturePath; // for dialogue boxes
 	Villager() = default;
-	Villager(const Animation& _animation, const Name& _name, MovementType _movementType, Position _endPosition, float _stepsize,
-	    std::string _faceTexturePath)
-	    : Entity(_name, _animation),
-	      IdleMovement(_movementType, _animation.get_position(), _endPosition, _stepsize) {
+	Villager(const Animation& _animation, const Name& _name, MovementType _movementType, Position _endPosition,
+	    float _stepsize, std::string _faceTexturePath)
+	    : Entity(_name, _animation), IdleMovement(_movementType, _animation.get_position(), _endPosition, _stepsize) {
 		faceTexturePath = std::move(_faceTexturePath);
 	}
 };
