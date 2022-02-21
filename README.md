@@ -73,7 +73,7 @@ Andrea worked on:
 - Basic Game Framework (game loop, render, update, poll events, states stack), inspired by [1]
 - Character movement (Player, with user input, and NPCs)
 - HouseManager & Houses
-- InteractionManager & DialogueBox
+- InteractionManager & DialogueBox (Typing effect not-too-loosely inspired by [5])
 - GameOverState & GameWonState
 - GameState with Facu
 - EnemyManager with Facu
@@ -96,4 +96,5 @@ Abdul worked on:
 - [2] Tiled: https://www.mapeditor.org/ (Map editor)
 - [3] Tileson: https://github.com/SSBMTonberry/tileson (JSON tile map parser)
 - [4] Cereal: https://github.com/USCiLab/cereal (Serialization library)
+- [5] https://github.com/JohannesHofmann1/ou_est_le_beurre
 
